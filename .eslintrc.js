@@ -6,5 +6,8 @@ module.exports = {
   rules: {
     'no-proto': 0
   },
-  plugins: ['jest']
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint', 'jest'
+  ],
 };
