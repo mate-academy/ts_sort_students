@@ -25,7 +25,7 @@
     "jest": "^24.7.0"
   },
   "mateAcademy": {
-    "projectType": "javascript"
+    "projectType": "typescript"
   },
   "dependencies": {
     "@babel/core": "^7.10.5",
