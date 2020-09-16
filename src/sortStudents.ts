@@ -31,7 +31,8 @@ export function sortStudents(
     switch (sortBy) {
       case SortField.Name:
       case SortField.Surname:
-        return order === 'asc' ? a[sortBy].localeCompare(b[sortBy])
+        return order === 'asc' 
+          ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
       case SortField.Age:
         return order === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
