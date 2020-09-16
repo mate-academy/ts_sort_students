@@ -48,7 +48,8 @@ export function sortStudents(
         const secondStudent = b[sortBy].reduce((sum = 0, item) => sum + item)
         / b[sortBy].length;
 
-        return order === 'asc' ? firstStudent - secondStudent
+        return order === 'asc' 
+          ? firstStudent - secondStudent
           : secondStudent - firstStudent;
     }
   });
