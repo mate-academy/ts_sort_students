@@ -43,8 +43,8 @@ export function sortStudents(
 
         return a[sortBy] > b[sortBy] ? -1 : 1;
       case SortField.AverageGrade:
-        const firstStudent = a[sortBy].reduce((sum = 0, item) => sum + item)
-        / a[sortBy].length;
+        const firstStudent = a[sortBy]
+          .reduce((sum = 0, item) => sum + item) / a[sortBy].length;
         const secondStudent = b[sortBy].reduce((sum = 0, item) => sum + item)
         / b[sortBy].length;
 
