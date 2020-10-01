@@ -57,11 +57,11 @@ export function sortStudents(students: Student[],
 
         return (order === 'asc')
           ? (red1 / x.grades.length) - (red2 / y.grades.length)
-          : (red2 / x.grades.length) - (red1 / y.grades.length);
+          : (red2 / y.grades.length) - (red1 / x.grades.length);
       });
       break;
   }
 
-  return students;
+  return copyStudents;
   // write your function
 }
