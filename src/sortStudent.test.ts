@@ -2,7 +2,7 @@
 /* eslint-disable */
 /* global require, describe, test, expect */
 
-const students = [
+export const students = [
   {
     name: 'Diana',
     surname: 'Dorsey',
