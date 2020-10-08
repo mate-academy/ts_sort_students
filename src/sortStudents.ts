@@ -13,49 +13,40 @@ export type Student = {
 }
 
 export enum SortField {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortField, order: SortOrder) {
-  let sortedStudents: Student[];
+export function sortStudents(students: Student[], field: SortField, order: SortOrder) {
+  const sortType: string = typeof students[0][field];
 
-  switch (sortBy) {
-    case SortField.Name:
-      sortedStudents = [...students].sort((a, b) => order === 'asc'
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name));
-      break;
-    case SortField.Surname:
-      sortedStudents = [...students].sort((a, b) => order === 'asc'
-        ? a.surname.localeCompare(b.surname)
-        : b.surname.localeCompare(a.surname));
-      break;
-    case SortField.Age:
-      sortedStudents = [...students].sort((a, b) => order === 'asc'
-        ? a.age - b.age
-        : b.age - a.age);
-      break;
-    case SortField.Married:
-      sortedStudents = [...students].sort((a, b) => order === 'asc'
-        ? Number(a.married) - Number(b.married)
-        : Number(b.married) - Number(a.married));
-      break;
-    case SortField.AverageGrade:
-      sortedStudents = [...students].sort((a, b) => order === 'asc'
-        ? calcAverageGrade(a.grades) - calcAverageGrade(b.grades)
-        : calcAverageGrade(b.grades) - calcAverageGrade(a.grades));
-      break;
-    default:
-      return students;
-  }
-
-  return sortedStudents;
+  return [...students].sort((a, b) => {
+    switch (sortType) {
+      case 'string':
+        return order === 'asc'
+          ? a[field].localeCompare(b[field])
+          : b[field].localeCompare(a[field]);
+      case 'number':
+        return order === 'asc'
+          ? a[field] - b[field]
+          : b[field] - a[field];
+      case 'boolean':
+        return order === 'asc'
+          ? Number(a[field]) - Number(b[field])
+          : Number(b[field]) - Number(a[field]);
+      case 'object':
+        return order === 'asc'
+          ? calcAverageGrade(a[field]) - calcAverageGrade(b[field])
+          : calcAverageGrade(b[field]) - calcAverageGrade(a[field]);
+      default:
+        return 0;
+    };
+  });
 };
 
 function calcAverageGrade(arr: number[]) {
