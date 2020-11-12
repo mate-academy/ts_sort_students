@@ -19,7 +19,10 @@ export enum SortField {
   AverageGrade = 'grades',
 }
 
-type SortOrder = 'asc' | 'desc';
+enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc',
+}
 
 export function sortStudents(
   students: Student[],
