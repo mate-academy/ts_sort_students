@@ -34,19 +34,19 @@ export function sortStudents(
   return [...students].sort((a, b) => {
     switch (sortType) {
       case 'string':
-        return order === 'asc'
+        return order === SortOrder.Asc
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
       case 'number':
-        return order === 'asc'
+        return order === SortOrder.Asc
           ? a[sortBy] - b[sortBy]
           : b[sortBy] - a[sortBy];
       case 'boolean':
-        return order === 'asc'
+        return order === SortOrder.Asc
           ? Number(a[sortBy]) - Number(b[sortBy])
           : Number(b[sortBy]) - Number(a[sortBy]);
       case 'object':
-        return order === 'asc'
+        return order === SortOrder.Asc
           ? calcAverageGrade(a[sortBy]) - calcAverageGrade(b[sortBy])
           : calcAverageGrade(b[sortBy]) - calcAverageGrade(a[sortBy]);
       default:
