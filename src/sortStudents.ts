@@ -21,7 +21,8 @@ enum SortField {
 
 type SortOrder = 'asc' | 'desc';
 
-const getAvarege = (arr: number[]): number => arr.reduce((acc, el) => acc + el) / arr.length;
+const getAvarege = (arr: number[]): number =>
+  arr.reduce((acc, el) => acc + el) / arr.length;
 
 export function sortStudents(
   students: Student[],
