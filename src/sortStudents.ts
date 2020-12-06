@@ -21,6 +21,8 @@ enum SortField {
 
 type SortOrder = 'asc' | 'desc';
 
+const getAvarege = (arr: number[]): number => arr.reduce((acc, el) => acc + el) / arr.length;
+
 export function sortStudents(
   students: Student[],
   sortBy: SortField,
@@ -46,10 +48,8 @@ export function sortStudents(
 
         return student1[sortBy] > student2[sortBy] ? -1 : 1;
       case SortField.AverageGrade:
-        const firstStudent = student1[sortBy]
-          .reduce((sum = 0, item) => sum + item) / student1[sortBy].length;
-        const secondStudent = student2[sortBy]
-          .reduce((sum = 0, item) => sum + item) / student2[sortBy].length;
+        const firstStudent = getAvarege(student1[sortBy]);
+        const secondStudent = getAvarege(student2[sortBy]);
 
         return isAsc
           ? firstStudent - secondStudent
