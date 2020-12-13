@@ -12,49 +12,44 @@ export enum SortField {
   Married = 'married',
   AverageGrade = 'grades',
 };
-type Num = number;
-export type SortOrder = 'asc' | 'desc';
-type Grade = number;
-type Grades = Grade[];
-
-export type Obj = {
+type SortOrder = 'asc' | 'desc';
+export type Student = {
   name:string,
   surname:string,
   age: number,
   married: boolean,
-  grades: Grades,
-};
-export type Students = Obj[];
+  grades: number[],
+}
 
-export const getAverageGrade = (param:Grades):Num => {
-  const sum = param.reduce((accumulator:Num, currentValue:Num):Num => accumulator + currentValue);
+export const getAverageGrade = (param:number[]): number => {
+  const sum = param.reduce((accumulator:number, currentValue:number): number => accumulator + currentValue);
 
   return sum / param.length;
 };
 
-export const callback = function(sort:SortField, orderoToSort:SortOrder):any {
+export const callback = function(sort: SortField, orderoToSort: SortOrder):any {
   switch (sort) {
-    case SortField.Name : return (a:Obj, b:Obj) => {
+    case SortField.Name : return (a:Student, b:Student) => {
       return (orderoToSort === 'desc') ? b[sort].localeCompare(a[sort])
         : a[sort].localeCompare(b[sort]);
     };
 
-    case SortField.Surname: return (a:Obj, b:Obj) => {
+    case SortField.Surname: return (a:Student, b:Student) => {
       return (orderoToSort === 'desc') ? b[sort].localeCompare(a[sort])
         : a[sort].localeCompare(b[sort]);
     };
 
-    case SortField.AverageGrade: return (a: Obj, b: Obj) => {
+    case SortField.AverageGrade: return (a: Student, b: Student) => {
       return (orderoToSort === 'desc') ? (getAverageGrade(b[sort]) - getAverageGrade(a[sort]))
         : getAverageGrade(a[sort]) - getAverageGrade(b[sort]);
     };
 
-    case SortField.Married: return (a:Obj, b:Obj):Num => {
+    case SortField.Married: return (a:Student, b:Student): number => {
       return (orderoToSort === 'desc') ? (Number(b[sort]) - Number(a[sort]))
         : (Number(a[sort]) - Number(b[sort]));
     };
 
-    case SortField.Age: return (a:Obj, b:Obj):Num => {
+    case SortField.Age: return (a:Student, b:Student):number => {
       return (orderoToSort === 'desc') ? (Number(b[sort]) - Number(a[sort]))
         : (Number(a[sort]) - Number(b[sort]));
     };
@@ -62,8 +57,8 @@ export const callback = function(sort:SortField, orderoToSort:SortOrder):any {
 };
 
 // eslint-disable-next-line max-len
-export function sortStudents(students: Students, sortBy: SortField, order: SortOrder):Students {
-  const student:Students = students.slice();
+export function sortStudents(students: Student[], sortBy: SortField, order: SortOrder): Student[] {
+  const student:Student[] = students.slice();
 
   student.sort(callback(sortBy, order));
 
