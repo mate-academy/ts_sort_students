@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "ES2016",
+      "DOM",
+      "DOM.Iterable",
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -23,8 +23,12 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "experimentalDecorators": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "watch": true,
   },
+  "files": [
+    "./src/sortStudents.ts"
+  ],
   "include": [
     "src"
   ]
