@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": [
-      "ES2016",
+      "esnext",
       "DOM",
       "DOM.Iterable",
     ],
@@ -26,9 +26,6 @@
     "noFallthroughCasesInSwitch": true,
     "watch": true,
   },
-  "files": [
-    "./src/sortStudents.ts"
-  ],
   "include": [
     "src"
   ]

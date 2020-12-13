@@ -63,9 +63,7 @@ export const callback = function(sort: SortField, orderoToSort: SortOrder):any {
 
 // eslint-disable-next-line max-len
 export function sortStudents(students: Student[], sortBy: SortField, order: SortOrder): Student[] {
-  const student:Student[] = students.slice();
+  const sortedStudents: Student[] = [...students].sort(callback(sortBy, order));
 
-  student.sort(callback(sortBy, order));
-
-  return student;
+  return sortedStudents;
 }
