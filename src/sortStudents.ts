@@ -30,27 +30,32 @@ export const getAverageGrade = (param:number[]): number => {
 export const callback = function(sort: SortField, orderoToSort: SortOrder):any {
   switch (sort) {
     case SortField.Name : return (a:Student, b:Student) => {
-      return (orderoToSort === 'desc') ? b[sort].localeCompare(a[sort])
+      return (orderoToSort === 'desc')
+        ? b[sort].localeCompare(a[sort])
         : a[sort].localeCompare(b[sort]);
     };
 
     case SortField.Surname: return (a:Student, b:Student) => {
-      return (orderoToSort === 'desc') ? b[sort].localeCompare(a[sort])
+      return (orderoToSort === 'desc')
+        ? b[sort].localeCompare(a[sort])
         : a[sort].localeCompare(b[sort]);
     };
 
     case SortField.AverageGrade: return (a: Student, b: Student) => {
-      return (orderoToSort === 'desc') ? (getAverageGrade(b[sort]) - getAverageGrade(a[sort]))
+      return (orderoToSort === 'desc')
+        ? (getAverageGrade(b[sort]) - getAverageGrade(a[sort]))
         : getAverageGrade(a[sort]) - getAverageGrade(b[sort]);
     };
 
     case SortField.Married: return (a:Student, b:Student): number => {
-      return (orderoToSort === 'desc') ? (Number(b[sort]) - Number(a[sort]))
+      return (orderoToSort === 'desc')
+        ? (Number(b[sort]) - Number(a[sort]))
         : (Number(a[sort]) - Number(b[sort]));
     };
 
     case SortField.Age: return (a:Student, b:Student):number => {
-      return (orderoToSort === 'desc') ? (Number(b[sort]) - Number(a[sort]))
+      return (orderoToSort === 'desc')
+        ? (Number(b[sort]) - Number(a[sort]))
         : (Number(a[sort]) - Number(b[sort]));
     };
   }
