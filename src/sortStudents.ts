@@ -29,10 +29,6 @@ export function sortStudents(
 ) {
   const studentsArr = [...students];
 
-  if (!sortBy || !order) {
-    return studentsArr;
-  }
-
   const getAverageGrade = (grades: number[]) => {
     return grades.reduce((prev, next) => prev + next, 0) / grades.length;
   };
