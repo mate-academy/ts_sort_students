@@ -30,13 +30,12 @@ export function sortStudents(
   sortBy: SortField,
   order: SortOrder,
 ) {
-  return [...students].sort((a: any, b: any) => {
+  return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
-      case SortField.Age:
       case SortField.Married:
         return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
+          ? a[sortBy] === b[sortBy] ? 0 : a[sortBy] ? 1 : -1
+          : a[sortBy] === b[sortBy] ? 0 : a[sortBy] ? -1 : 1;
 
       case SortField.Surname:
       case SortField.Name:
@@ -50,7 +49,9 @@ export function sortStudents(
           : getAverage(b[sortBy]) - getAverage(a[sortBy]);
 
       default:
-        break;
+        return order === 'asc'
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
     }
   });
 }
