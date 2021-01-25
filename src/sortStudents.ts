@@ -25,36 +25,32 @@ type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: Student[], sortBy: SortField, order: SortOrder) : any {
   const temp = [...students];
-  const countAverage = function(array: number[]): number {
-    return array.reduce((a, b) => a + b) / array.length;
+  const bringToNumber = function(element: number[] | number | boolean): any {
+    switch (typeof element) {
+      case 'object': return element.reduce((a, b) => a + b) / element.length;
+      case 'number': return element;
+      case 'boolean': return +element;
+    }
   };
 
   switch (order) {
     case 'asc':
       switch (sortBy) {
-        case SortField.Name: case SortField.Surname:
+        case SortField.Name:
+        case SortField.Surname:
           temp.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
           break;
-        case SortField.Married: temp.sort((a, b) => +a[sortBy] - +b[sortBy]);
-          break;
-        case SortField.Age: temp.sort((a, b) => a[sortBy] - b[sortBy]);
-          break;
-        case SortField.AverageGrade: temp.sort((a, b) =>
-          countAverage(a[sortBy]) - countAverage(b[sortBy])
-        ); break;
+        default: temp.sort((a, b) =>
+          bringToNumber(a[sortBy]) - bringToNumber(b[sortBy]));
       } break;
     case 'desc':
       switch (sortBy) {
-        case SortField.Name: case SortField.Surname:
+        case SortField.Name:
+        case SortField.Surname:
           temp.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
           break;
-        case SortField.Married: temp.sort((a, b) => +b[sortBy] - +a[sortBy]);
-          break;
-        case SortField.Age: temp.sort((a, b) => b[sortBy] - a[sortBy]);
-          break;
-        case SortField.AverageGrade: temp.sort((a, b) =>
-          countAverage(b[sortBy]) - countAverage(a[sortBy])
-        ); break;
+        default: temp.sort((a, b) =>
+          bringToNumber(b[sortBy]) - bringToNumber(a[sortBy]));
       } break;
   }
 
