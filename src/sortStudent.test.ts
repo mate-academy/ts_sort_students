@@ -1,4 +1,5 @@
 'use strict';
+export {};
 /* eslint-disable */
 /* global require, describe, test, expect */
 
