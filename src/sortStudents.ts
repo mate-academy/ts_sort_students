@@ -11,7 +11,7 @@ type Student = {
   grades: number[],
 }
 
-enum SortField {
+export enum SortField {
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
