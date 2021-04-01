@@ -27,17 +27,11 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortField.Name:
-      return studentsList.sort((a, b) => {
-        const [A, B] = order === 'desc' ? [b, a] : [a, b];
-
-        return A.name.localeCompare(B.name);
-      });
-
     case SortField.Surname:
       return studentsList.sort((a, b) => {
         const [A, B] = order === 'desc' ? [b, a] : [a, b];
 
-        return A.surname.localeCompare(B.surname);
+        return A[sortBy].localeCompare(B[sortBy]);
       });
 
     case SortField.Age:
