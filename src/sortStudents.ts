@@ -12,11 +12,11 @@ type Student = {
 };
 
 export enum SortField {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export function sortStudents(
@@ -24,65 +24,32 @@ export function sortStudents(
   sortBy: SortField,
   order: 'asc' | 'desc'
 ) {
-  const result: Student[] = [...students];
+  const result = [...students];
 
-  switch (sortBy) {
-    case SortField.Name:
-      result.sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a.name > b.name ? 1 : -1;
-        } else {
-          return a.name > b.name ? -1 : 1;
-        }
-      });
-      break;
+  const calcGrade = (arr: number[]) => arr.reduce((a, b) => a + b) / arr.length;
 
-    case SortField.Surname:
-      result.sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a.surname > b.surname ? 1 : -1;
-        } else {
-          return a.surname > b.surname ? -1 : 1;
-        }
-      });
-      break;
-
-    case SortField.Age:
-      result.sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a.age - b.age;
-        } else {
-          return b.age - a.age;
-        }
-      });
-      break;
-
-    case SortField.Married:
-      result.sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a.married && !b.married ? 1 : -1;
-        } else {
-          return a.married && !b.married ? -1 : 1;
-        }
-      });
-      break;
-
-    case SortField.AverageGrade:
-      result.sort((a: Student, b: Student) => {
-        const averageA: number = a.grades.reduce(
-          (sum: number, el: number) => sum + el, 0
-        ) / a.grades.length;
-
-        const averageB: number = b.grades.reduce(
-          (sum: number, el: number) => sum + el, 0
-        ) / b.grades.length;
-
+  return result.sort((a: Student, b: Student): any => {
+    switch (sortBy) {
+      case SortField.Name:
+      case SortField.Surname:
         return order === 'asc'
-          ? averageA - averageB
-          : averageB - averageA;
-      });
-      break;
-  }
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-  return result;
+      case SortField.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
+
+      case SortField.Married:
+        return order === 'asc'
+          ? a.married && !b.married ? 1 : -1
+          : a.married && !b.married ? -1 : 1;
+
+      case SortField.AverageGrade:
+        return order === 'asc'
+          ? calcGrade(a.grades) - calcGrade(b.grades)
+          : calcGrade(b.grades) - calcGrade(a.grades);
+    }
+  });
 }
