@@ -53,10 +53,10 @@ export function sortStudents(
 
     case SortField.Age:
       studentsForSort.sort((currentStudent, nextStudent) => (
-        currentStudent.age - nextStudent.age
+        nextStudent.age - currentStudent.age
       ));
 
-      if (order === 'desc') {
+      if (order === 'asc') {
         studentsForSort.reverse();
       }
 
@@ -64,12 +64,12 @@ export function sortStudents(
 
     case SortField.Married:
       studentsForSort.sort((currentStudent, nextStudent) => (
-        currentStudent.married.toString().localeCompare(
-          nextStudent.married.toString()
+        nextStudent.married.toString().localeCompare(
+          currentStudent.married.toString()
         )
       ));
 
-      if (order === 'desc') {
+      if (order === 'asc') {
         studentsForSort.reverse();
       }
 
@@ -87,12 +87,12 @@ export function sortStudents(
             acc + grade
           ), 0) / nextStudent.grades.length;
 
+        if (order === 'desc') {
+          return nextStudentAverage - currentStudentAverage;
+        };
+
         return currentStudentAverage - nextStudentAverage;
       });
-
-      if (order === 'desc') {
-        studentsForSort.reverse();
-      }
 
       break;
 
