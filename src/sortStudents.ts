@@ -2,7 +2,63 @@
 // describe Student type
 // create SortField enum and export it
 // create SortOrder literal type
+export type StudentType = {
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
+};
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export enum SortField {
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'average',
+};
+
+export type SortOrder = 'asc' | 'desc';
+
+export function sortStudents(
+  students: StudentType[],
+  sortBy: SortField,
+  order: SortOrder) : StudentType[] {
+  const clone: StudentType[] = students.map(student => ({ ...student }));
+
+  clone.sort((first, second) => {
+    switch (sortBy) {
+      case SortField.Name:
+      case SortField.Surname:
+        return order === 'asc'
+          ? first[sortBy].localeCompare(second[sortBy])
+          : second[sortBy].localeCompare(first[sortBy]);
+
+      case SortField.Age:
+      case SortField.Married:
+        const a = Number(first[sortBy]);
+        const b = Number(second[sortBy]);
+
+        return order === 'asc'
+          ? a - b
+          : b - a;
+
+      case SortField.AverageGrade:
+        const firstGrades
+          = first.grades.reduce((all, grade) => all + grade, 0);
+        const secondGrades
+          = second.grades.reduce((all, grade) => all + grade, 0);
+
+        return order === 'asc'
+          ? firstGrades / first.grades.length
+            - secondGrades / second.grades.length
+          : secondGrades / second.grades.length
+            - firstGrades / first.grades.length;
+
+      default:
+        return 0;
+    }
+  });
+
+  return clone;
 }
