@@ -21,25 +21,6 @@ export enum SortField {
 
 type SortOrder = 'asc' | 'desc';
 
-// const createSortedBy: Student[] = ( // выдает ошибку
-//   field: string,
-//   orderBy: SortOrder,
-// ) => {
-//   return (currentStudent: Student[], nextStudent: Student[]) => {
-//     if (typeof currentStudent[field] === 'string') {
-//       return (orderBy === 'asc')
-//         ? currentStudent[field].localeCompare(nextStudent[field])
-//         : nextStudent[field].localeCompare(currentStudent[field]);
-//     }
-
-//     if (typeof currentStudent[field] === 'number') {
-//       return (orderBy === 'asc')
-//         ? currentStudent[field] - nextStudent[field]
-//         : nextStudent[field] - currentStudent[field];
-//     }
-//   };
-// };
-
 export function sortStudents(
   students: Student[],
   sortBy: SortField,
