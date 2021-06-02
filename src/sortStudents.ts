@@ -1,7 +1,4 @@
 'use strict';
-// describe Student type
-// create SortField enum and export it
-// create SortOrder literal type
 
 type Student = {
   name: string,
