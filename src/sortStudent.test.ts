@@ -1,6 +1,7 @@
 'use strict';
 /* eslint-disable */
 /* global require, describe, test, expect */
+export {}
 
 const students = [
   {
