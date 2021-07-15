@@ -36,7 +36,7 @@ export function sortStudents(
   const output: Student[] = [...students];
 
   output.sort((a: Student, b: Student) => {
-    let result: any;
+    let result: number;
 
     switch (sortBy) {
       case SortField.Name:
