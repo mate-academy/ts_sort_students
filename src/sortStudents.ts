@@ -9,11 +9,11 @@ type Student = {
 }
 // create SortField enum and export it
 export enum SortField {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 // create SortOrder literal type
 type SortOrder = 'asc' | 'desc';
@@ -41,35 +41,15 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortField.Name:
-      studentsArray.sort((a, b) => {
-        switch (order) {
-          case 'asc':
-            return compareString(a.name, b.name);
-
-          case 'desc':
-            return compareString(b.name, a.name);
-        }
-      });
-      break;
     case SortField.Surname:
-      studentsArray.sort((a, b) => {
-        switch (order) {
-          case 'asc':
-            return compareString(a.surname, b.surname);
-
-          case 'desc':
-            return compareString(b.surname, a.surname);
-        }
-      });
-      break;
     case SortField.Married:
       studentsArray.sort((a, b) => {
         switch (order) {
           case 'asc':
-            return compareString(a.married, b.married);
+            return compareString(a[sortBy], b[sortBy]);
 
           case 'desc':
-            return compareString(b.married, a.married);
+            return compareString(b[sortBy], a[sortBy]);
         }
       });
       break;
