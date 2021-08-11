@@ -1,5 +1,5 @@
 {
-  "name": "js-task-boilerplate",
+  "name": "ts_sort-students",
   "version": "1.0.0",
   "description": "js task boilerplate",
   "main": "src/sortStudents.ts",
