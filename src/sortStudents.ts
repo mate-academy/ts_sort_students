@@ -1,7 +1,6 @@
-'use strict';
 // describe Student type
-// create SortField enum and export it
-// create SortOrder literal type
+// create and export SortType enum
+// create SortOrder type
 
 export function sortStudents(students, sortBy, order) {
   // write your function
