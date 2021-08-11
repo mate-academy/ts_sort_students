@@ -1,7 +1,7 @@
 {
   "name": "ts_sort-students",
   "version": "1.0.0",
-  "description": "js task boilerplate",
+  "description": "TS sort students task",
   "main": "src/sortStudents.ts",
   "scripts": {
     "init": "mate-scripts init",
