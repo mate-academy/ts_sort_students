@@ -1,6 +1,5 @@
 'use strict';
-
-import { type } from "os";
+// import { type } from "os";
 
 // describe Student type
 // create SortField enum and export it
@@ -14,12 +13,12 @@ type Student = {
   grades:number[];
 }
 
-enum SortField {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+export enum SortField {
+  Name = 'Name',
+  Surname = 'Surname',
+  Age = 'Age',
+  Married = 'Married',
+  AverageGrade = 'AverageGrade',
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -30,10 +29,8 @@ export function sortStudents(
     case 'asc':
       switch (sortBy) {
         case SortField.Name:
-          const studentsSort: Student[] = [...students].sort((a, b) =>
+          return [...students].sort((a, b) =>
             a.name.localeCompare(b.name));
-
-          return studentsSort;
 
         case SortField.Surname:
           return [...students].sort((a, b) =>
