@@ -1,10 +1,10 @@
-type Student = {
+interface Student {
   name: string;
   surname: string;
   age: number;
   married: boolean;
   grades: number[];
-};
+}
 
 enum SortType {
   Name = 'name',
