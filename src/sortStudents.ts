@@ -29,40 +29,33 @@ export function sortStudents(
 ) :Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const sumOfGrades = (sum: number, grade: number) : number => sum + grade;
+  const sumOfGrades = (grades: number[]) :number => {
+    return grades.reduce((sum: number, value: number) => sum + value, 0);
+  };
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       studentsCopy.sort((a: Student, b: Student) => {
-        if (order === SortOrder.Asc) {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
+        return order === SortOrder.Asc
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
       });
       break;
 
     case SortType.Age:
       studentsCopy.sort((a: Student, b: Student) => {
-        if (order === SortOrder.Asc) {
-          return a[sortBy] - b[sortBy];
-        }
-
-        return b[sortBy] - a[sortBy];
+        return order === SortOrder.Asc
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
       });
       break;
 
     case SortType.AverageGrade:
       studentsCopy.sort((a: Student, b: Student) => {
-        const averageA: number = a[sortBy].reduce(sumOfGrades, 0);
-        const averageB: number = b[sortBy].reduce(sumOfGrades, 0);
-
-        if (order === SortOrder.Asc) {
-          return averageA - averageB;
-        }
-
-        return averageB - averageA;
+        return order === SortOrder.Asc
+          ? sumOfGrades(a[sortBy]) - sumOfGrades(b[sortBy])
+          : sumOfGrades(b[sortBy]) - sumOfGrades(a[sortBy]);
       });
       break;
 
@@ -73,18 +66,10 @@ export function sortStudents(
         }
 
         if (order === SortOrder.Asc) {
-          if (a[sortBy]) {
-            return 1;
-          }
-
-          return -1;
+          return a[sortBy] ? 1 : -1;
         }
 
-        if (a[sortBy]) {
-          return -1;
-        }
-
-        return 1;
+        return a[sortBy] ? -1 : 1;
       });
       break;
 
