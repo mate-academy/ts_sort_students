@@ -17,22 +17,33 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-type SortOrder = 'asc' | 'desc';
+enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 function getAverageGrade(grades: number[]): number {
   return grades.reduce((sum, grade) => sum + grade, 0);
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: string,
 ): Student[] {
+  if (order !== SortOrder.asc && order !== SortOrder.desc) {
+    throw new Error(
+      `Invalid value of order. Expected ${SortOrder.asc} or ${SortOrder.desc}.`,
+    );
+  }
+
   const copyStudents = students.map((student) => ({ ...student }));
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       copyStudents.sort((a, b) => (
-        order === 'asc'
+        order === SortOrder.asc
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy])
       ));
@@ -40,7 +51,7 @@ export function sortStudents(
 
     case SortType.Age:
       copyStudents.sort((a, b) => (
-        order === 'asc'
+        order === SortOrder.asc
           ? a[sortBy] - b[sortBy]
           : b[sortBy] - a[sortBy]
       ));
@@ -52,7 +63,7 @@ export function sortStudents(
           return 0;
         }
 
-        if (order === 'asc') {
+        if (order === SortOrder.asc) {
           return a[sortBy] ? 1 : -1;
         }
 
@@ -62,7 +73,7 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       copyStudents.sort((a, b) => (
-        order === 'asc'
+        order === SortOrder.asc
           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy])
       ));
