@@ -22,7 +22,7 @@ enum SortOrder {
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: SortOrder.Ascending | SortOrder.Descending,
+  order: SortOrder,
 ): Student[] {
   const studentsCopy = [...students];
   const reducer = (sum: number, grade: number): number => sum + grade;
