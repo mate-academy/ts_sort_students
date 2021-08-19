@@ -16,9 +16,9 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 // create SortOrder type
-export enum SortOrder {
-  asc = 'asc',
-  desc = 'desc',
+enum SortOrder {
+  Ascending = 'asc',
+  Descending = 'desc',
 }
 
 function getAverage(numbers: number[]): number {
@@ -38,7 +38,7 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       studentsCopy.sort((student1: Student, student2: Student) => (
-        order === SortOrder.asc
+        order === SortOrder.Ascending
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy])
       ));
@@ -46,7 +46,7 @@ export function sortStudents(
 
     case SortType.Age:
       studentsCopy.sort((student1: Student, student2: Student) => (
-        order === SortOrder.asc
+        order === SortOrder.Ascending
           ? student1[sortBy] - student2[sortBy]
           : student2[sortBy] - student1[sortBy]
       ));
@@ -58,7 +58,7 @@ export function sortStudents(
           return 0;
         }
 
-        if (order === SortOrder.asc) {
+        if (order === SortOrder.Ascending) {
           return student1[sortBy] ? 1 : -1;
         }
 
@@ -68,7 +68,7 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       studentsCopy.sort((student1: Student, student2: Student) => (
-        order === SortOrder.asc
+        order === SortOrder.Ascending
           ? getAverage(student1[sortBy]) - getAverage(student2[sortBy])
           : getAverage(student2[sortBy]) - getAverage(student1[sortBy])
       ));
