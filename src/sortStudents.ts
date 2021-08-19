@@ -10,8 +10,8 @@ export enum SortType {
 }
 
 enum SortOrder {
-  Asc = 'asc',
-  Desc = 'desc'
+  Ascending = 'asc',
+  Descending = 'desc'
 }
 
 interface Student {
@@ -37,7 +37,7 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       studentsCopy.sort((a: Student, b: Student) => {
-        return order === SortOrder.Asc
+        return order === SortOrder.Ascending
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
       });
@@ -45,7 +45,7 @@ export function sortStudents(
 
     case SortType.Age:
       studentsCopy.sort((a: Student, b: Student) => {
-        return order === SortOrder.Asc
+        return order === SortOrder.Ascending
           ? a[sortBy] - b[sortBy]
           : b[sortBy] - a[sortBy];
       });
@@ -53,7 +53,7 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       studentsCopy.sort((a: Student, b: Student) => {
-        return order === SortOrder.Asc
+        return order === SortOrder.Ascending
           ? sumOfGrades(a[sortBy]) - sumOfGrades(b[sortBy])
           : sumOfGrades(b[sortBy]) - sumOfGrades(a[sortBy]);
       });
@@ -65,7 +65,7 @@ export function sortStudents(
           return 0;
         }
 
-        if (order === SortOrder.Asc) {
+        if (order === SortOrder.Ascending) {
           return a[sortBy] ? 1 : -1;
         }
 
