@@ -23,7 +23,9 @@ function getAverage(numbers: number[]): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] | string {
   const studentsCopy = students.map((student: Student) => (
     { ...student }
