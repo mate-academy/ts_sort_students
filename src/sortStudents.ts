@@ -14,21 +14,22 @@ enum SortType {
   AverageGrade = 'grades',
 }
 
-type SortOrder = 'asc' | 'desc';
+enum SortOrder {
+  Ascending = 'asc',
+  Descending = 'desc',
+}
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: SortOrder,
+  order: SortOrder.Ascending | SortOrder.Descending,
 ): Student[] {
   const studentsCopy = [...students];
   const reducer = (sum: number, grade: number): number => sum + grade;
-  const gradesLengths = studentsCopy.map((student) => student.grades.length);
-  const maxGrades = Math.max(...gradesLengths);
 
   studentsCopy.sort((a: Student, b: Student) => {
-    const aCopy: Student = order === 'asc' ? { ...a } : { ...b };
-    const bCopy: Student = order === 'asc' ? { ...b } : { ...a };
+    const aCopy: Student = order === SortOrder.Ascending ? { ...a } : { ...b };
+    const bCopy: Student = order === SortOrder.Ascending ? { ...b } : { ...a };
 
     switch (sortBy) {
       case SortType.Name:
@@ -43,8 +44,8 @@ export function sortStudents(
       case SortType.Age:
         return aCopy[sortBy] - bCopy[sortBy];
       case SortType.AverageGrade:
-        return (aCopy[sortBy].reduce(reducer, 0) / maxGrades)
-        - (bCopy[sortBy].reduce(reducer, 0) / maxGrades);
+        return aCopy[sortBy].reduce(reducer, 0)
+        - bCopy[sortBy].reduce(reducer, 0);
       default:
         return 0;
     }
