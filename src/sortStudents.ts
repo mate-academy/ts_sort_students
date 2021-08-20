@@ -22,64 +22,37 @@ type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
   students: Student[], sortBy: SortField, order: SortOrder) {
-  switch (order) {
-    case 'asc':
-      switch (sortBy) {
-        case SortField.Name:
-          return [...students].sort((a, b) =>
-            a.name.localeCompare(b.name));
+  switch (sortBy) {
+    case SortField.Name:
+      return [...students].sort((a, b) => order === 'asc'
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name));
 
-        case SortField.Surname:
-          return [...students].sort((a, b) =>
-            a.surname.localeCompare(b.surname));
+    case SortField.Surname:
+      return [...students].sort((a, b) => order === 'asc'
+        ? a.surname.localeCompare(b.surname)
+        : b.surname.localeCompare(a.surname));
 
-        case SortField.Age:
-          return [...students].sort((a, b) =>
-            a.age - b.age);
+    case SortField.Age:
+      return [...students].sort((a, b) => order === 'asc'
+        ? a.age - b.age
+        : b.age - a.age);
 
-        case SortField.Married:
-          return [...students].sort((a, b) =>
-            `${a.married}`.localeCompare(`${b.married}`));
+    case SortField.Married:
+      return [...students].sort((a, b) => order === 'asc'
+        ? `${a.married}`.localeCompare(`${b.married}`)
+        : `${b.married}`.localeCompare(`${a.married}`));
 
-        case SortField.AverageGrade:
-          const callback = (sum: number, x: number) => sum + x;
+    case SortField.AverageGrade:
+      const callback = (sum: number, x: number) => sum + x;
 
-          return [...students].sort((a, b) => {
-            const aAver = [...a.grades].reduce(callback, 0) / a.grades.length;
-            const bAver = [...b.grades].reduce(callback, 0) / b.grades.length;
+      return [...students].sort((a, b) => {
+        const aAver = [...a.grades].reduce(callback, 0) / a.grades.length;
+        const bAver = [...b.grades].reduce(callback, 0) / b.grades.length;
 
-            return aAver - bAver;
-          });
-      }
-      break;
-
-    case 'desc':
-      switch (sortBy) {
-        case SortField.Name:
-          return [...students].sort((a, b) => b.name.localeCompare(a.name));
-
-        case SortField.Surname:
-          return [...students].sort((a, b) =>
-            b.surname.localeCompare(a.surname));
-
-        case SortField.Age:
-          return [...students].sort((a, b) =>
-            b.age - a.age);
-
-        case SortField.Married:
-          return [...students].sort((a, b) =>
-            `${b.married}`.localeCompare(`${a.married}`));
-
-        case SortField.AverageGrade:
-          const callback = (sum: number, x: number) => sum + x;
-
-          return [...students].sort((a, b) => {
-            const aAver = [...a.grades].reduce(callback, 0) / a.grades.length;
-            const bAver = [...b.grades].reduce(callback, 0) / b.grades.length;
-
-            return bAver - aAver;
-          });
-      }
-      break;
+        return order === 'asc'
+          ? aAver - bAver
+          : bAver - aAver;
+      });
   }
 }
