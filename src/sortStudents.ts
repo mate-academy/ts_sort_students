@@ -17,7 +17,9 @@ export enum SortType {
 type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const sortedArray: Student[] = [...students];
   const sum = (prev: number, curr: number): number => {
