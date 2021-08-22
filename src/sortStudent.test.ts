@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
-import { sortStudents, SortType } from './sortStudents';
+import { sortStudents } from './sortStudents';
+import { SortType } from './sortTypes';
 
 const students = [
   {
