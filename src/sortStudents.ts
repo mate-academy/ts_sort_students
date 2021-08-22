@@ -11,65 +11,64 @@ export enum SortType {
 }
 
 enum SortOrder {
-  acs = 'acs',
+  asc = 'asc',
   desc = 'desc',
 }
 
+interface Student {
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
+}
+
 export function sortStudents(
-  students: object[],
+  students: Student[],
   sortBy: string,
   order: string,
-) : object[] {
-  // write your function
-
-  const copyStudents = students.map((student) => {
+): Student[] {
+  const copyStudents: Student[] = students.map((student) => {
     return { ...student };
   });
 
-  if (SortOrder.desc === order) {
-    return copyStudents
-      .sort((a: {[index: string]: any}, b: {[index: string]: any}) => {
-        if (typeof b[sortBy] === 'string') {
-          return b[sortBy]
-            .localeCompare(a[sortBy]);
-        }
-
-        if (typeof b[sortBy] === 'object') {
-          const first = a[sortBy]
-            .reduce((result:number, currentNumber:number) => {
-              return result + currentNumber;
-            }, 0);
-          const second = b[sortBy]
-            .reduce((result:number, currentNumber:number) => {
-              return result + currentNumber;
-            }, 0);
-
-          return second - first;
-        }
-
-        return b[sortBy] - a[sortBy];
-      });
+  function reduceCall(array: number[]) : number {
+    return array.reduce((result, currentValue) => result + currentValue);
   }
 
   return copyStudents
-    .sort((a: { [key: string]: any}, b: { [key: string]: any}) => {
-      if (typeof b[sortBy] === 'string') {
-        return a[sortBy].localeCompare(b[sortBy]);
+    .sort((a : Student, b: Student) => {
+      if (SortType.Married === sortBy) {
+        const first = a[sortBy] ? 1 : -1;
+        const second = b[sortBy] ? 1 : -1;
+
+        return SortOrder.asc === order
+          ? first - second
+          : second - first;
       }
 
-      if (typeof b[sortBy] === 'object') {
-        const first = a[sortBy]
-          .reduce((result:number, currentNumber:number) => {
-            return result + currentNumber;
-          }, 0);
-        const second = b[sortBy]
-          .reduce((result:number, currentNumber:number) => {
-            return result + currentNumber;
-          }, 0);
-
-        return first - second;
+      if (SortType.Age === sortBy) {
+        return SortOrder.asc === order
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
       }
 
-      return a[sortBy] - b[sortBy];
+      if (SortType.Name === sortBy
+        || SortType.Surname === sortBy) {
+        return SortOrder.asc === order
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      }
+
+      if (SortType.AverageGrade === sortBy) {
+        const first = reduceCall(a[sortBy]);
+        const second = reduceCall(b[sortBy]);
+
+        return SortOrder.asc === order
+          ? first - second
+          : second - first;
+      }
+
+      throw new Error('Incorrect value');
     });
 }

@@ -25,6 +25,5 @@ module.exports = {
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
-    "@typescript-eslint/no-explicit-any": "off",
   },
 };
