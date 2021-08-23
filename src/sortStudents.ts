@@ -46,17 +46,23 @@ export function sortStudents(
         : copyStudents.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
 
     case SortType.Married:
-      return copyStudents.sort((a: Student, b: Student) => {
-        if (a[sortBy] === b[sortBy]) {
-          return 0;
-        }
+      return order === 'asc'
+        ? copyStudents.sort((a: Student, b: Student) => (
+          +a[sortBy] - +b[sortBy]
+        ))
+        : copyStudents.sort((a: Student, b: Student) => (
+          +b[sortBy] - +a[sortBy]
+        ));
+      // if (a[sortBy] === b[sortBy]) {
+      //   return 0;
+      // }
 
-        if (order === 'asc') {
-          return a[sortBy] ? 1 : -1;
-        }
+      // if (order === 'asc') {
+      //   return a[sortBy] ? 1 : -1;
+      // }
 
-        return a[sortBy] ? -1 : 1;
-      });
+      // return a[sortBy] ? -1 : 1;
+      // });
 
     case SortType.AverageGrade:
       return order === 'asc'
