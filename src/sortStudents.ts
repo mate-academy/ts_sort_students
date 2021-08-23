@@ -28,21 +28,34 @@ export function sortStudents(
   const studentsCopy: Student[]
     = students.map((student: Student) => ({ ...student }));
 
-  if (order === 'asc') {
-    if (sortBy === SortType.Age) {
+  if (sortBy === SortType.Age) {
+    if (order === 'asc') {
       studentsCopy.sort((a: Student, b: Student) => a[sortBy] - b[sortBy]);
+    } else {
+      studentsCopy.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
     }
+  }
 
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
+  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
+    if (order === 'asc') {
       studentsCopy
         .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]));
+    } else {
+      studentsCopy
+        .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
     }
+  }
 
-    if (sortBy === SortType.Married) {
+  if (sortBy === SortType.Married) {
+    if (order === 'asc') {
       studentsCopy.sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy]);
+    } else {
+      studentsCopy.sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
     }
+  }
 
-    if (sortBy === SortType.AverageGrade) {
+  if (sortBy === SortType.AverageGrade) {
+    if (order === 'asc') {
       studentsCopy.sort((a: Student, b: Student) => {
         const averageGradesOfA: number
           = a[sortBy].reduce((prev, grade) => prev + grade, 0)
@@ -54,22 +67,7 @@ export function sortStudents(
 
         return averageGradesOfA - averageGradesOfB;
       });
-    }
-  } else {
-    if (sortBy === SortType.Age) {
-      studentsCopy.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
-    }
-
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      studentsCopy
-        .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
-    }
-
-    if (sortBy === SortType.Married) {
-      studentsCopy.sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
-    }
-
-    if (sortBy === SortType.AverageGrade) {
+    } else {
       studentsCopy.sort((a: Student, b: Student) => {
         const averageGradesOfA: number
           = a[sortBy].reduce((prev, grade) => prev + grade, 0)
