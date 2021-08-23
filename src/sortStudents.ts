@@ -33,18 +33,22 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? copyStudents.sort((a: Student, b: Student) => (
+          a[sortBy].localeCompare(b[sortBy])
+        ))
+        : copyStudents.sort((a: Student, b: Student) => (
+          b[sortBy].localeCompare(a[sortBy])
+        ));
 
     case SortType.Age:
       return order === 'asc'
-        ? copyStudents.sort((a, b) => a[sortBy] - b[sortBy])
-        : copyStudents.sort((a, b) => b[sortBy] - a[sortBy]);
+        ? copyStudents.sort((a: Student, b: Student) => a[sortBy] - b[sortBy])
+        : copyStudents.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
 
     case SortType.Married:
-      return copyStudents.sort((a, b) => {
+      return copyStudents.sort((a: Student, b: Student) => {
         if (a[sortBy] === b[sortBy]) {
-          return null;
+          return 0;
         }
 
         if (order === 'asc') {
@@ -57,10 +61,12 @@ export function sortStudents(
     case SortType.AverageGrade:
       return order === 'asc'
         ? copyStudents.sort((a: Student, b: Student) => (
-          a[sortBy].reduce((x, y) => x + y) - b[sortBy].reduce((x, y) => x + y)
+          a[sortBy].reduce((x: number, y: number) => x + y)
+          - b[sortBy].reduce((x: number, y: number) => x + y)
         ))
         : copyStudents.sort((a: Student, b: Student) => (
-          b[sortBy].reduce((x, y) => x + y) - a[sortBy].reduce((x, y) => x + y)
+          b[sortBy].reduce((x: number, y: number) => x + y)
+          - a[sortBy].reduce((x: number, y: number) => x + y)
         ));
 
     default:
