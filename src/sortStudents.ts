@@ -25,6 +25,10 @@ export function sortStudents(
 ): Student[] {
   const sortedArr: Student[] = [...students];
 
+  function callback(sum: number, val: number): number {
+    return sum + val;
+  }
+
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
@@ -48,21 +52,21 @@ export function sortStudents(
     case SortType.Married:
       return order === 'asc'
         ? sortedArr.sort((a, b) => (
-          a[sortBy] - b[sortBy]
+          +a[sortBy] - +b[sortBy]
         ))
         : sortedArr.sort((a, b) => (
-          b[sortBy] - a[sortBy]
+          +b[sortBy] - +a[sortBy]
         ));
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? sortedArr.sort((a, b) => (
-          (a.grades.reduce((sum, val) => sum + val, 0) / a.grades.length)
-          - (b.grades.reduce((total, v) => total + v, 0) / b.grades.length)
+          (a[sortBy].reduce(callback, 0) / a[sortBy].length)
+          - (b[sortBy].reduce(callback, 0) / b[sortBy].length)
         ))
         : sortedArr.sort((a, b) => (
-          (b.grades.reduce((sum, val) => sum + val, 0) / b.grades.length)
-          - (a.grades.reduce((total, v) => total + v, 0) / a.grades.length)
+          (b[sortBy].reduce(callback, 0) / b[sortBy].length)
+          - (a[sortBy].reduce(callback, 0) / a[sortBy].length)
         ));
 
     default: {
