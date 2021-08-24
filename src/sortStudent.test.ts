@@ -183,14 +183,14 @@ describe('Function \'sortStudents\'', () => {
 
     expect(sortedData)
       .toEqual([
-        'Jessica Buxton [5,5,4,5,4,4,4,4,5,4,5,4]',
-        'Glenn Thompson [5,5,5,5,5,5,5,5,4,4,3,2]',
-        'Pamela Casillas [4,5,4,5,5,4,3,2,3,3,3,2]',
         'Douglas Paez [5,5,5,4,5,5,5,5]',
         'Christina Branscome [4,4,4,5,5,5,5,5]',
-        'Dale Gandy [5,3,3,3,3,5,4,3,4]',
+        'Jessica Buxton [5,5,4,5,4,4,4,4,5,4,5,4]',
+        'Glenn Thompson [5,5,5,5,5,5,5,5,4,4,3,2]',
         'Diana Dorsey [3,3,4,5,4,3,5,5]',
         'Willie Barrera [3,5,5,3,3,5,4,4]',
+        'Dale Gandy [5,3,3,3,3,5,4,3,4]',
+        'Pamela Casillas [4,5,4,5,5,4,3,2,3,3,3,2]',
         'Lillian Quinn [3,4,3,4,4,4,5,2,3]',
         'Richard Hall [3,2,4,5,4,3,3,3]',
       ]);
@@ -203,15 +203,15 @@ describe('Function \'sortStudents\'', () => {
     expect(sortedData)
       .toEqual([
         'Richard Hall [3,2,4,5,4,3,3,3]',
+        'Lillian Quinn [3,4,3,4,4,4,5,2,3]',
+        'Pamela Casillas [4,5,4,5,5,4,3,2,3,3,3,2]',
+        'Dale Gandy [5,3,3,3,3,5,4,3,4]',
         'Diana Dorsey [3,3,4,5,4,3,5,5]',
         'Willie Barrera [3,5,5,3,3,5,4,4]',
-        'Lillian Quinn [3,4,3,4,4,4,5,2,3]',
-        'Dale Gandy [5,3,3,3,3,5,4,3,4]',
-        'Christina Branscome [4,4,4,5,5,5,5,5]',
-        'Douglas Paez [5,5,5,4,5,5,5,5]',
-        'Pamela Casillas [4,5,4,5,5,4,3,2,3,3,3,2]',
         'Jessica Buxton [5,5,4,5,4,4,4,4,5,4,5,4]',
         'Glenn Thompson [5,5,5,5,5,5,5,5,4,4,3,2]',
+        'Christina Branscome [4,4,4,5,5,5,5,5]',
+        'Douglas Paez [5,5,5,4,5,5,5,5]',
       ]);
   });
 });
