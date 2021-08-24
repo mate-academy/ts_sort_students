@@ -23,11 +23,14 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-) :Student[] {
+): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const sumOfGrades = (grades: number[]) :number => {
-    return grades.reduce((sum: number, value: number) => sum + value, 0);
+  const sumOfGrades = (grades: number[]): number => {
+    const average: number = grades
+      .reduce((sum: number, value: number) => sum + value, 0);
+
+    return average / grades.length;
   };
 
   switch (sortBy) {
