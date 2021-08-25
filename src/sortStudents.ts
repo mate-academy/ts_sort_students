@@ -57,12 +57,12 @@ export function sortStudents(
     case SortType.AverageGrade:
       return order === 'asc'
         ? copyStudents.sort((a: Student, b: Student) => (
-          a[sortBy].reduce((x: number, y: number) => x + y)
-          - b[sortBy].reduce((x: number, y: number) => x + y)
+          a[sortBy].reduce((x: number, y: number) => x + y) / a[sortBy].length
+          - b[sortBy].reduce((x: number, y: number) => x + y) / b[sortBy].length
         ))
         : copyStudents.sort((a: Student, b: Student) => (
-          b[sortBy].reduce((x: number, y: number) => x + y)
-          - a[sortBy].reduce((x: number, y: number) => x + y)
+          b[sortBy].reduce((x: number, y: number) => x + y) / b[sortBy].length
+          - a[sortBy].reduce((x: number, y: number) => x + y) / a[sortBy].length
         ));
 
     default:
