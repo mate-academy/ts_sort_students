@@ -7,11 +7,11 @@ interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -32,38 +32,38 @@ export function sortStudents(
     case SortType.Surname:
       return order === 'desc'
         ? sorted.sort((a: Student, b: Student):number => {
-          return b.surname.localeCompare(a.surname);
+          return b[sortBy].localeCompare(a[sortBy]);
         })
         : sorted.sort((a: Student, b: Student):number => {
-          return a.surname.localeCompare(b.surname);
+          return a[sortBy].localeCompare(b[sortBy]);
         });
 
     case SortType.Age:
       return order === 'desc'
-        ? sorted.sort((a: Student, b: Student):number => b.age - a.age)
-        : sorted.sort((a: Student, b: Student):number => a.age - b.age);
+        ? sorted.sort((a: Student, b: Student):number => b[sortBy] - a[sortBy])
+        : sorted.sort((a: Student, b: Student):number => a[sortBy] - b[sortBy]);
 
     case SortType.Married:
       sorted.sort((a: Student, b: Student): number => {
-        if (a.married === b.married) {
+        if (a[sortBy] === b[sortBy]) {
           return 0;
         }
 
         if (order === 'desc') {
-          return a.married ? -1 : 1;
+          return a[sortBy] ? -1 : 1;
         }
 
-        return a.married ? 1 : -1;
+        return a[sortBy] ? 1 : -1;
       });
       break;
 
     case SortType.AverageGrade:
       return order === 'desc'
         ? sorted.sort((a: Student, b: Student):number => {
-          return getAverageGrade(b.grades) - getAverageGrade(a.grades);
+          return getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
         })
         : sorted.sort((a: Student, b: Student):number => {
-          return getAverageGrade(a.grades) - getAverageGrade(b.grades);
+          return getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy]);
         });
 
     default:
