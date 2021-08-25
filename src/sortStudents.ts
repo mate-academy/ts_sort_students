@@ -26,7 +26,7 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const sumOfGrades = (grades: number[]): number => {
+  const averageOfGrade = (grades: number[]): number => {
     return grades
       .reduce((sum: number, value: number) => sum + value, 0) / grades.length;
   };
@@ -52,8 +52,8 @@ export function sortStudents(
     case SortType.AverageGrade:
       studentsCopy.sort((a: Student, b: Student) => {
         return order === SortOrder.Ascending
-          ? sumOfGrades(a[sortBy]) - sumOfGrades(b[sortBy])
-          : sumOfGrades(b[sortBy]) - sumOfGrades(a[sortBy]);
+          ? averageOfGrade(a[sortBy]) - averageOfGrade(b[sortBy])
+          : averageOfGrade(b[sortBy]) - averageOfGrade(a[sortBy]);
       });
       break;
 
