@@ -28,57 +28,66 @@ export function sortStudents(
   const studentsCopy: Student[]
     = students.map((student: Student) => ({ ...student }));
 
-  if (sortBy === SortType.Age) {
-    if (order === 'asc') {
-      studentsCopy.sort((a: Student, b: Student) => a[sortBy] - b[sortBy]);
-    } else {
-      studentsCopy.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
-    }
+  function getAverage(x: number[]): number {
+    return x.reduce((prev, grade) => prev + grade, 0)
+    / x.length;
   }
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    if (order === 'asc') {
-      studentsCopy
-        .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]));
-    } else {
-      studentsCopy
-        .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
-    }
-  }
+  switch (sortBy) {
+    case SortType.Age:
+      if (order === 'asc') {
+        studentsCopy.sort((a: Student, b: Student) => a[sortBy] - b[sortBy]);
+      } else {
+        studentsCopy.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
+      }
+      break;
 
-  if (sortBy === SortType.Married) {
-    if (order === 'asc') {
-      studentsCopy.sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy]);
-    } else {
-      studentsCopy.sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
-    }
-  }
+    case SortType.Name:
+    case SortType.Surname:
+      if (order === 'asc') {
+        studentsCopy
+          .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]));
+      } else {
+        studentsCopy
+          .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
+      }
+      break;
 
-  if (sortBy === SortType.AverageGrade) {
-    if (order === 'asc') {
-      studentsCopy.sort((a: Student, b: Student) => {
-        const averageGradesOfA: number
-          = a[sortBy].reduce((prev, grade) => prev + grade, 0)
-          / a[sortBy].length;
+    case SortType.Married:
+      if (order === 'asc') {
+        studentsCopy.sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy]);
+      } else {
+        studentsCopy.sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
+      }
+      break;
 
-        const averageGradesOfB: number
-          = b[sortBy].reduce((prev, grade) => prev + grade, 0)
-          / b[sortBy].length;
+    case SortType.AverageGrade:
+      if (sortBy === SortType.AverageGrade) {
+        if (order === 'asc') {
+          studentsCopy.sort((a: Student, b: Student) => {
+            const averageGradesOfA: number
+              = getAverage(a[sortBy]);
 
-        return averageGradesOfA - averageGradesOfB;
-      });
-    } else {
-      studentsCopy.sort((a: Student, b: Student) => {
-        const averageGradesOfA: number
-          = a[sortBy].reduce((prev, grade) => prev + grade, 0)
-          / a[sortBy].length;
-        const averageGradesOfB: number
-          = b[sortBy].reduce((prev, grade) => prev + grade, 0)
-          / b[sortBy].length;
+            const averageGradesOfB: number
+              = getAverage(b[sortBy]);
 
-        return averageGradesOfB - averageGradesOfA;
-      });
-    }
+            return averageGradesOfA - averageGradesOfB;
+          });
+        } else {
+          studentsCopy.sort((a: Student, b: Student) => {
+            const averageGradesOfA: number
+              = getAverage(a[sortBy]);
+            const averageGradesOfB: number
+              = getAverage(b[sortBy]);
+
+            return averageGradesOfB - averageGradesOfA;
+          });
+        }
+      }
+      break;
+
+    default:
+      break;
   }
 
   return studentsCopy;
