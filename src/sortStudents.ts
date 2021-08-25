@@ -21,9 +21,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder = 'asc',
 ): Student[] {
-  const copy = [...students].map((student) => ({
-    ...student,
-  }));
+  const copy = [...students];
 
   type SortingCallback = (x: Student, y: Student) => number;
 
@@ -31,7 +29,7 @@ export function sortStudents(
     type: SortType,
     sortOrder: SortOrder,
   ): SortingCallback => {
-    const isAscendingOrder = (sortOrder) === 'asc';
+    const isAscendingOrder = sortOrder === 'asc';
 
     switch (type) {
       case SortType.Surname:
