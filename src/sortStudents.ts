@@ -80,11 +80,13 @@ export function sortStudents(
       if (order === 'asc') {
         studentsForSort
           .sort((student1, student2) => student1.grades.reduce(sum, 0)
-            - student2.grades.reduce(sum));
+            / student1[sortBy].length
+            - student2.grades.reduce(sum) / student2[sortBy].length);
       } else {
         studentsForSort
           .sort((student1, student2) => student2.grades.reduce(sum, 0)
-            - student1.grades.reduce(sum));
+            / student2[sortBy].length
+            - student1.grades.reduce(sum) / student1[sortBy].length);
       }
 
       return studentsForSort;
