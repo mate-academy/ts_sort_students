@@ -51,18 +51,13 @@ export function sortStudents(
       break;
 
     case SortType.Married:
-      copyStudents.sort((student1: Student, student2: Student) => {
-        if (student1[sortBy] === student2[sortBy]) {
-          return 0;
-        }
-
+      return copyStudents.sort((student1: Student, student2: Student) => {
         if (order === SortOrder.Ascending) {
-          return student1[sortBy] ? 1 : -1;
+          return +student1[sortBy] - +student2[sortBy];
         }
 
-        return student1[sortBy] ? -1 : 1;
+        return +student2[sortBy] - +student1[sortBy];
       });
-      break;
 
     case SortType.AverageGrade:
       copyStudents.sort((student1: Student, student2: Student) => (
