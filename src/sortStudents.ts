@@ -33,22 +33,6 @@ export function sortStudents(
   const copyStudents = students.map((student: Student) => ({ ...student }));
 
   switch (sortBy) {
-    case SortType.Age:
-      copyStudents
-        .sort((student1: Student, student2: Student) => (
-          order === SortOrder.Ascending
-            ? student1[sortBy] - student2[sortBy]
-            : student2[sortBy] - student1[sortBy]));
-      break;
-
-    case SortType.AverageGrade:
-      copyStudents.sort((student1: Student, student2: Student) => (
-        order === SortOrder.Ascending
-          ? getAverageGrade(student1) - getAverageGrade(student2)
-          : getAverageGrade(student2) - getAverageGrade(student1)
-      ));
-      break;
-
     case SortType.Name:
     case SortType.Surname:
       copyStudents.sort((student1: Student, student2: Student) => (
@@ -56,6 +40,14 @@ export function sortStudents(
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy])
       ));
+      break;
+
+    case SortType.Age:
+      copyStudents
+        .sort((student1: Student, student2: Student) => (
+          order === SortOrder.Ascending
+            ? student1[sortBy] - student2[sortBy]
+            : student2[sortBy] - student1[sortBy]));
       break;
 
     case SortType.Married:
@@ -70,6 +62,14 @@ export function sortStudents(
 
         return student1[sortBy] ? -1 : 1;
       });
+      break;
+
+    case SortType.AverageGrade:
+      copyStudents.sort((student1: Student, student2: Student) => (
+        order === SortOrder.Ascending
+          ? getAverageGrade(student1) - getAverageGrade(student2)
+          : getAverageGrade(student2) - getAverageGrade(student1)
+      ));
       break;
 
     default: break;
