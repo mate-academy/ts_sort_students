@@ -1,7 +1,3 @@
-/* eslint-disable no-nested-ternary */
-
-import { setupMaster } from "cluster";
-
 // describe Student type
 interface Student {
   name: string,
@@ -35,7 +31,8 @@ export function sortStudents(
 
   function calcAverage(grades: number[]): number {
     return grades
-      .reduce((accumulator: number, sum: number) => accumulator + sum, 0);
+      .reduce((accumulator: number, sum: number) => accumulator + sum, 0)
+      / grades.length;
   }
 
   switch (sortBy) {
@@ -59,11 +56,15 @@ export function sortStudents(
     case SortType.Married:
 
       copiedStudent.sort((studentA: Student, studentB: Student) => {
-        return studentA[sortBy] === studentB[sortBy]
-          ? 0
-          : order === SortOrder.asc
-            ? studentA[sortBy] ? 1 : -1
-            : studentA[sortBy] ? -1 : 1;
+        if (studentA[sortBy] === studentB[sortBy]) {
+          return 0;
+        }
+
+        if (order === SortOrder.asc) {
+          return studentA[sortBy] ? 1 : -1;
+        }
+
+        return studentA[sortBy] ? -1 : 1;
       });
       break;
 
