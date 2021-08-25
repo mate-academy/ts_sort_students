@@ -7,11 +7,11 @@ interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -28,64 +28,44 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        sortedArray
-          .sort((studentA, studentB) => studentA.name
-            .localeCompare(studentB.name));
-      } else {
-        sortedArray
-          .sort((studentA, studentB) => studentB.name
-            .localeCompare(studentA.name));
-      }
-
-      return sortedArray;
-
     case SortType.Surname:
       if (order === 'asc') {
         sortedArray
-          .sort((studentA, studentB) => studentA.surname
-            .localeCompare(studentB.surname));
+          .sort((studentA, studentB) => studentA[sortBy]
+            .localeCompare(studentB[sortBy]));
       } else {
         sortedArray
-          .sort((studentA, studentB) => studentB.surname
-            .localeCompare(studentA.surname));
+          .sort((studentA, studentB) => studentB[sortBy]
+            .localeCompare(studentA[sortBy]));
       }
 
       return sortedArray;
-
     case SortType.Age:
-      if (order === 'asc') {
-        sortedArray
-          .sort((studentA, studentB) => studentA.age - studentB.age);
-      } else {
-        sortedArray
-          .sort((studentA, studentB) => studentB.age - studentA.age);
-      }
-
-      return sortedArray;
-
     case SortType.Married:
       if (order === 'asc') {
         sortedArray
-          .sort((studentA, studentB) => Number(studentA.married)
-            - Number(studentB.married));
+          .sort((studentA, studentB) => Number(studentA[sortBy])
+            - Number(studentB[sortBy]));
       } else {
         sortedArray
-          .sort((studentA, studentB) => Number(studentB.married)
-            - Number(studentA.married));
+          .sort((studentA, studentB) => Number(studentB[sortBy])
+            - Number(studentA[sortBy]));
       }
 
       return sortedArray;
-
     case SortType.AverageGrade:
       if (order === 'asc') {
         sortedArray
-          .sort((studentA, studentB) => studentA.grades.reduce(sum, 0)
-            - studentB.grades.reduce(sum));
+          .sort((studentA, studentB) => (studentA[sortBy].reduce(sum, 0)
+            / studentA[sortBy].length)
+            - (studentB[sortBy].reduce(sum)
+            / studentB[sortBy].length));
       } else {
         sortedArray
-          .sort((studentA, studentB) => studentB.grades.reduce(sum, 0)
-            - studentA.grades.reduce(sum));
+          .sort((studentA, studentB) => (studentB[sortBy].reduce(sum, 0)
+            / studentB[sortBy].length)
+            - (studentA[sortBy].reduce(sum)
+            / studentA[sortBy].length));
       }
 
       return sortedArray;
