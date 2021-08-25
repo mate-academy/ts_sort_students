@@ -3,7 +3,7 @@
 // create SortOrder type
 
 function averageGrade(grades: number[]): number {
-  return grades.reduce((sum, a) => sum + a, 0);
+  return grades.reduce((sum, a) => sum + a, 0) / grades.length;
 }
 
 interface Student {
