@@ -55,8 +55,10 @@ export function sortStudents(
             return total + current;
           };
 
-          const currentTotal = x.grades.reduce(getTotalGrade, 0);
-          const nextTotal = y.grades.reduce(getTotalGrade, 0);
+          const currentTotal = x.grades.reduce(getTotalGrade, 0)
+            / x.grades.length;
+          const nextTotal = y.grades.reduce(getTotalGrade, 0)
+            / y.grades.length;
 
           return isAscendingOrder
             ? currentTotal - nextTotal
