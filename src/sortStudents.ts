@@ -32,8 +32,12 @@ export function sortStudents(
     return { ...student };
   });
 
-  function reduceCall(array: number[]) : number {
-    return array.reduce((result, currentValue) => result + currentValue);
+  function getAverageGrades(array: number[]) : number {
+    const numberGrades = array.length;
+    const sumGrades = array
+      .reduce((result, currentValue) => result + currentValue);
+
+    return sumGrades / numberGrades;
   }
 
   return copyStudents
@@ -61,8 +65,8 @@ export function sortStudents(
       }
 
       if (SortType.AverageGrade === sortBy) {
-        const first = reduceCall(a[sortBy]);
-        const second = reduceCall(b[sortBy]);
+        const first = getAverageGrades(a[sortBy]);
+        const second = getAverageGrades(b[sortBy]);
 
         return SortOrder.asc === order
           ? first - second
