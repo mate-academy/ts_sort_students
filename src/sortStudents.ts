@@ -69,14 +69,14 @@ export function sortStudents(
       if (order === 'asc') {
         sortedStudents
           .sort((a, b) => (
-            (a[sortBy].reduce(callback, 0))
-            - (b[sortBy].reduce(callback, 0))
+            (a[sortBy].reduce(callback, 0) / a[sortBy].length)
+            - (b[sortBy].reduce(callback, 0) / b[sortBy].length)
           ));
       } else {
         sortedStudents
           .sort((a, b) => (
-            (b[sortBy].reduce(callback, 0))
-            - (a[sortBy].reduce(callback, 0))
+            (b[sortBy].reduce(callback, 0) / b[sortBy].length)
+            - (a[sortBy].reduce(callback, 0) / a[sortBy].length)
           ));
       }
 
