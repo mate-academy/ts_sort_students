@@ -14,7 +14,7 @@ export enum SortType {
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
-  Married = 'isMaried',
+  Married = 'married',
   AverageGrade = 'grades',
 }
 
@@ -32,23 +32,13 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        sortedStudents
-          .sort((a, b) => a.name.localeCompare(b.name));
-      } else {
-        sortedStudents
-          .sort((a, b) => b.name.localeCompare(a.name));
-      }
-
-      return sortedStudents;
-
     case SortType.Surname:
       if (order === 'asc') {
         sortedStudents
-          .sort((a, b) => a.surname.localeCompare(b.surname));
+          .sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
       } else {
         sortedStudents
-          .sort((a, b) => b.surname.localeCompare(a.surname));
+          .sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
       }
 
       return sortedStudents;
@@ -56,10 +46,10 @@ export function sortStudents(
     case SortType.Age:
       if (order === 'asc') {
         sortedStudents
-          .sort((a, b) => a.age - b.age);
+          .sort((a, b) => a[sortBy] - b[sortBy]);
       } else {
         sortedStudents
-          .sort((a, b) => b.age - a.age);
+          .sort((a, b) => b[sortBy] - a[sortBy]);
       }
 
       return sortedStudents;
@@ -67,10 +57,10 @@ export function sortStudents(
     case SortType.Married:
       if (order === 'asc') {
         sortedStudents
-          .sort((a, b) => +a.married - +b.married);
+          .sort((a, b) => +a[sortBy] - +b[sortBy]);
       } else {
         sortedStudents
-          .sort((a, b) => +b.married - +a.married);
+          .sort((a, b) => +b[sortBy] - +a[sortBy]);
       }
 
       return sortedStudents;
@@ -78,12 +68,16 @@ export function sortStudents(
     case SortType.AverageGrade:
       if (order === 'asc') {
         sortedStudents
-          .sort((a, b) => a.grades.reduce(callback, 0)
-          - b.grades.reduce(callback, 0));
+          .sort((a, b) => (
+            (a[sortBy].reduce(callback, 0))
+            - (b[sortBy].reduce(callback, 0))
+          ));
       } else {
         sortedStudents
-          .sort((a, b) => b.grades.reduce(callback, 0)
-          - a.grades.reduce(callback, 0));
+          .sort((a, b) => (
+            (b[sortBy].reduce(callback, 0))
+            - (a[sortBy].reduce(callback, 0))
+          ));
       }
 
       return sortedStudents;
