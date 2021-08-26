@@ -68,12 +68,12 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       if (order === 'asc') {
-        copyStudents.sort((a, b) => a
-          .grades.reduce((x, y) => x + y) / a.grades.length
+        copyStudents.sort((a, b) => a.grades
+          .reduce((x, y) => x + y) / a.grades.length
           - b.grades.reduce((x, y) => x + y) / b.grades.length);
       } else {
-        copyStudents.sort((a, b) => b
-          .grades.reduce((x, y) => x + y) / b.grades.length
+        copyStudents.sort((a, b) => b.grades
+          .reduce((x, y) => x + y) / b.grades.length
           - a.grades.reduce((x, y) => x + y) / a.grades.length);
       }
 
