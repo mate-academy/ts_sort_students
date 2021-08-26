@@ -33,11 +33,10 @@ export function sortStudents(
   });
 
   function getAverageGrades(array: number[]) : number {
-    const numberGrades = array.length;
     const sumGrades = array
       .reduce((result, currentValue) => result + currentValue);
 
-    return sumGrades / numberGrades;
+    return sumGrades / array.length;
   }
 
   return copyStudents
