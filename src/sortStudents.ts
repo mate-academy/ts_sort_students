@@ -26,22 +26,15 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyStudents: Student[] = [...students];
+  const reduceCallback = (x: number, y: number): number => x + y;
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        copyStudents.sort((a, b) => a.name.localeCompare(b[SortType.Name]));
-      } else {
-        copyStudents.sort((a, b) => b.name.localeCompare(a.name));
-      }
-
-      return copyStudents;
-
     case SortType.Surname:
       if (order === 'asc') {
-        copyStudents.sort((a, b) => a.surname.localeCompare(b.surname));
+        copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
       } else {
-        copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
+        copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
       }
 
       return copyStudents;
@@ -69,12 +62,12 @@ export function sortStudents(
     case SortType.AverageGrade:
       if (order === 'asc') {
         copyStudents.sort((a, b) => a.grades
-          .reduce((x, y) => x + y) / a.grades.length
-          - b.grades.reduce((x, y) => x + y) / b.grades.length);
+          .reduce(reduceCallback) / a.grades.length
+          - b.grades.reduce(reduceCallback) / b.grades.length);
       } else {
         copyStudents.sort((a, b) => b.grades
-          .reduce((x, y) => x + y) / b.grades.length
-          - a.grades.reduce((x, y) => x + y) / a.grades.length);
+          .reduce(reduceCallback) / b.grades.length
+          - a.grades.reduce(reduceCallback) / a.grades.length);
       }
 
       return copyStudents;
