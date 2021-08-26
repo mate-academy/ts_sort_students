@@ -36,13 +36,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      sortedStudents.sort((a: Student, b: Student) => {
-        return order === SortField.inFront
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
-      break;
-
     case SortType.Surname:
       sortedStudents.sort((a: Student, b: Student) => {
         return order === SortField.inFront
