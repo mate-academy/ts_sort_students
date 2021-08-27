@@ -11,11 +11,11 @@ interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -26,17 +26,14 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const arrayFromStudents: Student[] = [...students];
+  const reducer = (x: number, y: number): number => x + y;
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? arrayFromStudents.sort((a, b) => a.name.localeCompare(b.name))
-        : arrayFromStudents.sort((a, b) => b.name.localeCompare(a.name));
-
     case SortType.Surname:
       return order === 'asc'
-        ? arrayFromStudents.sort((a, b) => a.surname.localeCompare(b.surname))
-        : arrayFromStudents.sort((a, b) => b.surname.localeCompare(a.surname));
+        ? arrayFromStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : arrayFromStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
       return order === 'asc'
@@ -52,11 +49,11 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? arrayFromStudents.sort((a, b) => a.grades.reduce((x, y) => x + y)
-          / a.grades.length - b.grades.reduce((x, y) => x + y)
+        ? arrayFromStudents.sort((a, b) => a.grades.reduce(reducer)
+          / a.grades.length - b.grades.reduce(reducer)
           / b.grades.length)
-        : arrayFromStudents.sort((a, b) => b.grades.reduce((x, y) => x + y)
-        / b.grades.length - a.grades.reduce((x, y) => x + y) / a.grades.length);
+        : arrayFromStudents.sort((a, b) => b.grades.reduce(reducer)
+        / b.grades.length - a.grades.reduce(reducer) / a.grades.length);
 
     default:
       return arrayFromStudents;
