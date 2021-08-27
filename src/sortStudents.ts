@@ -23,47 +23,24 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        copyStudents.sort((prev, next) => prev.name.localeCompare(next.name));
-      } else {
-        copyStudents.sort((prev, next) => next.name.localeCompare(prev.name));
-      }
-      break;
-
     case SortType.Surname:
-      if (order === 'asc') {
-        copyStudents.sort(
-          (prev, next) => prev.surname.localeCompare(next.surname),
-        );
-      } else {
-        copyStudents.sort(
-          (prev, next) => next.surname.localeCompare(prev.surname),
-        );
-      }
+    case SortType.Married:
+      copyStudents.sort((prev, next) => {
+        const [A, B] = order === 'asc' ? [prev, next] : [next, prev];
+
+        return (`${A[sortBy]}`.localeCompare(`${B[sortBy]}`));
+      });
       break;
 
     case SortType.Age:
-      if (order === 'asc') {
-        copyStudents.sort((prev, next) => prev.age - next.age);
-      } else {
-        copyStudents.sort((prev, next) => next.age - prev.age);
-      }
-      break;
+      copyStudents.sort((prev, next) => {
+        const [A, B] = order === 'asc' ? [prev, next] : [next, prev];
 
-    case SortType.Married:
-      if (order === 'asc') {
-        copyStudents.sort(
-          (prev, next) => `${prev.married}`.localeCompare(`${next.married}`),
-        );
-      } else {
-        copyStudents.sort(
-          (prev, next) => `${next.married}`.localeCompare(`${prev.married}`),
-        );
-      }
+        return (A[sortBy] - B[sortBy]);
+      });
       break;
 
     case SortType.AverageGrade:
-
       if (order === 'asc') {
         copyStudents.sort(
           (prev, next) => prev.grades.reduce((sum, x) => sum + x, 0)

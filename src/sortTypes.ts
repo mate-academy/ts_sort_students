@@ -1,7 +1,7 @@
 export enum SortType {
-  Name = 'Name',
-  Surname = 'Surname',
-  Age = 'Age',
-  Married = 'Married',
-  AverageGrade = 'AverageGrade',
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
