@@ -14,7 +14,10 @@ export enum SortType {
   AverageGrade = 'grade',
 }
 
-type SortOrder = 'asc' | 'desc';
+enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 function sumGrades(student: Student) :number {
   return student.grades.reduce(
@@ -31,32 +34,20 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        studentsCopy.sort(
-          (x: Student, y: Student) => x.name.localeCompare(y.name),
-        );
-      } else {
-        studentsCopy.sort(
-          (x: Student, y: Student) => x.name.localeCompare(y.name),
-        );
-      }
-
-      break;
-
     case SortType.Surname:
-      if (order === 'asc') {
+      if (order === SortOrder.asc) {
         studentsCopy.sort(
-          (x: Student, y: Student) => x.surname.localeCompare(y.surname),
+          (x: Student, y: Student) => x[sortBy].localeCompare(y[sortBy]),
         );
       } else {
         studentsCopy.sort(
-          (x: Student, y: Student) => y.surname.localeCompare(x.surname),
+          (x: Student, y: Student) => y[sortBy].localeCompare(x[sortBy]),
         );
       }
       break;
 
     case SortType.Age:
-      if (order === 'asc') {
+      if (order === SortOrder.asc) {
         studentsCopy.sort(
           (x: Student, y: Student) => x.age - y.age,
         );
@@ -67,7 +58,7 @@ export function sortStudents(
       break;
 
     case SortType.Married:
-      if (order === 'asc') {
+      if (order === SortOrder.asc) {
         studentsCopy.sort((x: Student, y: Student) => +x.married - +y.married);
       } else {
         studentsCopy.sort((x: Student, y: Student) => +y.married - +x.married);
@@ -76,7 +67,7 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
+      if (order === SortOrder.asc) {
         studentsCopy.sort(
           (x: Student, y: Student) => sumGrades(x) - sumGrades(y),
         );
