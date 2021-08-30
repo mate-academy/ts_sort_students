@@ -16,7 +16,7 @@ export enum SortType {
 
 type SortOrder = 'asc' | 'desc';
 
-function getAverageG(num: number[]): number {
+export function getAverageG(num: number[]): number {
   return num.reduce((prev: number, item: number) => prev + item);
 }
 
@@ -62,8 +62,10 @@ export function sortStudents(
     case SortType.AverageGrade:
       copyOfStudents.sort((student1: Student, student2: Student) => (
         order === 'asc'
-          ? getAverageG(student1[sortBy]) - getAverageG(student2[sortBy])
-          : getAverageG(student2[sortBy]) - getAverageG(student1[sortBy])
+          ? ((getAverageG(student1[sortBy])) / student1[sortBy].length)
+          - ((getAverageG(student2[sortBy])) / student2[sortBy].length)
+          : ((getAverageG(student2[sortBy])) / student2[sortBy].length)
+          - ((getAverageG(student1[sortBy])) / student1[sortBy].length)
       ));
       break;
 
