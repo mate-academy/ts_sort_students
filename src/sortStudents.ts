@@ -35,15 +35,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      copyStudentArr.sort((a: Student, b: Student) => {
-        if (order === SortOrder.Ascending) {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
-      });
-      break;
-
     case SortType.Surname:
       copyStudentArr.sort((a: Student, b: Student) => {
         if (order === SortOrder.Ascending) {
