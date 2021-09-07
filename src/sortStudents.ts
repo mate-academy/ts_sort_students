@@ -30,30 +30,18 @@ function averageGrade(arr:number[]):number {
 
 export function sortStudents(students: Student[], sortBy: SortType,
   order: SortOrder):Student[] {
-  // write your function
   const sortedStudents = [...students];
 
   switch (sortBy) {
+    case (SortType.Surname):
     case (SortType.Name):
       if (order === 'asc') {
         sortedStudents.sort(
-          (first, second) => first.name.localeCompare(second.name),
+          (first, second) => first[sortBy].localeCompare(second[sortBy]),
         );
       } else {
         sortedStudents.sort(
-          (first, second) => second.name.localeCompare(first.name),
-        );
-      }
-      break;
-
-    case (SortType.Surname):
-      if (order === 'asc') {
-        sortedStudents.sort(
-          (first, second) => first.surname.localeCompare(second.surname),
-        );
-      } else {
-        sortedStudents.sort(
-          (first, second) => second.surname.localeCompare(first.surname),
+          (first, second) => second[sortBy].localeCompare(first[sortBy]),
         );
       }
       break;
@@ -91,7 +79,6 @@ export function sortStudents(students: Student[], sortBy: SortType,
         );
       }
       break;
-    // eslint-disable-next-line indent
   }
 
   return sortedStudents;
