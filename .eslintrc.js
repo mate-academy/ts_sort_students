@@ -1,15 +1,29 @@
 module.exports = {
-  extends: '@mate-academy/eslint-config',
+  extends: [
+    'airbnb-typescript/base',
+    '@mate-academy/eslint-config',
+  ],
   env: {
-    jest: true
-  },
-  rules: {
-    'no-proto': 0,
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error'],
+    jest: true,
+    es2021: true,
   },
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module',
+    project: './tsconfig.json',
+  },
   plugins: [
-    '@typescript-eslint', 'jest'
+    '@typescript-eslint', 'jest',
   ],
+  rules: {
+    'arrow-body-style': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/indent': ['error', 2],
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
+  },
 };
