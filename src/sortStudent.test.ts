@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { sortStudents, SortType } from './sortStudents';
+import { sortStudents, SortType, getAverage } from './sortStudents';
 
 const students = [
   {
@@ -213,5 +213,14 @@ describe('Function \'sortStudents\'', () => {
         'Christina Branscome [4,4,4,5,5,5,5,5]',
         'Douglas Paez [5,5,5,4,5,5,5,5]',
       ]);
+  });
+});
+
+describe('Function \'getAverage\'', () => {
+  test('should return average of array with number', () => {
+    const arr = [2, 2, 2];
+    const average = getAverage(arr);
+
+    expect(average).toBe(2);
   });
 });
