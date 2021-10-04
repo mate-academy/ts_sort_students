@@ -1,13 +1,12 @@
-// describe Student type
 interface Student {
   name: string;
   surname: string;
   age: number;
   married: boolean;
   grades: number[];
-  average?: number;
+  average: number;
 }
-// create and export SortType enum
+
 export enum SortType {
   Name = 'name',
   Surname = 'surname',
@@ -15,16 +14,14 @@ export enum SortType {
   Married = 'married',
   AverageGrade = 'average',
 }
-// create SortOrder type
+
 type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
-  if (!students.length) {
-    return [];
-  }
-
   const studentsCopy: Student[] = students
     .map((student) => {
       const average = student.grades
@@ -36,17 +33,23 @@ export function sortStudents(
       };
     });
 
-  studentsCopy.sort((a: Student, b: Student): number => {
-    if (typeof a[sortBy] === 'string') {
-      return order === 'asc'
-        ? a[sortBy].localeCompare(b[sortBy])
-        : b[sortBy].localeCompare(a[sortBy]);
-    }
-
-    if (typeof a[sortBy] === 'number' || typeof a[sortBy] === 'boolean') {
+  studentsCopy.sort((a:Student, b:Student): number => {
+    if (sortBy === SortType.Age || sortBy === SortType.AverageGrade) {
       return order === 'asc'
         ? a[sortBy] - b[sortBy]
         : b[sortBy] - a[sortBy];
+    }
+
+    if (sortBy === SortType.Married) {
+      return order === 'asc'
+        ? Number(a[sortBy]) - Number(b[sortBy])
+        : Number(b[sortBy]) - Number(a[sortBy]);
+    }
+
+    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
+      return order === 'asc'
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy]);
     }
 
     return 0;
