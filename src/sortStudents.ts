@@ -25,18 +25,9 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = students
-    .map((student) => {
-      const average = student.grades
-        .reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+  const studentsCopy = [...students];
 
-      return {
-        ...student,
-        average,
-      };
-    });
-
-  studentsCopy.sort((a:Student, b:Student): number => {
+  studentsCopy.sort((a, b) => {
     if (sortBy === SortType.Age || sortBy === SortType.Married) {
       return order === 'asc'
         ? Number(a[sortBy]) - Number(b[sortBy])
