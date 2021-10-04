@@ -4,7 +4,6 @@ interface Student {
   age: number;
   married: boolean;
   grades: number[];
-  average: number;
 }
 
 export enum SortType {
@@ -12,10 +11,14 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'average',
+  AverageGrade = 'grades',
 }
 
 type SortOrder = 'asc' | 'desc';
+
+const findAverage = (arr: number[]): number => {
+  return arr.reduce((sum: number, n: number) => sum + n, 0) / arr.length;
+};
 
 export function sortStudents(
   students: Student[],
@@ -34,16 +37,19 @@ export function sortStudents(
     });
 
   studentsCopy.sort((a:Student, b:Student): number => {
-    if (sortBy === SortType.Age || sortBy === SortType.AverageGrade) {
-      return order === 'asc'
-        ? a[sortBy] - b[sortBy]
-        : b[sortBy] - a[sortBy];
-    }
-
-    if (sortBy === SortType.Married) {
+    if (sortBy === SortType.Age || sortBy === SortType.Married) {
       return order === 'asc'
         ? Number(a[sortBy]) - Number(b[sortBy])
         : Number(b[sortBy]) - Number(a[sortBy]);
+    }
+
+    if (sortBy === SortType.AverageGrade) {
+      const aAverage = findAverage(a[sortBy]);
+      const bAverage = findAverage(b[sortBy]);
+
+      return order === 'asc'
+        ? aAverage - bAverage
+        : bAverage - aAverage;
     }
 
     if (sortBy === SortType.Name || sortBy === SortType.Surname) {
