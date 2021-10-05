@@ -16,7 +16,7 @@ export enum SortType {
 
 type SortOrder = 'asc' | 'desc';
 
-function averageGrade(student: Student): number {
+function calcAverageGrade(student: Student): number {
   const sumOfGrades = student.grades.reduce((sum, grade) => sum + grade, 0);
 
   return sumOfGrades / student.grades.length;
@@ -29,37 +29,82 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    if (order === 'asc') {
-      studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-    } else {
-      studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-    }
-  }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsCopy.sort(
+        (a, b) => {
+          return order === 'asc'
+            ? a[sortBy].localeCompare(b[sortBy])
+            : b[sortBy].localeCompare(a[sortBy]);
+        },
+      );
+      break;
 
-  if (sortBy === SortType.Age) {
-    if (order === 'asc') {
-      studentsCopy.sort((a, b) => a[sortBy] - (b[sortBy]));
-    } else {
-      studentsCopy.sort((a, b) => b[sortBy] - (a[sortBy]));
-    }
-  }
+    case SortType.Age:
+      studentsCopy.sort(
+        (a, b) => {
+          return order === 'asc'
+            ? a[sortBy] - (b[sortBy])
+            : b[sortBy] - (a[sortBy]);
+        },
+      );
+      break;
 
-  if (sortBy === SortType.Married) {
-    if (order === 'asc') {
-      studentsCopy.sort((a, b) => +a[sortBy] - +(b[sortBy]));
-    } else {
-      studentsCopy.sort((a, b) => +b[sortBy] - +(a[sortBy]));
-    }
-  }
+    case SortType.Married:
+      studentsCopy.sort(
+        (a, b) => {
+          return order === 'asc'
+            ? +a[sortBy] - +(b[sortBy])
+            : +b[sortBy] - +(a[sortBy]);
+        },
+      );
+      break;
 
-  if (sortBy === SortType.AverageGrade) {
-    if (order === 'asc') {
-      studentsCopy.sort((a, b) => averageGrade(a) - averageGrade(b));
-    } else {
-      studentsCopy.sort((a, b) => averageGrade(b) - averageGrade(a));
-    }
+    case SortType.AverageGrade:
+      studentsCopy.sort(
+        (a, b) => {
+          return order === 'asc'
+            ? calcAverageGrade(a) - calcAverageGrade(b)
+            : calcAverageGrade(b) - calcAverageGrade(a);
+        },
+      );
+      break;
+
+    default:
+      break;
   }
 
   return studentsCopy;
 }
+// if (sortBy === SortType.Name || sortBy === SortType.Surname) {
+//   if (order === 'asc') {
+//     studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+//   } else {
+//     studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+//   }
+// }
+
+// if (sortBy === SortType.Age) {
+//   if (order === 'asc') {
+//     studentsCopy.sort((a, b) => a[sortBy] - (b[sortBy]));
+//   } else {
+//     studentsCopy.sort((a, b) => b[sortBy] - (a[sortBy]));
+//   }
+// }
+
+// if (sortBy === SortType.Married) {
+//   if (order === 'asc') {
+//     studentsCopy.sort((a, b) => +a[sortBy] - +(b[sortBy]));
+//   } else {
+//     studentsCopy.sort((a, b) => +b[sortBy] - +(a[sortBy]));
+//   }
+// }
+
+// if (sortBy === SortType.AverageGrade) {
+//   if (order === 'asc') {
+//     studentsCopy.sort((a, b) => calcAverageGrade(a) - calcAverageGrade(b));
+//   } else {
+//     studentsCopy.sort((a, b) => calcAverageGrade(b) - calcAverageGrade(a));
+//   }
+// }
