@@ -29,11 +29,6 @@ export function sortStudents(
 
   return copy.sort(
     (studentA: Student, studentB: Student) => {
-      const avGradeA = studentA.grades
-        .reduce((sum, nextGrade) => sum + nextGrade) / studentA.grades.length;
-      const avGradeB = studentB.grades
-        .reduce((sum, nextGrade) => sum + nextGrade) / studentB.grades.length;
-
       switch (sortBy) {
         case SortType.Name:
         case SortType.Surname:
@@ -51,10 +46,19 @@ export function sortStudents(
             ? Number(studentA[sortBy]) - Number(studentB[sortBy])
             : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
-        case SortType.AverageGrade:
+        case SortType.AverageGrade: {
+          const averageGradeOfStudentA = studentA.grades
+            .reduce((sum, nextGrade) => sum
+            + nextGrade) / studentA.grades.length;
+
+          const averageGradeOfStudentB = studentB.grades
+            .reduce((sum, nextGrade) => sum
+            + nextGrade) / studentB.grades.length;
+
           return (order === 'asc')
-            ? avGradeA - avGradeB
-            : avGradeB - avGradeA;
+            ? averageGradeOfStudentA - averageGradeOfStudentB
+            : averageGradeOfStudentB - averageGradeOfStudentA;
+        }
 
         default:
           return 0;
