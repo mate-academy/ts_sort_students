@@ -22,7 +22,9 @@ const average = (array: number[]): number => {
   return array.reduce((a: number, b: number) => a + b, 0) / array.length;
 }
 
-export function sortStudents(students: Student[], sortBy: SortType, order: string): Student[] {
+export type SortOrder = 'asc' | 'desc';
+
+export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
   return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
