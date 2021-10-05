@@ -2,7 +2,7 @@
 // create and export SortType enum
 // create SortOrder type
 
-interface Student {
+export interface Student {
   name: string;
   surname: string;
   age: number;
@@ -18,9 +18,9 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-type SortOrder = 'asc' | 'desc';
+export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(arr: number[]): number {
+export function averageGrade(arr: number[]): number {
   return arr.reduce((a: number, b: number) => a + b) / arr.length;
 }
 
