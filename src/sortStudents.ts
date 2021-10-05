@@ -13,61 +13,77 @@ export enum SortType {
   Surname='surname',
   Age='age',
   Married='married',
-  AverageGrade='averagegrade',
+  AverageGrade='grades',
 }
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAvg(studentMarks: number[] = []):number {
+function calculateAvgGrade(studentMarks: number[] = []):number {
   return studentMarks.reduce((sum, curr) => sum + curr, 0)
     / studentMarks.length;
 }
 
-export function sortStudents(students:Student[],
+export function sortStudents(
+  students:Student[],
   sortBy:SortType,
-  order: SortOrder):Student[] {
-  const copyStudents = students.map((student) => ({ ...student }));
-  const k = sortBy.toLocaleLowerCase();
+  order: SortOrder,
+):Student[] {
+  const copyStudents = [...students];
+  const k = sortBy;
 
   if (order === 'asc') {
-    if (k === SortType.AverageGrade) {
-      copyStudents.sort((a, b) => calculateAvg(a.grades)
-        - calculateAvg(b.grades));
-    } else if (k === SortType.Name || k === SortType.Surname) {
-      copyStudents.sort((a, b) => a[k].localeCompare(b[k]));
-    } else if (k === SortType.Age) {
-      copyStudents.sort((a, b) => a.age - b.age);
-    } else {
-      copyStudents.sort((a, b) => {
-        if (a.married === b.married) {
-          return 0;
-        }
+    switch (k) {
+      case SortType.Name:
+      case SortType.Surname:
+        copyStudents.sort((a, b) => a[k].localeCompare(b[k]));
+        break;
+      case SortType.AverageGrade:
+        copyStudents.sort((a, b) => calculateAvgGrade(a[k])
+        - calculateAvgGrade(b[k]));
+        break;
+      case SortType.Age:
+        copyStudents.sort((a, b) => a[k] - b[k]);
+        break;
+      default:
+        copyStudents.sort((a, b) => {
+          if (a[k] === b[k]) {
+            return 0;
+          }
 
-        if (a.married) {
-          return 1;
-        }
+          if (a[k]) {
+            return 1;
+          }
 
-        return -1;
-      });
+          return -1;
+        });
+        break;
     }
-  } else if (k === SortType.AverageGrade) {
-    copyStudents.sort((b, a) => calculateAvg(a.grades)
-      - calculateAvg(b.grades));
-  } else if (k === SortType.Name || k === SortType.Surname) {
-    copyStudents.sort((b, a) => a[k].localeCompare(b[k]));
-  } else if (k === SortType.Age) {
-    copyStudents.sort((b, a) => a.age - b.age);
   } else {
-    copyStudents.sort((b, a) => {
-      if (a.married === b.married) {
-        return 0;
-      }
+    switch (k) {
+      case SortType.Name:
+      case SortType.Surname:
+        copyStudents.sort((b, a) => a[k].localeCompare(b[k]));
+        break;
+      case SortType.AverageGrade:
+        copyStudents.sort((b, a) => calculateAvgGrade(a[k])
+        - calculateAvgGrade(b[k]));
+        break;
+      case SortType.Age:
+        copyStudents.sort((b, a) => a[k] - b[k]);
+        break;
+      default:
+        copyStudents.sort((b, a) => {
+          if (a[k] === b[k]) {
+            return 0;
+          }
 
-      if (a.married) {
-        return 1;
-      }
+          if (a[k]) {
+            return 1;
+          }
 
-      return -1;
-    });
+          return -1;
+        });
+        break;
+    }
   }
 
   return copyStudents;
