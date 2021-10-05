@@ -1,4 +1,4 @@
-interface Student {
+export interface Student {
   name: string;
   surname: string;
   age: number;
@@ -14,7 +14,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-type SortOrder = 'asc' | 'desc';
+export type SortOrder = 'asc' | 'desc';
 
 const findAverage = (arr: number[]): number => {
   return arr.reduce((sum: number, n: number) => sum + n, 0) / arr.length;
@@ -25,32 +25,27 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = [...students];
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
 
-  studentsCopy.sort((a, b) => {
-    if (sortBy === SortType.Age || sortBy === SortType.Married) {
-      return order === 'asc'
-        ? Number(a[sortBy]) - Number(b[sortBy])
-        : Number(b[sortBy]) - Number(a[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? findAverage(a[sortBy]) - findAverage(b[sortBy])
+          : findAverage(b[sortBy]) - findAverage(a[sortBy]);
+
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+
+      default:
+        return 0;
     }
-
-    if (sortBy === SortType.AverageGrade) {
-      const aAverage = findAverage(a[sortBy]);
-      const bAverage = findAverage(b[sortBy]);
-
-      return order === 'asc'
-        ? aAverage - bAverage
-        : bAverage - aAverage;
-    }
-
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      return order === 'asc'
-        ? a[sortBy].localeCompare(b[sortBy])
-        : b[sortBy].localeCompare(a[sortBy]);
-    }
-
-    return 0;
   });
-
-  return studentsCopy;
 }
