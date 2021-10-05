@@ -28,9 +28,6 @@ export function sortStudents(
   return [...students].sort((a, b) => {
     switch (sortBy) {
       case 'age':
-        return (order === 'asc')
-          ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy]);
       case 'married':
         return (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
@@ -40,9 +37,6 @@ export function sortStudents(
           ? calcAvgGrade(a[sortBy]) - calcAvgGrade(b[sortBy])
           : calcAvgGrade(b[sortBy]) - calcAvgGrade(a[sortBy]);
       case 'name':
-        return (order === 'asc')
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
       case 'surname':
         return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
