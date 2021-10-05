@@ -14,7 +14,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-const CalcAvrg = (arr: number[]): number => {
+const calcAvgGrade = (arr: number[]): number => {
   return arr.reduce((sum: number, n: number) => sum + n, 0) / arr.length;
 };
 
@@ -25,44 +25,30 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStud = [...students];
-
-  copyStud.sort((a, b) => {
-    if (sortBy === SortType.Age || sortBy === SortType.Married) {
-      if (order === 'asc') {
-        return Number(a[sortBy]) - Number(b[sortBy]);
-      }
-
-      if (order === 'desc') {
-        return Number(b[sortBy]) - Number(a[sortBy]);
-      }
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case 'age':
+        return (order === 'asc')
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      case 'married':
+        return (order === 'asc')
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      case 'grades':
+        return (order === 'asc')
+          ? calcAvgGrade(a[sortBy]) - calcAvgGrade(b[sortBy])
+          : calcAvgGrade(b[sortBy]) - calcAvgGrade(a[sortBy]);
+      case 'name':
+        return (order === 'asc')
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case 'surname':
+        return (order === 'asc')
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      default:
+        return 0;
     }
-
-    if (sortBy === SortType.AverageGrade) {
-      const AvrgA = CalcAvrg(a[sortBy]);
-      const AvrgB = CalcAvrg(b[sortBy]);
-
-      if (order === 'asc') {
-        return AvrgA - AvrgB;
-      }
-
-      if (order === 'desc') {
-        return AvrgB - AvrgA;
-      }
-    }
-
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      if (order === 'asc') {
-        return a[sortBy].localeCompare(b[sortBy]);
-      }
-
-      if (order === 'desc') {
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
-    }
-
-    return 0;
   });
-
-  return copyStud;
 }
