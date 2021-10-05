@@ -25,9 +25,9 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = [...students];
+  const copyStud = [...students];
 
-  studentsCopy.sort((a, b) => {
+  copyStud.sort((a, b) => {
     if (sortBy === SortType.Age || sortBy === SortType.Married) {
       if (order === 'asc') {
         return Number(a[sortBy]) - Number(b[sortBy]);
@@ -64,5 +64,5 @@ export function sortStudents(
     return 0;
   });
 
-  return studentsCopy;
+  return copyStud;
 }
