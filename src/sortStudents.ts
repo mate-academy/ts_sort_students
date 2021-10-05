@@ -41,6 +41,7 @@ export function sortStudents(
         return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
+
       default:
         return 0;
     }
