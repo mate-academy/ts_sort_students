@@ -77,34 +77,3 @@ export function sortStudents(
 
   return studentsCopy;
 }
-// if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-//   if (order === 'asc') {
-//     studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-//   } else {
-//     studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-//   }
-// }
-
-// if (sortBy === SortType.Age) {
-//   if (order === 'asc') {
-//     studentsCopy.sort((a, b) => a[sortBy] - (b[sortBy]));
-//   } else {
-//     studentsCopy.sort((a, b) => b[sortBy] - (a[sortBy]));
-//   }
-// }
-
-// if (sortBy === SortType.Married) {
-//   if (order === 'asc') {
-//     studentsCopy.sort((a, b) => +a[sortBy] - +(b[sortBy]));
-//   } else {
-//     studentsCopy.sort((a, b) => +b[sortBy] - +(a[sortBy]));
-//   }
-// }
-
-// if (sortBy === SortType.AverageGrade) {
-//   if (order === 'asc') {
-//     studentsCopy.sort((a, b) => calcAverageGrade(a) - calcAverageGrade(b));
-//   } else {
-//     studentsCopy.sort((a, b) => calcAverageGrade(b) - calcAverageGrade(a));
-//   }
-// }
