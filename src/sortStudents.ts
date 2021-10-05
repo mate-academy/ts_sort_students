@@ -29,42 +29,35 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      newStudentsArray.sort((student1: Student, student2: Student) => {
-        return order === 'asc'
-          ? student1.name.localeCompare(student2.name)
-          : student2.name.localeCompare(student1.name);
-      });
-      break;
-
     case SortType.Surname:
       newStudentsArray.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? student1.surname.localeCompare(student2.surname)
-          : student2.surname.localeCompare(student1.surname);
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
       });
       break;
 
     case SortType.Age:
       newStudentsArray.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? student1.age - student2.age
-          : student2.age - student1.age;
+          ? student1[sortBy] - student2[sortBy]
+          : student2[sortBy] - student1[sortBy];
       });
       break;
 
     case SortType.Married:
       newStudentsArray.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? Number(student1.married) - Number(student2.married)
-          : Number(student2.married) - Number(student1.married);
+          ? Number(student1[sortBy]) - Number(student2[sortBy])
+          : Number(student2[sortBy]) - Number(student1[sortBy]);
       });
       break;
 
     case SortType.AverageGrade:
       newStudentsArray.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? calcAvgMark(student1.grades) - calcAvgMark(student2.grades)
-          : calcAvgMark(student2.grades) - calcAvgMark(student1.grades);
+          ? calcAvgMark(student1[sortBy]) - calcAvgMark(student2[sortBy])
+          : calcAvgMark(student2[sortBy]) - calcAvgMark(student1[sortBy]);
       });
       break;
 
