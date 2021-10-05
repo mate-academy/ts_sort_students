@@ -55,19 +55,9 @@ export function sortStudents(
 
     case SortType.Married:
       callBack = (a: Student, b: Student): number => {
-        if (a[sortBy] && !b[sortBy]) {
-          return (order === 'asc')
-            ? 1
-            : -1;
-        }
-
-        if (!a[sortBy] && b[sortBy]) {
-          return (order === 'asc')
-            ? -1
-            : 1;
-        }
-
-        return 0;
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
       };
       break;
 
