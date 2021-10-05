@@ -16,16 +16,16 @@ export enum SortType {
 
 type SortOrder = 'asc' | 'desc';
 
+function calcAverageGrade(grades: number[]): number {
+  return grades.reduce((acc: number, grade: number) => acc + grade)
+    / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function calcAverageGrade(grades: number[]): number {
-    return grades.reduce((acc: number, grade: number) => acc + grade)
-      / grades.length;
-  }
-
   return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
