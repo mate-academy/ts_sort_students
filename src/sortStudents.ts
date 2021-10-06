@@ -35,46 +35,62 @@ export function sortStudents(
     resultArray.push(students[i]);
   }
 
-  if (sortBy === 'name' || sortBy === 'surname') {
-    resultArray.sort((a, b) => {
-      if (a[sortBy] < b[sortBy]) {
-        return -1;
+  switch (sortBy) {
+    case 'name':
+    case 'surname':
+      resultArray.sort((a, b) => {
+        if (a[sortBy] < b[sortBy]) {
+          return -1;
+        }
+
+        if (a[sortBy] > b[sortBy]) {
+          return 1;
+        }
+
+        return 0;
+      });
+
+      if (order === 'desc') {
+        resultArray.reverse();
       }
 
-      if (a[sortBy] > b[sortBy]) {
-        return 1;
-      }
+      break;
 
-      return 0;
-    });
+    case 'age':
+      resultArray.sort((a, b) => {
+        if (order === 'asc') {
+          return a[sortBy] - b[sortBy];
+        }
 
-    if (order === 'desc') {
-      resultArray.reverse();
-    }
-  }
+        return b[sortBy] - a[sortBy];
+      });
 
-  if (sortBy === 'age') {
-    if (order === 'asc') {
-      resultArray.sort((a, b) => a[sortBy] - b[sortBy]);
-    } else {
-      resultArray.sort((a, b) => b[sortBy] - a[sortBy]);
-    }
-  }
+      break;
 
-  if (sortBy === 'grades') {
-    if (order === 'asc') {
-      resultArray.sort((a, b) => average(a.grades) - average(b.grades));
-    } else {
-      resultArray.sort((a, b) => average(b.grades) - average(a.grades));
-    }
-  }
+    case 'grades':
+      resultArray.sort((a, b) => {
+        if (order === 'asc') {
+          return average(a.grades) - average(b.grades);
+        }
 
-  if (sortBy === 'married') {
-    if (order === 'asc') {
-      resultArray.sort((x, y) => Number(x.married) - Number(y.married));
-    } else {
-      resultArray.sort((x, y) => Number(y.married) - Number(x.married));
-    }
+        return average(b.grades) - average(a.grades);
+      });
+
+      break;
+
+    case 'married':
+      resultArray.sort((x, y) => {
+        if (order === 'asc') {
+          return Number(x.married) - Number(y.married);
+        }
+
+        return Number(y.married) - Number(x.married);
+      });
+
+      break;
+
+    default:
+      return students;
   }
 
   return resultArray;
