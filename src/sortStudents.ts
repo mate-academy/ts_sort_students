@@ -17,6 +17,14 @@ export enum SortType {
 
 type SortOrder = 'asc' | 'desc';
 
+function calcAvgGrade(student: Student): number {
+  const mark: number = student.grades
+    .reduce((accum: number, grade: number) => accum + grade, 0)
+    / student.grades.length;
+
+  return mark;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -24,49 +32,35 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  function midMark(student: Student): number {
-    const mark: number = student.grades
-      .reduce((accum: number, grade: number) => accum + grade, 0)
-      / student.grades.length;
-
-    return mark;
-  }
-
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? studentsCopy.sort((first: Student, second: Student) =>
-          first.name.localeCompare(second.name))
-        : studentsCopy.sort((first: Student, second: Student) =>
-          second.name.localeCompare(first.name));
-
     case SortType.Surname:
       return order === 'asc'
         ? studentsCopy.sort((first: Student, second: Student) =>
-          first.surname.localeCompare(second.surname))
+          first[sortBy].localeCompare(second[sortBy]))
         : studentsCopy.sort((first: Student, second: Student) =>
-          second.surname.localeCompare(first.surname));
+          second[sortBy].localeCompare(first[sortBy]));
 
     case SortType.Age:
       return order === 'asc'
         ? studentsCopy.sort((first: Student, second: Student) =>
-          first.age - second.age)
+          first[sortBy] - second[sortBy])
         : studentsCopy.sort((first: Student, second: Student) =>
-          second.age - first.age);
+          second[sortBy] - first[sortBy]);
 
     case SortType.Married:
       return order === 'asc'
         ? studentsCopy.sort((first: Student, second: Student) =>
-          +first.married - +second.married)
+          +first[sortBy] - +second[sortBy])
         : studentsCopy.sort((first: Student, second: Student) =>
-          +second.married - +first.married);
+          +second[sortBy] - +first[sortBy]);
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? studentsCopy.sort((first: Student, second: Student) =>
-          midMark(first) - midMark(second))
+          calcAvgGrade(first) - calcAvgGrade(second))
         : studentsCopy.sort((first: Student, second: Student) =>
-          midMark(second) - midMark(first));
+          calcAvgGrade(second) - calcAvgGrade(first));
 
     default: break;
   }
