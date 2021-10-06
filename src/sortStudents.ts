@@ -2,22 +2,12 @@
 // create and export SortType enum
 // create SortOrder type
 
-function getAverageGrade(grades: number[]): number {
-  return grades
-    .reduce((sum: number, grade: number) => sum + grade, 0) / grades.length;
-}
-
 interface Student {
   name: string;
   surname: string;
   age: number;
   married: boolean;
   grades: number[];
-}
-
-enum SortOrder {
-  Ascending = 'asc',
-  Descending = 'desc',
 }
 
 export enum SortType {
@@ -28,59 +18,87 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
+type SortOrder = 'asc' | 'desc';
+
 export function sortStudents(
   students: Student[],
-  sortBy: string,
-  order: string,
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
-  const studentsCopy = students.map((student: Student) => ({ ...student }));
+  const sortCopy: Student[] = [...students];
+  const sum = (prev: number, curr: number): number => {
+    return prev + curr;
+  };
 
   switch (sortBy) {
     case SortType.Name:
-    case SortType.Surname:
-      studentsCopy.sort((studentX: Student, studentY: Student) => (
-        order === SortOrder.Ascending
-          ? studentX[sortBy].localeCompare(studentY[sortBy])
-          : studentY[sortBy].localeCompare(studentX[sortBy])
-      ));
+      if (order === 'asc') {
+        sortCopy
+          .sort((studentX, studentY) => studentX[sortBy]
+            .localeCompare(studentY[sortBy]));
+      } else {
+        sortCopy
+          .sort((studentX, studentY) => studentY[sortBy]
+            .localeCompare(studentX[sortBy]));
+      }
 
-      break;
+      return sortCopy;
+
+    case SortType.Surname:
+      if (order === 'asc') {
+        sortCopy
+          .sort((studentX, studentY) => studentX[sortBy]
+            .localeCompare(studentY[sortBy]));
+      } else {
+        sortCopy
+          .sort((studentX, studentY) => studentY[sortBy]
+            .localeCompare(studentX[sortBy]));
+      }
+
+      return sortCopy;
 
     case SortType.Age:
-      studentsCopy
-        .sort((studentX: Student, studentY: Student) => (
-          order === SortOrder.Ascending
-            ? studentX[sortBy] - studentY[sortBy]
-            : studentY[sortBy] - studentX[sortBy]
-        ));
+      if (order === 'asc') {
+        sortCopy
+          .sort((studentX, studentY) => studentX[sortBy] - studentY[sortBy]);
+      } else {
+        sortCopy
+          .sort((studentX, studentY) => studentY[sortBy] - studentX[sortBy]);
+      }
 
-      break;
+      return sortCopy;
 
     case SortType.Married:
-      studentsCopy
-        .sort((studentX: Student, studentY: Student) => (
-          order === SortOrder.Ascending
-            ? Number(studentX[sortBy]) - Number(studentY[sortBy])
-            : Number(studentY[sortBy]) - Number(studentX[sortBy])
-        ));
+      if (order === 'asc') {
+        sortCopy
+          .sort((studentX, studentY) => Number(studentX[sortBy])
+            - Number(studentY[sortBy]));
+      } else {
+        sortCopy
+          .sort((studentX, studentY) => Number(studentY[sortBy])
+            - Number(studentX[sortBy]));
+      }
 
-      break;
+      return sortCopy;
 
     case SortType.AverageGrade:
-      studentsCopy
-        .sort((studentX: Student, studentY: Student) => (
-          order === SortOrder.Ascending
-            ? getAverageGrade(studentX[sortBy])
-              - getAverageGrade(studentY[sortBy])
-            : getAverageGrade(studentY[sortBy])
-              - getAverageGrade(studentX[sortBy])
-        ));
+      if (order === 'asc') {
+        sortCopy
+          .sort((studentX, studentY) => (studentX[sortBy].reduce(sum, 0)
+            / studentX[sortBy].length)
+            - (studentY[sortBy].reduce(sum)
+            / studentY[sortBy].length));
+      } else {
+        sortCopy
+          .sort((studentX, studentY) => (studentY[sortBy].reduce(sum, 0)
+            / studentY[sortBy].length)
+            - (studentX[sortBy].reduce(sum)
+            / studentX[sortBy].length));
+      }
 
-      break;
+      return sortCopy;
 
     default:
-      break;
+      return sortCopy;
   }
-
-  return studentsCopy;
 }
