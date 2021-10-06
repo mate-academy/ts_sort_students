@@ -49,28 +49,10 @@ export function sortStudents(
         ? copyStudents.sort((a, b) => a[k] - b[k])
         : copyStudents.sort((b, a) => a[k] - b[k]);
     default:
-      return order === 'asc'
-        ? copyStudents.sort((a, b) => {
-          if (a[k] === b[k]) {
-            return 0;
-          }
-
-          if (a[k]) {
-            return 1;
-          }
-
-          return -1;
-        })
-        : copyStudents.sort((b, a) => {
-          if (a[k] === b[k]) {
-            return 0;
-          }
-
-          if (a[k]) {
-            return 1;
-          }
-
-          return -1;
-        });
+      return copyStudents.sort((a, b) => {
+        return order === 'asc'
+          ? Number(a[k]) - Number(b[k])
+          : Number(b[k]) - Number(a[k]);
+      });
   }
 }
