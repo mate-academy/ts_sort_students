@@ -9,6 +9,7 @@ interface Student {
   married: boolean;
   grades: number[];
 }
+
 type SortOrder = 'asc' | 'desc';
 
 export enum SortType {
@@ -25,37 +26,48 @@ function getAverageGrade(arr: number[]): number {
 
 function sorter(sortBy: SortType, order: string) {
   return (a: Student, b: Student): number => {
-    let curr = a[sortBy];
-    let prev = b[sortBy];
-
-    if (order === 'desc') {
-      curr = b[sortBy];
-      prev = a[sortBy];
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Married:
+      case SortType.Age:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
+      default:
+        return 0;
     }
 
-    if (typeof curr === 'string' && typeof prev === 'string') {
-      return curr.localeCompare(prev);
-    }
-
-    if (typeof curr === 'number' && typeof prev === 'number') {
-      return curr - prev;
-    }
-
-    if (sortBy === SortType.AverageGrade
-      && Array.isArray(curr)
-      && Array.isArray(prev)
-    ) {
-      return getAverageGrade(curr) - getAverageGrade(prev);
-    }
-
-    if (sortBy === SortType.Married
-      && typeof curr === 'boolean'
-      && typeof prev === 'boolean'
-    ) {
-      return Number(curr) - Number(prev);
-    }
-
-    return 0;
+    // if (typeof curr === 'string' && typeof prev === 'string') {
+    //   return curr.localeCompare(prev);
+    // }
+    //
+    // if (typeof curr === 'number' && typeof prev === 'number') {
+    //   return curr - prev;
+    // }
+    //
+    // if (sortBy === SortType.AverageGrade
+    //   && Array.isArray(curr)
+    //   && Array.isArray(prev)
+    // ) {
+    //   return getAverageGrade(curr) - getAverageGrade(prev);
+    // }
+    //
+    // if (sortBy === SortType.Married
+    //   && typeof curr === 'boolean'
+    //   && typeof prev === 'boolean'
+    // ) {
+    //   return Number(curr) - Number(prev);
+    // }
+    //
+    // return 0;
   };
 }
 
@@ -64,7 +76,5 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStudents: Student[] = [...students];
-
-  return copyStudents.sort(sorter(sortBy, order));
+  return [...students].sort(sorter(sortBy, order));
 }
