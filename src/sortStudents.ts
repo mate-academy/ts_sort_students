@@ -29,11 +29,7 @@ export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
   // write your function
-  const resultArray = [];
-
-  for (let i: number = 0; i < students.length; i += 1) {
-    resultArray.push(students[i]);
-  }
+  const resultArray = [...students];
 
   switch (sortBy) {
     case 'name':
