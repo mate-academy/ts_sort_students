@@ -17,8 +17,8 @@ export enum SortType {
 // create SortOrder type
 type SortOrder = 'asc' | 'desc';
 
-const averageGrade = (grades: number[]):number => {
-  return [...grades]
+const calcAverageGrade = (grades: number[]):number => {
+  return grades
     .reduce((sum: number, current: number) => sum + current) / grades.length;
 };
 
@@ -29,22 +29,22 @@ export function sortStudents(
 ): Student[] {
   return [...students].sort((a, b) => {
     switch (sortBy) {
-      case 'name':
-      case 'surname':
+      case SortType.Name:
+      case SortType.Surname:
         return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
 
-      case 'age':
-      case 'married':
+      case SortType.Age:
+      case SortType.Married:
         return (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
           : Number(b[sortBy]) - Number(a[sortBy]);
 
-      case 'grades':
+      case SortType.AverageGrade:
         return (order === 'asc')
-          ? averageGrade(a[sortBy]) - averageGrade(b[sortBy])
-          : averageGrade(b[sortBy]) - averageGrade(a[sortBy]);
+          ? calcAverageGrade(a[sortBy]) - calcAverageGrade(b[sortBy])
+          : calcAverageGrade(b[sortBy]) - calcAverageGrade(a[sortBy]);
       default:
         return 0;
     }
