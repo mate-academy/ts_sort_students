@@ -1,5 +1,5 @@
 # Sort students
-Create and export a `sortStudents` function that takes 3 parameters and return a
+Create a `sortStudents` function that takes 3 parameters and return a
 new array with students sorted according to the given params. Original array
 should not be changed.
 
@@ -19,7 +19,7 @@ You also need to add correct types:
       grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],
     }
     ```
-- Create and export a `SortType` enum, having the next values:
+- Create a `SortType` enum, having the next values:
     ```
     Name
     Surname
