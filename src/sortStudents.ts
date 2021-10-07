@@ -17,38 +17,35 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function avgGrade({ grades }: Student): number {
+  if (grades.length === 0) {
+    return 0;
+  }
+
+  const sum = grades.reduce((s, a) => s + a, 0);
+
+  return sum / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsData = students.map((student: Student) => {
-    const averageGrades = student.grades
-      .reduce((a: number, b: number): number => a + b) / student.grades.length;
+  return [...students].sort((a: Student, b: Student): number => {
+    const sign = (order === 'desc') ? -1 : 1;
 
-    return {
-      ...student,
-      averageGrades,
-    };
-  });
-
-  studentsData.sort((a: Student, b: Student): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return (order === 'asc')
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+        return sign * a[sortBy].localeCompare(b[sortBy]);
       case SortType.Age:
       case SortType.Married:
+        return sign * (Number(a[sortBy]) - Number(b[sortBy]));
       case SortType.AverageGrade:
-        return (order === 'asc')
-          ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy]);
+        return sign * (avgGrade(a) - avgGrade(b));
       default:
         return 0;
     }
   });
-
-  return studentsData;
 }
