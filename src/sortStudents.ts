@@ -30,7 +30,10 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): object[] {
-  return students.slice().sort((curr, next) => {
+
+  const arrCopy = [...students]
+
+  return arrCopy.sort((curr, next) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
