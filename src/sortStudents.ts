@@ -24,47 +24,55 @@ export function getAverageGrade(grades: number[]): number {
   return sumOfGrades / grades.length;
 }
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
-  const studentsSorted: Student[] = [...students];
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const sortedStudents: Student[] = [...students];
   const isAscending: boolean = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
-      studentsSorted.sort((studentFirst, studentSecond) => (isAscending
+      sortedStudents.sort((studentFirst, studentSecond) => (isAscending
         ? studentFirst.name.localeCompare(studentSecond.name)
-        : studentSecond.name.localeCompare(studentFirst.name)));
+        : studentSecond.name.localeCompare(studentFirst.name)
+      ));
       break;
 
     case SortType.Surname:
-      studentsSorted.sort((studentFirst, studentSecond) => (isAscending
+      sortedStudents.sort((studentFirst, studentSecond) => (isAscending
         ? studentFirst.surname.localeCompare(studentSecond.surname)
-        : studentSecond.surname.localeCompare(studentSecond.surname)));
+        : studentSecond.surname.localeCompare(studentSecond.surname)
+      ));
       break;
 
     case SortType.Age:
-      studentsSorted.sort((studentFirst, studentSecond) => (isAscending
+      sortedStudents.sort((studentFirst, studentSecond) => (isAscending
         ? studentFirst.age - studentSecond.age
-        : studentSecond.age - studentFirst.age));
+        : studentSecond.age - studentFirst.age
+      ));
       break;
 
     case SortType.Married:
-      studentsSorted.sort((studentFirst, studentSecond) => (isAscending
+      sortedStudents.sort((studentFirst, studentSecond) => (isAscending
         ? Number(studentFirst.married) - Number(studentSecond.married)
-        : Number(studentSecond.married) - Number(studentFirst.married)));
+        : Number(studentSecond.married) - Number(studentFirst.married)
+      ));
       break;
 
     case SortType.AverageGrade:
-      studentsSorted.sort((studentFirst, studentSecond) => (isAscending
+      sortedStudents.sort((studentFirst, studentSecond) => (isAscending
         ? getAverageGrade(studentFirst.grades)
         - getAverageGrade(studentSecond.grades)
         : getAverageGrade(studentSecond.grades)
-        - getAverageGrade(studentFirst.grades)));
+        - getAverageGrade(studentFirst.grades)
+      ));
       break;
 
     default:
       throw new Error('Wrong SortType');
   }
 
-  return studentsSorted;
+  return sortedStudents;
 }
