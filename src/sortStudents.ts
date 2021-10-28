@@ -29,21 +29,6 @@ export function sortByAverageGrades(student1: Student, student2: Student)
   return averageGrade1 - averageGrade2;
 }
 
-export function sortByIsMarried(student1: Student, student2: Student)
-  : number {
-  let result: number;
-
-  if (student2.married === student1.married) {
-    result = 0;
-  } else if (student2.married) {
-    result = 1;
-  } else {
-    result = -1;
-  }
-
-  return result;
-}
-
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   const sortedStudents: Student[] = [...students];
@@ -71,7 +56,8 @@ export function sortStudents(students: Student[],
 
       case SortType.Married:
         sortedStudents.sort(
-          (student1, student2) => sortByIsMarried(student2, student1),
+          (student1, student2) => Number(student1.married)
+          - Number(student2.married),
         );
         break;
 
@@ -107,7 +93,8 @@ export function sortStudents(students: Student[],
 
       case SortType.Married:
         sortedStudents.sort(
-          (student1, student2) => sortByIsMarried(student1, student2),
+          (student1, student2) => Number(student2.married)
+          - Number(student1.married),
         );
         break;
 
