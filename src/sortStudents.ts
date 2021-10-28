@@ -1,16 +1,89 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function averageGrade(grades: number[]): number {
+  return grades.reduce((sum, num) => sum + num, 0) / grades.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const newStudents = JSON.parse(JSON.stringify(students));
+  const isAssdaw = order === 'asc';
+
+  switch (sortBy) {
+    case SortType.Name: {
+      return newStudents.sort(isAssdaw
+        ? (student1: Student, student2: Student): number => (
+          student1.name.localeCompare(student2.name))
+        : (student1: Student, student2: Student): number => (
+          student2.name.localeCompare(student1.name)));
+    }
+
+    case SortType.Surname: {
+      return newStudents.sort(isAssdaw
+        ? (student1: Student, student2: Student): number => (
+          student1.surname.localeCompare(student2.surname))
+        : (student1: Student, student2: Student): number => (
+          student2.surname.localeCompare(student1.surname)));
+    }
+
+    case SortType.Age: {
+      return newStudents.sort(isAssdaw
+        ? (student1: Student, student2: Student): number => (
+          student1.age - student2.age)
+        : (student1: Student, student2: Student): number => (
+          student2.age - student1.age));
+    }
+
+    case SortType.Married: {
+      return newStudents.sort(isAssdaw
+        ? (student1: Student, student2: Student): number => (
+          Number(student1.married) - Number(student2.married))
+        : (student1: Student, student2: Student): number => (
+          Number(student2.married) - Number(student1.married)));
+    }
+
+    // case SortType.AverageGrade: {
+    //   return newStudents.sort(isAssdaw
+    //     ? (student1: Student, student2: Student): number => (
+    //       student1.grades
+    //         .reduce((sum, num) => sum + num, 0) / student1.grades.length
+    //       - student2.grades
+    //         .reduce((sum, num) => sum + num, 0) / student2.grades.length)
+    //     : (student1: Student, student2: Student): number => (
+    //       student2.grades
+    //         .reduce((sum, num) => sum + num, 0) / student2.grades.length
+    //       - student1.grades
+    //         .reduce((sum, num) => sum + num, 0) / student1.grades.length));
+    // }
+
+    case SortType.AverageGrade: {
+      return newStudents.sort(isAssdaw
+        ? (student1: Student, student2: Student): number => (
+          averageGrade(student1.grades) - averageGrade(student2.grades))
+        : (student1: Student, student2: Student): number => (
+          averageGrade(student2.grades) - averageGrade(student1.grades)));
+    }
+
+    default: throw new Error('Error');
+  }
 }
