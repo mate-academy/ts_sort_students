@@ -62,20 +62,6 @@ export function sortStudents(
           Number(student2.married) - Number(student1.married)));
     }
 
-    // case SortType.AverageGrade: {
-    //   return newStudents.sort(isAssdaw
-    //     ? (student1: Student, student2: Student): number => (
-    //       student1.grades
-    //         .reduce((sum, num) => sum + num, 0) / student1.grades.length
-    //       - student2.grades
-    //         .reduce((sum, num) => sum + num, 0) / student2.grades.length)
-    //     : (student1: Student, student2: Student): number => (
-    //       student2.grades
-    //         .reduce((sum, num) => sum + num, 0) / student2.grades.length
-    //       - student1.grades
-    //         .reduce((sum, num) => sum + num, 0) / student1.grades.length));
-    // }
-
     case SortType.AverageGrade: {
       return newStudents.sort(isAssdaw
         ? (student1: Student, student2: Student): number => (
