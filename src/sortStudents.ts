@@ -24,7 +24,9 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopyList = JSON.parse(JSON.stringify(students));
+  const studentsCopyList = students.map((person) => ({
+    ...person,
+  }));
   const isAsc: boolean = order === 'asc';
 
   switch (sortBy) {
