@@ -29,43 +29,28 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'name':
-      if (order === 'asc') {
-        result.sort((a, b) => a.name.localeCompare(b.name));
-      } else {
-        result.sort((a, b) => b.name.localeCompare(a.name));
-      }
-      break;
-
     case 'surname':
-      if (order === 'asc') {
-        result.sort((a, b) => a.surname.localeCompare(b.surname));
-      } else {
-        result.sort((a, b) => b.surname.localeCompare(a.surname));
-      }
+      result.sort((a, b) => (order === 'asc'
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy])));
       break;
 
     case 'age':
-      if (order === 'asc') {
-        result.sort((a, b) => a.age - b.age);
-      } else {
-        result.sort((a, b) => b.age - a.age);
-      }
+      result.sort((a, b) => (order === 'asc'
+        ? a.age - b.age
+        : b.age - a.age));
       break;
 
     case 'married':
-      if (order === 'asc') {
-        result.sort((a, b) => Number(a.married) - Number(b.married));
-      } else {
-        result.sort((a, b) => Number(b.married) - Number(a.married));
-      }
+      result.sort((a, b) => (order === 'asc'
+        ? Number(a.married) - Number(b.married)
+        : Number(b.married) - Number(a.married)));
       break;
 
     case 'averageGrade':
-      if (order === 'asc') {
-        result.sort((a, b) => average(a.grades) - average(b.grades));
-      } else {
-        result.sort((a, b) => average(b.grades) - average(a.grades));
-      }
+      result.sort((a, b) => (order === 'asc'
+        ? average(a.grades) - average(b.grades)
+        : average(b.grades) - average(a.grades)));
       break;
 
     default:
