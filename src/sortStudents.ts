@@ -18,11 +18,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function getAverageGrade(grades: number[]): number {
-  let result = grades.reduce((sum, curr) => sum + curr, 0);
-
-  result /= grades.length;
-
-  return result;
+  return grades.reduce((sum, curr) => sum + curr, 0) / grades.length;
 }
 
 export function sortStudents(
@@ -30,47 +26,49 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortSt: Student[] = [...students];
+  const sortStudent: Student[] = [...students];
   const isAscending = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
-      sortSt.sort((fSt, sSt) => (isAscending
-        ? fSt.name.localeCompare(sSt.name)
-        : sSt.name.localeCompare(fSt.name)
+      sortStudent.sort((firstStudent, secondStudent) => (isAscending
+        ? firstStudent.name.localeCompare(secondStudent.name)
+        : secondStudent.name.localeCompare(firstStudent.name)
       ));
       break;
 
     case SortType.Surname:
-      sortSt.sort((fSt, sSt) => (isAscending
-        ? fSt.surname.localeCompare(sSt.surname)
-        : sSt.surname.localeCompare(fSt.surname)
+      sortStudent.sort((firstStudent, secondStudent) => (isAscending
+        ? firstStudent.surname.localeCompare(secondStudent.surname)
+        : secondStudent.surname.localeCompare(firstStudent.surname)
       ));
       break;
 
     case SortType.Age:
-      sortSt.sort((fSt, sSt) => (isAscending
-        ? fSt.age - sSt.age
-        : sSt.age - fSt.age
+      sortStudent.sort((firstStudent, secondStudent) => (isAscending
+        ? firstStudent.age - secondStudent.age
+        : secondStudent.age - firstStudent.age
       ));
       break;
 
     case SortType.Married:
-      sortSt.sort((fSt, sSt) => (isAscending
-        ? Number(fSt.married) - Number(sSt.married)
-        : Number(sSt.married) - Number(fSt.married)
+      sortStudent.sort((firstStudent, secondStudent) => (isAscending
+        ? Number(firstStudent.married) - Number(secondStudent.married)
+        : Number(secondStudent.married) - Number(firstStudent.married)
       ));
       break;
 
     case SortType.AverageGrade:
-      sortSt.sort((fSt, sSt) => (isAscending
-        ? getAverageGrade(fSt.grades) - getAverageGrade(sSt.grades)
-        : getAverageGrade(sSt.grades) - getAverageGrade(fSt.grades)
+      sortStudent.sort((firstStudent, secondStudent) => (isAscending
+        ? getAverageGrade(firstStudent.grades)
+        - getAverageGrade(secondStudent.grades)
+        : getAverageGrade(secondStudent.grades)
+        - getAverageGrade(firstStudent.grades)
       ));
       break;
 
     default: break;
   }
 
-  return sortSt;
+  return sortStudent;
 }
