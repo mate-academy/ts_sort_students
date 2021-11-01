@@ -17,7 +17,7 @@ export enum SortType {
 }
 
 function getAverageGrade(grades: number[]):number {
-  const average = grades.reduce((mark1, mark2) => mark1 + mark2);
+  const average = grades.reduce((sum, mark) => sum + mark, 0);
 
   return average / grades.length;
 }
