@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -27,23 +27,16 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsSample: Student[] = students.slice();
+  const studentsSample: Student[] = [...students];
   const isAscending: boolean = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
-      studentsSample.sort((studentA, studentB) => {
-        return isAscending
-          ? studentA.name.localeCompare(studentB.name)
-          : studentB.name.localeCompare(studentA.name);
-      });
-      break;
-
     case SortType.Surname:
       studentsSample.sort((studentA, studentB) => {
         return isAscending
-          ? studentA.surname.localeCompare(studentB.surname)
-          : studentB.surname.localeCompare(studentA.surname);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
       });
       break;
 
