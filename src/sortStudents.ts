@@ -27,36 +27,22 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       studentsDublicate.sort((student1, student2) => {
-        const name1 = student1.name.toLowerCase();
-        const name2 = student2.name.toLowerCase();
-
-        if (name1 === name2) {
-          return 0;
-        }
-
         if (order === 'asc') {
-          return name1 > name2 ? 1 : -1;
+          return student1.name.localeCompare(student2.name);
         }
 
-        return name1 > name2 ? -1 : 1;
+        return student2.name.localeCompare(student1.name);
       });
 
       break;
 
     case SortType.Surname:
       studentsDublicate.sort((student1, student2) => {
-        const surname1 = student1.surname.toLowerCase();
-        const surname2 = student2.surname.toLowerCase();
-
-        if (surname1 === surname2) {
-          return 0;
-        }
-
         if (order === 'asc') {
-          return surname1 > surname2 ? 1 : -1;
+          return student1.surname.localeCompare(student2.surname);
         }
 
-        return surname1 > surname2 ? -1 : 1;
+        return student2.surname.localeCompare(student1.surname);
       });
       break;
 
