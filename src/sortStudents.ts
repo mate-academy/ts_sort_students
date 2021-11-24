@@ -17,6 +17,11 @@ export enum SortType {
 
 export type SortOrder = 'asc'|'desc';
 
+function findAverage(data:number[]):number {
+  return data.reduce((sum, num) => (
+    sum + num), 0) / data.length;
+}
+
 export function sortStudents(
   students:Student[],
   sortBy: SortType,
@@ -27,22 +32,18 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       studentsDublicate.sort((student1, student2) => {
-        if (order === 'asc') {
-          return student1.name.localeCompare(student2.name);
-        }
-
-        return student2.name.localeCompare(student1.name);
+        return order === 'asc'
+          ? student1.name.localeCompare(student2.name)
+          : student2.name.localeCompare(student1.name);
       });
 
       break;
 
     case SortType.Surname:
       studentsDublicate.sort((student1, student2) => {
-        if (order === 'asc') {
-          return student1.surname.localeCompare(student2.surname);
-        }
-
-        return student2.surname.localeCompare(student1.surname);
+        return order === 'asc'
+          ? student1.surname.localeCompare(student2.surname)
+          : student2.surname.localeCompare(student1.surname);
       });
       break;
 
@@ -73,20 +74,12 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       studentsDublicate.sort((student1, student2) => {
-        const averageMark1 = student1.grades.reduce((sum, mark) => (
-          sum + mark), 0) / student1.grades.length;
-        const averageMark2 = student2.grades.reduce((sum, mark) => (
-          sum + mark), 0) / student2.grades.length;
+        const averageMark1 = findAverage(student1.grades);
+        const averageMark2 = findAverage(student2.grades);
 
-        if (averageMark1 === averageMark2) {
-          return 0;
-        }
-
-        if (order === 'asc') {
-          return averageMark1 > averageMark2 ? 1 : -1;
-        }
-
-        return averageMark1 > averageMark2 ? -1 : 1;
+        return order === 'asc'
+          ? averageMark1 - averageMark2
+          : averageMark2 - averageMark1;
       });
       break;
 
