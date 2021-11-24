@@ -14,7 +14,10 @@ export enum SortType{
   AverageGrade = 'grades'
 }
 
-export type SortOrder = 'asc' | 'desc';
+enum SortOrder {
+  asc = 'asc',
+  desc = 'desc'
+}
 
 function getAverageGrade(students: Student): number {
   const sumOfGrades = students.grades.reduce((sum, grade) => sum + grade);
@@ -29,36 +32,42 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  if ((sortBy === SortType.Name || sortBy === SortType.Surname)) {
-    if (order === 'asc') {
-      studentsCopy.sort((s1, s2) => s1[sortBy].localeCompare(s2[sortBy]));
-    } else {
-      studentsCopy.sort((s1, s2) => s2[sortBy].localeCompare(s1[sortBy]));
-    }
-  }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsCopy.sort((s1, s2) => {
+        return (order === SortOrder.asc)
+          ? s1[sortBy].localeCompare(s2[sortBy])
+          : s2[sortBy].localeCompare(s1[sortBy]);
+      });
+      break;
 
-  if (sortBy === SortType.Age) {
-    if (order === 'asc') {
-      studentsCopy.sort((s1, s2) => s1[sortBy] - s2[sortBy]);
-    } else {
-      studentsCopy.sort((s1, s2) => s2[sortBy] - s1[sortBy]);
-    }
-  }
+    case SortType.Age:
+      studentsCopy.sort((s1, s2) => {
+        return (order === SortOrder.asc)
+          ? s1[sortBy] - s2[sortBy]
+          : s2[sortBy] - s1[sortBy];
+      });
+      break;
 
-  if (sortBy === SortType.Married) {
-    if (order === 'asc') {
-      studentsCopy.sort((s1, s2) => +s1[sortBy] - +s2[sortBy]);
-    } else {
-      studentsCopy.sort((s1, s2) => +s2[sortBy] - +s1[sortBy]);
-    }
-  }
+    case SortType.Married:
+      studentsCopy.sort((s1, s2) => {
+        return (order === SortOrder.asc)
+          ? +s1[sortBy] - +s2[sortBy]
+          : +s2[sortBy] - +s1[sortBy];
+      });
+      break;
 
-  if (sortBy === SortType.AverageGrade) {
-    if (order === 'asc') {
-      studentsCopy.sort((s1, s2) => getAverageGrade(s1) - getAverageGrade(s2));
-    } else {
-      studentsCopy.sort((s1, s2) => getAverageGrade(s2) - getAverageGrade(s1));
-    }
+    case SortType.AverageGrade:
+      studentsCopy.sort((s1, s2) => {
+        return (order === SortOrder.asc)
+          ? getAverageGrade(s1) - getAverageGrade(s2)
+          : getAverageGrade(s2) - getAverageGrade(s1);
+      });
+      break;
+
+    default:
+      break;
   }
 
   return studentsCopy;
