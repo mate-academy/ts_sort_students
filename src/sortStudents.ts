@@ -38,21 +38,12 @@ export function sortStudents(
   const check: boolean = order === SortOrder.increase;
 
   switch (sortBy) {
-    case
-      SortType.Name:
+    case SortType.Name:
+    case SortType.Surname:
       allStudents.sort((studentA, studentB) => {
         return check
-          ? studentA.name.localeCompare(studentB.name)
-          : studentB.name.localeCompare(studentA.name);
-      });
-      break;
-
-    case
-      SortType.Surname:
-      allStudents.sort((studentA, studentB) => {
-        return check
-          ? studentA.surname.localeCompare(studentB.surname)
-          : studentB.surname.localeCompare(studentA.surname);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
       });
       break;
 
