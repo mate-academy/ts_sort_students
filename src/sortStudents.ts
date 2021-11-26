@@ -23,7 +23,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desk';
 
 export function sortStudents(
-  students : Student[], sortBy : SortType, order : SortOrder,
+  students: Student[], sortBy: SortType, order: SortOrder,
 )
   : Student[] {
   const sortedStudents = [...students];
