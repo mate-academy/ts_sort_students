@@ -7,8 +7,8 @@ export interface Student {
   grades: number[];
 }
 
-function getAverageGrade(student: Student): number {
-  return (student.grades.reduce((a, b) => a + b) / student.grades.length);
+function getAverageGrade(grades: number[]): number {
+  return (grades.reduce((result, grade) => result + grade, 0) / grades.length);
 }
 
 export enum SortType {
@@ -28,29 +28,29 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = [...students];
 
-  sortedStudents.sort((prevStudent: Student, currentStudent: Student) => {
+  sortedStudents.sort((prev: Student, current: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         if (order === 'asc') {
-          return prevStudent[sortBy].localeCompare(currentStudent[sortBy]);
+          return prev[sortBy].localeCompare(current[sortBy]);
         }
 
-        return currentStudent[sortBy].localeCompare(prevStudent[sortBy]);
+        return current[sortBy].localeCompare(prev[sortBy]);
 
       case SortType.Age:
         if (order === 'asc') {
-          return prevStudent[sortBy] - currentStudent[sortBy];
+          return prev[sortBy] - current[sortBy];
         }
 
-        return currentStudent[sortBy] - prevStudent[sortBy];
+        return current[sortBy] - prev[sortBy];
 
       case SortType.Married:
-        if (prevStudent[sortBy] && !currentStudent[sortBy]) {
+        if (prev[sortBy] && !current[sortBy]) {
           return order === 'asc' ? 1 : -1;
         }
 
-        if (!prevStudent[sortBy] && currentStudent[sortBy]) {
+        if (!prev[sortBy] && current[sortBy]) {
           return order === 'asc' ? -1 : 1;
         }
 
@@ -58,10 +58,10 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         if (order === 'asc') {
-          return getAverageGrade(prevStudent) - getAverageGrade(currentStudent);
+          return getAverageGrade(prev.grades) - getAverageGrade(current.grades);
         }
 
-        return getAverageGrade(currentStudent) - getAverageGrade(prevStudent);
+        return getAverageGrade(current.grades) - getAverageGrade(prev.grades);
 
       default:
         return 0;
