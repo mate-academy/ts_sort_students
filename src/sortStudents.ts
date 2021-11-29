@@ -1,10 +1,9 @@
-
 export interface Student {
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
-  grades: number[],
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -27,6 +26,12 @@ export function sortStudents(
 ): Student[] {
   const copyOfStudents = [...students];
 
+  const averageGrade = (student: Student): number => {
+    return student.grades.reduce(
+      (sum: number, grade: number) => sum + grade,
+    ) / student.grades.length;
+  };
+
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
@@ -37,8 +42,7 @@ export function sortStudents(
       });
       break;
 
-    case
-      SortType.Age:
+    case SortType.Age:
       copyOfStudents.sort((prevStudent, nextStudent) => {
         return order === SortOrder.increase
           ? prevStudent.age - nextStudent.age
@@ -46,8 +50,7 @@ export function sortStudents(
       });
       break;
 
-    case
-      SortType.Married:
+    case SortType.Married:
       copyOfStudents.sort((prevStudent, nextStudent) => {
         return order === SortOrder.increase
           ? +prevStudent.married - +nextStudent.married
@@ -55,15 +58,8 @@ export function sortStudents(
       });
       break;
 
-    case
-      SortType.AverageGrade:
+    case SortType.AverageGrade:
       copyOfStudents.sort((prevStudent, nextStudent) => {
-        const averageGrade = (student: Student): number => {
-          return student.grades.reduce(
-            (sum: number, grade: number) => sum + grade,
-          ) / student.grades.length;
-        };
-
         return order === SortOrder.increase
           ? averageGrade(prevStudent) - averageGrade(nextStudent)
           : averageGrade(nextStudent) - averageGrade(prevStudent);
@@ -71,7 +67,7 @@ export function sortStudents(
       break;
 
     default:
-      throw new Error('Error!');
+      throw new Error('Error! There is no such key with that name.');
   }
 
   return copyOfStudents;
