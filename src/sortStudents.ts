@@ -61,7 +61,7 @@ export function sortStudents(
       break;
 
     default:
-      break;
+      return copy;
   }
 
   return copy;
