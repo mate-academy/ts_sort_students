@@ -54,7 +54,7 @@ export function sortStudents(
 
     let sortResult: number = 0;
 
-    if (aField === 'string') {
+    if (typeof aField === 'string') {
       sortResult = aField.localeCompare(bField as string);
     } else {
       sortResult = (aField as number) - (bField as number);
