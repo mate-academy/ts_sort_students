@@ -30,9 +30,10 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      newArrOfStudents.sort((prevStudent, nextStudent) => (order === 'asc'
-        ? prevStudent[sortBy].localeCompare(nextStudent[sortBy])
-        : nextStudent[sortBy].localeCompare(prevStudent[sortBy])
+      newArrOfStudents.sort((prevStudent, nextStudent) => (
+        order === 'asc'
+          ? prevStudent[sortBy].localeCompare(nextStudent[sortBy])
+          : nextStudent[sortBy].localeCompare(prevStudent[sortBy])
       ));
       break;
 
