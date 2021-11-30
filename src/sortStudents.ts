@@ -21,7 +21,7 @@ export enum SortOrder {
 
 function averageGrade(student: Student): number {
   const totalSum = student.grades.reduce(
-    (result: number, grade: number) => result + grade,
+    (result: number, grade: number) => result + grade, 0,
   );
 
   return totalSum / student.grades.length;
@@ -54,7 +54,7 @@ export function sortStudents(
 
     let sortResult: number = 0;
 
-    if (typeof aField === 'string') {
+    if (aField === 'string') {
       sortResult = aField.localeCompare(bField as string);
     } else {
       sortResult = (aField as number) - (bField as number);
