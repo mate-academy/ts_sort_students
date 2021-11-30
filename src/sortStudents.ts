@@ -28,29 +28,29 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = [...students];
 
-  sortedStudents.sort((previos: Student, current: Student) => {
+  sortedStudents.sort((previous: Student, current: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         if (order === 'asc') {
-          return previos[sortBy].localeCompare(current[sortBy]);
+          return previous[sortBy].localeCompare(current[sortBy]);
         }
 
-        return current[sortBy].localeCompare(previos[sortBy]);
+        return current[sortBy].localeCompare(previous[sortBy]);
 
       case SortType.Age:
         if (order === 'asc') {
-          return previos[sortBy] - current[sortBy];
+          return previous[sortBy] - current[sortBy];
         }
 
-        return current[sortBy] - previos[sortBy];
+        return current[sortBy] - previous[sortBy];
 
       case SortType.Married:
-        if (previos[sortBy] && !current[sortBy]) {
+        if (previous[sortBy] && !current[sortBy]) {
           return order === 'asc' ? 1 : -1;
         }
 
-        if (!previos[sortBy] && current[sortBy]) {
+        if (!previous[sortBy] && current[sortBy]) {
           return order === 'asc' ? -1 : 1;
         }
 
@@ -58,12 +58,12 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         if (order === 'asc') {
-          return getAverageGrade(previos.grades)
-          - getAverageGrade(current.grades);
+          return getAverageGrade(previous.grades)
+            - getAverageGrade(current.grades);
         }
 
         return getAverageGrade(current.grades)
-        - getAverageGrade(previos.grades);
+          - getAverageGrade(previous.grades);
 
       default:
         return 0;
