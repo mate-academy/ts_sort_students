@@ -16,20 +16,20 @@ export enum SortType {
 
 export type SortOrder = 'asc'|'desc';
 
-function findAverage(grades:number[]):number {
+function findAverage(grades: number[]): number {
   return grades.reduce((prev, grade) => prev + grade) / grades.length;
 }
 
 export function sortStudents(
-  students:Student[],
+  students: Student[],
   sortBy: SortType,
-  order:SortOrder,
-):object[] {
+  order: SortOrder,
+): object[] {
   const studentsCopy = [...students];
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       studentsCopy.sort((person1, person2) => {
         return order === 'asc'
           ? person1[sortBy].localeCompare(person2[sortBy])
@@ -38,7 +38,7 @@ export function sortStudents(
 
       break;
 
-    case 'age':
+    case SortType.Age:
       studentsCopy.sort((person1, person2) => {
         return order === 'asc'
           ? person1.age - person2.age
@@ -47,7 +47,7 @@ export function sortStudents(
 
       break;
 
-    case 'married':
+    case SortType.Married:
       studentsCopy.sort((person1, person2) => {
         if (person1.married === person2.married) {
           return 0;
@@ -62,7 +62,7 @@ export function sortStudents(
 
       break;
 
-    case 'grades':
+    case SortType.AverageGrade:
       studentsCopy.sort((person1, person2) => {
         const firstPersonAverageGrades = findAverage(person1.grades);
         const secondPersonAverageGrades = findAverage(person2.grades);
@@ -76,7 +76,7 @@ export function sortStudents(
 
     default:
 
-      throw new Error('Unknown error');
+      return studentsCopy;
   }
 
   return studentsCopy;
