@@ -25,7 +25,9 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const studentsCopy = [...students];
 
