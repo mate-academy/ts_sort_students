@@ -1,9 +1,9 @@
 export interface Student {
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
-  grades: number[],
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -16,7 +16,7 @@ export enum SortType {
 
 export enum SortOrder {
   decrease = 'desc',
-  increase = 'asc'
+  increase = 'asc',
 }
 
 export function sortStudents(
@@ -25,53 +25,50 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyOfStudents = [...students];
-  const isOrderedBy: boolean = order === SortOrder.increase;
+  const isAscending: boolean = order === SortOrder.increase;
+
+  const averageGrade = (student: Student): number => {
+    return student.grades.reduce(
+      (sum: number, grade: number) => sum + grade,
+    ) / student.grades.length;
+  };
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       copyOfStudents.sort((prevStudent, nextStudent) => {
-        return isOrderedBy
+        return isAscending
           ? prevStudent[sortBy].localeCompare(nextStudent[sortBy])
           : nextStudent[sortBy].localeCompare(prevStudent[sortBy]);
       });
       break;
 
-    case
-      SortType.Age:
+    case SortType.Age:
       copyOfStudents.sort((prevStudent, nextStudent) => {
-        return isOrderedBy
+        return isAscending
           ? prevStudent.age - nextStudent.age
           : nextStudent.age - prevStudent.age;
       });
       break;
 
-    case
-      SortType.Married:
+    case SortType.Married:
       copyOfStudents.sort((prevStudent, nextStudent) => {
-        return isOrderedBy
+        return isAscending
           ? +prevStudent.married - +nextStudent.married
           : +nextStudent.married - +prevStudent.married;
       });
       break;
 
-    case
-      SortType.AverageGrade:
+    case SortType.AverageGrade:
       copyOfStudents.sort((prevStudent, nextStudent) => {
-        const averageGrade = (student: Student): number => {
-          return student.grades.reduce(
-            (sum: number, grade: number) => sum + grade,
-          ) / student.grades.length;
-        };
-
-        return isOrderedBy
+        return isAscending
           ? averageGrade(prevStudent) - averageGrade(nextStudent)
           : averageGrade(nextStudent) - averageGrade(prevStudent);
       });
       break;
 
     default:
-      throw new Error('Error!');
+      throw new Error('Error! There is no key with that name!');
   }
 
   return copyOfStudents;
