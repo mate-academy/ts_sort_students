@@ -14,7 +14,10 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  desc = 'desc',
+  asc = 'asc',
+}
 
 function averageGrade(student: Student): number {
   const totalSum = student.grades.reduce(
@@ -57,7 +60,7 @@ export function sortStudents(
       sortResult = (aField as number) - (bField as number);
     }
 
-    if (order === 'desc') {
+    if (order === SortOrder.desc) {
       sortResult = -sortResult;
     }
 
