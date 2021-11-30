@@ -45,9 +45,10 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      newArrOfStudents.sort((prevStudent, nextStudent) => (order === 'asc'
-        ? gradeAverage(prevStudent.grades) - gradeAverage(nextStudent.grades)
-        : gradeAverage(nextStudent.grades) - gradeAverage(prevStudent.grades)
+      newArrOfStudents.sort((prevStudent, nextStudent) => (
+        order === 'asc'
+          ? gradeAverage(prevStudent.grades) - gradeAverage(nextStudent.grades)
+          : gradeAverage(nextStudent.grades) - gradeAverage(prevStudent.grades)
       ));
       break;
 
