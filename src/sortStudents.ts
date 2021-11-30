@@ -38,9 +38,10 @@ export function sortStudents(
 
     case SortType.Age:
     case SortType.Married:
-      newArrOfStudents.sort((prevStudent, nextStudent) => (order === 'asc'
-        ? +prevStudent[sortBy] - +nextStudent[sortBy]
-        : +nextStudent[sortBy] - +prevStudent[sortBy]
+      newArrOfStudents.sort((prevStudent, nextStudent) => (
+        order === 'asc'
+          ? +prevStudent[sortBy] - +nextStudent[sortBy]
+          : +nextStudent[sortBy] - +prevStudent[sortBy]
       ));
       break;
 
