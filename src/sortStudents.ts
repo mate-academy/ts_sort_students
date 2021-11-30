@@ -23,7 +23,11 @@ export function sortStudents(
   order:SortOrder,
 ):Student[] {
   const copyOfArray:Student[] = students.map((student) => {
-    const avG = student.grades.reduce((a, b) => a + b) / student.grades.length;
+    let avG = 0;
+
+    if (sortBy === SortType.AverageGrade) {
+      avG = student.grades.reduce((a, b) => a + b) / student.grades.length;
+    }
 
     return {
       ...student,
