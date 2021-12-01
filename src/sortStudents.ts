@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -26,62 +26,37 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newStudents: Student[] = students
-    .map((person: Student) => ({ ...person }));
-
-  const isAscending = order === 'asc';
+  const sortedStudents: Student[] = [...students];
 
   switch (sortBy) {
-    case SortType.Name: {
-      return newStudents.sort(isAscending
-        ? (student1: Student, student2: Student): number => (
-          student1.name.localeCompare(student2.name)
-        )
-        : (student1: Student, student2: Student): number => (
-          student2.name.localeCompare(student1.name)
-        ));
-    }
+    case SortType.Name:
+    case SortType.Surname:
+      sortedStudents.sort((student1, student2) => {
+        return order === 'asc'
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
+      });
+      break;
 
-    case SortType.Surname: {
-      return newStudents.sort(isAscending
-        ? (student1: Student, student2: Student): number => (
-          student1.surname.localeCompare(student2.surname)
-        )
-        : (student1: Student, student2: Student): number => (
-          student2.surname.localeCompare(student1.surname)
-        ));
-    }
+    case SortType.Age:
+    case SortType.Married:
+      sortedStudents.sort((student1, student2) => {
+        return order === 'asc'
+          ? Number(student1[sortBy]) - Number(student2[sortBy])
+          : Number(student2[sortBy]) - Number(student1[sortBy]);
+      });
+      break;
 
-    case SortType.Age: {
-      return newStudents.sort(isAscending
-        ? (student1: Student, student2: Student): number => (
-          student1.age - student2.age
-        )
-        : (student1: Student, student2: Student): number => (
-          student2.age - student1.age
-        ));
-    }
+    case SortType.AverageGrade:
+      sortedStudents.sort((student1, student2) => {
+        return order === 'asc'
+          ? getAverageGrade(student1.grades) - getAverageGrade(student2.grades)
+          : getAverageGrade(student2.grades) - getAverageGrade(student1.grades);
+      });
+      break;
 
-    case SortType.Married: {
-      return newStudents.sort(isAscending
-        ? (student1: Student, student2: Student): number => (
-          Number(student1.married) - Number(student2.married)
-        )
-        : (student1: Student, student2: Student): number => (
-          Number(student2.married) - Number(student1.married)
-        ));
-    }
-
-    case SortType.AverageGrade: {
-      return newStudents.sort(isAscending
-        ? (student1: Student, student2: Student): number => (
-          getAverageGrade(student1.grades) - getAverageGrade(student2.grades)
-        )
-        : (student1: Student, student2: Student): number => (
-          getAverageGrade(student2.grades) - getAverageGrade(student1.grades)
-        ));
-    }
-
-    default: throw new Error('Unknown error');
+    default: throw new Error('Erro, wrong message');
   }
+
+  return sortedStudents;
 }
