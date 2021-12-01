@@ -21,8 +21,8 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): object {
-  const sortedStudents: object = [...students];
+): Student[] {
+  const sortedStudents: Student[] = [...students];
 
   function avarageNum(numArray: number[]): number {
     return numArray.reduce((sum, num) => sum + num, 0) / numArray.length;
