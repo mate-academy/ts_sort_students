@@ -88,7 +88,7 @@ export function sortStudents(
         });
       }
       break;
-    default: return {};
+    default: return sortStudents;
   }
 
   return sortedStudents;
