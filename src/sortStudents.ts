@@ -14,10 +14,16 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc'
+}
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   let studentsCopy: Student[] = [];
 
   studentsCopy = students.map((a) => ({ ...a }));
@@ -25,17 +31,19 @@ export function sortStudents(students: Student[],
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        studentsCopy.sort((a: Student,
-          b: Student) => (a[sortBy].localeCompare(b[sortBy])));
+      if (order === SortOrder.Asc) {
+        studentsCopy.sort((a: Student, b: Student) => (
+          a[sortBy].localeCompare(b[sortBy])
+        ));
       } else {
-        studentsCopy.sort((a: Student,
-          b: Student) => (b[sortBy].localeCompare(a[sortBy])));
+        studentsCopy.sort((a: Student, b: Student) => (
+          b[sortBy].localeCompare(a[sortBy])
+        ));
       }
       break;
 
     case SortType.Age:
-      if (order === 'asc') {
+      if (order === SortOrder.Asc) {
         studentsCopy.sort((a: Student, b: Student) => (a[sortBy] - b[sortBy]));
       } else {
         studentsCopy.sort((a: Student, b: Student) => (b[sortBy] - a[sortBy]));
@@ -43,12 +51,14 @@ export function sortStudents(students: Student[],
       break;
 
     case SortType.Married:
-      if (order === 'asc') {
-        studentsCopy.sort((a: Student,
-          b: Student) => (+a[sortBy] - +b[sortBy]));
+      if (order === SortOrder.Asc) {
+        studentsCopy.sort((a: Student, b: Student) => (
+          +a[sortBy] - +b[sortBy]
+        ));
       } else {
-        studentsCopy.sort((a: Student,
-          b: Student) => (+b[sortBy] - +a[sortBy]));
+        studentsCopy.sort((a: Student, b: Student) => (
+          +b[sortBy] - +a[sortBy]
+        ));
       }
 
       break;
@@ -63,7 +73,7 @@ export function sortStudents(students: Student[],
 
         gradesSecond /= second[sortBy].length;
 
-        if (order === 'asc') {
+        if (order === SortOrder.Asc) {
           return gradesFirst - gradesSecond;
         }
 
