@@ -16,13 +16,13 @@ export enum SortType {
 }
 
 // create SortOrder type
-export type SortOrder = 'asc' | 'desc';
+export type SortOrder = 'ASC' | 'DESC';
 
 type Callback = (grades: number[]) => number;
 type Comparison = (a: string, b: string) => number;
 
 const calc: Callback = (grades) => {
-  return grades.reduce((a: number, b: number) => a + b) / grades.length;
+  return grades.reduce((a, b) => a + b) / grades.length;
 };
 
 const compare: Comparison = (a, b) => {
@@ -42,50 +42,50 @@ export function sortStudents(students, sortBy, order): object[] {
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
+      if (order === 'ASC') {
         sortedStudents.sort((a: Student, b: Student) =>
           compare(a.name, b.name));
-      } else if (order === 'desc') {
+      } else if (order === 'DESC') {
         sortedStudents.sort((a: Student, b: Student) =>
           compare(b.name, a.name));
       }
       break;
 
     case SortType.Surname:
-      if (order === 'asc') {
+      if (order === 'ASC') {
         sortedStudents.sort((a: Student, b: Student) =>
           compare(a.surname, b.surname));
-      } else if (order === 'desc') {
+      } else if (order === 'DESC') {
         sortedStudents.sort((a: Student, b: Student) =>
           compare(b.surname, a.surname));
       }
       break;
 
     case SortType.Age:
-      if (order === 'asc') {
+      if (order === 'ASC') {
         sortedStudents.sort((a: Student, b: Student) =>
           <number>a.age - <number>b.age);
-      } else if (order === 'desc') {
+      } else if (order === 'DESC') {
         sortedStudents.sort((a: Student, b: Student) =>
           <number>b.age - <number>a.age);
       }
       break;
 
     case SortType.Married:
-      if (order === 'asc') {
+      if (order === 'ASC') {
         sortedStudents.sort((a: Student, b: Student) =>
           <number>+a.married - <number>+b.married);
-      } else if (order === 'desc') {
+      } else if (order === 'DESC') {
         sortedStudents.sort((a: Student, b: Student) =>
           <number>+b.married - <number>+a.married);
       }
       break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
+      if (order === 'ASC') {
         sortedStudents.sort((a: Student, b: Student) =>
           <number>calc(a.grades) - <number>calc(b.grades));
-      } else if (order === 'desc') {
+      } else if (order === 'DESC') {
         sortedStudents.sort((a: Student, b: Student) =>
           <number>calc(b.grades) - <number>calc(a.grades));
       }
