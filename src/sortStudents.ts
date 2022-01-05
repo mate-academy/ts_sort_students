@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const sumOfStudentGrades = (student: Student) :number => {
+const avarageStudentGrade = (student: Student) :number => {
   return student.grades.reduce((prev:number, curent:number) => prev + curent)
     / student.grades.length;
 };
@@ -51,7 +51,7 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         sortedStudents = [...students].sort((a, b) => {
-          return sumOfStudentGrades(a) - sumOfStudentGrades(b);
+          return avarageStudentGrade(a) - avarageStudentGrade(b);
         });
         break;
 
@@ -86,7 +86,7 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         sortedStudents = [...students].sort((a, b) => {
-          return sumOfStudentGrades(b) - sumOfStudentGrades(a);
+          return avarageStudentGrade(b) - avarageStudentGrade(a);
         });
         break;
 
