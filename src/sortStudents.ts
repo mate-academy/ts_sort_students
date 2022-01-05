@@ -1,16 +1,105 @@
-
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
+
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+const sumOfStudentGrades = (student: Student) :number => {
+  return student.grades.reduce((prev:number, curent:number) => prev + curent)
+    / student.grades.length;
+};
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+) : Student[] {
+  let sortedStudents : Student[];
+
+  if (order === 'asc') {
+    switch (sortBy) {
+      case SortType.Name:
+        sortedStudents = [...students].sort((a, b) => {
+          return a[`${sortBy}`].localeCompare(b[`${sortBy}`]);
+        });
+        break;
+
+      case SortType.Surname:
+        sortedStudents = [...students].sort((a, b) => {
+          return a[`${sortBy}`].localeCompare(b[`${sortBy}`]);
+        });
+        break;
+
+      case SortType.Married:
+        sortedStudents = [...students].sort((a, b) => {
+          return Number(a[`${sortBy}`]) - Number(b[`${sortBy}`]);
+        });
+        break;
+
+      case SortType.AverageGrade:
+        sortedStudents = [...students].sort((a, b) => {
+          return sumOfStudentGrades(a) - sumOfStudentGrades(b);
+        });
+        break;
+
+      case SortType.Age:
+        sortedStudents = [...students].sort((a, b) => {
+          return a[`${sortBy}`] - b[`${sortBy}`];
+        });
+        break;
+
+      default:
+        return [];
+    }
+  } else {
+    switch (sortBy) {
+      case SortType.Name:
+        sortedStudents = [...students].sort((a, b) => {
+          return b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
+        });
+        break;
+
+      case SortType.Surname:
+        sortedStudents = [...students].sort((a, b) => {
+          return b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
+        });
+        break;
+
+      case SortType.Married:
+        sortedStudents = [...students].sort((a, b) => {
+          return Number(b[`${sortBy}`]) - Number(a[`${sortBy}`]);
+        });
+        break;
+
+      case SortType.AverageGrade:
+        sortedStudents = [...students].sort((a, b) => {
+          return sumOfStudentGrades(b) - sumOfStudentGrades(a);
+        });
+        break;
+
+      case SortType.Age:
+        sortedStudents = [...students].sort((a, b) => {
+          return b[`${sortBy}`] - a[`${sortBy}`];
+        });
+        break;
+
+      default:
+        return [];
+    }
+  }
+
+  return sortedStudents;
 }
