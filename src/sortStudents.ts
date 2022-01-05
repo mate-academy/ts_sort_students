@@ -29,46 +29,46 @@ export function sortStudents(
 
   switch (sortBy) {
     case (SortType.Name):
-      studentsCopy.sort((prev, curr) => {
+      studentsCopy.sort((studentA, studentB) => {
         return order === 'asc'
-          ? prev.name.localeCompare(curr.name)
-          : curr.name.localeCompare(prev.name);
+          ? studentA.name.localeCompare(studentB.name)
+          : studentB.name.localeCompare(studentA.name);
       });
 
       break;
 
     case (SortType.Surname):
-      studentsCopy.sort((prev, curr) => {
+      studentsCopy.sort((studentA, studentB) => {
         return order === 'asc'
-          ? prev.surname.localeCompare(curr.surname)
-          : curr.surname.localeCompare(prev.surname);
+          ? studentA.surname.localeCompare(studentB.surname)
+          : studentB.surname.localeCompare(studentA.surname);
       });
 
       break;
 
     case (SortType.Age):
-      studentsCopy.sort((prev, curr) => {
+      studentsCopy.sort((studentA, studentB) => {
         return order === 'asc'
-          ? prev.age - curr.age
-          : curr.age - prev.age;
+          ? studentA.age - studentB.age
+          : studentB.age - studentA.age;
       });
 
       break;
 
     case (SortType.Married):
-      studentsCopy.sort((prev, curr) => {
+      studentsCopy.sort((studentA, studentB) => {
         return order === 'asc'
-          ? +prev.married - +curr.married
-          : +curr.married - +prev.married;
+          ? +studentA.married - +studentB.married
+          : +studentB.married - +studentA.married;
       });
 
       break;
 
     case (SortType.AverageGrade):
-      studentsCopy.sort((prev, curr) => {
+      studentsCopy.sort((studentA, studentB) => {
         return order === 'asc'
-          ? average(prev.grades) - average(curr.grades)
-          : average(curr.grades) - average(prev.grades);
+          ? average(studentA.grades) - average(studentB.grades)
+          : average(studentB.grades) - average(studentA.grades);
       });
 
       break;
