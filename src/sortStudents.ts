@@ -14,9 +14,6 @@ export enum SortType {
   AverageGrade,
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const a = 1;
-
 export type SortOrder = 'asc' | 'desc';
 
 export function getAverageGrade(grades: number[]): number {
