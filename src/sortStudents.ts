@@ -31,16 +31,20 @@ export function sortStudents(
     case SortType.Name:
       return (order === 'asc')
         ? studentsCopy.sort((studentA, studentB) => (
-          studentA.name.localeCompare(studentB.name)))
+          studentA.name.localeCompare(studentB.name)
+        ))
         : studentsCopy.sort((studentA, studentB) => (
-          studentB.name.localeCompare(studentA.name)));
+          studentB.name.localeCompare(studentA.name)
+        ));
 
     case SortType.Surname:
       return (order === 'asc')
         ? studentsCopy.sort((studentA, studentB) => (
-          studentA.surname.localeCompare(studentB.surname)))
+          studentA.surname.localeCompare(studentB.surname)
+        ))
         : studentsCopy.sort((studentA, studentB) => (
-          studentB.surname.localeCompare(studentA.surname)));
+          studentB.surname.localeCompare(studentA.surname)
+        ));
 
     case SortType.Age:
       return (order === 'asc')
@@ -59,9 +63,11 @@ export function sortStudents(
     case SortType.AverageGrade:
       return (order === 'asc')
         ? studentsCopy.sort((studentA, studentB) => (
-          average(studentA.grades) - average(studentB.grades)))
+          average(studentA.grades) - average(studentB.grades)
+        ))
         : studentsCopy.sort((studentA, studentB) => (
-          average(studentB.grades) - average(studentA.grades)));
+          average(studentB.grades) - average(studentA.grades)
+        ));
 
     default:
       return studentsCopy;
