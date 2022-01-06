@@ -29,63 +29,41 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        studentsCopy.sort((studentA, studentB) => (
-          studentA.name.localeCompare(studentB.name)));
-      } else {
-        studentsCopy.sort((studentA, studentB) => (
+      return (order === 'asc')
+        ? studentsCopy.sort((studentA, studentB) => (
+          studentA.name.localeCompare(studentB.name)))
+        : studentsCopy.sort((studentA, studentB) => (
           studentB.name.localeCompare(studentA.name)));
-      }
-
-      break;
 
     case SortType.Surname:
-      if (order === 'asc') {
-        studentsCopy.sort((studentA, studentB) => (
-          studentA.surname.localeCompare(studentB.surname)));
-      } else {
-        studentsCopy.sort((studentA, studentB) => (
+      return (order === 'asc')
+        ? studentsCopy.sort((studentA, studentB) => (
+          studentA.surname.localeCompare(studentB.surname)))
+        : studentsCopy.sort((studentA, studentB) => (
           studentB.surname.localeCompare(studentA.surname)));
-      }
-
-      break;
 
     case SortType.Age:
-      if (order === 'asc') {
-        studentsCopy.sort((studentA, studentB) => (
-          studentA.age - studentB.age));
-      } else {
-        studentsCopy.sort((studentA, studentB) => (
+      return (order === 'asc')
+        ? studentsCopy.sort((studentA, studentB) => (
+          studentA.age - studentB.age))
+        : studentsCopy.sort((studentA, studentB) => (
           studentB.age - studentA.age));
-      }
-
-      break;
 
     case SortType.Married:
-      if (order === 'asc') {
-        studentsCopy.sort((studentA, studentB) => (
-          +studentA.married - +studentB.married));
-      } else {
-        studentsCopy.sort((studentA, studentB) => (
+      return (order === 'asc')
+        ? studentsCopy.sort((studentA, studentB) => (
+          +studentA.married - +studentB.married))
+        : studentsCopy.sort((studentA, studentB) => (
           +studentB.married - +studentA.married));
-      }
-
-      break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        studentsCopy.sort((studentA, studentB) => (
-          average(studentA.grades) - average(studentB.grades)));
-      } else {
-        studentsCopy.sort((studentA, studentB) => (
+      return (order === 'asc')
+        ? studentsCopy.sort((studentA, studentB) => (
+          average(studentA.grades) - average(studentB.grades)))
+        : studentsCopy.sort((studentA, studentB) => (
           average(studentB.grades) - average(studentA.grades)));
-      }
-
-      break;
 
     default:
       return studentsCopy;
   }
-
-  return studentsCopy;
 }
