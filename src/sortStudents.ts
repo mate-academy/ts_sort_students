@@ -8,16 +8,16 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'name',
-  Surname = 'surname',
-  Age = 'age',
-  Married = 'married',
-  AverageGrade = 'grades'
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-const avarageStudentGrade = (student: Student) :number => {
+const avarageGrade = (student: Student) :number => {
   return student.grades.reduce((prev:number, curent:number) => prev + curent)
     / student.grades.length;
 };
@@ -27,52 +27,39 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ) : Student[] {
-  let sortedStudents : Student[] = [...students];
+  const sortedStudents : Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      sortedStudents = students.sort((a, b) => {
-        return order === 'asc'
-          ? a[`${sortBy}`].localeCompare(b[`${sortBy}`])
-          : b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
-      });
-      break;
-
     case SortType.Surname:
-      sortedStudents = students.sort((a, b) => {
-        return order === 'asc'
-          ? a[`${sortBy}`].localeCompare(b[`${sortBy}`])
-          : b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
-      });
-      break;
+      return order === 'asc'
+        ? sortedStudents.sort((firstStudent, secondStudent) => (
+          firstStudent.name.localeCompare(secondStudent.name)))
+        : sortedStudents.sort((firstStudent, secondStudent) => (
+          secondStudent.name.localeCompare(firstStudent.name)));
 
     case SortType.Married:
-      sortedStudents = students.sort((a, b) => {
-        return order === 'asc'
-          ? Number(a[`${sortBy}`]) - Number(b[`${sortBy}`])
-          : Number(b[`${sortBy}`]) - Number(a[`${sortBy}`]);
-      });
-      break;
+      return order === 'asc'
+        ? sortedStudents.sort((firstStudent, secondStudent) => (
+          Number(firstStudent.married) - Number(secondStudent.married)))
+        : sortedStudents.sort((firstStudent, secondStudent) => (
+          Number(secondStudent.married) - Number(firstStudent.married)));
 
     case SortType.AverageGrade:
-      sortedStudents = students.sort((a, b) => {
-        return order === 'asc'
-          ? avarageStudentGrade(a) - avarageStudentGrade(b)
-          : avarageStudentGrade(b) - avarageStudentGrade(a);
-      });
-      break;
+      return order === 'asc'
+        ? sortedStudents.sort((firstStudent, secondStudent) => (
+          avarageGrade(firstStudent) - avarageGrade(secondStudent)))
+        : sortedStudents.sort((firstStudent, secondStudent) => (
+          avarageGrade(secondStudent) - avarageGrade(firstStudent)));
 
     case SortType.Age:
-      sortedStudents = students.sort((a, b) => {
-        return order === 'asc'
-          ? a[`${sortBy}`] - b[`${sortBy}`]
-          : b[`${sortBy}`] - a[`${sortBy}`];
-      });
-      break;
+      return order === 'asc'
+        ? sortedStudents.sort((firstStudent, secondStudent) => (
+          firstStudent.age - secondStudent.age))
+        : sortedStudents.sort((firstStudent, secondStudent) => (
+          secondStudent.age - firstStudent.age));
 
     default:
       return [];
   }
-
-  return sortedStudents;
 }
