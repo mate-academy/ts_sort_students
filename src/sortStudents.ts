@@ -18,7 +18,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 const avarageGrade = (student: Student) :number => {
-  return student.grades.reduce((prev:number, curent:number) => prev + curent)
+  return student.grades.reduce((prev:number, grade: number) => prev + grade)
     / student.grades.length;
 };
 
@@ -31,26 +31,40 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
+      return order === 'asc'
+        ? sortedStudents.sort((firstStudent, secondStudent) => (
+          firstStudent.name.localeCompare(secondStudent.name)
+        ))
+        : sortedStudents.sort((firstStudent, secondStudent) => (
+          secondStudent.name.localeCompare(firstStudent.name)
+        ));
+
     case SortType.Surname:
       return order === 'asc'
         ? sortedStudents.sort((firstStudent, secondStudent) => (
-          firstStudent.name.localeCompare(secondStudent.name)))
+          firstStudent.surname.localeCompare(secondStudent.surname)
+        ))
         : sortedStudents.sort((firstStudent, secondStudent) => (
-          secondStudent.name.localeCompare(firstStudent.name)));
+          secondStudent.surname.localeCompare(firstStudent.surname)
+        ));
 
     case SortType.Married:
       return order === 'asc'
         ? sortedStudents.sort((firstStudent, secondStudent) => (
-          Number(firstStudent.married) - Number(secondStudent.married)))
+          Number(firstStudent.married) - Number(secondStudent.married)
+        ))
         : sortedStudents.sort((firstStudent, secondStudent) => (
-          Number(secondStudent.married) - Number(firstStudent.married)));
+          Number(secondStudent.married) - Number(firstStudent.married)
+        ));
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? sortedStudents.sort((firstStudent, secondStudent) => (
-          avarageGrade(firstStudent) - avarageGrade(secondStudent)))
+          avarageGrade(firstStudent) - avarageGrade(secondStudent)
+        ))
         : sortedStudents.sort((firstStudent, secondStudent) => (
-          avarageGrade(secondStudent) - avarageGrade(firstStudent)));
+          avarageGrade(secondStudent) - avarageGrade(firstStudent)
+        ));
 
     case SortType.Age:
       return order === 'asc'
