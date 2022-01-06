@@ -27,78 +27,51 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ) : Student[] {
-  let sortedStudents : Student[];
+  let sortedStudents : Student[] = [...students];
 
-  if (order === 'asc') {
-    switch (sortBy) {
-      case SortType.Name:
-        sortedStudents = [...students].sort((a, b) => {
-          return a[`${sortBy}`].localeCompare(b[`${sortBy}`]);
-        });
-        break;
+  switch (sortBy) {
+    case SortType.Name:
+      sortedStudents = students.sort((a, b) => {
+        return order === 'asc'
+          ? a[`${sortBy}`].localeCompare(b[`${sortBy}`])
+          : b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
+      });
+      break;
 
-      case SortType.Surname:
-        sortedStudents = [...students].sort((a, b) => {
-          return a[`${sortBy}`].localeCompare(b[`${sortBy}`]);
-        });
-        break;
+    case SortType.Surname:
+      sortedStudents = students.sort((a, b) => {
+        return order === 'asc'
+          ? a[`${sortBy}`].localeCompare(b[`${sortBy}`])
+          : b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
+      });
+      break;
 
-      case SortType.Married:
-        sortedStudents = [...students].sort((a, b) => {
-          return Number(a[`${sortBy}`]) - Number(b[`${sortBy}`]);
-        });
-        break;
+    case SortType.Married:
+      sortedStudents = students.sort((a, b) => {
+        return order === 'asc'
+          ? Number(a[`${sortBy}`]) - Number(b[`${sortBy}`])
+          : Number(b[`${sortBy}`]) - Number(a[`${sortBy}`]);
+      });
+      break;
 
-      case SortType.AverageGrade:
-        sortedStudents = [...students].sort((a, b) => {
-          return avarageStudentGrade(a) - avarageStudentGrade(b);
-        });
-        break;
+    case SortType.AverageGrade:
+      sortedStudents = students.sort((a, b) => {
+        return order === 'asc'
+          ? avarageStudentGrade(a) - avarageStudentGrade(b)
+          : avarageStudentGrade(b) - avarageStudentGrade(a);
+      });
+      break;
 
-      case SortType.Age:
-        sortedStudents = [...students].sort((a, b) => {
-          return a[`${sortBy}`] - b[`${sortBy}`];
-        });
-        break;
+    case SortType.Age:
+      sortedStudents = students.sort((a, b) => {
+        return order === 'asc'
+          ? a[`${sortBy}`] - b[`${sortBy}`]
+          : b[`${sortBy}`] - a[`${sortBy}`];
+      });
+      break;
 
-      default:
-        return [];
-    }
-  } else {
-    switch (sortBy) {
-      case SortType.Name:
-        sortedStudents = [...students].sort((a, b) => {
-          return b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
-        });
-        break;
-
-      case SortType.Surname:
-        sortedStudents = [...students].sort((a, b) => {
-          return b[`${sortBy}`].localeCompare(a[`${sortBy}`]);
-        });
-        break;
-
-      case SortType.Married:
-        sortedStudents = [...students].sort((a, b) => {
-          return Number(b[`${sortBy}`]) - Number(a[`${sortBy}`]);
-        });
-        break;
-
-      case SortType.AverageGrade:
-        sortedStudents = [...students].sort((a, b) => {
-          return avarageStudentGrade(b) - avarageStudentGrade(a);
-        });
-        break;
-
-      case SortType.Age:
-        sortedStudents = [...students].sort((a, b) => {
-          return b[`${sortBy}`] - a[`${sortBy}`];
-        });
-        break;
-
-      default:
-        return [];
-    }
+    default:
+      return [];
   }
 
   return sortedStudents;
