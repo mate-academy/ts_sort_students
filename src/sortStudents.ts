@@ -46,24 +46,20 @@ sortStudents(students: Student[], sortBy: string, order: SortOrder): object[] {
       break;
     case 'grades':
       sortedStudents.sort((a: Student, b: Student): number => {
-        let countA = 0;
         let sumA = 0;
-        let countB = 0;
         let sumB = 0;
 
         a[sortBy].forEach((item: number) => {
-          countA += 1;
           sumA += item;
         });
 
-        const averageA = sumA / countA;
+        const averageA = sumA / a[sortBy].length;
 
         b[sortBy].forEach((item: number) => {
-          countB += 1;
           sumB += item;
         });
 
-        const averageB = sumB / countB;
+        const averageB = sumB / b[sortBy].length;
 
         if (order === 'asc') {
           return averageA - averageB;
