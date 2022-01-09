@@ -18,7 +18,8 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function
-sortStudents(students: Student[], sortBy: string, order: SortOrder): object[] {
+sortStudents(students: Student[], sortBy: SortType,
+  order: SortOrder): object[] {
   const sortedStudents: Student[] = [...students];
 
   switch (sortBy) {
