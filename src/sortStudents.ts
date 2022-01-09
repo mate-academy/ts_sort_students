@@ -15,25 +15,18 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  Ascending = 'asc',
+  Descending = 'des',
+}
 
 function sortStrings(
   sortBy: 'name' | 'surname',
   order: SortOrder,
 ): (a: Student, b: Student) => number {
-  switch (order) {
-    case 'asc':
-      return (a: Student, b: Student): number => a[sortBy]
-        .localeCompare(b[sortBy]);
-
-    case 'desc':
-      return (a: Student, b: Student): number => b[sortBy]
-        .localeCompare(a[sortBy]);
-
-    default:
-      throw new Error('Enter valid sort type');
-  }
+  return order === SortOrder.Ascending
+    ? (a: Student, b: Student): number => a[sortBy].localeCompare(b[sortBy])
+    : (a: Student, b: Student): number => b[sortBy].localeCompare(a[sortBy]);
 }
 
 function toNumber(value: number | boolean | number[]): number {
@@ -54,18 +47,13 @@ function sortNumbers(
   sortBy: 'age' | 'married' | 'grades',
   order: SortOrder,
 ): (a: Student, b: Student) => number {
-  switch (order) {
-    case 'asc':
-      return (a: Student, b: Student): number => toNumber(a[sortBy])
-        - toNumber(b[sortBy]);
-
-    case 'desc':
-      return (a: Student, b: Student): number => toNumber(b[sortBy])
-        - toNumber(a[sortBy]);
-
-    default:
-      throw new Error('Enter valid sort type');
-  }
+  return order === SortOrder.Ascending
+    ? (a: Student, b: Student): number => (
+      toNumber(a[sortBy]) - toNumber(b[sortBy])
+    )
+    : (a: Student, b: Student): number => (
+      toNumber(b[sortBy]) - toNumber(a[sortBy])
+    );
 }
 
 export function sortStudents(
