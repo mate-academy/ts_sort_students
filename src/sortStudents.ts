@@ -23,7 +23,7 @@ sortStudents(students: Student[], sortBy: SortType,
   const sortedStudents: Student[] = [...students];
 
   switch (sortBy) {
-    case 'age':
+    case SortType.Age:
       if (order === 'asc') {
         sortedStudents.sort((a: Student, b: Student): number => {
           return a[sortBy] - b[sortBy];
@@ -34,7 +34,7 @@ sortStudents(students: Student[], sortBy: SortType,
         });
       }
       break;
-    case 'married':
+    case SortType.Married:
       if (order === 'asc') {
         sortedStudents.sort((a: Student, b: Student): number => {
           return Number(a[sortBy]) - Number(b[sortBy]);
@@ -45,7 +45,7 @@ sortStudents(students: Student[], sortBy: SortType,
         });
       }
       break;
-    case 'grades':
+    case SortType.AverageGrade:
       sortedStudents.sort((a: Student, b: Student): number => {
         let sumA = 0;
         let sumB = 0;
