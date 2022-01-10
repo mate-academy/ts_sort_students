@@ -28,7 +28,7 @@ export function sortStudents(
   students: Student,
   sortBy: SortType,
   order: SortOrder,
-): object {
+): Student[] {
   const studentCopy: Student[] = [...students];
 
   switch (sortBy) {
