@@ -32,43 +32,43 @@ export function sortStudents(
   });
 
   if (order === 'asc') {
-    switch (sortBy) {
-      case SortType.Name:
-        return copyStudents.sort((a, b) => {
+    return copyStudents.sort((a, b) => {
+      switch (sortBy) {
+        case SortType.Name:
           return a.name.localeCompare(b.name);
-        });
 
-      case SortType.Surname:
-        return copyStudents.sort((a, b) => {
+        case SortType.Surname:
           return a.surname.localeCompare(b.surname);
-        });
 
-      case SortType.Age:
-        return copyStudents.sort((a, b) => b.age - a.age);
+        case SortType.Age:
+          return b.age - a.age;
 
-      case SortType.AverageGrade:
-        return copyStudents.sort((a, b) => a.avgGrades - b.avgGrades);
+        case SortType.AverageGrade:
+          return a.avgGrades - b.avgGrades;
 
-      default:
-        return [];
-    }
+        default:
+          return 0;
+      }
+    });
   }
 
   if (order === 'desc') {
-    switch (sortBy) {
-      case SortType.Age:
-        return copyStudents.sort((a, b) => b.age - a.age);
+    return copyStudents.sort((a, b) => {
+      switch (sortBy) {
+        case SortType.Age:
+          return b.age - a.age;
 
-      case SortType.Married:
-        return copyStudents.sort((a, b) => +b.married - +a.married);
+        case SortType.Married:
+          return +b.married - +a.married;
 
-      case SortType.AverageGrade:
-        return copyStudents.sort((a, b) => b.avgGrades - a.avgGrades);
+        case SortType.AverageGrade:
+          return b.avgGrades - a.avgGrades;
 
-      default:
-        return [];
-    }
+        default:
+          return 0;
+      }
+    });
   }
 
-  return [];
+  return students;
 }
