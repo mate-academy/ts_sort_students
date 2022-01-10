@@ -22,161 +22,75 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStudents: Student[] = students.map((student) => {
-    return {
-      ...student,
-    };
-  });
-
   if (order === 'asc') {
-    switch (sortBy) {
-      case SortType.Name: {
-        copyStudents.sort((
-          a: Student,
-          b: Student,
-        ) => a.name.localeCompare(b.name));
+    return [...students].sort((a, b) => {
+      switch (sortBy) {
+        case SortType.Name: {
+          return a.name.localeCompare(b.name);
+        }
 
-        break;
-      }
+        case SortType.Surname: {
+          return a.surname.localeCompare(b.surname);
+        }
 
-      case SortType.Surname: {
-        copyStudents.sort((
-          a: Student,
-          b: Student,
-        ) => a.surname.localeCompare(b.surname));
+        case SortType.Age: {
+          return a.age - b.age;
+        }
 
-        break;
-      }
+        case SortType.Married: {
+          return +a.married - +b.married;
+        }
 
-      case SortType.Age: {
-        copyStudents.sort((
-          a: Student,
-          b: Student,
-        ) => a.age - b.age);
+        case SortType.AverageGrade: {
+          const avgA: number = a.grades.reduce((accum, curr) => accum + curr, 0)
+              / a.grades.length;
+          const avgB: number = b.grades.reduce((accum, curr) => accum + curr, 0)
+            / b.grades.length;
 
-        break;
-      }
+          return avgA - avgB;
+        }
 
-      case SortType.Married: {
-        copyStudents.sort((a: Student, b: Student) => {
-          if ((a.married) === true && (b.married) === false) {
-            return 1;
-          }
-
-          if ((a.married) === false && (b.married) === true) {
-            return -1;
-          }
-
+        default: {
           return 0;
-        });
-
-        break;
+        }
       }
-
-      case SortType.AverageGrade: {
-        copyStudents.sort((a, b) => {
-          if (
-            (a.grades.reduce((accum, curr) => accum + curr, 0)
-            / a.grades.length)
-          > (b.grades.reduce((accum, curr) => accum + curr, 0))
-          / b.grades.length) {
-            return 1;
-          }
-
-          if (
-            (b.grades.reduce((accum, curr) => accum + curr, 0)
-            / b.grades.length)
-          > (a.grades.reduce((accum, curr) => accum + curr, 0))
-          / a.grades.length) {
-            return -1;
-          }
-
-          return 0;
-        });
-
-        break;
-      }
-
-      default: {
-        throw new Error('No sort type inserted');
-      }
-    }
+    });
   }
 
   if (order === 'desc') {
-    switch (sortBy) {
-      case SortType.Name: {
-        copyStudents.sort((
-          a: Student,
-          b: Student,
-        ) => b.name.localeCompare(a.name));
+    return [...students].sort((a, b) => {
+      switch (sortBy) {
+        case SortType.Name: {
+          return b.name.localeCompare(a.name);
+        }
 
-        break;
-      }
+        case SortType.Surname: {
+          return b.surname.localeCompare(a.surname);
+        }
 
-      case SortType.Surname: {
-        copyStudents.sort((
-          a: Student,
-          b: Student,
-        ) => b.surname.localeCompare(a.surname));
+        case SortType.Age: {
+          return b.age - a.age;
+        }
 
-        break;
-      }
+        case SortType.Married: {
+          return +b.married - +a.married;
+        }
 
-      case SortType.Age: {
-        copyStudents.sort((
-          a: Student,
-          b: Student,
-        ) => b.age - a.age);
+        case SortType.AverageGrade: {
+          const avgA: number = a.grades.reduce((accum, curr) => accum + curr, 0)
+              / a.grades.length;
+          const avgB: number = b.grades.reduce((accum, curr) => accum + curr, 0)
+            / b.grades.length;
 
-        break;
-      }
+          return avgB - avgA;
+        }
 
-      case SortType.Married: {
-        copyStudents.sort((a: Student, b: Student) => {
-          if ((a.married) === true && (b.married) === false) {
-            return -1;
-          }
-
-          if ((a.married) === false && (b.married) === true) {
-            return 1;
-          }
-
+        default: {
           return 0;
-        });
-
-        break;
+        }
       }
-
-      case SortType.AverageGrade: {
-        copyStudents.sort((a, b) => {
-          if (
-            (a.grades.reduce((accum, curr) => accum + curr, 0)
-            / a.grades.length)
-          > (b.grades.reduce((accum, curr) => accum + curr, 0))
-          / b.grades.length) {
-            return -1;
-          }
-
-          if (
-            (b.grades.reduce((accum, curr) => accum + curr, 0)
-            / b.grades.length)
-          > (a.grades.reduce((accum, curr) => accum + curr, 0))
-          / a.grades.length) {
-            return 1;
-          }
-
-          return 0;
-        });
-
-        break;
-      }
-
-      default: {
-        throw new Error('No sort type inserted');
-      }
-    }
+    });
   }
 
-  return copyStudents;
+  return students;
 }
