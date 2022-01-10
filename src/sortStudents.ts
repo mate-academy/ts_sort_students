@@ -4,16 +4,14 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
-
-  averageGrade: number;
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -34,24 +32,16 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return (order === 'asc')
-        ? copyStudents.sort((a, b) => a.name.localeCompare(b.name))
-        : copyStudents.sort((a, b) => b.name.localeCompare(a.name));
-
     case SortType.Surname:
       return (order === 'asc')
-        ? copyStudents.sort((a, b) => a.surname.localeCompare(b.surname))
-        : copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
+        ? copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
-      return (order === 'asc')
-        ? copyStudents.sort((a, b) => a.age - b.age)
-        : copyStudents.sort((a, b) => b.age - a.age);
-
     case SortType.Married:
       return (order === 'asc')
-        ? copyStudents.sort((a, b) => +a.married - +b.married)
-        : copyStudents.sort((a, b) => +b.married - +a.married);
+        ? copyStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : copyStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
     case SortType.AverageGrade:
       return (order === 'asc')
