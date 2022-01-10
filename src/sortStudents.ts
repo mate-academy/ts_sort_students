@@ -6,79 +6,6 @@ export interface Student {
   grades: number[],
 }
 
-// const stus: Student[] = [
-//   {
-//     name: 'Diana',
-//     surname: 'Dorsey',
-//     age: 24,
-//     married: false,
-//     grades: [3, 3, 4, 5, 4, 3, 5, 5],
-//   },
-//   {
-//     name: 'Christina',
-//     surname: 'Branscome',
-//     age: 23,
-//     married: true,
-//     grades: [4, 4, 4, 5, 5, 5, 5, 5],
-//   },
-//   {
-//     name: 'Willie',
-//     surname: 'Barrera',
-//     age: 22,
-//     married: false,
-//     grades: [3, 5, 5, 3, 3, 5, 4, 4],
-//   },
-//   {
-//     name: 'Douglas',
-//     surname: 'Paez',
-//     age: 23,
-//     married: true,
-//     grades: [5, 5, 5, 4, 5, 5, 5, 5],
-//   },
-//   {
-//     name: 'Richard',
-//     surname: 'Hall',
-//     age: 23,
-//     married: false,
-//     grades: [3, 2, 4, 5, 4, 3, 3, 3],
-//   },
-//   {
-//     name: 'Dale',
-//     surname: 'Gandy',
-//     age: 23,
-//     married: false,
-//     grades: [5, 3, 3, 3, 3, 5, 4, 3, 4],
-//   },
-//   {
-//     name: 'Lillian',
-//     surname: 'Quinn',
-//     age: 23,
-//     married: false,
-//     grades: [3, 4, 3, 4, 4, 4, 5, 2, 3],
-//   },
-//   {
-//     name: 'Jessica',
-//     surname: 'Buxton',
-//     age: 26,
-//     married: true,
-//     grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],
-//   },
-//   {
-//     name: 'Pamela',
-//     surname: 'Casillas',
-//     age: 24,
-//     married: false,
-//     grades: [4, 5, 4, 5, 5, 4, 3, 2, 3, 3, 3, 2],
-//   },
-//   {
-//     name: 'Glenn',
-//     surname: 'Thompson',
-//     age: 22,
-//     married: false,
-//     grades: [5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 3, 2],
-//   },
-// ];
-
 export enum SortType {
   Name = 'name',
   Surname = 'surname',
@@ -148,5 +75,3 @@ export function sortStudents(
 
   return newStudents;
 }
-
-// console.log(sortStudents(stus, SortType.Name));
