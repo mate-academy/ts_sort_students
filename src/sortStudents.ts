@@ -18,9 +18,9 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function average(obj: Student): number {
-  const resultAverage: number = obj.grades.reduce((a, b) => a + b)
-  / obj.grades.length;
+export function average(person: Student): number {
+  const resultAverage: number = person.grades.reduce((a, b) => a + b)
+  / person.grades.length;
 
   return resultAverage;
 }
@@ -32,45 +32,33 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  if (sortBy === SortType.Name && order === 'asc') {
-    copyStudents.sort((a, b) => a.name.localeCompare(b.name));
-  }
+  switch (sortBy) {
+    case SortType.Name:
+      return (order === 'asc')
+        ? copyStudents.sort((a, b) => a.name.localeCompare(b.name))
+        : copyStudents.sort((a, b) => b.name.localeCompare(a.name));
 
-  if (sortBy === SortType.Name && order === 'desc') {
-    copyStudents.sort((a, b) => b.name.localeCompare(a.name));
-  }
+    case SortType.Surname:
+      return (order === 'asc')
+        ? copyStudents.sort((a, b) => a.surname.localeCompare(b.surname))
+        : copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
 
-  if (sortBy === SortType.Surname && order === 'asc') {
-    copyStudents.sort((a, b) => a.surname.localeCompare(b.surname));
-  }
+    case SortType.Age:
+      return (order === 'asc')
+        ? copyStudents.sort((a, b) => a.age - b.age)
+        : copyStudents.sort((a, b) => b.age - a.age);
 
-  if (sortBy === SortType.Surname && order === 'desc') {
-    copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
-  }
+    case SortType.Married:
+      return (order === 'asc')
+        ? copyStudents.sort((a, b) => +a.married - +b.married)
+        : copyStudents.sort((a, b) => +b.married - +a.married);
 
-  if (sortBy === SortType.Age && order === 'asc') {
-    copyStudents.sort((a, b) => a.age - b.age);
-  }
+    case SortType.AverageGrade:
+      return (order === 'asc')
+        ? copyStudents.sort((a, b) => average(a) - average(b))
+        : copyStudents.sort((a, b) => average(b) - average(a));
 
-  if (sortBy === SortType.Age && order === 'desc') {
-    copyStudents.sort((a, b) => b.age - a.age);
+    default:
+      return copyStudents;
   }
-
-  if (sortBy === SortType.Married && order === 'asc') {
-    copyStudents.sort((a, b) => +a.married - +b.married);
-  }
-
-  if (sortBy === SortType.Married && order === 'desc') {
-    copyStudents.sort((a, b) => +b.married - +a.married);
-  }
-
-  if (sortBy === SortType.AverageGrade && order === 'asc') {
-    copyStudents.sort((a, b) => average(a) - average(b));
-  }
-
-  if (sortBy === SortType.AverageGrade && order === 'desc') {
-    copyStudents.sort((a, b) => average(b) - average(a));
-  }
-
-  return copyStudents;
 }
