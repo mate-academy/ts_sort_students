@@ -29,50 +29,31 @@ export function sortStudents(
       / person.grades.length;
   }
 
-  switch (sortBy) {
-    case SortType.Name:
-      return (order === 'asc')
-        ? copyStudents.sort((a, b) => a
-          .name.localeCompare(b.name))
+  return copyStudents.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+        return order === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      case SortType.Surname:
+        return order === 'asc'
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
 
-        : copyStudents.sort((a, b) => a
-          .name.localeCompare(b.name));
-
-    case SortType.Surname:
-      return (order === 'asc')
-        ? copyStudents.sort((a, b) => a
-          .surname.localeCompare(b.surname))
-
-        : copyStudents.sort((a, b) => a
-          .surname.localeCompare(b.surname));
-
-    case SortType.Age:
-      return (order === 'asc')
-        ? copyStudents.sort((a, b) => a
-          .age - b.age)
-
-        : copyStudents.sort((a, b) => a
-          .age - b.age);
-
-    case SortType.Married:
-      return (order === 'asc')
-        ? copyStudents.sort((a, b) => Number(a
-          .married) - Number(b.married))
-
-        : copyStudents.sort((a, b) => Number(a
-          .married) - Number(b.married));
-
-    case SortType.AverageGrade:
-      return (order === 'asc')
-        ? copyStudents.sort((a,
-          b) => averageValue(a)
-          - averageValue(b))
-
-        : copyStudents.sort((a,
-          b) => averageValue(a)
-          - averageValue(b));
-
-    default:
-      return copyStudents;
-  }
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? averageValue(a) - averageValue(b)
+          : averageValue(b) - averageValue(a);
+      default:
+        return copyStudents;
+    }
+  });
 }
