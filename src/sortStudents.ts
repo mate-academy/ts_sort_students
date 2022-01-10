@@ -26,45 +26,31 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents: Student[] = [...students];
-
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      sortedStudents.sort((student1: Student, student2: Student) => {
+  return [...students].sort((student1, student2) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy]);
-      });
 
-      break;
-
-    case SortType.Age:
-    case SortType.Married:
-      sortedStudents.sort((student1: Student, student2: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
           ? +student1[sortBy] - +student2[sortBy]
           : +student2[sortBy] - +student1[sortBy];
-      });
 
-      break;
-
-    case SortType.AverageGrade: {
-      sortedStudents.sort((student1: Student, student2: Student) => {
+      case SortType.AverageGrade: {
         const averagraGrades1 = avarageGrade(student1);
         const averagraGrades2 = avarageGrade(student2);
 
         return order === 'asc'
           ? averagraGrades1 - averagraGrades2
           : averagraGrades2 - averagraGrades1;
-      });
+      }
 
-      break;
+      default:
+        return 0;
     }
-
-    default:
-      return sortedStudents;
-  }
-
-  return sortedStudents;
+  });
 }
