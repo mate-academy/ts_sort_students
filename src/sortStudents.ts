@@ -25,7 +25,7 @@ export function sortStudents(
   const copyStudents = [...students];
 
   function averageValue(person: Student): number {
-    return person.grades.reduce((sum, item) => sum + item)
+    return person.grades.reduce((prev, cur) => prev + cur)
       / person.grades.length;
   }
 
