@@ -28,70 +28,111 @@ export function sortStudents(
     };
   });
 
-  switch (sortBy) {
-    case SortType.Name: {
-      copyStudents.map((student) => {
-        return {
-          name: student.name,
-          surname: student.surname,
-          age: student.age,
-        };
-      });
+  if (order === 'asc') {
+    switch (sortBy) {
+      case SortType.Name: {
+        copyStudents.sort((
+          a: Student,
+          b: Student,
+        ) => a.name.localeCompare(b.name));
 
-      copyStudents.sort((
-        a: Student,
-        b: Student,
-      ) => a.name.localeCompare(b.name));
+        break;
+      }
 
-      break;
+      case SortType.Surname: {
+        copyStudents.sort((
+          a: Student,
+          b: Student,
+        ) => a.surname.localeCompare(b.surname));
+
+        break;
+      }
+
+      case SortType.Age: {
+        copyStudents.sort((
+          a: Student,
+          b: Student,
+        ) => a.age - b.age);
+
+        break;
+      }
+
+      case SortType.Married: {
+        copyStudents.sort((a: Student, b: Student) => {
+          if ((a.married) === true && (b.married) === false) {
+            return 1;
+          }
+
+          if ((a.married) === false && (b.married) === true) {
+            return -1;
+          }
+
+          return 0;
+        });
+
+        break;
+      }
+
+      case SortType.AverageGrade: {
+        copyStudents.sort((a, b) => {
+          if (
+            (a.grades.reduce((accum, curr) => accum + curr, 0)
+            / a.grades.length)
+          > (b.grades.reduce((accum, curr) => accum + curr, 0))
+          / b.grades.length) {
+            return 1;
+          }
+
+          if (
+            (b.grades.reduce((accum, curr) => accum + curr, 0)
+            / b.grades.length)
+          > (a.grades.reduce((accum, curr) => accum + curr, 0))
+          / a.grades.length) {
+            return -1;
+          }
+
+          return 0;
+        });
+
+        break;
+      }
+
+      default: {
+        throw new Error('No sort type inserted');
+      }
     }
+  }
 
-    case SortType.Surname: {
-      copyStudents.map((student) => {
-        return {
-          name: student.name,
-          surname: student.surname,
-          age: student.age,
-        };
-      });
+  if (order === 'desc') {
+    switch (sortBy) {
+      case SortType.Name: {
+        copyStudents.sort((
+          a: Student,
+          b: Student,
+        ) => b.name.localeCompare(a.name));
 
-      copyStudents.sort((
-        a: Student,
-        b: Student,
-      ) => a.surname.localeCompare(b.surname));
+        break;
+      }
 
-      break;
-    }
+      case SortType.Surname: {
+        copyStudents.sort((
+          a: Student,
+          b: Student,
+        ) => b.surname.localeCompare(a.surname));
 
-    case SortType.Age: {
-      copyStudents.map((student) => {
-        return {
-          name: student.name,
-          surname: student.surname,
-          age: student.age,
-        };
-      });
+        break;
+      }
 
-      if (order === 'desc') {
+      case SortType.Age: {
         copyStudents.sort((
           a: Student,
           b: Student,
         ) => b.age - a.age);
+
+        break;
       }
 
-      break;
-    }
-
-    case SortType.Married: {
-      copyStudents.map((student) => {
-        return {
-          name: student.name,
-          surname: student.surname,
-          married: student.married,
-        };
-      });
-
-      if (order === 'desc') {
+      case SortType.Married: {
         copyStudents.sort((a: Student, b: Student) => {
           if ((a.married) === true && (b.married) === false) {
             return -1;
@@ -103,66 +144,37 @@ export function sortStudents(
 
           return 0;
         });
+
+        break;
       }
 
-      break;
-    }
-
-    case SortType.AverageGrade: {
-      copyStudents.map((student) => {
-        return {
-          name: student.name,
-          surname: student.surname,
-          age: student.age,
-        };
-      });
-
-      if (order === 'desc') {
+      case SortType.AverageGrade: {
         copyStudents.sort((a, b) => {
           if (
-            (a.grades.reduce((prev, curr) => prev + curr, 0) / a.grades.length)
-          > (b.grades.reduce((prev, curr) => prev + curr, 0))
+            (a.grades.reduce((accum, curr) => accum + curr, 0)
+            / a.grades.length)
+          > (b.grades.reduce((accum, curr) => accum + curr, 0))
           / b.grades.length) {
             return -1;
           }
 
           if (
-            (b.grades.reduce((prev, curr) => prev + curr, 0) / b.grades.length)
-          > (a.grades.reduce((prev, curr) => prev + curr, 0))
+            (b.grades.reduce((accum, curr) => accum + curr, 0)
+            / b.grades.length)
+          > (a.grades.reduce((accum, curr) => accum + curr, 0))
           / a.grades.length) {
             return 1;
           }
 
           return 0;
         });
-      } else if (order === 'asc') {
-        copyStudents.sort((a, b) => {
-          if (
-            (a.grades.reduce((prev, curr) => prev + curr, 0) / a.grades.length)
-          > (b.grades.reduce((prev, curr) => prev + curr, 0))
-          / b.grades.length) {
-            return 1;
-          }
 
-          if (
-            (b.grades.reduce((prev, curr) => prev + curr, 0) / b.grades.length)
-          > (a.grades.reduce((prev, curr) => prev + curr, 0))
-          / a.grades.length) {
-            return -1;
-          }
-
-          return 0;
-        });
+        break;
       }
 
-      break;
-    }
-
-    default: {
-      copyStudents.map((student) => {
-        return `${student.name} + ${student.surname} + ${student.age}`;
-      });
-      break;
+      default: {
+        throw new Error('No sort type inserted');
+      }
     }
   }
 
