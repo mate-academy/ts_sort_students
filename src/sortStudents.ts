@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'name',
-  Surname = 'surname',
-  Age = 'age',
-  Married = 'married',
-  AverageGrade = 'averageGrade',
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -26,31 +26,46 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((student1, student2) => {
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        return order === 'asc'
-          ? student1[sortBy].localeCompare(student2[sortBy])
-          : student2[sortBy].localeCompare(student1[sortBy]);
+  const studentsCopy = [...students];
 
-      case SortType.Age:
-      case SortType.Married:
-        return order === 'asc'
-          ? +student1[sortBy] - +student2[sortBy]
-          : +student2[sortBy] - +student1[sortBy];
+  switch (sortBy) {
+    case SortType.Name:
+      return order === 'asc'
+        ? studentsCopy.sort((student1, student2) => student1
+          .name.localeCompare(student2.name))
+        : studentsCopy.sort((student1, student2) => student2
+          .name.localeCompare(student1.name));
 
-      case SortType.AverageGrade: {
-        const averagraGrades1 = avarageGrade(student1);
-        const averagraGrades2 = avarageGrade(student2);
+    case SortType.Surname:
+      return order === 'asc'
+        ? studentsCopy.sort((student1, student2) => student1
+          .surname.localeCompare(student2.surname))
+        : studentsCopy.sort((student1, student2) => student2
+          .surname.localeCompare(student1.surname));
 
-        return order === 'asc'
-          ? averagraGrades1 - averagraGrades2
-          : averagraGrades2 - averagraGrades1;
-      }
+    case SortType.Age:
+      return order === 'asc'
+        ? studentsCopy.sort((student1, student2) => student1
+          .age - student2.age)
+        : studentsCopy.sort((student1, student2) => student2
+          .age - student1.age);
 
-      default:
-        return 0;
+    case SortType.Married:
+      return order === 'asc'
+        ? studentsCopy.sort((student1, student2) => Number(student1
+          .married) - Number(student2.married))
+        : studentsCopy.sort((student1, student2) => Number(student2
+          .married) - Number(student1.married));
+
+    case SortType.AverageGrade: {
+      return order === 'asc'
+        ? studentsCopy.sort((student1, student2) => avarageGrade(student1)
+        - avarageGrade(student2))
+        : studentsCopy.sort((student1, student2) => avarageGrade(student2)
+        - avarageGrade(student1));
     }
-  });
+
+    default:
+      return studentsCopy;
+  }
 }
