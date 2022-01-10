@@ -32,45 +32,45 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       return (order === 'asc')
-        ? copyStudents.sort((firstStudent, secondStudent) => firstStudent
-          .name.localeCompare(secondStudent.name))
+        ? copyStudents.sort((a, b) => a
+          .name.localeCompare(b.name))
 
-        : copyStudents.sort((firstStudent, secondStudent) => secondStudent
-          .name.localeCompare(firstStudent.name));
+        : copyStudents.sort((a, b) => a
+          .name.localeCompare(b.name));
 
     case SortType.Surname:
       return (order === 'asc')
-        ? copyStudents.sort((firstStudent, secondStudent) => firstStudent
-          .surname.localeCompare(secondStudent.surname))
+        ? copyStudents.sort((a, b) => a
+          .surname.localeCompare(b.surname))
 
-        : copyStudents.sort((firstStudent, secondStudent) => secondStudent
-          .surname.localeCompare(firstStudent.surname));
+        : copyStudents.sort((a, b) => a
+          .surname.localeCompare(b.surname));
 
     case SortType.Age:
       return (order === 'asc')
-        ? copyStudents.sort((firstStudent, secondStudent) => firstStudent
-          .age - secondStudent.age)
+        ? copyStudents.sort((a, b) => a
+          .age - b.age)
 
-        : copyStudents.sort((firstStudent, secondStudent) => secondStudent
-          .age - firstStudent.age);
+        : copyStudents.sort((a, b) => a
+          .age - b.age);
 
     case SortType.Married:
       return (order === 'asc')
-        ? copyStudents.sort((firstStudent, secondStudent) => +firstStudent
-          .married - +secondStudent.married)
+        ? copyStudents.sort((a, b) => Number(a
+          .married) - Number(b.married))
 
-        : copyStudents.sort((firstStudent, secondStudent) => +secondStudent
-          .married - +firstStudent.married);
+        : copyStudents.sort((a, b) => Number(a
+          .married) - Number(b.married));
 
     case SortType.AverageGrade:
       return (order === 'asc')
-        ? copyStudents.sort((firstStudent,
-          secondStudent) => averageValue(firstStudent)
-          - averageValue(secondStudent))
+        ? copyStudents.sort((a,
+          b) => averageValue(a)
+          - averageValue(b))
 
-        : copyStudents.sort((firstStudent,
-          secondStudent) => averageValue(secondStudent)
-          - averageValue(firstStudent));
+        : copyStudents.sort((a,
+          b) => averageValue(a)
+          - averageValue(b));
 
     default:
       return copyStudents;
