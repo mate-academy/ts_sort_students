@@ -16,11 +16,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-type ReduceCallback = (previos: number, current: number) => number;
-
-const reduceCallback: ReduceCallback = (previos, current) => {
-  return previos + current;
-};
+function getAveregeGrade(student: Student): number {
+  return student.grades
+    .reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -41,23 +40,16 @@ export function sortStudents(
       case SortType.Age:
       case SortType.Married:
         if (order === 'desc') {
-          return +studentB[sortBy] - +studentA[sortBy];
+          return Number(studentB[sortBy]) - Number(studentA[sortBy]);
         }
 
-        return +studentA[sortBy] - +studentB[sortBy];
+        return Number(studentA[sortBy]) - Number(studentB[sortBy]);
       case SortType.AverageGrade:
-
         if (order === 'desc') {
-          return (studentB.grades.reduce(reduceCallback, 0)
-                    / studentB.grades.length)
-          - (studentA.grades.reduce(reduceCallback, 0)
-          / studentA.grades.length);
+          return getAveregeGrade(studentB) - getAveregeGrade(studentA);
         }
 
-        return (studentA.grades.reduce(reduceCallback, 0)
-                    / studentA.grades.length)
-          - (studentB.grades.reduce(reduceCallback, 0)
-          / studentB.grades.length);
+        return getAveregeGrade(studentA) - getAveregeGrade(studentB);
       default:
         return 0;
     }
