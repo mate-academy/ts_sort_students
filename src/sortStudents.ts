@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageInArray(person: Student): number {
+function getAverageGrades(person: Student): number {
   return person.grades.reduce((accum, curr) => accum + curr, 0)
   / person.grades.length;
 }
