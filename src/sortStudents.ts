@@ -17,6 +17,12 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrade(student: Student): number {
+  return student.grades.reduce((a: number, b: number) => {
+    return a + b;
+  }) / student.grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -48,13 +54,8 @@ export function sortStudents(
           : +studentTwo.married - +studentOne.married;
 
       case SortType.AverageGrade:
-        firstAverage = studentOne.grades.reduce((a, b) => {
-          return a + b;
-        }) / studentOne.grades.length;
-
-        secondAverage = studentTwo.grades.reduce((a, b) => {
-          return a + b;
-        }) / studentTwo.grades.length;
+        firstAverage = getAverageGrade(studentOne);
+        secondAverage = getAverageGrade(studentTwo);
 
         return order === 'asc'
           ? firstAverage - secondAverage
