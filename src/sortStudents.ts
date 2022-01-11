@@ -3,7 +3,7 @@ export interface Student {
   surname: string,
   age: number,
   married: boolean,
-  grades: [],
+  grades: number[],
 }
 
 export enum SortType {
@@ -24,7 +24,7 @@ export function sortStudents(
 ): Student[] {
   const copyStudents = [...students];
 
-  function averageValue(person: Student): number {
+  function getAverageValue(person: Student): number {
     return person.grades.reduce((prev, cur) => prev + cur)
       / person.grades.length;
   }
@@ -50,8 +50,8 @@ export function sortStudents(
           : Number(b.married) - Number(a.married);
       case SortType.AverageGrade:
         return order === 'asc'
-          ? averageValue(a) - averageValue(b)
-          : averageValue(b) - averageValue(a);
+          ? getAverageValue(a) - getAverageValue(b)
+          : getAverageValue(b) - getAverageValue(a);
       default:
         return copyStudents;
     }
