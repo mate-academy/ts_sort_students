@@ -25,51 +25,31 @@ export function sortStudents(
 ):Student[] {
   const sortedStudents = [...students];
 
+  function getAverage(grades: number[]): number {
+    return grades.reduce((summ, value) => summ + value, 0) / grades.length;
+  }
+
   sortedStudents.sort((a, b) => {
-    if (order === 'asc') {
-      switch (sortBy) {
-        case SortType.Name:
-        case SortType.Surname:
-          return a[sortBy].localeCompare(b[sortBy]);
-        case SortType.Age:
-        case SortType.Married:
-          return +a[sortBy] - +b[sortBy];
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
-        case SortType.AverageGrade: {
-          const AverageGradeA = a.grades.reduce((prev, next) => {
-            return prev + next;
-          }, 0) / a.grades.length;
-          const AverageGradeB = b.grades.reduce((prev, next) => {
-            return prev + next;
-          }, 0) / b.grades.length;
-
-          return AverageGradeA - AverageGradeB;
-        }
-        default:
-          return 0;
+      case SortType.AverageGrade: {
+        return order === 'asc'
+          ? getAverage(a.grades) - getAverage(b.grades)
+          : getAverage(b.grades) - getAverage(a.grades);
       }
-    } else {
-      switch (sortBy) {
-        case SortType.Name:
-        case SortType.Surname:
-          return b[sortBy].localeCompare(a[sortBy]);
-        case SortType.Age:
-        case SortType.Married:
-          return +b[sortBy] - +a[sortBy];
 
-        case SortType.AverageGrade: {
-          const AverageGradeA = a.grades.reduce((prev, next) => {
-            return prev + next;
-          }, 0) / a.grades.length;
-          const AverageGradeB = b.grades.reduce((prev, next) => {
-            return prev + next;
-          }, 0) / b.grades.length;
-
-          return AverageGradeB - AverageGradeA;
-        }
-        default:
-          return 0;
-      }
+      default:
+        return 0;
     }
   });
 
