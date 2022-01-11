@@ -27,9 +27,9 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newStudents: Student[] = [...students];
+  const sortedStudents: Student[] = [...students];
 
-  newStudents.sort((studentA, studentB) => {
+  sortedStudents.sort((studentA, studentB) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -63,5 +63,5 @@ export function sortStudents(
     }
   });
 
-  return newStudents;
+  return sortedStudents;
 }
