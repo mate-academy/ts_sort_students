@@ -17,80 +17,51 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function averageInArray(person: Student): number {
+  return person.grades.reduce((accum, curr) => accum + curr, 0)
+  / person.grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  if (order === 'asc') {
-    return [...students].sort((a, b) => {
-      switch (sortBy) {
-        case SortType.Name: {
-          return a.name.localeCompare(b.name);
-        }
-
-        case SortType.Surname: {
-          return a.surname.localeCompare(b.surname);
-        }
-
-        case SortType.Age: {
-          return a.age - b.age;
-        }
-
-        case SortType.Married: {
-          return +a.married - +b.married;
-        }
-
-        case SortType.AverageGrade: {
-          const avgA: number = a.grades.reduce((accum, curr) => accum + curr, 0)
-              / a.grades.length;
-          const avgB: number = b.grades.reduce((accum, curr) => accum + curr, 0)
-            / b.grades.length;
-
-          return avgA - avgB;
-        }
-
-        default: {
-          return 0;
-        }
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name: {
+        return (order === 'asc')
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
       }
-    });
-  }
 
-  if (order === 'desc') {
-    return [...students].sort((a, b) => {
-      switch (sortBy) {
-        case SortType.Name: {
-          return b.name.localeCompare(a.name);
-        }
-
-        case SortType.Surname: {
-          return b.surname.localeCompare(a.surname);
-        }
-
-        case SortType.Age: {
-          return b.age - a.age;
-        }
-
-        case SortType.Married: {
-          return +b.married - +a.married;
-        }
-
-        case SortType.AverageGrade: {
-          const avgA: number = a.grades.reduce((accum, curr) => accum + curr, 0)
-              / a.grades.length;
-          const avgB: number = b.grades.reduce((accum, curr) => accum + curr, 0)
-            / b.grades.length;
-
-          return avgB - avgA;
-        }
-
-        default: {
-          return 0;
-        }
+      case SortType.Surname: {
+        return (order === 'asc')
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(b.surname);
       }
-    });
-  }
 
-  return students;
+      case SortType.Age: {
+        return (order === 'asc')
+          ? a.age - b.age
+          : b.age - a.age;
+      }
+
+      case SortType.Married: {
+        return (order === 'asc')
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
+      }
+
+      case SortType.AverageGrade: {
+        return (order === 'asc')
+          ? averageInArray(a) - averageInArray(b)
+          : averageInArray(b) - averageInArray(a);
+      }
+
+      default: {
+        return 0;
+      }
+    }
+  });
 }
