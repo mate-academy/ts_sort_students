@@ -26,64 +26,39 @@ export function sortStudents(
     let firstAverage: number;
     let secondAverage: number;
 
-    switch (order) {
-      case 'asc':
-        switch (sortBy) {
-          case SortType.Name:
-            return studentOne.name.localeCompare(studentTwo.name);
+    switch (sortBy) {
+      case SortType.Name:
+        return order === 'asc'
+          ? studentOne.name.localeCompare(studentTwo.name)
+          : studentTwo.name.localeCompare(studentOne.name);
 
-          case SortType.Surname:
-            return studentOne.surname.localeCompare(studentTwo.surname);
+      case SortType.Surname:
+        return order === 'asc'
+          ? studentOne.surname.localeCompare(studentTwo.surname)
+          : studentTwo.surname.localeCompare(studentOne.surname);
 
-          case SortType.Age:
-            return studentOne.age - studentTwo.age;
+      case SortType.Age:
+        return order === 'asc'
+          ? studentOne.age - studentTwo.age
+          : studentTwo.age - studentOne.age;
 
-          case SortType.Married:
-            return +studentOne.married - +studentTwo.married;
+      case SortType.Married:
+        return order === 'asc'
+          ? +studentOne.married - +studentTwo.married
+          : +studentTwo.married - +studentOne.married;
 
-          case SortType.AverageGrade:
-            firstAverage = studentOne.grades.reduce((a, b) => {
-              return a + b;
-            }) / studentOne.grades.length;
+      case SortType.AverageGrade:
+        firstAverage = studentOne.grades.reduce((a, b) => {
+          return a + b;
+        }) / studentOne.grades.length;
 
-            secondAverage = studentTwo.grades.reduce((a, b) => {
-              return a + b;
-            }) / studentTwo.grades.length;
+        secondAverage = studentTwo.grades.reduce((a, b) => {
+          return a + b;
+        }) / studentTwo.grades.length;
 
-            return firstAverage - secondAverage;
-
-          default:
-            return 0;
-        }
-
-      case 'desc':
-        switch (sortBy) {
-          case SortType.Name:
-            return studentTwo.name.localeCompare(studentOne.name);
-
-          case SortType.Surname:
-            return studentTwo.surname.localeCompare(studentOne.surname);
-
-          case SortType.Age:
-            return studentTwo.age - studentOne.age;
-
-          case SortType.Married:
-            return +studentTwo.married - +studentOne.married;
-
-          case SortType.AverageGrade:
-            firstAverage = studentOne.grades.reduce((a, b) => {
-              return a + b;
-            }) / studentOne.grades.length;
-
-            secondAverage = studentTwo.grades.reduce((a, b) => {
-              return a + b;
-            }) / studentTwo.grades.length;
-
-            return secondAverage - firstAverage;
-
-          default:
-            return 0;
-        }
+        return order === 'asc'
+          ? firstAverage - secondAverage
+          : secondAverage - firstAverage;
 
       default:
         return 0;
