@@ -22,62 +22,49 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStudents = students.map((student) => {
-    return {
-      ...student,
-      avgGrades: student.grades.reduce(
-        (a, b) => a + b, 0,
-      ) / student.grades.length,
-    };
-  });
+  const copyStudents = [...students];
 
-  if (order === 'asc') {
-    return copyStudents.sort((a, b) => {
-      switch (sortBy) {
-        case SortType.Name:
-          return a.name.localeCompare(b.name);
-
-        case SortType.Surname:
-          return a.surname.localeCompare(b.surname);
-
-        case SortType.Married:
-          return +a.married - +b.married;
-
-        case SortType.Age:
-          return a.age - b.age;
-
-        case SortType.AverageGrade:
-          return a.avgGrades - b.avgGrades;
-
-        default:
-          return 0;
-      }
-    });
+  function makeAvgGrade(student: Student): number {
+    return student.grades.reduce((a, b) => a + b, 0) / student.grades.length;
   }
 
-  if (order === 'desc') {
-    return copyStudents.sort((a, b) => {
-      switch (sortBy) {
-        case SortType.Name:
-          return b.name.localeCompare(a.name);
+  switch (sortBy) {
+    case SortType.Name:
+      return (order === 'asc')
+        ? copyStudents.sort((studentA, studentB) => (
+          studentA.name.localeCompare(studentB.name)))
+        : copyStudents.sort((studentA, studentB) => (
+          studentB.name.localeCompare(studentA.name)));
 
-        case SortType.Surname:
-          return b.surname.localeCompare(a.surname);
+    case SortType.Surname:
+      return (order === 'asc')
+        ? copyStudents.sort((studentA, studentB) => (
+          studentA.surname.localeCompare(studentB.surname)))
+        : copyStudents.sort((studentA, studentB) => (
+          studentB.surname.localeCompare(studentA.surname)));
 
-        case SortType.Age:
-          return b.age - a.age;
+    case SortType.Age:
+      return (order === 'asc')
+        ? copyStudents.sort((studentA, studentB) => (
+          studentA.age - studentB.age))
+        : copyStudents.sort((studentA, studentB) => (
+          studentB.age - studentA.age));
 
-        case SortType.Married:
-          return +b.married - +a.married;
+    case SortType.Married:
+      return (order === 'asc')
+        ? copyStudents.sort((studentA, studentB) => (
+          +studentA.married - +studentB.married))
+        : copyStudents.sort((studentA, studentB) => (
+          +studentB.married - +studentA.married));
 
-        case SortType.AverageGrade:
-          return b.avgGrades - a.avgGrades;
+    case SortType.AverageGrade:
+      return (order === 'asc')
+        ? copyStudents.sort((studentA, studentB) => (
+          makeAvgGrade(studentA) - makeAvgGrade(studentB)))
+        : copyStudents.sort((studentA, studentB) => (
+          makeAvgGrade(studentB) - makeAvgGrade(studentA)));
 
-        default:
-          return 0;
-      }
-    });
+    default:
+      return students;
   }
-
-  return students;
 }
