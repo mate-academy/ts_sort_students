@@ -8,16 +8,16 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-const averageGrade = (student: Student): number => {
+const getAverageGrade = (student: Student): number => {
   return student.grades.reduce((
     sum: number,
     grades: number,
@@ -33,39 +33,27 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? studentCopy.sort((first, second) => (
-          first.name.localeCompare(second.name)))
-        : studentCopy.sort((first, second) => (
-          second.name.localeCompare(first.name)));
-
     case SortType.Surname:
       return order === 'asc'
         ? studentCopy.sort((first, second) => (
-          first.surname.localeCompare(second.surname)))
+          first[sortBy].localeCompare(second[sortBy])))
         : studentCopy.sort((first, second) => (
-          second.surname.localeCompare(first.surname)));
+          second[sortBy].localeCompare(first[sortBy])));
 
     case SortType.Age:
-      return order === 'asc'
-        ? studentCopy.sort((first, second) => (
-          first.age - second.age))
-        : studentCopy.sort((first, second) => (
-          second.age - first.age));
-
     case SortType.Married:
       return order === 'asc'
         ? studentCopy.sort((first, second) => (
-          Number(first.married) - Number(second.married)))
+          +first[sortBy] - +second[sortBy]))
         : studentCopy.sort((first, second) => (
-          Number(second.married) - Number(first.married)));
+          +second[sortBy] - +first[sortBy]));
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? studentCopy.sort((first, second) => (
-          averageGrade(first) - averageGrade(second)))
+          getAverageGrade(first) - getAverageGrade(second)))
         : studentCopy.sort((first, second) => (
-          averageGrade(second) - averageGrade(first)));
+          getAverageGrade(second) - getAverageGrade(first)));
 
     default:
       return [];
