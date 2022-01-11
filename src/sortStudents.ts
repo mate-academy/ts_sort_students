@@ -8,78 +8,52 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
-export type SortOrder = 'asc' | 'desc';
+type SortOrder = 'asc' | 'desc';
 
-interface StudentWithAverageGrade extends Student {
-  averageGrade: number;
+function getAverage(grades:number[]): number {
+  return grades.reduce((prev, current) => prev + current) / grades.length;
 }
 
 export function sortStudents(students: Student[],
-  sortBy:SortType, order:SortOrder):StudentWithAverageGrade[] {
-  const studentsWithAverageGrades = students
-    .map((student: Student) => ({
-      ...student,
-      averageGrade: student.grades.reduce((prev, current) => {
-        return prev + current;
-      }, 0) / student.grades.length,
-    }));
-
-  if (order === 'asc') {
-    switch (sortBy) {
-      case SortType.Name:
-        return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-          return a.name.localeCompare(b.name);
-        });
-      case SortType.Surname:
-        return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-          return a.surname.localeCompare(b.surname);
-        });
-      case SortType.Age:
-        return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-          return a.age - b.age;
-        });
-      case SortType.Married:
-        return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-          return Number(a.married) - Number(b.married);
-        });
-      case SortType.AverageGrade:
-        return studentsWithAverageGrades
-          .sort((a:StudentWithAverageGrade, b: StudentWithAverageGrade) => {
-            return a.averageGrade - b.averageGrade;
-          });
-      default: return studentsWithAverageGrades;
-    }
-  }
+  sortBy:SortType, order:SortOrder):Student[] {
+  const copyStudents = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-        return b.name.localeCompare(a.name);
-      });
     case SortType.Surname:
-      return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-        return b.surname.localeCompare(a.surname);
-      });
+      return order === 'asc'
+        ? copyStudents.sort((a:Student, b: Student) => (
+          a[sortBy].localeCompare(b[sortBy])
+        ))
+        : copyStudents.sort((a:Student, b: Student) => (
+          b[sortBy].localeCompare(a[sortBy])
+        ));
+
     case SortType.Age:
-      return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-        return b.age - a.age;
-      });
     case SortType.Married:
-      return studentsWithAverageGrades.sort((a:Student, b: Student) => {
-        return Number(b.married) - Number(a.married);
-      });
+      return order === 'asc'
+        ? copyStudents.sort((a:Student, b: Student) => (
+          Number(a[sortBy]) - Number(b[sortBy])
+        ))
+        : copyStudents.sort((a:Student, b: Student) => (
+          Number(b[sortBy]) - Number(a[sortBy])
+        ));
+
     case SortType.AverageGrade:
-      return studentsWithAverageGrades
-        .sort((a:StudentWithAverageGrade, b: StudentWithAverageGrade) => {
-          return b.averageGrade - a.averageGrade;
-        });
-    default: return studentsWithAverageGrades;
+      return order === 'asc'
+        ? copyStudents.sort((a:Student, b: Student) => (
+          getAverage(a.grades) - getAverage(b.grades)
+        ))
+        : copyStudents.sort((a:Student, b: Student) => (
+          getAverage(b.grades) - getAverage(a.grades)
+        ));
+    default: return students;
   }
 }
