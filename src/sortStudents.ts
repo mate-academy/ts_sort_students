@@ -50,7 +50,7 @@ export function sortStudents(
     case SortType.Married:
       return sortedStudents.sort((a, b) => {
         if (order === 'asc') {
-          return +a.married - +b.married;
+          return +a[sortBy] - +b[sortBy];
         }
 
         return +b[sortBy] - +a[sortBy];
