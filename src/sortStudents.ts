@@ -49,8 +49,8 @@ export function sortStudents(
 
       case SortType.Married:
         return (order === 'asc')
-          ? +studentA.married - +studentB.married
-          : +studentB.married - +studentA.married;
+          ? Number(studentA.married) - Number(studentB.married)
+          : Number(studentB.married) - Number(studentA.married);
 
       case SortType.AverageGrade:
         return (order === 'asc')
