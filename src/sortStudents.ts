@@ -30,24 +30,16 @@ export function sortStudents(students: Student[],
 
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? student1.name.localeCompare(student2.name)
-          : student2.name.localeCompare(student1.name);
-
       case SortType.Surname:
         return order === 'asc'
-          ? student1.surname.localeCompare(student2.surname)
-          : student2.surname.localeCompare(student1.surname);
-
-      case SortType.Age:
-        return order === 'desc'
-          ? student2.age - student1.age
-          : student1.age - student2.age;
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
 
       case SortType.Married:
+      case SortType.Age:
         return order === 'desc'
-          ? student2.married - student1.married
-          : student1.married - student2.married;
+          ? student2[sortBy] - student1[sortBy]
+          : student1[sortBy] - student2[sortBy];
 
       case SortType.AverageGrade:
         return order === 'asc'
