@@ -24,7 +24,7 @@ export function sortStudents(
 ): Student[] {
   const copyStudents = [...students];
 
-  function makeAvgGrade(student: Student): number {
+  function getAvgGrade(student: Student): number {
     return student.grades.reduce((a, b) => a + b, 0) / student.grades.length;
   }
 
@@ -60,9 +60,9 @@ export function sortStudents(
     case SortType.AverageGrade:
       return (order === 'asc')
         ? copyStudents.sort((studentA, studentB) => (
-          makeAvgGrade(studentA) - makeAvgGrade(studentB)))
+          getAvgGrade(studentA) - getAvgGrade(studentB)))
         : copyStudents.sort((studentA, studentB) => (
-          makeAvgGrade(studentB) - makeAvgGrade(studentA)));
+          getAvgGrade(studentB) - getAvgGrade(studentA)));
 
     default:
       return students;
