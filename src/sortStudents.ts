@@ -23,7 +23,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function averageGrade(grades: number[]): number {
+  function getAverageGrade(grades: number[]): number {
     return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
   }
 
