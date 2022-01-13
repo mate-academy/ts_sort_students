@@ -18,6 +18,11 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageValue(arr: number[]): number {
+  return arr.reduce((first, second) => first + second)
+    / arr.length;
+}
+
 export function sortStudents(
   students: Array<Student>,
   sortBy: SortType,
@@ -28,65 +33,13 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       return (order === 'asc')
-        ? copyStudents.sort((a, b) => {
-          const fa = a.name.toLowerCase();
-          const fb = b.name.toLowerCase();
-
-          if (fa < fb) {
-            return -1;
-          }
-
-          if (fa > fb) {
-            return 1;
-          }
-
-          return 0;
-        })
-        : copyStudents.sort((a, b) => {
-          const fa = a.name.toLowerCase();
-          const fb = b.name.toLowerCase();
-
-          if (fa > fb) {
-            return -1;
-          }
-
-          if (fa < fb) {
-            return 1;
-          }
-
-          return 0;
-        });
+        ? copyStudents.sort((a, b) => a.name.localeCompare(b.name))
+        : copyStudents.sort((a, b) => b.name.localeCompare(a.name));
 
     case SortType.Surname:
       return (order === 'asc')
-        ? copyStudents.sort((a, b) => {
-          const fa = a.surname.toLowerCase();
-          const fb = b.surname.toLowerCase();
-
-          if (fa < fb) {
-            return -1;
-          }
-
-          if (fa > fb) {
-            return 1;
-          }
-
-          return 0;
-        })
-        : copyStudents.sort((a, b) => {
-          const fa = a.surname.toLowerCase();
-          const fb = b.surname.toLowerCase();
-
-          if (fa > fb) {
-            return -1;
-          }
-
-          if (fa < fb) {
-            return 1;
-          }
-
-          return 0;
-        });
+        ? copyStudents.sort((a, b) => a.surname.localeCompare(b.surname))
+        : copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
 
     case SortType.Age:
       return (order === 'asc')
@@ -109,20 +62,10 @@ export function sortStudents(
     case SortType.AverageGrade:
       return (order === 'asc')
         ? copyStudents.sort((a, b) => {
-          const aAverage = a.grades.reduce((first, second) => first + second)
-            / a.grades.length;
-          const bAverage = b.grades.reduce((first, second) => first + second)
-            / b.grades.length;
-
-          return aAverage - bAverage;
+          return getAverageValue(a.grades) - getAverageValue(b.grades);
         })
         : copyStudents.sort((a, b) => {
-          const aAverage = a.grades.reduce((first, second) => first + second)
-            / a.grades.length;
-          const bAverage = b.grades.reduce((first, second) => first + second)
-            / b.grades.length;
-
-          return bAverage - aAverage;
+          return getAverageValue(b.grades) - getAverageValue(a.grades);
         });
 
     default:
