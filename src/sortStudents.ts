@@ -22,18 +22,18 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const calculate = (marks: number[]): number => marks
+  const calculateAvarage = (marks: number[]): number => marks
     .reduce((sum: number, el: number) => el + sum, 0) / marks.length;
 
   return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
         return order === 'asc'
-          ? +a.name.localeCompare(b.name)
+          ? a.name.localeCompare(b.name)
           : +!a.name.localeCompare(b.name);
       case SortType.Surname:
         return order === 'asc'
-          ? +a.surname.localeCompare(b.surname)
+          ? a.surname.localeCompare(b.surname)
           : +!a.surname.localeCompare(b.surname);
       case SortType.Age:
         return order === 'asc'
@@ -45,8 +45,8 @@ export function sortStudents(
           : +b.married - +a.married;
       case SortType.AverageGrade:
         return order === 'asc'
-          ? calculate(a.grades) - calculate(b.grades)
-          : calculate(b.grades) - calculate(a.grades);
+          ? calculateAvarage(a.grades) - calculateAvarage(b.grades)
+          : calculateAvarage(b.grades) - calculateAvarage(a.grades);
       default:
         return 0;
     }
