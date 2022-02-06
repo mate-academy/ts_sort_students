@@ -23,50 +23,33 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newArr: Student[] = Array.from(students);
-
-  switch (order) {
-    case 'asc':
-      newArr.sort((studentCurrent: Student, studentNext: Student) => {
-        if (sortBy === SortType.AverageGrade) {
-          return ((
-            studentCurrent[SortType.AverageGrade]
-              .reduce((a: number, b:number) => a + b, 0)
-                / studentCurrent[SortType.AverageGrade].length)
-            - studentNext[SortType.AverageGrade]
-              .reduce((a: number, b:number) => a + b, 0)
-                / studentNext[SortType.AverageGrade].length
-          );
-        }
-
-        if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-          return studentCurrent[sortBy].localeCompare(studentNext[sortBy]);
-        }
-
-        return studentCurrent[sortBy] - studentNext[sortBy];
-      });
-
-      break;
-
-    case 'desc':
-      newArr.sort((studentCurrent: Student, studentNext: Student) => {
-        if (sortBy === SortType.AverageGrade) {
-          return ((studentNext[SortType.AverageGrade].reduce((a: number, b:number) => a + b, 0) / studentNext[SortType.AverageGrade].length)
-            - studentCurrent[SortType.AverageGrade].reduce((a: number, b:number) => a + b, 0) / studentCurrent[SortType.AverageGrade].length)
-        }
-
-        if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-          return studentNext[sortBy].localeCompare(studentCurrent[sortBy]);
-        }
-
-        return studentNext[sortBy] - studentCurrent[sortBy];
-      });
-
-      break;
-
-    default:
-      break;
+  function studentAvarageGrade(student: Student): number {
+    return student.grades
+      .reduce((a, b) => a - b, 0) / student.grades.length;
   }
 
-  return newArr;
+  return [...students].sort((studentA, studentB) => {
+    let current: Student = studentA;
+    let next: Student = studentB;
+
+    if (order === 'desc') {
+      [current, next] = [next, current];
+    }
+
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return current[sortBy].localeCompare(next[sortBy]);
+
+      case SortType.Married:
+      case SortType.Age:
+        return +current[sortBy] - +next[sortBy];
+
+      case SortType.AverageGrade:
+        return (studentAvarageGrade(current) - studentAvarageGrade(next)) * -1;
+
+      default:
+        throw new Error('Unexpected value');
+    }
+  });
 }
