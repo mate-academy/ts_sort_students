@@ -10,11 +10,11 @@ export interface Student {
 
 export enum SortType {
   // describe SortType enum
-  Name = 'name',
-  Surname = 'surname',
-  Age = 'age',
-  Married = 'married',
-  AverageGrade = 'averageGrade',
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
 // create SortOrder type
@@ -30,31 +30,35 @@ export function sortStudents(
     return grArr.reduce((a, b) => a + b) / grArr.length;
   }
 
-  return students.sort((a, b) => {
+  const isAsc: boolean = order === 'asc';
+
+  const result: Student[] = [...students];
+
+  return result.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
       default:
-        return order === 'asc'
+        return isAsc
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name);
 
       case SortType.Surname:
-        return order === 'asc'
+        return isAsc
           ? a.surname.localeCompare(b.surname)
           : b.surname.localeCompare(a.surname);
 
       case SortType.Age:
-        return order === 'asc'
+        return isAsc
           ? a.age - b.age
           : b.age - a.age;
 
       case SortType.Married:
-        return order === 'asc'
+        return isAsc
           ? +a.married - +b.married
-          : +b.age - +a.age;
+          : +b.married - +a.married;
 
       case SortType.AverageGrade:
-        return order === 'asc'
+        return isAsc
           ? AveGr(a.grades) - AveGr(b.grades)
           : AveGr(b.grades) - AveGr(a.grades);
     }
