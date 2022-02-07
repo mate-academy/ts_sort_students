@@ -14,7 +14,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  Grades = 'grades',
+  AverageGrade = 'AverageGrade',
 }
 
 // create SortOrder type
@@ -37,11 +37,8 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        answer = studentA.name.localeCompare(studentB.name);
-        break;
-
       case SortType.Surname:
-        answer = studentA.surname.localeCompare(studentB.surname);
+        answer = studentA[sortBy].localeCompare(studentB[sortBy]);
         break;
 
       case SortType.Age:
@@ -51,21 +48,15 @@ export function sortStudents(
       case SortType.Married:
         if (studentA.married && !studentB.married) {
           answer = 1;
-        } else if (!studentA.married && studentB.married) {
+        }
+
+        if (!studentA.married && studentB.married) {
           answer = -1;
-        } else {
-          answer = 0;
         }
         break;
 
-      case SortType.Grades:
+      case SortType.AverageGrade:
         answer = averageGrade(studentA.grades) - averageGrade(studentB.grades);
-
-        // answer
-        //   = (studentA.grades.reduce((a, b) => a + b, 0)
-        //     / studentA.grades.length)
-        //   - (studentB.grades.reduce((a, b) => a + b, 0)
-        //     / studentB.grades.length);
         break;
 
       default:
@@ -73,7 +64,7 @@ export function sortStudents(
     }
 
     if (order === 'desc') {
-      answer *= -1;
+      answer = -answer;
     }
 
     return answer;
