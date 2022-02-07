@@ -59,7 +59,7 @@ export function sortStudents(
         break;
 
       case SortType.Grades:
-        answer = averageGrade(studentA.grades) - averageGrade(studentA.grades);
+        answer = averageGrade(studentA.grades) - averageGrade(studentB.grades);
 
         // answer
         //   = (studentA.grades.reduce((a, b) => a + b, 0)
