@@ -25,7 +25,7 @@ export function sortStudents(
 ): Student[] {
   function studentAvarageGrade(student: Student): number {
     return student.grades
-      .reduce((a, b) => a - b, 0) / student.grades.length;
+      .reduce((a, b) => a + b, 0) / student.grades.length;
   }
 
   return [...students].sort((studentA, studentB) => {
@@ -43,10 +43,10 @@ export function sortStudents(
 
       case SortType.Married:
       case SortType.Age:
-        return +current[sortBy] - +next[sortBy];
+        return Number(current[sortBy]) - Number(next[sortBy]);
 
       case SortType.AverageGrade:
-        return (studentAvarageGrade(current) - studentAvarageGrade(next)) * -1;
+        return studentAvarageGrade(current) - studentAvarageGrade(next);
 
       default:
         throw new Error('Unexpected value');
