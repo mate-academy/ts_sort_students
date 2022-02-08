@@ -12,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -42,8 +42,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverage(a.grades) - getAverage(b.grades)
-          : getAverage(b.grades) - getAverage(a.grades);
+          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
+          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
 
       default:
         return 0;
