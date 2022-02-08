@@ -15,12 +15,11 @@ export enum SortType {
   AverageGrade = 'averageGrade'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function sortStrings(
   students: Student[],
-  sortBy: SortType,
+  sortBy: SortType.Name | SortType.Surname,
   order: SortOrder,
 ): Student[] {
   return order === 'asc'
@@ -28,7 +27,7 @@ function sortStrings(
     : students.sort((st1, st2) => st2[sortBy].localeCompare(st1[sortBy]));
 }
 
-function getAverageGrade(grades): number {
+function getAverageGrade(grades: number[]): number {
   return grades.reduce((a: number, b: number) => a + b) / grades.length;
 }
 
