@@ -5,10 +5,11 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
+  averageGrade?: number;
 }
 
 export enum SortType {
-  AverageGrade,
+  AverageGrade = 'averageGrade',
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
@@ -30,33 +31,30 @@ export function sortStudents(
 ): Student[] {
   return [...students]
     .sort((firstStudent: Student, secondStudent: Student) => {
-      const firstStKey = firstStudent[sortBy];
-      const secondStKey = secondStudent[sortBy];
+      switch (sortBy) {
+        case SortType.AverageGrade:
+          return order === 'asc'
+            ? getAverageGrade(firstStudent) - getAverageGrade(secondStudent)
+            : getAverageGrade(secondStudent) - getAverageGrade(firstStudent);
 
-      if (sortBy === SortType.AverageGrade) {
-        return order === 'asc'
-          ? getAverageGrade(firstStudent) - getAverageGrade(secondStudent)
-          : getAverageGrade(secondStudent) - getAverageGrade(firstStudent);
+        case SortType.Name:
+        case SortType.Surname:
+          return order === 'asc'
+            ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+            : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+
+        case SortType.Age:
+          return order === 'asc'
+            ? firstStudent[sortBy] - secondStudent[sortBy]
+            : secondStudent[sortBy] - firstStudent[sortBy];
+
+        case SortType.Married:
+          return order === 'asc'
+            ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+            : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
+
+        default:
+          return 0;
       }
-
-      if (typeof firstStKey === 'string' && typeof secondStKey === 'string') {
-        return order === 'asc'
-          ? firstStKey.localeCompare(secondStKey)
-          : secondStKey.localeCompare(firstStKey);
-      }
-
-      if (typeof firstStKey === 'number' && typeof secondStKey === 'number') {
-        return order === 'asc'
-          ? firstStKey - secondStKey
-          : secondStKey - firstStKey;
-      }
-
-      if (typeof firstStKey === 'boolean' && typeof secondStKey === 'boolean') {
-        return order === 'asc'
-          ? Number(firstStKey) - Number(secondStKey)
-          : Number(secondStKey) - Number(firstStKey);
-      }
-
-      return 0;
     });
 }
