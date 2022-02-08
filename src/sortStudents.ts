@@ -61,7 +61,10 @@ export function sortStudents(
     case 'married':
 
       sortedArray.sort((studentA:Student, studentB:Student) => {
-        return (studentA.married && !studentB.married) ? -1 : 1;
+        const a:number = (studentA.married && !studentB.married) ? -1 : 1;
+        const b:number = (studentA.married && !studentB.married) ? 1 : -1;
+
+        return order === 'asc' ? b : a;
       });
       break;
 
