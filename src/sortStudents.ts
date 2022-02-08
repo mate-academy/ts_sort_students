@@ -5,16 +5,15 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
-  averageAge?: number;
 }
 
 export enum SortType {
+  AverageGrade,
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
   Grades = 'grades',
-  AverageGrade = 'averageAge'
 }
 
 export type SortOrder = 'asc' | 'dsc';
