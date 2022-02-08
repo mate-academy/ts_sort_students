@@ -28,25 +28,17 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       sorted.sort((s1, s2) => {
-        switch (order) {
-          case 'desc':
-            return s2[sortBy].localeCompare(s1[sortBy]);
-
-          default:
-            return s1[sortBy].localeCompare(s2[sortBy]);
-        }
+        return order === 'asc'
+          ? s1[sortBy].localeCompare(s2[sortBy])
+          : s2[sortBy].localeCompare(s1[sortBy]);
       });
       break;
 
     case SortType.Age:
       sorted.sort((s1, s2) => {
-        switch (order) {
-          case 'desc':
-            return s2[sortBy] - s1[sortBy];
-
-          default:
-            return s1[sortBy] - s2[sortBy];
-        }
+        return order === 'asc'
+          ? s1[sortBy] - s2[sortBy]
+          : s2[sortBy] - s1[sortBy];
       });
       break;
 
@@ -56,13 +48,11 @@ export function sortStudents(
           return 0;
         }
 
-        switch (order) {
-          case 'desc':
-            return s1[sortBy] ? -1 : 1;
-
-          default:
-            return s1[sortBy] ? 1 : -1;
+        if (order === 'asc') {
+          return s1[sortBy] ? 1 : -1;
         }
+
+        return s1[sortBy] ? -1 : 1;
       });
       break;
 
@@ -71,12 +61,9 @@ export function sortStudents(
         const avg1 = s1[sortBy].reduce((a, b) => a + b) / s1[sortBy].length;
         const avg2 = s2[sortBy].reduce((a, b) => a + b) / s2[sortBy].length;
 
-        switch (order) {
-          case 'desc':
-            return avg2 - avg1;
-          default:
-            return avg1 - avg2;
-        }
+        return order === 'asc'
+          ? avg1 - avg2
+          : avg2 - avg1;
       });
       break;
 
