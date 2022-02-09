@@ -20,59 +20,30 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageAge(student: Student): number {
+  return student.grades.reduce((prev, curr) => prev + curr, 0)
+    / student.grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  // write your function
-  return [...students].sort((a: Student, b: Student) => {
+  const numberOrder: number = order === 'asc' ? 1 : -1;
+
+  return [...students].sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
-      case 'name': {
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
-
-      case 'surname': {
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
-
-      case 'age': {
-        if (order === 'asc') {
-          return a[sortBy] - b[sortBy];
-        }
-
-        return b[sortBy] - a[sortBy];
-      }
-
-      case 'married': {
-        if (order === 'asc') {
-          return +a[sortBy] - +b[sortBy];
-        }
-
-        return +b[sortBy] - +a[sortBy];
-      }
-
-      case 'AverageGrade': {
-        const averageGradeA = a.grades
-          .reduce((sum: number, el: number) => sum + el) / a.grades.length;
-        const averageGradeB = b.grades
-          .reduce((sum: number, el: number) => sum + el) / b.grades.length;
-
-        if (order === 'asc') {
-          return averageGradeA - averageGradeB;
-        }
-
-        return averageGradeB - averageGradeA;
-      }
-
+      case SortType.Name:
+      case SortType.Surname:
+        return numberOrder
+          * studentA[sortBy].localeCompare(studentB[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return numberOrder * (+studentA[sortBy] - +studentB[sortBy]);
+      case SortType.AverageGrade:
+        return numberOrder
+          * (getAverageAge(studentA) - getAverageAge(studentB));
       default:
         return 0;
     }
