@@ -45,7 +45,7 @@ export function sortStudents(
           return b[sortBy] - a[sortBy];
         }
 
-        return a.averageGrade - b.averageGrade;
+        return a[sortBy] - b[sortBy];
 
       case SortType.Name:
       case SortType.Surname:
