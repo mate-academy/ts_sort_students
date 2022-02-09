@@ -17,8 +17,12 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const avarageSum = (stud: number[]): number => {
-  return stud.reduce((a, b) => a + b) / stud.length;
+const avarageSum = (allStudents: number[]): number => {
+  return allStudents.reduce((a, b) => a + b) / allStudents.length;
+};
+
+const comparing = (person1: string, person2: string): number => {
+  return person1.localeCompare(person2);
 };
 
 export function sortStudents(students: Student[],
@@ -31,11 +35,11 @@ export function sortStudents(students: Student[],
 
     switch (sortBy) {
       case 'name':
-        numer = student1[sortBy].localeCompare(student2[sortBy]);
+        numer = comparing(student1[sortBy], student2[sortBy]);
         break;
 
       case 'surname':
-        numer = student1[sortBy].localeCompare(student2[sortBy]);
+        numer = comparing(student1[sortBy], student2[sortBy]);
         break;
 
       case 'age':
