@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const avarageSum = (allStudents: number[]): number => {
-  return allStudents.reduce((a, b) => a + b) / allStudents.length;
+const avarageSum = (gradesList: number[]): number => {
+  return gradesList.reduce((a, b) => a + b) / gradesList.length;
 };
 
 const comparing = (person1: string, person2: string): number => {
@@ -31,27 +31,24 @@ export function sortStudents(students: Student[],
   const copy = [...students];
 
   const final: Student[] = copy.sort((student1: Student, student2: Student) => {
-    let numer: number;
+    let result: number;
 
     switch (sortBy) {
       case 'name':
-        numer = comparing(student1[sortBy], student2[sortBy]);
-        break;
-
       case 'surname':
-        numer = comparing(student1[sortBy], student2[sortBy]);
+        result = comparing(student1[sortBy], student2[sortBy]);
         break;
 
       case 'age':
-        numer = student1[sortBy] - student2[sortBy];
+        result = student1[sortBy] - student2[sortBy];
         break;
 
       case 'married':
-        numer = student1[sortBy] && !student2[sortBy] ? 1 : -1;
+        result = student1[sortBy] && !student2[sortBy] ? 1 : -1;
         break;
 
       case 'grades':
-        numer = avarageSum(student1[sortBy]) - avarageSum(student2[sortBy]);
+        result = avarageSum(student1[sortBy]) - avarageSum(student2[sortBy]);
         break;
 
       default:
@@ -59,10 +56,10 @@ export function sortStudents(students: Student[],
     }
 
     if (order !== 'asc') {
-      return numer * -1;
+      return result * -1;
     }
 
-    return numer;
+    return result;
   });
 
   return final;
