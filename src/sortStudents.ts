@@ -31,29 +31,26 @@ export function sortStudents(
 
   const result: Student[] = studentsCopy
     .sort((studentA: Student, studentB: Student) => {
-      let sortNum = 0;
+      let sortByNum = 0;
 
       switch (sortBy) {
         case SortType.Name:
-          sortNum = studentA[sortBy].localeCompare(studentB[sortBy]);
-          break;
-
         case SortType.Surname:
-          sortNum = studentA[sortBy].localeCompare(studentB[sortBy]);
+          sortByNum = studentA[sortBy].localeCompare(studentB[sortBy]);
           break;
 
         case SortType.Age:
-          sortNum = studentA[sortBy] - studentB[sortBy];
+          sortByNum = studentA[sortBy] - studentB[sortBy];
           break;
 
         case SortType.Married:
-          sortNum = studentA[sortBy] && !studentB[sortBy]
+          sortByNum = studentA[sortBy] && !studentB[sortBy]
             ? 1
             : -1;
           break;
 
         case SortType.AverageGrade:
-          sortNum = midlNum(studentA[sortBy]) - midlNum(studentB[sortBy]);
+          sortByNum = midlNum(studentA[sortBy]) - midlNum(studentB[sortBy]);
           break;
 
         default:
@@ -61,10 +58,10 @@ export function sortStudents(
       }
 
       if (order === 'desc') {
-        return sortNum * -1;
+        return sortByNum * -1;
       }
 
-      return sortNum;
+      return sortByNum;
     });
 
   return result;
