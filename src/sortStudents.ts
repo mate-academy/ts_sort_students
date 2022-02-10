@@ -25,7 +25,7 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const midlNum = (array: number[]): number => {
+  const average = (array: number[]): number => {
     return (array.reduce((a, b) => a + b) / array.length);
   };
 
@@ -50,7 +50,7 @@ export function sortStudents(
           break;
 
         case SortType.AverageGrade:
-          sortByNum = midlNum(studentA[sortBy]) - midlNum(studentB[sortBy]);
+          sortByNum = average(studentA[sortBy]) - average(studentB[sortBy]);
           break;
 
         default:
