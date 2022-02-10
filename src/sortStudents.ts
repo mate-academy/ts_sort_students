@@ -25,7 +25,7 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const average = (array: number[]): number => {
+  const averageNum = (array: number[]): number => {
     return (array.reduce((a, b) => a + b) / array.length);
   };
 
@@ -50,7 +50,9 @@ export function sortStudents(
           break;
 
         case SortType.AverageGrade:
-          sortByNum = average(studentA[sortBy]) - average(studentB[sortBy]);
+          sortByNum = (
+            averageNum(studentA[sortBy]) - averageNum(studentB[sortBy])
+          );
           break;
 
         default:
