@@ -25,22 +25,22 @@ export function sortStudents(students: Student[],
   const clone = [...students];
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return order === 'asc'
         ? clone.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
         : clone.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
-    case 'age':
-    case 'married':
+    case SortType.Age:
+    case SortType.Married:
       return order === 'asc'
         ? clone.sort((a, b) => +a[sortBy] - +b[sortBy])
         : clone.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
-    case 'grades':
+    case SortType.AverageGrade:
       return order === 'asc'
-        ? clone.sort((a, b) => average(a.grades) - average(b.grades))
-        : clone.sort((a, b) => average(b.grades) - average(a.grades));
+        ? clone.sort((a, b) => average(a[sortBy]) - average(b[sortBy]))
+        : clone.sort((a, b) => average(b[sortBy]) - average(a[sortBy]));
 
     default:
       break;
