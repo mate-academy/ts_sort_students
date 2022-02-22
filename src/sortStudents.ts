@@ -12,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'avg'
+  AverageGrade = 'grades'
 }
 
 // create SortOrder type
@@ -26,44 +26,42 @@ export function sortStudents(
   const copy: Student[] = [...students];
 
   return copy.sort((a: Student, b: Student) => {
-    const firstAverageGrade: number = a.grades.reduce(
-      (sum, value) => sum + value,
-    ) / a.grades.length;
+    function averageDiff(first: Student, second: Student): number {
+      const firstAverageGrade: number = first.grades.reduce(
+        (sum, value) => sum + value,
+      ) / first.grades.length;
 
-    const secondAverageGrade: number = b.grades.reduce(
-      (sum, value) => sum + value,
-    ) / b.grades.length;
+      const secondAverageGrade: number = second.grades.reduce(
+        (sum, value) => sum + value,
+      ) / second.grades.length;
+
+      return firstAverageGrade - secondAverageGrade;
+    }
 
     if (order === 'asc') {
-      switch (sortBy) {
-        case SortType.Name:
-          return a.name.localeCompare(b.name);
-        case SortType.Surname:
-          return a.surname.localeCompare(b.surname);
-        case SortType.Age:
-          return a.age - b.age;
-        case SortType.Married:
-          return +a.married - +b.married;
-        case SortType.AverageGrade:
-          return firstAverageGrade - secondAverageGrade;
+      switch (typeof a[sortBy]) {
+        case 'string':
+          return a[sortBy].toString().localeCompare(b[sortBy].toString());
+        case 'number':
+        case 'boolean':
+          return +a[sortBy] - +b[sortBy];
+        case 'object':
+          return averageDiff(a, b);
         default:
-          return a.name.localeCompare(b.name);
+          return 0;
       }
     }
 
-    switch (sortBy) {
-      case SortType.Name:
-        return b.name.localeCompare(a.name);
-      case SortType.Surname:
-        return b.surname.localeCompare(a.surname);
-      case SortType.Age:
-        return b.age - a.age;
-      case SortType.Married:
-        return +b.married - +a.married;
-      case SortType.AverageGrade:
-        return secondAverageGrade - firstAverageGrade;
+    switch (typeof b[sortBy]) {
+      case 'string':
+        return b[sortBy].toString().localeCompare(a[sortBy].toString());
+      case 'number':
+      case 'boolean':
+        return +b[sortBy] - +a[sortBy];
+      case 'object':
+        return averageDiff(b, a);
       default:
-        return b.name.localeCompare(a.name);
+        return 0;
     }
   });
 }
