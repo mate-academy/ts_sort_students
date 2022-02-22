@@ -23,9 +23,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copy: Student[] = [...students];
-
-  return copy.sort((a: Student, b: Student) => {
+  return [...students].sort((a: Student, b: Student) => {
     function averageDiff(first: Student, second: Student): number {
       const firstAverageGrade: number = first.grades.reduce(
         (sum, value) => sum + value,
