@@ -1,16 +1,54 @@
-
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+const sumCallback = (current: number, prev: number): number => current + prev;
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+function sortCallback<T>(
+  sortBy: SortType,
+  order: SortOrder,
+): (a: T, b: T) => number {
+  return (a, b): number => {
+    let current: T = a;
+    let prev: T = b;
+
+    if (order === 'desc') {
+      [current, prev] = [b, a];
+    }
+
+    if (typeof current[sortBy] === 'string') {
+      return current[sortBy].localeCompare(prev[sortBy]);
+    }
+
+    if (Array.isArray(current[sortBy])) {
+      const sumA: number = current[sortBy].reduce(sumCallback, 0);
+      const sumB: number = prev[sortBy].reduce(sumCallback, 0);
+
+      return sumA / current[sortBy].length - sumB / prev[sortBy].length;
+    }
+
+    return current[sortBy] - prev[sortBy];
+  };
+}
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  return [...students].sort(sortCallback<Student>(sortBy, order));
 }
