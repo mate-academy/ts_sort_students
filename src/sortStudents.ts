@@ -22,70 +22,41 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents: Student[] = [...students];
+  return [...students].sort(
+    (a: Student, b: Student) => {
+      let firstStudent = a;
+      let secondStudent = b;
+      let firstAvgGrades: number = a.grades.reduce(
+        (x: number, y: number) => x + y,
+      ) / a.grades.length;
+      let secondAvgGrades: number = b.grades.reduce(
+        (x: number, y: number) => x + y,
+      ) / b.grades.length;
 
-  switch (sortBy) {
-    case SortType.Name:
-      sortedStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
-        },
-      );
-      break;
+      if (order === 'desc') {
+        [firstStudent, secondStudent] = [secondStudent, firstStudent];
+        [firstAvgGrades, secondAvgGrades] = [secondAvgGrades, firstAvgGrades];
+      }
 
-    case SortType.Surname:
-      sortedStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? a.surname.localeCompare(b.surname)
-            : b.surname.localeCompare(a.surname);
-        },
-      );
-      break;
+      switch (sortBy) {
+        case SortType.Name:
+          return firstStudent.name.localeCompare(secondStudent.name);
 
-    case SortType.Age:
-      sortedStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? a.age - b.age
-            : b.age - a.age;
-        },
-      );
-      break;
+        case SortType.Surname:
+          return firstStudent.surname.localeCompare(secondStudent.surname);
 
-    case SortType.Married:
-      sortedStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? Number(a.married) - Number(b.married)
-            : Number(b.married) - Number(a.married);
-        },
-      );
-      break;
+        case SortType.Age:
+          return firstStudent.age - secondStudent.age;
 
-    case SortType.AverageGrade:
-      sortedStudents.sort(
-        (a: Student, b: Student) => {
-          const firstStudentGrade: number = a.grades.reduce(
-            (x: number, y: number) => x + y,
-          ) / a.grades.length;
+        case SortType.Married:
+          return Number(firstStudent.married) - Number(secondStudent.married);
 
-          const secondStudentGrade: number = b.grades.reduce(
-            (x: number, y: number) => x + y,
-          ) / b.grades.length;
+        case SortType.AverageGrade:
+          return firstAvgGrades - secondAvgGrades;
 
-          return order === 'asc'
-            ? firstStudentGrade - secondStudentGrade
-            : secondStudentGrade - firstStudentGrade;
-        },
-      );
-      break;
-
-    default:
-      throw new Error('Error :3');
-  }
-
-  return sortedStudents;
+        default:
+          throw new Error('Error :3');
+      }
+    },
+  );
 }
