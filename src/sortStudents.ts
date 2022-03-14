@@ -27,13 +27,13 @@ export function sortStudents(
       let studentA = a;
       let studentB = b;
 
-      if (order === 'desc') {
-        [studentA, studentB] = [studentB, studentA];
-      }
-
       const averageGrades = (grades: number[]): number => {
         return grades.reduce((x: number, y: number) => x + y) / grades.length;
       };
+
+      if (order === 'desc') {
+        [studentA, studentB] = [studentB, studentA];
+      }
 
       switch (sortBy) {
         case SortType.Name:
