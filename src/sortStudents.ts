@@ -24,38 +24,36 @@ export function sortStudents(
 ): Student[] {
   return [...students].sort(
     (a: Student, b: Student) => {
-      let firstStudent = a;
-      let secondStudent = b;
-      let firstAvgGrades: number = a.grades.reduce(
-        (x: number, y: number) => x + y,
-      ) / a.grades.length;
-      let secondAvgGrades: number = b.grades.reduce(
-        (x: number, y: number) => x + y,
-      ) / b.grades.length;
+      let studentA = a;
+      let studentB = b;
 
       if (order === 'desc') {
-        [firstStudent, secondStudent] = [secondStudent, firstStudent];
-        [firstAvgGrades, secondAvgGrades] = [secondAvgGrades, firstAvgGrades];
+        [studentA, studentB] = [studentB, studentA];
       }
+
+      const averageGrades = (grades: number[]): number => {
+        return grades.reduce((x: number, y: number) => x + y) / grades.length;
+      };
 
       switch (sortBy) {
         case SortType.Name:
-          return firstStudent.name.localeCompare(secondStudent.name);
+          return studentA.name.localeCompare(studentB.name);
 
         case SortType.Surname:
-          return firstStudent.surname.localeCompare(secondStudent.surname);
+          return studentA.surname.localeCompare(studentB.surname);
 
         case SortType.Age:
-          return firstStudent.age - secondStudent.age;
+          return studentA.age - studentB.age;
 
         case SortType.Married:
-          return Number(firstStudent.married) - Number(secondStudent.married);
+          return Number(studentA.married) - Number(studentB.married);
 
         case SortType.AverageGrade:
-          return firstAvgGrades - secondAvgGrades;
+          return averageGrades(studentA.grades)
+            - averageGrades(studentB.grades);
 
         default:
-          throw new Error('Error :3');
+          throw new Error('Invalid data');
       }
     },
   );
