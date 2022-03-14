@@ -28,7 +28,7 @@ export function sortStudents(
       let studentB = b;
 
       const averageGrades = (grades: number[]): number => {
-        return grades.reduce((x: number, y: number) => x + y) / grades.length;
+        return grades.reduce((x, y) => x + y) / grades.length;
       };
 
       if (order === 'desc') {
@@ -53,7 +53,7 @@ export function sortStudents(
             - averageGrades(studentB.grades);
 
         default:
-          throw new Error('Invalid data');
+          throw new Error('Entered data is invalid');
       }
     },
   );
