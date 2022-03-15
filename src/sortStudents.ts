@@ -17,6 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+const calculateAverageGrades = (grades: number[]): number => {
+  return grades.reduce((x, y) => x + y) / grades.length;
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -26,10 +30,6 @@ export function sortStudents(
     (a: Student, b: Student) => {
       let studentA = a;
       let studentB = b;
-
-      const averageGrades = (grades: number[]): number => {
-        return grades.reduce((x, y) => x + y) / grades.length;
-      };
 
       if (order === 'desc') {
         [studentA, studentB] = [studentB, studentA];
@@ -49,8 +49,8 @@ export function sortStudents(
           return Number(studentA.married) - Number(studentB.married);
 
         case SortType.AverageGrade:
-          return averageGrades(studentA.grades)
-            - averageGrades(studentB.grades);
+          return calculateAverageGrades(studentA.grades)
+            - calculateAverageGrades(studentB.grades);
 
         default:
           throw new Error('Entered data is invalid');
