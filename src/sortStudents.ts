@@ -18,13 +18,11 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(grades: number[]): number {
-  let result: number = 0;
-
-  if (grades.length !== 0) {
-    result = grades.reduce((prev, curr) => prev + curr, 0) / grades.length;
+  if (grades.length) {
+    return grades.reduce((prev, curr) => prev + curr, 0) / grades.length;
   }
 
-  return result;
+  return 0;
 }
 
 export function sortStudents(
@@ -34,25 +32,21 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  return copyStudents.sort((currStudent: Student, nextStudent: Student) => {
+  return copyStudents.sort((curr: Student, next: Student) => {
+    const currentStudent = order !== 'asc' ? next : curr;
+    const nextStudent = order !== 'asc' ? curr : next;
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? currStudent[sortBy].localeCompare(nextStudent[sortBy])
-          : nextStudent[sortBy].localeCompare(currStudent[sortBy]);
+        return currentStudent[sortBy].localeCompare(nextStudent[sortBy]);
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? getAverageGrade(currStudent[sortBy])
-            - getAverageGrade(nextStudent[sortBy])
-          : getAverageGrade(nextStudent[sortBy])
-            - getAverageGrade(currStudent[sortBy]);
+        return getAverageGrade(currentStudent.grades)
+          - getAverageGrade(nextStudent.grades);
 
       default:
-        return order === 'asc'
-          ? +currStudent[sortBy] - +nextStudent[sortBy]
-          : +nextStudent[sortBy] - +currStudent[sortBy];
+        return +currentStudent[sortBy] - +nextStudent[sortBy];
     }
   });
 }
