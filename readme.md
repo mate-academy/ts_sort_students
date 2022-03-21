@@ -1,4 +1,4 @@
-# Sort students
+m# Sort students
 Create a `sortStudents` function that takes 3 parameters and return a new array
 with students sorted according to the given params. The original array must not
 change.
@@ -28,8 +28,8 @@ You also need to add correct types:
     AverageGrade
     ```
     Hint: `AverageGrade` is sorting by an average value in `grades` array.
-- Create `SortOrder` type with only 2 values `'asc'` and `'desc'` 
-    Hint: If values are the same the students should go in the original order 
+- Create `SortOrder` type with only 2 values `'asc'` and `'desc'`
+    Hint: If values are the same the students should go in the original order
     (no matter we use `asc` or `desc` order)
 
 Examples:
