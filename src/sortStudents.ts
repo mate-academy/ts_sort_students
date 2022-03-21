@@ -18,7 +18,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(grades: number[]) : number {
-  return grades.reduce((prevV, curentV) => prevV + curentV) / grades.length;
+  return grades.reduce((prevV, curentV) => prevV + curentV, 0) / grades.length;
 }
 
 export function sortStudents(
@@ -30,13 +30,11 @@ export function sortStudents(
     const studentFirst = order === 'asc' ? firstS : secondS;
     const studentSecond = order === 'asc' ? secondS : firstS;
 
+    if (typeof studentFirst[sortBy] === 'string') {
+      return studentFirst[sortBy].localeCompare(studentSecond[sortBy]);
+    }
+
     switch (sortBy) {
-      case SortType.Name:
-        return studentFirst.name.localeCompare(studentSecond.name);
-
-      case SortType.Surname:
-        return studentFirst.surname.localeCompare(studentSecond.surname);
-
       case SortType.Age:
         return studentFirst.age - studentSecond.age;
 
