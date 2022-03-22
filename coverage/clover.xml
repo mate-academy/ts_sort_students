@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1647895866212" clover="3.2.0">
+  <project timestamp="1647895866213" name="All files">
+    <metrics statements="13" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="4" coveredmethods="0" elements="25" coveredelements="0" complexity="0" loc="13" ncloc="13" packages="1" files="1" classes="1"/>
+    <file name="sortStudents.ts" path="C:\Users\roman\projects\ts_sort_students\src\sortStudents.ts">
+      <metrics statements="13" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="4" coveredmethods="0"/>
+      <line num="21" count="0" type="stmt"/>
+      <line num="30" count="0" type="stmt"/>
+      <line num="31" count="0" type="stmt"/>
+      <line num="32" count="0" type="stmt"/>
+      <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="38" count="0" type="cond" truecount="0" falsecount="6"/>
+      <line num="40" count="0" type="stmt"/>
+      <line num="43" count="0" type="stmt"/>
+      <line num="46" count="0" type="stmt"/>
+      <line num="49" count="0" type="stmt"/>
+      <line num="52" count="0" type="stmt"/>
+      <line num="56" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>
