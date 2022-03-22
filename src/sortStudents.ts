@@ -35,27 +35,18 @@ export function sortStudents(
         [studentA, studentB] = [studentB, studentA];
       }
 
-      if (sortBy === SortType.Name) {
-        return studentA.name.localeCompare(studentB.name);
+      switch (sortBy) {
+        case SortType.Name:
+          return studentA.name.localeCompare(studentB.name);
+        case SortType.Surname:
+          return studentA.surname.localeCompare(studentB.surname);
+        case SortType.Age:
+          return studentA.age - studentB.age;
+        case SortType.Married:
+          return Number(studentA.married) - Number(studentB.married);
+        default:
+          return avGrade(studentA.grades) - avGrade(studentB.grades);
       }
-
-      if (sortBy === SortType.Surname) {
-        return studentA.surname.localeCompare(studentB.surname);
-      }
-
-      if (sortBy === SortType.Age) {
-        return studentA.age - studentB.age;
-      }
-
-      if (sortBy === SortType.Married) {
-        return Number(studentA.married) - Number(studentB.married);
-      }
-
-      if (sortBy === SortType.AverageGrade) {
-        return avGrade(studentA.grades) - avGrade(studentB.grades);
-      }
-
-      return 0;
     },
   );
 }
