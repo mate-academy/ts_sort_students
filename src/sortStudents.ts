@@ -46,14 +46,14 @@ export function sortStudents(
         return studentA.age - studentB.age;
 
       case SortType.Married:
-        return +studentA.married - +studentA.married;
+        return +studentA.married - +studentB.married;
 
       case SortType.AverageGrade:
         return getAverageGrade(studentA.grades)
           - getAverageGrade(studentB.grades);
 
       default:
-        return studentA.name.localeCompare(studentB.name);
+        return 0;
     }
   });
 }
