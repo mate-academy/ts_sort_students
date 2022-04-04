@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 import { sortStudents, SortType } from './sortStudents';
 
 const students = [
@@ -160,6 +158,7 @@ describe('Function \'sortStudents\'', () => {
 
   test('should correctly sort students by Married in descending order', () => {
     const sortedData = sortStudents(students, SortType.Married, 'desc')
+      // eslint-disable-next-line max-len
       .map((user) => `${user.name} ${user.surname} ${user.age}${user.married ? ' married' : ''}`);
 
     expect(sortedData)
@@ -177,6 +176,7 @@ describe('Function \'sortStudents\'', () => {
       ]);
   });
 
+  // eslint-disable-next-line max-len
   test('should correctly sort students by AverageGrade in descending order', () => {
     const sortedData = sortStudents(students, SortType.AverageGrade, 'desc')
       .map((user) => `${user.name} ${user.surname} [${user.grades}]`);
@@ -196,6 +196,7 @@ describe('Function \'sortStudents\'', () => {
       ]);
   });
 
+  // eslint-disable-next-line max-len
   test('should correctly sort students by AverageGrade in ascending order', () => {
     const sortedData = sortStudents(students, SortType.AverageGrade, 'asc')
       .map((user) => `${user.name} ${user.surname} [${user.grades}]`);
