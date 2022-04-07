@@ -17,8 +17,11 @@ export enum SortType {
 }
 export type SortOrder = 'asc' | 'dsc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const sortedStudents: Student[] = [...students];
 
   if (order === 'asc') {
