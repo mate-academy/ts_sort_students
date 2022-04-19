@@ -25,34 +25,54 @@ export function sortStudents(
 ): Student[] {
   const copy: Student[] = JSON.parse(JSON.stringify(students));
 
-  if (sortBy === 'averageGrade' && order === 'asc') {
-    copy.sort((a, b) => a.grades
-      .reduce((sum, y) => sum + y, 0) / a.grades.length - b.grades
-      .reduce((sum, y) => sum + y, 0) / b.grades.length);
-  }
+  switch (sortBy) {
+    case SortType.AverageGrade:
 
-  if (sortBy === 'averageGrade' && order === 'desc') {
-    copy.sort((a, b) => b.grades
-      .reduce((sum, y) => sum + y, 0) / b.grades.length - a.grades
-      .reduce((sum, y) => sum + y, 0) / a.grades.length);
-  }
+      copy.sort((a, b) => {
+        if (order === 'asc') {
+          return a.grades
+            .reduce((sum, y) => sum + y, 0) / a.grades.length - b.grades
+            .reduce((sum, y) => sum + y, 0) / b.grades.length;
+        }
 
-  if (sortBy === 'name' && order === 'asc') {
-    copy.sort((a, b) => a.name.localeCompare(b.name));
-  }
+        return b.grades
+          .reduce((sum, y) => sum + y, 0) / b.grades.length - a.grades
+          .reduce((sum, y) => sum + y, 0) / a.grades.length;
+      });
 
-  if (sortBy === 'surname' && order === 'asc') {
-    copy.sort((a, b) => a.surname.localeCompare(b.surname));
-  }
+      break;
 
-  if (sortBy === 'age' && order === 'desc') {
-    copy.sort((a, b) => b.age - a.age);
-  }
+    case SortType.Name:
+      if (order === 'asc') {
+        copy.sort((a, b) => a.name.localeCompare(b.name));
+      }
 
-  if (sortBy === 'married' && order === 'desc') {
-    copy.sort((x, y) => (
-      JSON.stringify(y.married).localeCompare(JSON.stringify(x.married))
-    ));
+      break;
+
+    case SortType.Surname:
+      if (order === 'asc') {
+        copy.sort((a, b) => a.surname.localeCompare(b.surname));
+      }
+
+      break;
+
+    case SortType.Age:
+      if (order === 'desc') {
+        copy.sort((a, b) => b.age - a.age);
+      }
+
+      break;
+
+    case SortType.Married:
+      if (order === 'desc') {
+        copy.sort((x, y) => (
+          JSON.stringify(y.married).localeCompare(JSON.stringify(x.married))
+        ));
+      }
+
+      break;
+
+    default: break;
   }
 
   return copy;
