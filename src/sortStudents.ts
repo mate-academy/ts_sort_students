@@ -9,11 +9,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -26,63 +26,38 @@ function getSorterBy(property: SortType, order: SortOrder = 'asc')
   let compareProperties: CompareFunc = () => 0;
 
   switch (property) {
-    case SortType.Name: {
+    case SortType.Name:
+    case SortType.Surname:
       compareProperties = (student1, student2): number => {
-        return student1.name.localeCompare(student2.name);
+        return student1[property].localeCompare(student2[property]);
       };
 
       break;
-    }
 
-    case SortType.Surname: {
+    case SortType.Married:
+    case SortType.Age:
       compareProperties = (student1, student2): number => {
-        return student1.surname.localeCompare(student2.surname);
+        return Number(student1[property]) - Number(student2[property]);
       };
 
       break;
-    }
 
-    case SortType.Age: {
+    case SortType.AverageGrade:
       compareProperties = (student1, student2): number => {
-        return student1.age - student2.age;
-      };
-
-      break;
-    }
-
-    case SortType.Married: {
-      compareProperties = (student1, student2): number => {
-        const married1 = student1.married
-          ? 1
-          : 0;
-        const married2 = student2.married
-          ? 1
-          : 0;
-
-        return married1 - married2;
-      };
-
-      break;
-    }
-
-    case SortType.AverageGrade: {
-      compareProperties = (student1, student2): number => {
-        const sum1 = student1.grades
+        const sum1 = student1[property]
           .reduce((total, current) => total + current, 0);
-        const sum2 = student2.grades
+        const sum2 = student2[property]
           .reduce((total, current) => total + current, 0);
-        const avg1 = sum1 / student1.grades.length;
-        const avg2 = sum2 / student2.grades.length;
+        const avg1 = sum1 / student1[property].length;
+        const avg2 = sum2 / student2[property].length;
 
         return avg1 - avg2;
       };
 
       break;
-    }
 
-    default: {
+    default:
       break;
-    }
   }
 
   const sorter: CompareFunc = (student1, student2) => {
