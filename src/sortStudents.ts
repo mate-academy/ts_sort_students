@@ -38,8 +38,8 @@ export function sortStudents(
     case SortType.Age:
     case SortType.Married:
       return (order === 'asc')
-        ? arrOfStudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : arrOfStudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+        ? arrOfStudents.sort((a, b) => +(a[sortBy]) - +(b[sortBy]))
+        : arrOfStudents.sort((a, b) => +(b[sortBy]) - +(a[sortBy]));
 
     case SortType.AverageGrade:
       return arrOfStudents.sort((a, b) => {
