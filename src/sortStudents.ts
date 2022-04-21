@@ -48,6 +48,6 @@ export function sortStudents(
       return arr.sort((a: Student, b: Student) => (order === 'asc'
         ? getAverage(a.grades) - getAverage(b.grades)
         : getAverage(b.grades) - getAverage(a.grades)));
-    default: return arr;
+    default: throw new Error('Unexpected type');
   }
 }
