@@ -53,17 +53,11 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      sorted.sort((a, b): number => byName(a, b, order, sortBy));
-      break;
-
     case SortType.Surname:
       sorted.sort((a, b): number => byName(a, b, order, sortBy));
       break;
 
     case SortType.Age:
-      sorted.sort((a, b): number => byNumbers(a, b, order, sortBy));
-      break;
-
     case SortType.Married:
       sorted.sort((a, b): number => byNumbers(a, b, order, sortBy));
       break;
