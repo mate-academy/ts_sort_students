@@ -24,8 +24,13 @@ export function sortStudents(
 ): Student[] {
   const copy: Student[] = [...students];
 
+  function averageMarks(std: Student): number {
+    return std.grades.reduce((sum, b) => sum + b, 0) / std.grades.length;
+  }
+
   switch (sortBy) {
     case SortType.Name:
+
     case SortType.Surname: {
       return copy.sort((std1: Student, std2: Student) => (order === 'asc'
         ? std1[sortBy].localeCompare(std2[sortBy])
@@ -42,10 +47,8 @@ export function sortStudents(
 
     case SortType.AverageGrade: {
       return copy.sort((std1: Student, std2: Student) => (order === 'asc'
-        ? std1.grades.reduce((sum, b) => sum + b, 0) / std1.grades.length
-          - std2.grades.reduce((sum, b) => sum + b, 0) / std2.grades.length
-        : std2.grades.reduce((sum, b) => sum + b, 0) / std2.grades.length
-          - std1.grades.reduce((sum, b) => sum + b, 0) / std1.grades.length
+        ? averageMarks(std1) - averageMarks(std2)
+        : averageMarks(std2) - averageMarks(std1)
       ));
     }
 
