@@ -30,13 +30,11 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-
-    case SortType.Surname: {
+    case SortType.Surname:
       return copy.sort((std1: Student, std2: Student) => (order === 'asc'
         ? std1[sortBy].localeCompare(std2[sortBy])
         : std2[sortBy].localeCompare(std1[sortBy])
       ));
-    }
 
     case SortType.Age: {
       return copy.sort((std1: Student, std2: Student) => (order === 'asc'
