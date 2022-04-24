@@ -22,27 +22,23 @@ export function sortStudents(students: Student[], sortBy: SortType,
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        if (order === 'asc') {
-          return studentA[sortBy].localeCompare(studentB[sortBy]);
-        }
-
-        return studentB[sortBy].localeCompare(studentA[sortBy]);
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
       case SortType.Age: {
-        if (order === 'asc') {
-          return studentA.age - studentB.age;
-        }
-
-        return studentB.age - studentA.age;
+        return order === 'asc'
+          ? studentA.age - studentB.age
+          : studentB.age - studentA.age;
       }
 
       case SortType.Married: {
-        if (order === 'asc' && studentA.married && !studentB.married) {
-          return 1;
+        if (studentA.married && !studentB.married) {
+          return order === 'asc' ? 1 : -1;
         }
 
-        if (order === 'desc' && studentA.married && !studentB.married) {
-          return -1;
+        if (!studentA.married && studentB.married) {
+          return order === 'asc' ? -1 : 1;
         }
 
         return 0;
@@ -54,17 +50,13 @@ export function sortStudents(students: Student[], sortBy: SortType,
         const averageB = studentB.grades
           .reduce((a, b) => a + b, 0) / studentB.grades.length;
 
-        if (order === 'asc') {
-          return averageA - averageB;
-        }
-
-        return averageB - averageA;
+        return order === 'asc'
+          ? averageA - averageB
+          : averageB - averageA;
       }
 
       default:
-        break;
+        throw new Error('Unknown type of search!');
     }
-
-    return 0;
   });
 }
