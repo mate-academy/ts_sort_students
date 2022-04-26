@@ -15,42 +15,40 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+export function studentAverageGrade(array: Student): number {
+  return array.grades.reduce((a, b) => a + b, 0) / array.grades.length;
+}
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function studentAverageGrade(array: number[]): number {
-    return array.reduce((a, b) => a + b) / array.length;
-  }
+  const studentsClone = [...students];
 
-  const newArray = [...students];
+  return studentsClone.sort((a, b) => {
+    let student1: Student = a;
+    let student2: Student = b;
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'asc'
-        ? newArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : newArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+    if (order === 'desc') {
+      [student1, student2] = [student2, student1];
+    }
 
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'asc'
-        ? newArray.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : newArray.sort((a, b) => +b[sortBy] - +a[sortBy]);
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return student1[sortBy].localeCompare(student2[sortBy]);
 
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? newArray.sort((a, b) => studentAverageGrade(a.grades)
-        - studentAverageGrade(b.grades))
-        : newArray.sort((a, b) => {
-          return studentAverageGrade(b.grades) - studentAverageGrade(a.grades);
-        });
+      case SortType.Married:
+      case SortType.Age:
+        return Number(student1[sortBy]) - Number(student2[sortBy]);
+      case SortType.AverageGrade:
+        return studentAverageGrade(student1) - studentAverageGrade(student2);
 
-    default:
-      return newArray;
-  }
+      default:
+        throw new Error('Error: Invalid value');
+    }
+  });
 }

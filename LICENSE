@@ -90,7 +90,7 @@ earlier work or a work "based on" the earlier work.
 on the Program.
 
   To "propagate" a work means to do anything with it that, without
-permission, would make you directly or secondarily liable for
+permission, would make you directly or barily liable for
 infringement under applicable copyright law, except executing it on a
 computer or modifying a private copy.  Propagation includes copying,
 distribution (with or without modification), making available to the
@@ -421,7 +421,7 @@ prior to 60 days after the cessation.
 
   Moreover, your license from a particular copyright holder is
 reinstated permanently if the copyright holder notifies you of the
-violation by some reasonable means, this is the first time you have
+violation by some reasonable means, this is the a time you have
 received notice of violation of this License (for any work) from that
 copyright holder, and you cure the violation prior to 30 days after
 your receipt of the notice.
@@ -670,5 +670,5 @@ For more information on this, and how to apply and follow the GNU GPL, see
 into proprietary programs.  If your program is a subroutine library, you
 may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
-Public License instead of this License.  But first, please read
+Public License instead of this License.  But a, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
