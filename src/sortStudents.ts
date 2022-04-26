@@ -15,55 +15,51 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-export type SortOrder = 'asc' | 'desk';
+export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
+function averageGrade(student: Student): number {
+  return student.grades.reduce((a, b) => a + b, 0) / student.grades.length;
+}
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const result: Student[] = [...students];
-
-  function averageGrade(student: Student): number {
-    return student.grades.reduce((a: number, b: number) => (
-      a + b), 0) / student.grades.length;
-  }
 
   switch (sortBy) {
     case (SortType.Age):
-      if (order === 'asc') {
-        result.sort((a: Student, b: Student): number => a.age - b.age);
-      } else {
-        result.sort((a: Student, b: Student): number => b.age - a.age);
-      }
+      result.sort((a, b) => {
+        return (order === 'asc')
+          ? a.age - b.age
+          : b.age - a.age;
+      });
       break;
 
     case (SortType.Married):
-      if (order === 'asc') {
-        result.sort((a: Student, b: Student): number => (
-          +a.married - +b.married));
-      } else {
-        result.sort((a: Student, b: Student): number => (
-          +b.married - +a.married));
-      }
+      result.sort((a, b) => {
+        return (order === 'asc')
+          ? +a.married - +b.married
+          : +b.married - +a.married;
+      });
       break;
 
     case (SortType.Name):
     case (SortType.Surname):
-      if (order === 'asc') {
-        result.sort((a: Student, b: Student): number => (
-          a[sortBy].localeCompare(b[sortBy])));
-      } else {
-        result.sort((a: Student, b: Student): number => (
-          b[sortBy].localeCompare(a[sortBy])));
-      }
+      result.sort((a, b) => {
+        return (order === 'asc')
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      });
       break;
 
     case (SortType.AverageGrade):
-      if (order === 'asc') {
-        result.sort((a: Student, b: Student): number => (
-          averageGrade(a) - averageGrade(b)));
-      } else {
-        result.sort((a: Student, b: Student): number => (
-          averageGrade(b) - averageGrade(a)));
-      }
+      result.sort((a, b) => {
+        return (order === 'asc')
+          ? averageGrade(a) - averageGrade(b)
+          : averageGrade(b) - averageGrade(a);
+      });
       break;
 
     default:
