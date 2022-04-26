@@ -33,26 +33,20 @@ export function sortStudents(students: Student[], sortBy: SortType,
       }
 
       case SortType.Married: {
-        if (studentA.married && !studentB.married) {
-          return order === 'asc' ? 1 : -1;
-        }
-
-        if (!studentA.married && studentB.married) {
-          return order === 'asc' ? -1 : 1;
-        }
-
-        return 0;
+        return order === 'asc'
+          ? +studentA.married - +studentB.married
+          : +studentB.married - +studentA.married;
       }
 
       case SortType.AverageGrade: {
-        const averageA = studentA.grades
+        const averageStudentA = studentA.grades
           .reduce((a, b) => a + b, 0) / studentA.grades.length;
-        const averageB = studentB.grades
+        const averageStudentB = studentB.grades
           .reduce((a, b) => a + b, 0) / studentB.grades.length;
 
         return order === 'asc'
-          ? averageA - averageB
-          : averageB - averageA;
+          ? averageStudentA - averageStudentB
+          : averageStudentB - averageStudentA;
       }
 
       default:
