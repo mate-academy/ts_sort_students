@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -29,41 +29,20 @@ export function sortStudents(students: Student[],
   const newStudents = [...students];
 
   switch (sortBy) {
-    case SortType.Name: {
-      if (order === 'asc') {
-        newStudents.sort((a: Student, b: Student):
-        number => a.name.localeCompare(b.name));
-      } else {
-        newStudents.sort((a: Student, b: Student):
-        number => b.name.localeCompare(a.name));
-      }
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? newStudents.sort((a: Student, b: Student):
+        number => a[sortBy].localeCompare(b[sortBy]))
+        : newStudents.sort((a: Student, b: Student):
+        number => b[sortBy].localeCompare(a[sortBy]));
 
-      break;
-    }
-
-    case SortType.Surname: {
-      if (order === 'asc') {
-        newStudents.sort((a: Student, b: Student):
-        number => a.surname.localeCompare(b.surname));
-      } else {
-        newStudents.sort((a: Student, b: Student):
-        number => b.surname.localeCompare(a.surname));
-      }
-
-      break;
-    }
-
-    case SortType.Age: {
-      if (order === 'asc') {
-        newStudents.sort((a: Student, b: Student):
-        number => a.age - b.age);
-      } else {
-        newStudents.sort((a: Student, b: Student):
+    case SortType.Age:
+      return order === 'asc'
+        ? newStudents.sort((a: Student, b: Student):
+        number => a.age - b.age)
+        : newStudents.sort((a: Student, b: Student):
         number => b.age - a.age);
-      }
-
-      break;
-    }
 
     case SortType.Married: {
       newStudents.sort((a: Student, b: Student): number => {
@@ -89,17 +68,12 @@ export function sortStudents(students: Student[],
       break;
     }
 
-    case SortType.AverageGrade: {
-      if (order === 'asc') {
-        newStudents.sort((a: Student, b: Student):
-        number => averGrade(a.grades) - averGrade(b.grades));
-      } else {
-        newStudents.sort((a: Student, b: Student):
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? newStudents.sort((a: Student, b: Student):
+        number => averGrade(a.grades) - averGrade(b.grades))
+        : newStudents.sort((a: Student, b: Student):
         number => averGrade(b.grades) - averGrade(a.grades));
-      }
-
-      break;
-    }
 
     default:
       throw new Error('No correct data');
