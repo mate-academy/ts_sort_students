@@ -22,23 +22,32 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((stuA, stuB) => {
-    const studentA: Student = order === 'asc' ? stuA : stuB;
-    const studentB: Student = order === 'asc' ? stuB : stuA;
+  function averageGrad(arr: number[]): number {
+    return arr.reduce((a, b) => a + b) / arr.length;
+  }
 
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      return studentA[sortBy].localeCompare(studentB[sortBy]);
-    }
+  const result = [...students];
 
-    if (sortBy === SortType.AverageGrade) {
-      const avarageGradeA = studentA[sortBy].reduce((a, b) => a + b)
-      / studentA[sortBy].length;
-      const avarageGradeB = studentB[sortBy].reduce((a, b) => a + b)
-      / studentB[sortBy].length;
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? result.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : result.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
-      return avarageGradeA - avarageGradeB;
-    }
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? result.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : result.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
-    return +studentA[sortBy] - +studentB[sortBy];
-  });
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? result.sort((a, b) => averageGrad(a.grades) - averageGrad(b.grades))
+        : result.sort((a, b) => {
+          return averageGrad(b.grades) - averageGrad(a.grades);
+        });
+    default:
+      return result;
+  }
 }
