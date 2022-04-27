@@ -34,47 +34,46 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? newStudents.sort((
-          a: Student,
-          b: Student,
-        ):
-        number => a[sortBy].localeCompare(b[sortBy]))
-        : newStudents.sort((a: Student, b: Student):
-        number => b[sortBy].localeCompare(a[sortBy]));
-
-    case SortType.Age:
-      return order === 'asc'
-        ? newStudents.sort((a: Student, b: Student):
-        number => a.age - b.age)
-        : newStudents.sort((a: Student, b: Student):
-        number => b.age - a.age);
-
-    case SortType.Married:
-      newStudents.sort((a: Student, b: Student): number => {
-        if (a.married && !b.married) {
-          if (order === 'asc') {
-            return 1;
-          }
-
-          return -1;
-        }
-
-        return 0;
+      return newStudents.sort((
+        a: Student,
+        b: Student,
+      ): number => {
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
       });
 
-      break;
+    case SortType.Age:
+      return newStudents.sort((
+        a: Student,
+        b: Student,
+      ): number => {
+        return (order === 'asc')
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
+      });
+
+    case SortType.Married:
+      return newStudents.sort((
+        a: Student,
+        b: Student,
+      ): number => {
+        return (order === 'asc')
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+      });
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? newStudents.sort((a: Student, b: Student):
-        number => averGrade(a.grades) - averGrade(b.grades))
-        : newStudents.sort((a: Student, b: Student):
-        number => averGrade(b.grades) - averGrade(a.grades));
+      return newStudents.sort((
+        a: Student,
+        b: Student,
+      ): number => {
+        return order === 'asc'
+          ? averGrade(a.grades) - averGrade(b.grades)
+          : averGrade(b.grades) - averGrade(a.grades);
+      });
 
     default:
       throw new Error('No correct data');
   }
-
-  return newStudents;
 }
