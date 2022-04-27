@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -28,44 +28,38 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents: Student[] = [...students];
 
-  if (sortBy === SortType.Name) {
-    sortedStudents.sort((a, b) => {
-      return order === 'asc'
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name);
-    });
-  }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
 
-  if (sortBy === SortType.Surname) {
-    sortedStudents.sort((a, b) => {
-      return order === 'asc'
-        ? a.surname.localeCompare(b.surname)
-        : b.surname.localeCompare(a.surname);
-    });
-  }
+      sortedStudents.sort((a, b) => (
+        order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy])
+      ));
+      break;
 
-  if (sortBy === SortType.Age) {
-    sortedStudents.sort((a, b) => {
-      return order === 'asc'
-        ? a.age - b.age
-        : b.age - a.age;
-    });
-  }
+    case SortType.Age:
+    case SortType.Married:
 
-  if (sortBy === SortType.Married) {
-    sortedStudents.sort((a, b) => {
-      return order === 'asc'
-        ? +a.married - +b.married
-        : +b.married - +a.married;
-    });
-  }
+      sortedStudents.sort((a, b) => (
+        order === 'asc'
+          ? +a[sortBy] - (+b[sortBy])
+          : +b[sortBy] - (+a[sortBy])
+      ));
+      break;
 
-  if (sortBy === SortType.AverageGrade) {
-    sortedStudents.sort((a, b) => {
-      return order === 'asc'
-        ? getAvarage(a.grades) - getAvarage(b.grades)
-        : getAvarage(b.grades) - getAvarage(a.grades);
-    });
+    case SortType.AverageGrade:
+
+      sortedStudents.sort((a, b) => (
+        order === 'asc'
+          ? getAvarage(a.grades) - getAvarage(b.grades)
+          : getAvarage(b.grades) - getAvarage(a.grades)
+      ));
+      break;
+
+    default:
+      break;
   }
 
   return sortedStudents;
