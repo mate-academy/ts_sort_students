@@ -16,6 +16,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+export function getAverage(arr: number[]): number {
+  return arr.reduce((a, b) => a + b, 0) / arr.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -34,22 +38,12 @@ export function sortStudents(
       case SortType.Surname:
         return student1[sortBy].localeCompare(student2[sortBy]);
 
-      case SortType.Age: {
-        return student1.age - student2.age;
-      }
+      case SortType.Age:
+      case SortType.Married:
+        return +student1[sortBy] - +student2[sortBy];
 
-      case SortType.Married: {
-        return +student1.married - +student2.married;
-      }
-
-      case SortType.AverageGrade: {
-        const averageStudent1 = student1.grades
-          .reduce((a, b) => a + b, 0) / student1.grades.length;
-        const averageStudent2 = student2.grades
-          .reduce((a, b) => a + b, 0) / student2.grades.length;
-
-        return averageStudent1 - averageStudent2;
-      }
+      case SortType.AverageGrade:
+        return getAverage(student1[sortBy]) - getAverage(student2[sortBy]);
 
       default:
         throw new Error('Unknown type of search!');
