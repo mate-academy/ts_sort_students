@@ -8,18 +8,17 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'name',
-  Surname = 'surname',
-  Age = 'age',
-  Married = 'married',
-  AverageGrade = 'averageGrade'
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade
 }
 
 export type SortOrder = 'asc' | 'desc';
 
 function getAvarage(arr: number[]): number {
-  return arr.reduce((acc: number, cur: number): number => acc + cur)
-    / arr.length;
+  return arr.reduce((acc, cur) => acc + cur) / arr.length;
 }
 
 export function sortStudents(
