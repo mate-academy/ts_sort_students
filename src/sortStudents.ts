@@ -44,15 +44,6 @@ export function sortStudents(
       });
 
     case SortType.Age:
-      return newStudents.sort((
-        a: Student,
-        b: Student,
-      ): number => {
-        return (order === 'asc')
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
-
     case SortType.Married:
       return newStudents.sort((
         a: Student,
