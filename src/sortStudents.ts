@@ -20,20 +20,18 @@ export type SortOrder = 'asc' | 'dsc';
 export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
   const arr: Student[] = [...students];
 
+  function getAverageGrades(person: Student): number {
+     return person.grades.reduce((total, current) => total + current) / person.grades.length;
+  };
+
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return arr.sort((a, b) => a.name.toLowerCase().localeCompare(b.surname.toLowerCase()));
-      };
-
-      return arr.sort((a, b) => b.name.toLowerCase().localeCompare(a.surname.toLowerCase()));
-
     case SortType.Surname:
       if (order = 'asc') {
-        return arr.sort((a, b) => a.surname.toLowerCase().localeCompare(b.surname.toLowerCase()));
+        return arr.sort((a, b) => a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase()));
       };
 
-      return arr.sort((a, b) => b.surname.toLowerCase().localeCompare(a.surname.toLowerCase()));
+      return arr.sort((a, b) => b[sortBy].toLowerCase().localeCompare(a[sortBy].toLowerCase()));
 
     case SortType.Age:
       if (order === 'asc') {
@@ -52,16 +50,16 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
     case SortType.AverageGrade:
       if (order === 'asc') {
         return arr.sort((a, b) => {
-          const el1 = a.grades.reduce((total, current) => total + current) / a.grades.length;
-          const el2 = b.grades.reduce((total, current) => total + current) / b.grades.length;
+          const el1 = getAverageGrades(a);
+          const el2 = getAverageGrades(b);
 
           return el1 - el2;
         });
       };
 
       return arr.sort((a, b) => {
-        const el1 = a.grades.reduce((total, current) => total + current) / a.grades.length;
-        const el2 = b.grades.reduce((total, current) => total + current) / b.grades.length;
+        const el1 = getAverageGrades(a);
+        const el2 = getAverageGrades(b);
 
         return el2 - el1;
       });
