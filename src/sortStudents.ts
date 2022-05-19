@@ -17,6 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+export function averageGrade(pupil: number[]): number {
+  return pupil.reduce((first, second) => first + second, 0) / pupil.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -28,25 +32,21 @@ export function sortStudents(
     case 'name':
     case 'surname':
       return order === 'asc'
-        ? copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? copy.sort((pupil1, pupil2) => pupil1[sortBy]
+          .localeCompare(pupil2[sortBy]))
+        : copy.sort((pupil1, pupil2) => pupil2[sortBy]
+          .localeCompare(pupil1[sortBy]));
 
     case 'grades':
       return order === 'asc'
-        ? copy
-          .sort((a, b) => a[sortBy]
-            .reduce((x: number, y: number) => x + y, 0) / a[sortBy].length
-            - b[sortBy]
-              .reduce((x: number, y: number) => x + y, 0) / b[sortBy].length)
-        : copy
-          .sort((a, b) => b[sortBy]
-            .reduce((x: number, y: number) => x + y, 0) / b[sortBy].length
-            - a[sortBy]
-              .reduce((x: number, y: number) => x + y, 0) / a[sortBy].length);
+        ? copy.sort((pupil1, pupil2) => averageGrade(pupil1[sortBy])
+          - averageGrade(pupil2[sortBy]))
+        : copy.sort((pupil1, pupil2) => averageGrade(pupil2[sortBy])
+          - averageGrade(pupil1[sortBy]));
 
     default:
       return order === 'asc'
-        ? copy.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
+        ? copy.sort((pupil1, pupil2) => +pupil1[sortBy] - +pupil2[sortBy])
+        : copy.sort((pupil1, pupil2) => +pupil2[sortBy] - +pupil1[sortBy]);
   }
 }
