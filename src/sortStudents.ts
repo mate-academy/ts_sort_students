@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -6,16 +5,14 @@ export interface Student {
   married: boolean,
   grades: number[],
 }
-
 export enum SortType {
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'averageGrade,'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -46,8 +43,8 @@ export function sortStudents(
 
     case SortType.Age:
       return newStudents.sort((
-        a: Student,
-        b: Student,
+        a:Student,
+        b:Student,
       ): number => {
         return (order === 'asc')
           ? a[sortBy] - b[sortBy]
@@ -56,22 +53,24 @@ export function sortStudents(
 
     case SortType.Married:
       return newStudents.sort((
-        a: Student,
-        b: Student,
+        a:Student,
+        b:Student,
       ): number => {
         return (order === 'asc')
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
       });
+
     case SortType.AverageGrade:
       return newStudents.sort((
-        a: Student,
-        b: Student,
+        a:Student,
+        b:Student,
       ): number => {
-        return order === 'asc'
+        return (order === 'asc')
           ? averGrade(a.grades) - averGrade(b.grades)
           : averGrade(b.grades) - averGrade(a.grades);
       });
+
     default:
       throw new Error('No correct data');
   }
