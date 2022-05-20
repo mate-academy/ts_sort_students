@@ -5,7 +5,7 @@ export interface Student {
   surname: string,
   age: number,
   married: boolean,
-  grades: [],
+  grades: number[],
 }
 
 export enum SortType {
