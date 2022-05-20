@@ -25,15 +25,15 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = students.slice();
+  const studentsCopy = [...students];
 
-  if (sortBy === 'name' || sortBy === 'surname') {
+  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
     return order === 'asc'
       ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
       : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
   }
 
-  if (sortBy === 'grades') {
+  if (sortBy === SortType.AverageGrade) {
     return order === 'asc'
       ? studentsCopy.sort((a, b) => getAverageGrade(a[sortBy])
       - getAverageGrade(b[sortBy]))
