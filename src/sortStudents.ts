@@ -30,20 +30,28 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return studentsCopy.sort((a, b) => {
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      });
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? studentsCopy.sort((a, b) => getAverageGrade(a[sortBy])
-        - getAverageGrade(b[sortBy]))
-        : studentsCopy.sort((a, b) => getAverageGrade(b[sortBy])
-        - getAverageGrade(a[sortBy]));
+      return studentsCopy.sort((a, b) => {
+        return order === 'asc'
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
+      });
+
+    case SortType.Age:
+    case SortType.Married:
+      return studentsCopy.sort((a, b) => {
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+      });
 
     default:
-      return order === 'asc'
-        ? studentsCopy.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : studentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy]);
+      throw new Error('Enter valid sort type');
   }
 }
