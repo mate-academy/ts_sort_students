@@ -30,19 +30,19 @@ export function sortStudents(
     let personBAverage: number;
 
     switch (sortBy) {
-      case 'name':
-      case 'surname':
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'desc'
           ? person2[sortBy].localeCompare(person1[sortBy])
           : person1[sortBy].localeCompare(person2[sortBy]);
 
-      case 'age':
-      case 'married':
+      case SortType.Age:
+      case SortType.Married:
         return order === 'desc'
           ? +person2[sortBy] - +person1[sortBy]
           : +person1[sortBy] - +person2[sortBy];
 
-      case 'grades':
+      case SortType.AverageGrade:
         personAAverage = person1[sortBy]
           .reduce((prev: number, item: number) => (prev + item)
             , 0) / person1[sortBy].length;
