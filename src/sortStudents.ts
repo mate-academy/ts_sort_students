@@ -31,42 +31,52 @@ export function sortStudents(
   const newArray: Student[] = [...students];
 
   if (order === 'asc') {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      newArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-    }
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        newArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+        break;
 
-    if (sortBy === SortType.Age) {
-      newArray.sort((a, b) => a[sortBy] - b[sortBy]);
-    }
+      case SortType.Age:
+        newArray.sort((a, b) => a[sortBy] - b[sortBy]);
+        break;
 
-    if (sortBy === SortType.Married) {
-      newArray.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
-    }
+      case SortType.Married:
+        newArray.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
+        break;
 
-    if (sortBy === SortType.AverageGrade) {
-      newArray.sort((a, b) => (
-        sortAverageGrade(a[sortBy]) - sortAverageGrade(b[sortBy])
-      ));
+      case SortType.AverageGrade:
+        newArray.sort((a, b) => (
+          sortAverageGrade(a[sortBy]) - sortAverageGrade(b[sortBy])
+        ));
+        break;
+
+      default: break;
     }
   }
 
   if (order === 'desc') {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      newArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-    }
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        newArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        break;
 
-    if (sortBy === SortType.Age) {
-      newArray.sort((a, b) => b[sortBy] - a[sortBy]);
-    }
+      case SortType.Age:
+        newArray.sort((a, b) => b[sortBy] - a[sortBy]);
+        break;
 
-    if (sortBy === SortType.Married) {
-      newArray.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
-    }
+      case SortType.Married:
+        newArray.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+        break;
 
-    if (sortBy === SortType.AverageGrade) {
-      newArray.sort((a, b) => (
-        sortAverageGrade(b[sortBy]) - sortAverageGrade(a[sortBy])
-      ));
+      case SortType.AverageGrade:
+        newArray.sort((a, b) => (
+          sortAverageGrade(b[sortBy]) - sortAverageGrade(a[sortBy])
+        ));
+        break;
+
+      default: break;
     }
   }
 
