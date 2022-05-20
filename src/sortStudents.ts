@@ -20,6 +20,14 @@ export enum SortType {
 // create SortOrder type
 type SortOrder = 'desc' | 'asc';
 
+function getAverageForPerson(pers : Student) : number {
+  const initialValue : number = 0;
+
+  return (pers.grades.reduce(
+    (prev, curr) => prev + curr, initialValue,
+  )) / pers.grades.length;
+}
+
 export function sortStudents(
   students : Array<Student>,
   sortBy : SortType,
@@ -27,15 +35,14 @@ export function sortStudents(
 ) : Array<Student> {
   // write your function
   const sorted = JSON.parse(JSON.stringify(students));
-  const initialValue : number = 0;
 
   return sorted.sort((person1 : Student, person2 : Student) => {
     switch (sortBy) {
-      case 'name':
-      case 'surname':
+      case SortType.Name:
+      case SortType.Surname:
         return person1[sortBy].localeCompare(person2[sortBy]);
 
-      case 'age':
+      case SortType.Age:
 
         if (order === 'asc') {
           return person1[sortBy] - person2[sortBy];
@@ -43,22 +50,15 @@ export function sortStudents(
 
         return person2[sortBy] - person1[sortBy];
 
-      case 'grades': {
-        const person1Av = (person1.grades.reduce(
-          (prev, curr) => prev + curr, initialValue,
-        )) / person1.grades.length;
-        const person2Av = (person2.grades.reduce(
-          (prev, curr) => prev + curr, initialValue,
-        )) / person2.grades.length;
-
+      case SortType.AverageGrade: {
         if (order === 'asc') {
-          return person1Av - person2Av;
+          return getAverageForPerson(person1) - getAverageForPerson(person2);
         }
 
-        return person2Av - person1Av;
+        return getAverageForPerson(person2) - getAverageForPerson(person1);
       }
 
-      case 'married': {
+      case SortType.Married: {
         return +person2[sortBy] - +person1[sortBy];
       }
       default:
