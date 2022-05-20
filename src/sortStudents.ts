@@ -20,7 +20,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function averGrade(arr: number[]): number {
+  function getAverageGrade(arr: number[]): number {
     const grade = arr.reduce((sum: number, a: number):
     number => sum + a, 0) / arr.length;
 
@@ -29,49 +29,31 @@ export function sortStudents(
 
   const newStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return newStudents.sort((
-        a: Student,
-        b: Student,
-      ): number => {
+  return newStudents.sort((firstStudent, secondStudent) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-    case SortType.Age:
-      return newStudents.sort((
-        a:Student,
-        b:Student,
-      ): number => {
+      case SortType.Age:
         return (order === 'asc')
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
+          ? firstStudent[sortBy] - secondStudent[sortBy]
+          : secondStudent[sortBy] - firstStudent[sortBy];
 
-    case SortType.Married:
-      return newStudents.sort((
-        a:Student,
-        b:Student,
-      ): number => {
+      case SortType.Married:
         return (order === 'asc')
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
-      });
-
-    case SortType.AverageGrade:
-      return newStudents.sort((
-        a:Student,
-        b:Student,
-      ): number => {
+          ? +firstStudent[sortBy] - +secondStudent[sortBy]
+          : +secondStudent[sortBy] - +firstStudent[sortBy];
+      case SortType.AverageGrade:
         return (order === 'asc')
-          ? averGrade(a.grades) - averGrade(b.grades)
-          : averGrade(b.grades) - averGrade(a.grades);
-      });
-
-    default:
-      throw new Error('No correct data');
-  }
+          ? getAverageGrade(firstStudent.grades)
+            - getAverageGrade(secondStudent.grades)
+          : getAverageGrade(secondStudent.grades)
+            - getAverageGrade(firstStudent.grades);
+      default:
+        throw new Error('No correct data');
+    }
+  });
 }
