@@ -1,16 +1,72 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function averageArray(arrayToFindAverage: number[]): number {
+  return arrayToFindAverage.reduce((sum, num) => sum + num, 0)
+  / arrayToFindAverage.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[], sortBy: SortType, order: SortOrder,
+): Student[] {
+  const copy: Student[] = [...students];
+
+  return copy.sort((tutee1, tutee2) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        if (order === 'asc') {
+          return tutee1[sortBy].localeCompare(tutee2[sortBy]);
+        }
+
+        if (order === 'desc') {
+          return tutee1[sortBy].localeCompare(tutee2[sortBy]);
+        }
+
+        break;
+
+      case SortType.Age:
+      case SortType.Married:
+        if (order === 'asc') {
+          return +tutee1[sortBy] - +tutee2[sortBy];
+        }
+
+        if (order === 'desc') {
+          return +tutee2[sortBy] - +tutee1[sortBy];
+        }
+
+        break;
+
+      case SortType.AverageGrade:
+        if (order === 'asc') {
+          return averageArray(tutee1[sortBy]) - averageArray(tutee2[sortBy]);
+        }
+
+        if (order === 'desc') {
+          return averageArray(tutee2[sortBy]) - averageArray(tutee1[sortBy]);
+        }
+        break;
+
+      default:
+        return copy;
+    }
+
+    return copy;
+  });
 }
