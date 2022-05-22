@@ -23,63 +23,46 @@ export function sortStudents(
 ): Student[] {
   const copy = [...students];
 
-  if (order === 'asc') {
+  copy.sort((firstStudent: Student, secondStudent: Student) => {
     switch (sortBy) {
       case (SortType.Name):
       case (SortType.Surname):
-        copy.sort((firstStudent: Student, secondStudent: Student) => {
+        if (order === 'asc') {
           return firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
-        });
-        break;
+        }
+
+        return secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+
       case (SortType.Age):
-        copy.sort((firstStudent, secondStudent) => {
+        if (order === 'asc') {
           return firstStudent.age - secondStudent.age;
-        });
-        break;
+        }
+
+        return secondStudent.age - firstStudent.age;
+
       case (SortType.Married):
-        copy.sort((firstStudent, secondStudent) => +firstStudent.married
-         - +secondStudent.married);
-        break;
+        if (order === 'asc') {
+          return +firstStudent.married - +secondStudent.married;
+        }
+
+        return +secondStudent.married - +firstStudent.married;
+
       default:
-        copy.sort(
-          (firstStudent, secondStudent) => (
-            firstStudent.grades.reduce(
-              (a, b) => a + b, 0,
-            ) / firstStudent.grades.length)
-               - (secondStudent.grades.reduce(
-                 (a, b) => a + b, 0,
-               ) / secondStudent.grades.length),
-        );
+        if (order === 'asc') {
+          return (firstStudent.grades.reduce(
+            (a, b) => a + b, 0,
+          ) / firstStudent.grades.length) - (secondStudent.grades.reduce(
+            (a, b) => a + b, 0,
+          ) / secondStudent.grades.length);
+        }
+
+        return (secondStudent.grades.reduce(
+          (a, b) => a + b, 0,
+        ) / secondStudent.grades.length) - (firstStudent.grades.reduce(
+          (a, b) => a + b, 0,
+        ) / firstStudent.grades.length);
     }
-  } else {
-    switch (sortBy) {
-      case (SortType.Name):
-      case (SortType.Surname):
-        copy.sort((secondStudent, firstStudent) => {
-          return firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
-        });
-        break;
-      case (SortType.Age):
-        copy.sort((secondStudent, firstStudent) => {
-          return firstStudent.age - secondStudent.age;
-        });
-        break;
-      case (SortType.Married):
-        copy.sort((secondStudent, firstStudent) => +firstStudent.married
-         - +secondStudent.married);
-        break;
-      default:
-        copy.sort(
-          (secondStudent, firstStudent) => (
-            firstStudent.grades.reduce(
-              (a, b) => a + b, 0,
-            ) / firstStudent.grades.length)
-               - (secondStudent.grades.reduce(
-                 (a, b) => a + b, 0,
-               ) / secondStudent.grades.length),
-        );
-    }
-  }
+  });
 
   return copy;
 }
