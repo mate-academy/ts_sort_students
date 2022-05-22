@@ -41,11 +41,9 @@ export function sortStudents(
         person: Student,
         person1: Student,
       ) => {
-        if (order === 'asc') {
-          return person[sortBy].localeCompare(person1[sortBy]);
-        }
-
-        return person1[sortBy].localeCompare(person[sortBy]);
+        return order === 'asc'
+          ? person[sortBy].localeCompare(person1[sortBy])
+          : person1[sortBy].localeCompare(person[sortBy]);
       });
       break;
 
@@ -54,11 +52,9 @@ export function sortStudents(
         person: Student,
         person1: Student,
       ) => {
-        if (order === 'asc') {
-          return person[sortBy] - person1[sortBy];
-        }
-
-        return person1[sortBy] - person[sortBy];
+        return order === 'asc'
+          ? person[sortBy] - person1[sortBy]
+          : person1[sortBy] - person[sortBy];
       });
       break;
 
@@ -67,11 +63,9 @@ export function sortStudents(
         person: Student,
         person1: Student,
       ) => {
-        if (order === 'asc') {
-          return (+person[sortBy]) - (+person1[sortBy]);
-        }
-
-        return (+person1[sortBy]) - (+person[sortBy]);
+        return order === 'asc'
+          ? (+person[sortBy]) - (+person1[sortBy])
+          : (+person1[sortBy]) - (+person[sortBy]);
       });
       break;
 
@@ -80,11 +74,9 @@ export function sortStudents(
         person: Student,
         person1: Student,
       ) => {
-        if (order === 'asc') {
-          return (avrGrades(person.grades) - avrGrades(person1.grades));
-        }
-
-        return (avrGrades(person1.grades) - avrGrades(person.grades));
+        return order === 'asc'
+          ? (avrGrades(person.grades) - avrGrades(person1.grades))
+          : (avrGrades(person1.grades) - avrGrades(person.grades));
       });
       break;
 
