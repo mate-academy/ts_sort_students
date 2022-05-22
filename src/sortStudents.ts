@@ -25,28 +25,31 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Student[] {
+): Student[] | void {
   const copy:Student[] = [...students];
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return order === 'asc'
         ? copy.sort((pupil1, pupil2) => pupil1[sortBy]
           .localeCompare(pupil2[sortBy]))
         : copy.sort((pupil1, pupil2) => pupil2[sortBy]
           .localeCompare(pupil1[sortBy]));
 
-    case 'grades':
+    case SortType.AverageGrade:
       return order === 'asc'
         ? copy.sort((pupil1, pupil2) => averageGrade(pupil1[sortBy])
           - averageGrade(pupil2[sortBy]))
         : copy.sort((pupil1, pupil2) => averageGrade(pupil2[sortBy])
           - averageGrade(pupil1[sortBy]));
 
-    default:
+    case SortType.Age:
+    case SortType.Married:
       return order === 'asc'
         ? copy.sort((pupil1, pupil2) => +pupil1[sortBy] - +pupil2[sortBy])
         : copy.sort((pupil1, pupil2) => +pupil2[sortBy] - +pupil1[sortBy]);
+
+    default: throw new Error('Arguments are not valid');
   }
 }
