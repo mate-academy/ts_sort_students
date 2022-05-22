@@ -88,21 +88,21 @@ describe('Function \'sortStudents\'', () => {
   });
 
   test('should return an array of students', () => {
-    expect(sortStudents(students, SortType.Name, 'asc'))
+    expect(sortStudents(students, SortType.name, 'asc'))
       .toBeInstanceOf(Array);
   });
 
   test('should not modify the original array', () => {
     const copy = [...students];
 
-    sortStudents(students, SortType.Name, 'asc');
+    sortStudents(students, SortType.name, 'asc');
 
     expect(students)
       .toEqual(copy);
   });
 
   test('should correctly sort array by Name in ascending order', () => {
-    const sortedData = sortStudents(students, SortType.Name, 'asc')
+    const sortedData = sortStudents(students, SortType.name, 'asc')
       .map((user) => `${user.name} ${user.surname} ${user.age}`);
 
     expect(sortedData)
@@ -121,7 +121,7 @@ describe('Function \'sortStudents\'', () => {
   });
 
   test('should correctly sort students by Surname in ascending order', () => {
-    const sortedData = sortStudents(students, SortType.Surname, 'asc')
+    const sortedData = sortStudents(students, SortType.surname, 'asc')
       .map((user) => `${user.name} ${user.surname} ${user.age}`);
 
     expect(sortedData)
@@ -140,7 +140,7 @@ describe('Function \'sortStudents\'', () => {
   });
 
   test('should correctly sort students by Age in descending order', () => {
-    const sortedData = sortStudents(students, SortType.Age, 'desc')
+    const sortedData = sortStudents(students, SortType.age, 'desc')
       .map((user) => `${user.name} ${user.surname} ${user.age}`);
 
     expect(sortedData)
@@ -159,7 +159,7 @@ describe('Function \'sortStudents\'', () => {
   });
 
   test('should correctly sort students by Married in descending order', () => {
-    const sortedData = sortStudents(students, SortType.Married, 'desc')
+    const sortedData = sortStudents(students, SortType.married, 'desc')
       .map((user) => `${user.name} ${user.surname} ${user.age}${user.married ? ' married' : ''}`);
 
     expect(sortedData)
@@ -178,7 +178,7 @@ describe('Function \'sortStudents\'', () => {
   });
 
   test('should correctly sort students by AverageGrade in descending order', () => {
-    const sortedData = sortStudents(students, SortType.AverageGrade, 'desc')
+    const sortedData = sortStudents(students, SortType.averageGrade, 'desc')
       .map((user) => `${user.name} ${user.surname} [${user.grades}]`);
 
     expect(sortedData)
@@ -197,7 +197,7 @@ describe('Function \'sortStudents\'', () => {
   });
 
   test('should correctly sort students by AverageGrade in ascending order', () => {
-    const sortedData = sortStudents(students, SortType.AverageGrade, 'asc')
+    const sortedData = sortStudents(students, SortType.averageGrade, 'asc')
       .map((user) => `${user.name} ${user.surname} [${user.grades}]`);
 
     expect(sortedData)
