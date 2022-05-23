@@ -23,7 +23,9 @@ function averageArray(arrayToFindAverage: number[]): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const copy: Student[] = [...students];
 
@@ -35,11 +37,7 @@ export function sortStudents(
           return tutee1[sortBy].localeCompare(tutee2[sortBy]);
         }
 
-        if (order === 'desc') {
-          return tutee1[sortBy].localeCompare(tutee2[sortBy]);
-        }
-
-        break;
+        return tutee1[sortBy].localeCompare(tutee2[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
@@ -47,26 +45,17 @@ export function sortStudents(
           return +tutee1[sortBy] - +tutee2[sortBy];
         }
 
-        if (order === 'desc') {
-          return +tutee2[sortBy] - +tutee1[sortBy];
-        }
-
-        break;
+        return +tutee2[sortBy] - +tutee1[sortBy];
 
       case SortType.AverageGrade:
         if (order === 'asc') {
           return averageArray(tutee1[sortBy]) - averageArray(tutee2[sortBy]);
         }
 
-        if (order === 'desc') {
-          return averageArray(tutee2[sortBy]) - averageArray(tutee1[sortBy]);
-        }
-        break;
+        return averageArray(tutee2[sortBy]) - averageArray(tutee1[sortBy]);
 
       default:
         return copy;
     }
-
-    return copy;
   });
 }
