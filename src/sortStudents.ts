@@ -20,16 +20,16 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc'| 'desc';
 
+function getAverageAge(grades: number[]): number {
+  return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
   const copyOfStudent: Student[] = [...students];
-
-  function getAverageAge(grades: number[]): number {
-    return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
-  }
 
   if (order === 'asc') {
     switch (sortBy) {
