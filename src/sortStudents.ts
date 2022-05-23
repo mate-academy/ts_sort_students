@@ -30,44 +30,41 @@ export function sortStudents(
   const newStudent = [...students];
 
   switch (sortBy) {
-    case 'name':
-      if (order === 'asc') {
-        return newStudent.sort((a, b) => a.name.localeCompare(b.name));
-      }
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? newStudent
+          .sort((person1, person2) => person1[sortBy]
+            .localeCompare(person2[sortBy]))
+        : newStudent
+          .sort((person1, person2) => person2[sortBy]
+            .localeCompare(person1[sortBy]));
 
-      return newStudent.sort((a, b) => b.name.localeCompare(a.name));
+    case SortType.Age:
+      return order === 'asc'
+        ? newStudent
+          .sort((person1, person2) => person1[sortBy]
+            - person2[sortBy])
+        : newStudent
+          .sort((person1, person2) => person2[sortBy]
+            - person1[sortBy]);
 
-    case 'surname':
-      if (order === 'asc') {
-        return newStudent.sort((a, b) => a.surname.localeCompare(b.surname));
-      }
+    case SortType.Married:
+      return order === 'asc'
+        ? newStudent
+          .sort((person1, person2) => (+person1[sortBy]) - (+person2[sortBy]))
+        : newStudent
+          .sort((person1, person2) => (+person2[sortBy]) - (+person1[sortBy]));
 
-      return newStudent.sort((a, b) => b.surname.localeCompare(a.surname));
-
-    case 'age':
-      if (order === 'asc') {
-        return newStudent.sort((a, b) => a.age - b.age);
-      }
-
-      return newStudent.sort((a, b) => b.age - a.age);
-
-    case 'married':
-      if (order === 'asc') {
-        return newStudent.sort((a, b) => a.married - b.married);
-      }
-
-      return newStudent.sort((a, b) => b.married - a.married);
-
-    case 'grades':
-      if (order === 'asc') {
-        return newStudent.sort((a, b) => averGrade(a.grades)
-        - averGrade(b.grades));
-      }
-
-      return newStudent.sort((a, b) => averGrade(b.grades)
-        - averGrade(a.grades));
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? newStudent
+          .sort((person1, person2) => averGrade(person1[sortBy])
+            - averGrade(person2[sortBy]))
+        : newStudent.sort((person1, person2) => averGrade(person2[sortBy])
+          - averGrade(person1[sortBy]));
 
     default:
-      return newStudent;
+      throw new Error('Arguments are not valid');
   }
 }
