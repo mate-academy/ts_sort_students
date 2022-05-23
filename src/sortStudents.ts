@@ -16,7 +16,6 @@ export enum SortType {
   AverageGrade = 'grades'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function average(arr: number[]): number {
@@ -30,28 +29,50 @@ export function sortStudents(
 ): Student[] {
   const array = [...students];
 
-  switch (sortBy) {
-    case 'name':
-    case 'surname':
-      return array.sort((a: Student, b: Student) => (
-        (order === 'asc')
+  // switch (sortBy) {
+  //   case SortType.Name:
+  //   case SortType.Surname:
+  //     return array.sort((a: Student, b: Student) => (
+  //       (order === 'asc')
+  //         ? a[sortBy].localeCompare(b[sortBy])
+  //         : b[sortBy].localeCompare(a[sortBy])
+  //     ));
+  //   case SortType.Age:
+  //   case SortType.Married:
+  //     return array.sort((a: Student, b: Student) => (
+  //       (order === 'asc')
+  //         ? +a[sortBy] - +b[sortBy]
+  //         : +b[sortBy] - +a[sortBy]
+  //     ));
+  //   case SortType.AverageGrade:
+  //     return array.sort((a: Student, b: Student) => (
+  //       (order === 'asc')
+  //         ? average(a[sortBy]) - average(b[sortBy])
+  //         : average(b[sortBy]) - average(a[sortBy])
+  //     ));
+  //   default:
+  //     return array;
+  // }
+  array.sort((a: Student, b: Student): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy])
-      ));
-    case 'age':
-    case 'married':
-      return array.sort((a: Student, b: Student) => (
-        (order === 'asc')
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return (order === 'asc')
           ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy]
-      ));
-    case 'grades':
-      return array.sort((a: Student, b: Student) => (
-        (order === 'asc')
+          : +b[sortBy] - +a[sortBy];
+      case SortType.AverageGrade:
+        return (order === 'asc')
           ? average(a[sortBy]) - average(b[sortBy])
-          : average(b[sortBy]) - average(a[sortBy])
-      ));
-    default:
-      return array;
-  }
+          : average(b[sortBy]) - average(a[sortBy]);
+      default:
+        return 0;
+    }
+  });
+
+  return array;
 }
