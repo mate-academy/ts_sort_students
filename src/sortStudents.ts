@@ -26,8 +26,11 @@ export function takeAverage(gradesAverage: number[]): number {
   return average / gradesAverage.length;
 }
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const sortedStudents: Student[] = [...students];
 
   switch (sortBy) {
@@ -40,12 +43,6 @@ export function sortStudents(students: Student[],
       });
 
     case SortType.Age:
-      return sortedStudents.sort((firstSt: Student, secondSt: Student) => {
-        return order === 'asc'
-          ? firstSt[sortBy] - secondSt[sortBy]
-          : secondSt[sortBy] - firstSt[sortBy];
-      });
-
     case SortType.Married:
       return sortedStudents.sort((firstSt: Student, secondSt: Student) => {
         return order === 'asc'
