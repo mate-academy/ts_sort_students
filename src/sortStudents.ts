@@ -33,25 +33,19 @@ export function sortStudents(
   const copiedStudents: Student[] = [...students];
   let result: Student[] = [];
 
-  switch (true) {
-    case order === 'asc':
-      switch (true) {
-        case sortBy === SortType.Name:
-        case sortBy === SortType.Surname:
+  switch (order) {
+    case 'asc':
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
           result = copiedStudents
             .sort((obj1: Student, obj2: Student) => (
               obj1[sortBy].localeCompare(obj2[sortBy])
             ));
           break;
 
-        case sortBy === SortType.Age:
-          result = copiedStudents
-            .sort((obj1: Student, obj2: Student) => (
-              obj1[sortBy] - obj2[sortBy]
-            ));
-          break;
-
-        case sortBy === SortType.Married:
+        case SortType.Age:
+        case SortType.Married:
           result = copiedStudents
             .sort((obj1: Student, obj2: Student) => (
               +obj1[sortBy] - +obj2[sortBy]
@@ -67,29 +61,17 @@ export function sortStudents(
       break;
 
     default:
-      switch (true) {
-        case sortBy === SortType.Name:
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
           result = copiedStudents
             .sort((obj1: Student, obj2: Student) => (
               obj2[sortBy].localeCompare(obj1[sortBy])
             ));
           break;
 
-        case sortBy === SortType.Surname:
-          result = copiedStudents
-            .sort((obj1: Student, obj2: Student) => (
-              obj2[sortBy].localeCompare(obj1[sortBy])
-            ));
-          break;
-
-        case sortBy === SortType.Age:
-          result = copiedStudents
-            .sort((obj1: Student, obj2: Student) => (
-              obj2[sortBy] - obj1[sortBy]
-            ));
-          break;
-
-        case sortBy === SortType.Married:
+        case SortType.Age:
+        case SortType.Married:
           result = copiedStudents
             .sort((obj1: Student, obj2: Student) => (
               +obj2[sortBy] - +obj1[sortBy]
