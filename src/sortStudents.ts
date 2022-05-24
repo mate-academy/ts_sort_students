@@ -19,89 +19,49 @@ export type SortOrder = 'asc' | 'desc';
 
 export function
 sortStudents(students: Student[], sortBy: SortType, order: string): Student[] {
-  const copy = [...students];
+  let copy = [...students];
 
-  if (sortBy === SortType.Name) {
-    if (order === 'asc') {
-      const result: Student[]
-      = copy.sort((a, b) => a.name.localeCompare(b.name));
+  switch (sortBy) {
+    case SortType.Name:
+      copy = (order === 'asc')
+        ? copy.sort((a, b) => a.name.localeCompare(b.name))
+        : copy.sort((a, b) => a.name.localeCompare(b.name));
 
-      return result;
-    }
+      return copy;
 
-    if (order === 'desc') {
-      const result: Student[]
-      = copy.sort((a, b) => b.name.localeCompare(a.name));
+    case SortType.Surname:
+      copy = (order === 'asc')
+        ? copy.sort((a, b) => a.surname.localeCompare(b.surname))
+        : copy.sort((a, b) => b.surname.localeCompare(a.surname));
 
-      return result;
-    }
-  }
+      return copy;
 
-  if (sortBy === SortType.Surname) {
-    if (order === 'asc') {
-      const result: Student[]
-      = copy.sort((a, b) => a.surname.localeCompare(b.surname));
+    case SortType.Age:
+      copy = (order === 'asc')
+        ? copy.sort((a, b) => a.age - b.age)
+        : copy.sort((a, b) => b.age - a.age);
 
-      return result;
-    }
+      return copy;
 
-    if (order === 'desc') {
-      const result: Student[]
-      = copy.sort((a, b) => b.surname.localeCompare(a.surname));
+    case SortType.Married:
+      copy = (order === 'asc')
+        ? copy.sort((a, b) => Number(a.married) - Number(b.married))
+        : copy.sort((a, b) => Number(b.married) - Number(a.married));
 
-      return result;
-    }
-  }
+      return copy;
 
-  if (sortBy === SortType.Age) {
-    if (order === 'asc') {
-      const result: Student[] = copy.sort((a, b) => a.age - b.age);
-
-      return result;
-    }
-
-    if (order === 'desc') {
-      const result: Student[] = copy.sort((a, b) => b.age - a.age);
-
-      return result;
-    }
-  }
-
-  if (sortBy === SortType.Married) {
-    if (order === 'asc') {
-      const result: Student[]
-      = copy.sort((a, b) => Number(a.married) - Number(b.married));
-
-      return result;
-    }
-
-    if (order === 'desc') {
-      const result: Student[]
-      = copy.sort((a, b) => Number(b.married) - Number(a.married));
-
-      return result;
-    }
-  }
-
-  if (sortBy === SortType.AverageGrade) {
-    if (order === 'asc') {
-      const result: Student[]
-      = copy.sort((a, b) => (a.grades.reduce((sum, x) => sum + x)
+    case SortType.AverageGrade:
+      copy = (order === 'asc')
+        ? copy.sort((a, b) => (a.grades.reduce((sum, x) => sum + x)
         / a.grades.length)
-        - (b.grades.reduce((sum, x) => sum + x) / b.grades.length));
+        - (b.grades.reduce((sum, x) => sum + x) / b.grades.length))
+        : copy.sort((a, b) => (b.grades.reduce((sum, x) => sum + x)
+        / b.grades.length)
+        - (a.grades.reduce((sum, x) => sum + x) / a.grades.length));
 
-      return result;
-    }
+      return copy;
 
-    if (order === 'desc') {
-      const result: Student[]
-      = copy.sort((a, b) => (b.grades.reduce((sum, x) => sum + x)
-      / b.grades.length)
-      - (a.grades.reduce((sum, x) => sum + x) / a.grades.length));
-
-      return result;
-    }
+    default:
+      return copy;
   }
-
-  return copy;
 }
