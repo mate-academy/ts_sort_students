@@ -30,19 +30,13 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copiedStudents = [...students];
+  const copiedStudents: Student[] = [...students];
   let result: Student[] = [];
 
   switch (true) {
     case order === 'asc':
       switch (true) {
         case sortBy === SortType.Name:
-          result = copiedStudents
-            .sort((obj1: Student, obj2: Student) => (
-              obj1[sortBy].localeCompare(obj2[sortBy])
-            ));
-          break;
-
         case sortBy === SortType.Surname:
           result = copiedStudents
             .sort((obj1: Student, obj2: Student) => (
