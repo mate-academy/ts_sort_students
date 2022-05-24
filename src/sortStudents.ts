@@ -19,8 +19,8 @@ export type SortOrder = 'asc' | 'desc';
 
 function calculateAvgerage(grades: number[]): number {
   const totalGrades: number
-    = grades.reduce((a: number, b: number) => (
-      a + b));
+    = grades.reduce((firstMark: number, secondMark: number) => (
+      firstMark + secondMark));
 
   return totalGrades / grades.length;
 }
@@ -32,31 +32,27 @@ export function sortStudents(students: Student[], sortBy: SortType,
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return result.sort((a: Student, b: Student) => {
+      return result.sort((studentA: Student, studentB: Student) => {
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
       });
 
     case SortType.Age:
-      return result.sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
-
     case SortType.Married:
-      return result.sort((a: Student, b: Student) => {
+      return result.sort((studentA: Student, studentB: Student) => {
         return order === 'asc'
-          ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy]);
+          ? +studentA[sortBy] - +studentB[sortBy]
+          : +studentB[sortBy] - +studentA[sortBy];
       });
 
     case SortType.AverageGrade:
-      return result.sort((a: Student, b: Student) => {
+      return result.sort((studentA: Student, studentB: Student) => {
         return order === 'asc'
-          ? calculateAvgerage(a[sortBy]) - calculateAvgerage(b[sortBy])
-          : calculateAvgerage(b[sortBy]) - calculateAvgerage(a[sortBy]);
+          ? calculateAvgerage(studentA[sortBy])
+            - calculateAvgerage(studentB[sortBy])
+          : calculateAvgerage(studentB[sortBy])
+            - calculateAvgerage(studentA[sortBy]);
       });
 
     default:
