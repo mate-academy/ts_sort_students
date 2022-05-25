@@ -1,3 +1,8 @@
+function calculateAverage(grades: number[]): number {
+  return grades.reduce((sum: number, grade: number) => {
+    return sum + grade;
+  }) / grades.length;
+}
 
 export interface Student {
   name: string;
@@ -48,10 +53,8 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       return [...students].sort((a, b) => {
-        const studentA = a.grades.reduce((sum, grade) => sum
-        + grade) / a.grades.length;
-        const studentB = b.grades.reduce((sum, grade) => sum
-        + grade) / b.grades.length;
+        const studentA = calculateAverage(a.grades);
+        const studentB = calculateAverage(b.grades);
 
         return order === 'asc'
           ? studentA - studentB
