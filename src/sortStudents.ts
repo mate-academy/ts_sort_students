@@ -39,31 +39,27 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return isSortedStudents.sort((a: Student, b: Student) => {
+      return isSortedStudents.sort((firstSt: Student, secondSt: Student) => {
         return order === SortOrder.asc
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+          ? firstSt[sortBy].localeCompare(secondSt[sortBy])
+          : secondSt[sortBy].localeCompare(firstSt[sortBy]);
       });
 
     case SortType.Age:
-      return isSortedStudents.sort((a: Student, b: Student) => {
-        return order === SortOrder.asc
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
-
     case SortType.Married:
-      return isSortedStudents.sort((a: Student, b: Student) => {
+      return isSortedStudents.sort((firstSt: Student, secondSt: Student) => {
         return order === SortOrder.asc
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
+          ? +firstSt[sortBy] - +secondSt[sortBy]
+          : +secondSt[sortBy] - +firstSt[sortBy];
       });
 
     case SortType.AverageGrade:
-      return isSortedStudents.sort((a: Student, b: Student) => {
+      return isSortedStudents.sort((firstSt: Student, secondSt: Student) => {
         return order === SortOrder.asc
-          ? calculateAverage(a[sortBy]) - calculateAverage(b[sortBy])
-          : calculateAverage(b[sortBy]) - calculateAverage(a[sortBy]);
+          ? calculateAverage(firstSt[sortBy])
+            - calculateAverage(secondSt[sortBy])
+          : calculateAverage(secondSt[sortBy])
+            - calculateAverage(firstSt[sortBy]);
       });
 
     default:
