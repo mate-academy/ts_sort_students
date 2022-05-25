@@ -20,7 +20,6 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -38,12 +37,6 @@ export function sortStudents(
       });
 
     case SortType.Age:
-      return [...students].sort((a, b) => {
-        return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
-
     case SortType.Married:
       return [...students].sort((a, b) => {
         return order === 'asc'
