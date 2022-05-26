@@ -8,56 +8,48 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
 export function
-sortStudents(students: Student[], sortBy: SortType, order: string): Student[] {
+sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   let copy = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      copy = (order === 'asc')
-        ? copy.sort((a, b) => a.name.localeCompare(b.name))
-        : copy.sort((a, b) => a.name.localeCompare(b.name));
-
-      return copy;
-
     case SortType.Surname:
       copy = (order === 'asc')
-        ? copy.sort((a, b) => a.surname.localeCompare(b.surname))
-        : copy.sort((a, b) => b.surname.localeCompare(a.surname));
+        ? copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
 
       return copy;
 
     case SortType.Age:
-      copy = (order === 'asc')
-        ? copy.sort((a, b) => a.age - b.age)
-        : copy.sort((a, b) => b.age - a.age);
-
-      return copy;
-
     case SortType.Married:
       copy = (order === 'asc')
-        ? copy.sort((a, b) => Number(a.married) - Number(b.married))
-        : copy.sort((a, b) => Number(b.married) - Number(a.married));
+        ? copy.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
       return copy;
 
     case SortType.AverageGrade:
       copy = (order === 'asc')
-        ? copy.sort((a, b) => (a.grades.reduce((sum, x) => sum + x)
-        / a.grades.length)
-        - (b.grades.reduce((sum, x) => sum + x) / b.grades.length))
-        : copy.sort((a, b) => (b.grades.reduce((sum, x) => sum + x)
-        / b.grades.length)
-        - (a.grades.reduce((sum, x) => sum + x) / a.grades.length));
+        ? copy.sort((a, b) => (a[sortBy].reduce((sum, x) => sum + x)
+        / a[sortBy].length)
+        - (b[sortBy].reduce((sum, x) => sum + x) / b[sortBy].length))
+        : copy.sort((a, b) => (b[sortBy].reduce((sum, x) => sum + x)
+        / b[sortBy].length)
+        - (a[sortBy].reduce((sum, x) => sum + x) / a[sortBy].length));
 
       return copy;
 
