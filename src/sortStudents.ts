@@ -1,8 +1,8 @@
 // import { Interface } from "readline";
 
 export interface Student {
-  name: 'string',
-  surname: 'string',
+  name: string,
+  surname: string,
   age: number,
   married: boolean,
   grades: number[],
