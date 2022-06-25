@@ -19,35 +19,43 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function sortByName(students: Student[], order: SortOrder): Student[] {
-  return students.sort((firstStudent, secondStudent) => {
-    return order === 'asc'
-      ? firstStudent.name.localeCompare(secondStudent.name)
-      : secondStudent.name.localeCompare(firstStudent.name);
-  });
+  return order === 'asc'
+    ? students.sort((firstStudent, secondStudent) => {
+      return firstStudent.name.localeCompare(secondStudent.name);
+    })
+    : students.sort((firstStudent, secondStudent) => {
+      return secondStudent.name.localeCompare(firstStudent.name);
+    });
 }
 
 function sortBySurname(students: Student[], order: SortOrder): Student[] {
-  return students.sort((firstStudent, secondStudent) => {
-    return order === 'asc'
-      ? firstStudent.surname.localeCompare(secondStudent.surname)
-      : secondStudent.surname.localeCompare(firstStudent.surname);
-  });
+  return order === 'asc'
+    ? students.sort((firstStudent, secondStudent) => {
+      return firstStudent.surname.localeCompare(secondStudent.surname);
+    })
+    : students.sort((firstStudent, secondStudent) => {
+      return secondStudent.surname.localeCompare(firstStudent.surname);
+    });
 }
 
 function sortByAge(students: Student[], order: SortOrder): Student[] {
-  return students.sort((firstStudent, secondStudent) => {
-    return order === 'asc'
-      ? firstStudent.age - secondStudent.age
-      : secondStudent.age - firstStudent.age;
-  });
+  return order === 'asc'
+    ? students.sort((firstStudent, secondStudent) => {
+      return firstStudent.age - secondStudent.age;
+    })
+    : students.sort((firstStudent, secondStudent) => {
+      return secondStudent.age - firstStudent.age;
+    });
 }
 
 function sortByMarried(students: Student[], order: SortOrder): Student[] {
-  return students.sort((firstStudent, secondStudent) => {
-    return order === 'asc'
-      ? Number(firstStudent.married) - Number(secondStudent.married)
-      : Number(secondStudent.married) - Number(firstStudent.married);
-  });
+  return order === 'asc'
+    ? students.sort((firstStudent, secondStudent) => {
+      return Number(firstStudent.married) - Number(secondStudent.married);
+    })
+    : students.sort((firstStudent, secondStudent) => {
+      return Number(secondStudent.married) - Number(firstStudent.married);
+    });
 }
 
 function averageCallback(firstValue: number[], secondValue: number[]): number {
@@ -63,11 +71,13 @@ function averageCallback(firstValue: number[], secondValue: number[]): number {
 }
 
 function sortByAverageGrade(students: Student[], order: SortOrder): Student[] {
-  return students.sort((firstStudent, secondStudent) => {
-    return order === 'asc'
-      ? averageCallback(firstStudent.grades, secondStudent.grades)
-      : averageCallback(secondStudent.grades, firstStudent.grades);
-  });
+  return order === 'asc'
+    ? students.sort((firstStudent, secondStudent) => {
+      return averageCallback(firstStudent.grades, secondStudent.grades);
+    })
+    : students.sort((firstStudent, secondStudent) => {
+      return averageCallback(secondStudent.grades, firstStudent.grades);
+    });
 }
 
 export function sortStudents(
