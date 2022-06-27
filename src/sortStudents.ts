@@ -24,53 +24,64 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let result: Student[] = [...students];
-  const isMarried: Student[] = result
+  let sortedStudents: Student[] = [...students];
+  const isMarried: Student[] = sortedStudents
     .filter((person) => person.married === true);
-  const isNotMarried: Student[] = result
+  const isNotMarried: Student[] = sortedStudents
     .filter((person) => person.married === false);
 
   switch (sortBy) {
     case SortType.Name:
       if (order === 'desc') {
-        result = result.sort((elem1, elem2) => elem2.name
-          .localeCompare(elem1.name));
+        sortedStudents = sortedStudents
+          .sort((student1, student2) => student2.name
+            .localeCompare(student1.name));
       } else {
-        result = result.sort((elem1, elem2) => elem1.name
-          .localeCompare(elem2.name));
+        sortedStudents = sortedStudents
+          .sort((student1, student2) => student1.name
+            .localeCompare(student2.name));
       }
       break;
 
     case SortType.Surname:
-      result = result.sort((elem1, elem2) => elem1.surname
-        .localeCompare(elem2.surname));
+      if (order === 'desc') {
+        sortedStudents = sortedStudents
+          .sort((student1, student2) => student2.surname
+            .localeCompare(student1.surname));
+      } else {
+        sortedStudents = sortedStudents
+          .sort((student1, student2) => student1.surname
+            .localeCompare(student2.surname));
+      }
       break;
 
     case SortType.Age:
       if (order === 'desc') {
-        result = result.sort((elem1, elem2) => elem2.age - elem1.age);
+        sortedStudents = sortedStudents
+          .sort((student1, student2) => student2.age - student1.age);
       } else {
-        result = result.sort((elem1, elem2) => elem1.age - elem2.age);
+        sortedStudents = sortedStudents
+          .sort((student1, student2) => student1.age - student2.age);
       }
       break;
 
     case SortType.Married:
       if (order === 'desc') {
-        result = [...isMarried, ...isNotMarried];
+        sortedStudents = [...isMarried, ...isNotMarried];
       } else {
-        result = [...isNotMarried, ...isMarried];
+        sortedStudents = [...isNotMarried, ...isMarried];
       }
       break;
 
     case SortType.AverageGrade:
       if (order === 'desc') {
-        result = result
+        sortedStudents = sortedStudents
           .sort((a, b) => b.grades
             .reduce(callback) / b.grades.length
             - a.grades
               .reduce(callback) / a.grades.length);
       } else {
-        result = result
+        sortedStudents = sortedStudents
           .sort((a, b) => a.grades
             .reduce(callback) / a.grades.length
             - b.grades
@@ -82,5 +93,5 @@ export function sortStudents(
       break;
   }
 
-  return result;
+  return sortedStudents;
 }
