@@ -19,21 +19,11 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageAge(grades:number[]): number {
+function getAverageGrade(grades:number[]): number {
   return grades.reduce((prev, current) => prev + current, 0) / grades.length;
 }
 
-function sortedByName(objectOfStudents : Student[], order: string): Student[] {
-  if (order === 'asc') {
-    return objectOfStudents
-      .sort((first, second) => first.name.localeCompare(second.name));
-  }
-
-  return objectOfStudents
-    .sort((first, second) => second.name.localeCompare(first.name));
-}
-
-function sortedBySurname(
+function sortedByNameAndSurname(
   objectOfStudents: Student[],
   order: string,
 ) :Student[] {
@@ -46,25 +36,26 @@ function sortedBySurname(
     .sort((first, second) => second.surname.localeCompare(first.surname));
 }
 
+function sortedByAverageGrade(
+  objectOfStudents: Student[],
+  order: string,
+): Student[] {
+  if (order === 'asc') {
+    return objectOfStudents
+      .sort((first, second) => getAverageGrade(first.grades)
+        - getAverageGrade(second.grades));
+  }
+
+  return objectOfStudents.sort((first, second) => getAverageGrade(second.grades)
+    - getAverageGrade(first.grades));
+}
+
 function sortedByAge(objectOfStudents : Student[], order: string): Student[] {
   if (order === 'asc') {
     return objectOfStudents.sort((first, second) => first.age - second.age);
   }
 
   return objectOfStudents.sort((first, second) => second.age - first.age);
-}
-
-function sortedByAverageGrade(
-  objectOfStudents: Student[],
-  order: string,
-): Student[] {
-  if (order === 'asc') {
-    return objectOfStudents.sort((first, second) => getAverageAge(first.grades)
-      - getAverageAge(second.grades));
-  }
-
-  return objectOfStudents.sort((first, second) => getAverageAge(second.grades)
-    - getAverageAge(first.grades));
 }
 
 function sortedByMarried(
@@ -90,21 +81,15 @@ export function sortStudents(
   const array: Student[] = [...students];
 
   switch (sortBy) {
-    case (SortType.Name): {
-      return sortedByName(array, order);
-    }
+    case (SortType.Name):
+    case (SortType.Surname):
+      return sortedByNameAndSurname(array, order);
 
-    case (SortType.Surname): {
-      return sortedBySurname(array, order);
-    }
-
-    case (SortType.Age): {
+    case (SortType.Age):
       return sortedByAge(array, order);
-    }
 
-    case (SortType.AverageGrade): {
+    case (SortType.AverageGrade):
       return sortedByAverageGrade(array, order);
-    }
 
     default: {
       const newArray = sortedByMarried(array, order);
