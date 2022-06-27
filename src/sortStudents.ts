@@ -30,30 +30,20 @@ export function sortStudents(
   const orderSort = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
-    case 'name':
-      sortedStudents.sort((studentA, studentB) => studentA.name
-        .localeCompare(studentB.name) * orderSort);
+    case SortType.Name:
+    case SortType.Surname:
+      sortedStudents.sort((studentA, studentB) => studentA[sortBy]
+        .localeCompare(studentB[sortBy]) * orderSort);
       break;
 
-    case 'surname':
+    case SortType.Age:
+    case SortType.Married:
       sortedStudents
-        .sort((studentA, studentB) => studentA.surname
-          .localeCompare(studentB.surname) * orderSort);
+        .sort((studentA, studentB) => (Number(studentA[sortBy])
+          - Number(studentB[sortBy])) * orderSort);
       break;
 
-    case 'age':
-      sortedStudents
-        .sort((studentA, studentB) => (studentA.age - studentB.age)
-        * orderSort);
-      break;
-
-    case 'married':
-      sortedStudents
-        .sort((studentA, studentB) => (+studentA.married - +studentB.married)
-        * orderSort);
-      break;
-
-    case 'average grades':
+    case SortType.AverageGrade:
       sortedStudents
         .sort((studentA, studentB) => (getAverageGrade(studentA.grades)
           - getAverageGrade(studentB.grades)) * orderSort);
