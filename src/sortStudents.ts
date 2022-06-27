@@ -24,8 +24,12 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyOfStudents = [...students];
-  const sortOrder: 1 | -1 = order === 'asc' ? 1 : -1;
-  const callbeckSum = (sum: number, grade: number): number => sum + grade;
+  const sortOrder = order === 'asc' ? 1 : -1;
+  const callbackSum = (sum: number, grade: number): number => sum + grade;
+
+  function getAvarageGrade(student: Student): number {
+    return student.grades.reduce(callbackSum, 0) / student.grades.length;
+  }
 
   switch (sortBy) {
     case SortType.Age:
@@ -44,35 +48,24 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       copyOfStudents.sort((student1, student2) => (
-        (student1.grades.reduce(callbeckSum, 0)
-          / student1.grades.length
-          - student2.grades.reduce(callbeckSum, 0)
-          / student2.grades.length) * sortOrder
+        (getAvarageGrade(student1) - getAvarageGrade(student2)) * sortOrder
       ));
 
       break;
 
     case SortType.Name:
-      if (order === 'desc') {
-        copyOfStudents.sort((student1, student2) => student2[SortType.Name]
-          .localeCompare(student1[SortType.Name]));
-      } else {
-        copyOfStudents.sort((student1, student2) => student1[SortType.Name]
+      return order === 'desc'
+        ? copyOfStudents.sort((student1, student2) => student2[SortType.Name]
+          .localeCompare(student1[SortType.Name]))
+        : copyOfStudents.sort((student1, student2) => student1[SortType.Name]
           .localeCompare(student2[SortType.Name]));
-      }
-
-      break;
 
     case SortType.Surname:
-      if (order === 'desc') {
-        copyOfStudents.sort((student1, student2) => student2[SortType.Surname]
-          .localeCompare(student1[SortType.Surname]));
-      } else {
-        copyOfStudents.sort((student1, student2) => student1[SortType.Surname]
+      return order === 'desc'
+        ? copyOfStudents.sort((student1, student2) => student2[SortType.Surname]
+          .localeCompare(student1[SortType.Surname]))
+        : copyOfStudents.sort((student1, student2) => student1[SortType.Surname]
           .localeCompare(student2[SortType.Surname]));
-      }
-
-      break;
 
     default:
       break;
