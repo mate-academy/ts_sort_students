@@ -5,7 +5,7 @@ module.exports = {
   ],
   env: {
     jest: true,
-    es2021: true,
+    es2021: false,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
