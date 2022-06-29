@@ -64,7 +64,8 @@ export function sortStudents(
           ) => +secondStudent[sortBy] - +firstStudent[sortBy]);
       }
       break;
-    default:
+
+    case SortType.AverageGrade:
       if (order === 'asc') {
         sortedStudents.sort((
           firstStudent,
@@ -77,6 +78,8 @@ export function sortStudents(
         ) => getAverageGrade(secondStudent, firstStudent));
       }
       break;
+    default:
+      throw new Error('Incorrect Sort type');
   }
 
   return sortedStudents;
