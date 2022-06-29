@@ -8,81 +8,68 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'Name',
-  Surname= 'Surname',
-  Age = 'Age',
-  Married = 'Married',
-  AverageGrade = 'AverageGrade',
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+function callback(arr:number[], arr1:number[]):number {
+  return arr.reduce((prev, inn) => prev + inn) / arr.length
+    - arr1.reduce((prev, inn) => prev + inn) / arr1.length;
+}
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ):Student[] {
-  let newSortArrayWithStudents:Student[];
+  const copy = [...students];
 
   switch (sortBy) {
-    case 'Name':
-      newSortArrayWithStudents = order === 'asc'
-        ? [...students]
-          .sort((prevStudent, nextStudent) => prevStudent.name
-            .localeCompare(nextStudent.name))
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? copy
+          .sort((prevStudent, nextStudent) => prevStudent[sortBy]
+            .localeCompare(nextStudent[sortBy]))
         : [...students]
-          .sort((prevStudent, nextStudent) => nextStudent.name
-            .localeCompare(prevStudent.name));
-      break;
+          .sort((prevStudent, nextStudent) => nextStudent[sortBy]
+            .localeCompare(prevStudent[sortBy]));
 
-    case 'Surname':
-      newSortArrayWithStudents = order === 'asc'
-        ? [...students]
-          .sort((prevStudent, nextStudent) => prevStudent.surname
-            .localeCompare(nextStudent.surname))
-        : [...students]
-          .sort((prevStudent, nextStudent) => nextStudent.surname
-            .localeCompare(prevStudent.surname));
-      break;
-
-    case 'Age':
-      newSortArrayWithStudents = order === 'asc'
-        ? [...students]
-          .sort((prevStudent, nextStudent) => prevStudent.age - nextStudent.age)
+    case SortType.Age:
+      return order === 'asc'
+        ? copy
+          .sort((prevStudent, nextStudent) => {
+            return prevStudent[sortBy] - nextStudent[sortBy];
+          })
         : [...students]
           .sort((prevStudent, nextStudent) => {
-            return nextStudent.age - prevStudent.age;
+            return nextStudent[sortBy] - prevStudent[sortBy];
           });
-      break;
 
-    case 'AverageGrade':
-      newSortArrayWithStudents = order === 'asc'
-        ? [...students].sort((prevStudent, nextStudent) => {
-          return prevStudent.grades
-            .reduce((prev, inn) => prev + inn) / prevStudent.grades.length
-          - nextStudent.grades
-            .reduce((prev, inn) => prev + inn) / nextStudent.grades.length;
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? copy.sort((prevStudent, nextStudent) => {
+          return callback(prevStudent[sortBy], nextStudent[sortBy]);
         })
-        : [...students].sort((prevStudent, nextStudent) => {
-          return nextStudent.grades
-            .reduce((prev, inn) => prev + inn) / nextStudent.grades.length
-            - prevStudent.grades
-              .reduce((prev, inn) => prev + inn) / prevStudent.grades.length;
+        : copy.sort((prevStudent, nextStudent) => {
+          return callback(nextStudent[sortBy], prevStudent[sortBy]);
         });
-      break;
 
     default:
-      newSortArrayWithStudents = order === 'asc'
-        ? [...students]
+      return order === 'asc'
+        ? copy
           .sort((prevStudent, nextStudent) => {
             return Number(prevStudent.married) - Number(nextStudent.married);
           })
-        : [...students]
+        : copy
           .sort((prevStudent, nextStudent) => {
             return Number(nextStudent.married) - Number(prevStudent.married);
           });
   }
-
-  return newSortArrayWithStudents;
 }
