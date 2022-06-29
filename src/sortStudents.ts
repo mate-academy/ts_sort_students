@@ -107,7 +107,5 @@ export function sortStudents(
     }
   });
 
-  // console.log(copyStudents);
-
   return copyStudents;
 }
