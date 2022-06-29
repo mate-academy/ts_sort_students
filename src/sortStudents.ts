@@ -55,9 +55,5 @@ export function sortStudents(
     }
   });
 
-  // if (order === 'desc') {
-  //   studentsCopy.reverse();
-  // }
-
   return studentsCopy;
 }
