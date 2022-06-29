@@ -51,7 +51,6 @@ export function sortStudents(
           .localeCompare(b[sortBy]))
         : sortedStd.sort((a: Student, b: Student) => b[sortBy]
           .localeCompare(a[sortBy]));
-
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
