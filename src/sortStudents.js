@@ -18,34 +18,33 @@ var SortType;
     SortType["Married"] = "married";
     SortType["AverageGrade"] = "grades";
 })(SortType = exports.SortType || (exports.SortType = {}));
+function getAverageGrade(studentGrades) {
+    return studentGrades
+        .reduce(function (sum, grade) { return (sum + grade); }) / studentGrades.length;
+}
 function sortStudents(students, sortBy, order) {
-    var people = __spreadArray([], students, true);
-    people.sort(function (personA, personB) {
-        var personAAverage;
-        var personBAverage;
-        switch (sortBy) {
-            case SortType.Name:
-            case SortType.Surname:
-                return order === 'desc'
-                    ? personB[sortBy].localeCompare(personA[sortBy])
-                    : personA[sortBy].localeCompare(personB[sortBy]);
-            case SortType.Age:
-            case SortType.Married:
-                return order === 'desc'
-                    ? +personB[sortBy] - +personA[sortBy]
-                    : +personA[sortBy] - +personB[sortBy];
-            case SortType.AverageGrade:
-                personAAverage = personA[sortBy]
-                    .reduce(function (prev, item) { return (prev + item); }, 0) / personA[sortBy].length;
-                personBAverage = personB[sortBy]
-                    .reduce(function (prev, item) { return (prev + item); }, 0) / personB[sortBy].length;
-                return order === 'desc'
-                    ? personBAverage - personAAverage
-                    : personAAverage - personBAverage;
-            default:
-                return 0;
-        }
-    });
-    return people;
+    var sortedStudents = __spreadArray([], students, true);
+    var orderSort = order === 'asc' ? 1 : -1;
+    switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+            sortedStudents.sort(function (studentA, studentB) { return studentA[sortBy]
+                .localeCompare(studentB[sortBy]) * orderSort; });
+            break;
+        case SortType.Age:
+        case SortType.Married:
+            sortedStudents
+                .sort(function (studentA, studentB) { return (Number(studentA[sortBy])
+                - Number(studentB[sortBy])) * orderSort; });
+            break;
+        case SortType.AverageGrade:
+            sortedStudents
+                .sort(function (studentA, studentB) { return (getAverageGrade(studentA.grades)
+                - getAverageGrade(studentB.grades)) * orderSort; });
+            break;
+        default:
+            break;
+    }
+    return sortedStudents;
 }
 exports.sortStudents = sortStudents;

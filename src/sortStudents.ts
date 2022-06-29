@@ -14,8 +14,12 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+function getAverageGrade(studentGrade: number[]): number {
+  return studentGrade
+    .reduce((sum, grade) => (sum + grade)) / studentGrade.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -23,41 +27,31 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const people: Student[] = [...students];
+  const orderSort = order === 'asc' ? 1 : -1;
 
-  people.sort((personA, personB) => {
-    let personAAverage: number;
-    let personBAverage: number;
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      people.sort((student1, student2) => student1[sortBy]
+        .localeCompare(student2[sortBy]) * orderSort);
+      break;
 
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        return order === 'desc'
-          ? personB[sortBy].localeCompare(personA[sortBy])
-          : personA[sortBy].localeCompare(personB[sortBy]);
+    case SortType.Age:
+    case SortType.Married:
+      people
+        .sort((student1, student2) => (Number(student1[sortBy])
+          - Number(student2[sortBy])) * orderSort);
+      break;
 
-      case SortType.Age:
-      case SortType.Married:
-        return order === 'desc'
-          ? +personB[sortBy] - +personA[sortBy]
-          : +personA[sortBy] - +personB[sortBy];
+    case SortType.AverageGrade:
+      people
+        .sort((student1, student2) => (getAverageGrade(student1.grades)
+          - getAverageGrade(student2.grades)) * orderSort);
+      break;
 
-      case SortType.AverageGrade:
-        personAAverage = personA[sortBy]
-          .reduce((prev: number, item: number) => (prev + item)
-            , 0) / personA[sortBy].length;
-
-        personBAverage = personB[sortBy]
-          .reduce((prev: number, item: number) => (prev + item)
-            , 0) / personB[sortBy].length;
-
-        return order === 'desc'
-          ? personBAverage - personAAverage
-          : personAAverage - personBAverage;
-
-      default:
-        return 0;
-    }
-  });
+    default:
+      break;
+  }
 
   return people;
 }
