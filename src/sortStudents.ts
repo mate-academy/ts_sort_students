@@ -24,8 +24,11 @@ export function sortStudents(
   const sortedStudents: Student[] = [...students];
 
   type Callback = (x: number, y: number) => number;
+  type Callback2 = (grades: number[]) => number;
 
   const sum: Callback = (x, y) => x + y;
+  const getAvrGrade: Callback2 = (grades) => grades
+    .reduce(sum, 0) / grades.length;
 
   switch (sortBy) {
     case SortType.Name:
@@ -43,11 +46,13 @@ export function sortStudents(
     case SortType.Married:
       if (order === 'asc') {
         sortedStudents
-          .sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy]);
-      } else {
-        sortedStudents
-          .sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
+          .sort((a: Student, b: Student) => Number(a[sortBy])
+          - Number(b[sortBy]));
       }
+
+      sortedStudents
+        .sort((a: Student, b: Student) => Number(b[sortBy])
+        - Number(a[sortBy]));
       break;
 
     default:
@@ -56,9 +61,8 @@ export function sortStudents(
           .reduce(sum, 0) / a.grades.length
             - b.grades.reduce(sum, 0) / b.grades.length);
       } else {
-        sortedStudents.sort((a: Student, b: Student) => b.grades
-          .reduce(sum, 0) / b.grades.length
-            - a.grades.reduce(sum, 0) / a.grades.length);
+        sortedStudents.sort((a: Student, b: Student) => getAvrGrade(b.grades)
+        - getAvrGrade(a.grades));
       }
       break;
   }
