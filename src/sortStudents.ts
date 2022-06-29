@@ -27,7 +27,7 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-):Student[] {
+):Student[] | Error {
   const copy = [...students];
 
   switch (sortBy) {
@@ -61,7 +61,7 @@ export function sortStudents(
           return callback(nextStudent[sortBy], prevStudent[sortBy]);
         });
 
-    default:
+    case SortType.Married:
       return order === 'asc'
         ? copy
           .sort((prevStudent, nextStudent) => {
@@ -71,5 +71,7 @@ export function sortStudents(
           .sort((prevStudent, nextStudent) => {
             return Number(nextStudent.married) - Number(prevStudent.married);
           });
+    default:
+      return new Error('something');
   }
 }
