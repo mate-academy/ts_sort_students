@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'AverageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -26,50 +26,51 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copy = [...students];
+  const studentsCopy = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        copy.sort((std1, std2) => std1.name.localeCompare(std2.name));
-      } else {
-        copy.sort((std1, std2) => std2.name.localeCompare(std1.name));
-      }
-
-      break;
     case SortType.Surname:
       if (order === 'asc') {
-        copy.sort((std1, std2) => std1.surname.localeCompare(std2.surname));
+        studentsCopy.sort(
+          (std1, std2) => std1[sortBy].localeCompare(std2[sortBy]),
+        );
       } else {
-        copy.sort((std1, std2) => std2.surname.localeCompare(std1.surname));
+        studentsCopy.sort(
+          (std1, std2) => std2[sortBy].localeCompare(std1[sortBy]),
+        );
       }
 
       break;
 
     case SortType.Age:
       if (order === 'asc') {
-        copy.sort((std1, std2) => std1.age - std2.age);
+        studentsCopy.sort((std1, std2) => std1.age - std2.age);
       } else {
-        copy.sort((std1, std2) => std2.age - std1.age);
+        studentsCopy.sort((std1, std2) => std2.age - std1.age);
       }
 
       break;
 
     case SortType.Married:
       if (order === 'asc') {
-        copy.sort((std1, std2) => Number(std1.married) - Number(std2.married));
+        studentsCopy.sort(
+          (std1, std2) => Number(std1.married) - Number(std2.married),
+        );
       } else {
-        copy.sort((std1, std2) => Number(std2.married) - Number(std1.married));
+        studentsCopy.sort(
+          (std1, std2) => Number(std2.married) - Number(std1.married),
+        );
       }
 
       break;
 
     case SortType.AverageGrade:
       if (order === 'asc') {
-        copy.sort((std1, std2) => getAverageGrade(std1.grades)
+        studentsCopy.sort((std1, std2) => getAverageGrade(std1.grades)
           - getAverageGrade(std2.grades));
       } else {
-        copy.sort((std1, std2) => getAverageGrade(std2.grades)
+        studentsCopy.sort((std1, std2) => getAverageGrade(std2.grades)
         - getAverageGrade(std1.grades));
       }
 
@@ -80,5 +81,5 @@ export function sortStudents(
       break;
   }
 
-  return copy;
+  return studentsCopy;
 }
