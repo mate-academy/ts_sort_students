@@ -23,52 +23,65 @@ function getAverageGrade(grades:number[]): number {
   return grades.reduce((prev, current) => prev + current, 0) / grades.length;
 }
 
-function sortedByNameAndSurname(
-  objectOfStudents: Student[],
+function sortedByName(
+  students: Student[],
   order: string,
 ) :Student[] {
   if (order === 'asc') {
-    return objectOfStudents
+    return students
+      .sort((first, second) => first.name.localeCompare(second.name));
+  }
+
+  return students
+    .sort((first, second) => second.name.localeCompare(first.name));
+}
+
+function sortedBySurname(
+  students: Student[],
+  order: string,
+) :Student[] {
+  if (order === 'asc') {
+    return students
       .sort((first, second) => first.surname.localeCompare(second.surname));
   }
 
-  return objectOfStudents
+  return students
     .sort((first, second) => second.surname.localeCompare(first.surname));
 }
 
 function sortedByAverageGrade(
-  objectOfStudents: Student[],
+  students: Student[],
   order: string,
 ): Student[] {
   if (order === 'asc') {
-    return objectOfStudents
+    return students
       .sort((first, second) => getAverageGrade(first.grades)
         - getAverageGrade(second.grades));
   }
 
-  return objectOfStudents.sort((first, second) => getAverageGrade(second.grades)
+  return students.sort((first, second) => getAverageGrade(second.grades)
     - getAverageGrade(first.grades));
 }
 
-function sortedByAge(objectOfStudents : Student[], order: string): Student[] {
+function sortedByAge(students : Student[], order: string): Student[] {
   if (order === 'asc') {
-    return objectOfStudents.sort((first, second) => first.age - second.age);
+    return students.sort((first, second) => first.age - second.age);
   }
 
-  return objectOfStudents.sort((first, second) => second.age - first.age);
+  return students.sort((first, second) => second.age - first.age);
 }
 
 function sortedByMarried(
-  objectOfStudents: Student[],
+  students: Student[],
   order: string,
 ): Student[] {
   if (order === 'asc') {
-    return objectOfStudents.sort((first, second) => {
+    return students.sort((first, second) => {
       return Number(first.married) - Number(second.married);
     });
   }
 
-  return objectOfStudents.sort((first, second) => {
+  return students.sort((first, second) => {
     return Number(second.married) - Number(first.married);
   });
 }
@@ -78,23 +91,25 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const array: Student[] = [...students];
+  const arrStudent: Student[] = [...students];
 
   switch (sortBy) {
     case (SortType.Name):
+      return sortedByName(arrStudent, order);
     case (SortType.Surname):
-      return sortedByNameAndSurname(array, order);
-
+      return sortedBySurname(arrStudent, order);
     case (SortType.Age):
-      return sortedByAge(array, order);
+      return sortedByAge(arrStudent, order);
 
     case (SortType.AverageGrade):
-      return sortedByAverageGrade(array, order);
+      return sortedByAverageGrade(arrStudent, order);
 
-    default: {
-      const newArray = sortedByMarried(array, order);
+    case (SortType.Married):
+      return sortedByMarried(arrStudent, order);
 
-      return newArray;
-    }
+    default:
+      break;
   }
+
+  return arrStudent;
 }
