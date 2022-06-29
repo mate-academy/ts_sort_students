@@ -19,7 +19,9 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   type Sum = (a: number, b: number) => number;
 
@@ -28,44 +30,47 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        sortedStudents.sort((a: Student, b: Student) => a[sortBy]
-          .localeCompare(b[sortBy]));
-      }
-      break;
     case SortType.Surname:
       if (order === 'asc') {
-        sortedStudents.sort((a: Student, b: Student) => a[sortBy]
-          .localeCompare(b[sortBy]));
+        sortedStudents.sort((
+          firstStudent: Student,
+          secondStudent: Student,
+        ) => firstStudent[sortBy].localeCompare(secondStudent[sortBy]));
       }
       break;
     case SortType.Age:
-      if (order === 'asc') {
-        sortedStudents
-          .sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy]);
-      } else {
-        sortedStudents
-          .sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
-      }
-      break;
     case SortType.Married:
       if (order === 'asc') {
         sortedStudents
-          .sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy]);
+          .sort((
+            firstStudent: Student,
+            secondStudent: Student,
+          ) => +firstStudent[sortBy] - +secondStudent[sortBy]);
       } else {
         sortedStudents
-          .sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
+          .sort((
+            firstStudent: Student,
+            secondStudent: Student,
+          ) => +secondStudent[sortBy] - +firstStudent[sortBy]);
       }
       break;
     default:
       if (order === 'asc') {
-        sortedStudents.sort((a: Student, b: Student) => a.grades
-          .reduce(sum, 0) / a.grades.length
-            - b.grades.reduce(sum, 0) / b.grades.length);
+        sortedStudents.sort((
+          firstStudent: Student,
+          secondStudent: Student,
+        ) => firstStudent.grades
+          .reduce(sum, 0) / firstStudent.grades.length
+            - secondStudent.grades.reduce(sum, 0)
+            / secondStudent.grades.length);
       } else {
-        sortedStudents.sort((a: Student, b: Student) => b.grades
-          .reduce(sum, 0) / b.grades.length
-            - a.grades.reduce(sum, 0) / a.grades.length);
+        sortedStudents.sort((
+          firstStudent: Student,
+          secondStudent: Student,
+        ) => secondStudent.grades
+          .reduce(sum, 0) / secondStudent.grades.length
+            - firstStudent.grades.reduce(sum, 0)
+            / firstStudent.grades.length);
       }
       break;
   }
