@@ -30,10 +30,10 @@ export function sortStudents(
   copyStudents.sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
-        return a.name.localeCompare(b.name);
+        return a.name.localeCompare(b.name) * sortOrder;
 
       case SortType.Surname:
-        return a.surname.localeCompare(b.surname);
+        return a.surname.localeCompare(b.surname) * sortOrder;
 
       case SortType.Age:
         return (a.age - b.age) * sortOrder;
