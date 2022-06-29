@@ -4,7 +4,7 @@ export interface Student {
   surname: string,
   age: number,
   married: boolean,
-  grades: Array <number>,
+  grades: number[],
 }
 
 export enum SortType {
@@ -18,10 +18,10 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Array <Student>,
+  students: Student [],
   sortBy: SortType,
   order: SortOrder,
-) : Array <Student> {
+) : Student [] {
   const studentsCopy = [...students];
 
   studentsCopy.sort((student1, student2) => {
@@ -50,15 +50,19 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         if (order === 'asc') {
-          return student1.grades.reduce((point1, point2) => point1 + point2)
+          return student1.grades
+            .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
             / student1.grades.length
-            - student2.grades.reduce((point1, point2) => point1 + point2)
+            - student2.grades
+              .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
             / student2.grades.length;
         }
 
-        return student2.grades.reduce((point1, point2) => point1 + point2)
+        return student2.grades
+          .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
         / student2.grades.length
-        - student1.grades.reduce((point1, point2) => point1 + point2)
+        - student1.grades
+          .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
         / student1.grades.length;
 
       default:
