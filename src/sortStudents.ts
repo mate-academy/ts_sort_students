@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(grades:number[]):number {
@@ -34,9 +33,17 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      studentsCopy.sort(
-        (st1: Student, st2: Student) => st1[sortBy].localeCompare(st2[sortBy]),
-      );
+      if (order === 'asc') {
+        studentsCopy.sort(
+          (st1: Student, st2: Student) => st1[sortBy]
+            .localeCompare(st2[sortBy]),
+        );
+      } else {
+        studentsCopy.sort(
+          (st1: Student, st2: Student) => st2[sortBy]
+            .localeCompare(st1[sortBy]),
+        );
+      }
 
       break;
 
