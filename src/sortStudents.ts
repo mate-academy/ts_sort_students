@@ -41,7 +41,7 @@ export function sortStudents(
       return order === 'asc'
         ? sortedStd.sort((a: Student, b: Student) => (
           a.grades.reduce(
-            (prV: number, nxtV: number) => prV + nxtV, 0,
+            (gradeSum: number, currentGrade: number) => prV + nxtV, 0,
           ) / a.grades.length)
             - (b.grades.reduce(
               (prV: number, nxtV: number) => prV + nxtV, 0,
