@@ -25,13 +25,15 @@ export function sortGrades(
     return grades.reduce((a: number, b: number) => a + b, 0) / grades.length;
   }
 
+  const copy = [...array];
+
   if (order === 'asc') {
-    return [...array]
+    return copy
       .sort((s1: Student, s2: Student) => getAverageGrades(s1[field])
       - getAverageGrades(s2[field]));
   }
 
-  return [...array]
+  return copy
     .sort((s1: Student, s2: Student) => getAverageGrades(s2[field])
     - getAverageGrades(s1[field]));
 }
@@ -41,12 +43,14 @@ export function sortStrings(
   order: SortOrder,
   field: 'name' | 'surname',
 ): Student[] {
+  const copy = [...array];
+
   if (order === 'asc') {
-    return [...array]
+    return copy
       .sort((s1: Student, s2: Student) => s1[field].localeCompare(s2[field]));
   }
 
-  return [...array]
+  return copy
     .sort((s1: Student, s2: Student) => s2[field].localeCompare(s1[field]));
 }
 
@@ -55,12 +59,14 @@ export function sortNumbers(
   order: SortOrder,
   field: 'age' | 'married' | 'grades',
 ): Student[] {
+  const copy = [...array];
+
   if (order === 'asc') {
-    return [...array]
+    return copy
       .sort((s1: Student, s2: Student) => +s1[field] - +s2[field]);
   }
 
-  return [...array].sort((s1: Student, s2: Student) => +s2[field] - +s1[field]);
+  return copy.sort((s1: Student, s2: Student) => +s2[field] - +s1[field]);
 }
 
 export function sortStudents(
