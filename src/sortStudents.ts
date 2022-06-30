@@ -8,14 +8,18 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+function AverageGrades(grades:number[]):number {
+  return grades.reduce((grade1, grade2) => grade1 + grade2, 0) / grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -48,17 +52,12 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         if (order === 'desc') {
-          return secondStudent.grades
-            .reduce((grade1, grade2) => grade1
-            + grade2, 0) / secondStudent.grades.length
-            - firstStudent.grades.reduce((grade1, grade2) => grade1
-            + grade2, 0) / firstStudent.grades.length;
+          return AverageGrades(secondStudent.grades)
+          - AverageGrades(firstStudent.grades);
         }
 
-        return firstStudent.grades.reduce((grade1, grade2) => grade1
-          + grade2, 0) / firstStudent.grades.length
-          - secondStudent.grades.reduce((grade1, grade2) => grade1
-          + grade2, 0) / secondStudent.grades.length;
+        return AverageGrades(firstStudent.grades)
+          - AverageGrades(secondStudent.grades);
 
       default:
         return 0;
