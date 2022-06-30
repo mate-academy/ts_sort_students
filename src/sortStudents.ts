@@ -35,15 +35,40 @@ const sortNumbers = (a: number, b: number): number => a - b;
 
 const sortStrings = (a: string, b: string): number => a.localeCompare(b);
 
+const getSortCallback = (
+  sortBy: SortType,
+  order: SortOrder,
+): [SortOrder, SortCallback] => {
+  switch (sortBy) {
+    case SortType.Name:
+      return [order, sortStrings];
+
+    case SortType.Surname:
+      return [order, sortStrings];
+
+    case SortType.Married:
+      return ['desc', sortNumbers];
+
+    default:
+      return [order, sortNumbers];
+  }
+};
+
+const getAverageGrade = (student: Student): number => {
+  return student.grades.reduce((acc, item) => (
+    acc + item
+  ), 0) / student.grades.length;
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
+  const [sortOrder, sortCallback] = getSortCallback(sortBy, order);
+
   const copyData: ExtendedStudent[] = students.map((student) => {
-    const averageGrade = student.grades.reduce((acc, item) => (
-      acc + item
-    ), 0) / student.grades.length;
+    const averageGrade = SortType.AverageGrade ? getAverageGrade(student) : 0;
 
     return {
       ...student,
@@ -55,19 +80,7 @@ export function sortStudents(
     const first = a[sortBy] as SortValue;
     const second = b[sortBy] as SortValue;
 
-    switch (sortBy) {
-      case SortType.Name:
-        return sortByOrder(first, second, order, sortStrings);
-
-      case SortType.Surname:
-        return sortByOrder(first, second, order, sortStrings);
-
-      case SortType.Married:
-        return sortByOrder(first, second, 'desc', sortNumbers);
-
-      default:
-        return sortByOrder(first, second, order, sortNumbers);
-    }
+    return sortByOrder(first, second, sortOrder, sortCallback);
   });
 
   return result;
