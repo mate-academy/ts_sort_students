@@ -8,62 +8,14 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
-
-function sortName(
-  objectPerson: Student[],
-  order: SortOrder,
-): Student[] {
-  if (order === 'asc') {
-    return objectPerson
-      .sort((nameA, nameB) => nameA.name.localeCompare(nameB.name));
-  }
-
-  return objectPerson
-    .sort((nameA, nameB) => nameB.name.localeCompare(nameA.name));
-}
-
-function sortSurname(
-  objectPerson: Student[],
-  order: SortOrder,
-): Student[] {
-  if (order === 'asc') {
-    return objectPerson
-      .sort((nameA, nameB) => nameA.surname.localeCompare(nameB.surname));
-  }
-
-  return objectPerson
-    .sort((nameA, nameB) => nameB.surname.localeCompare(nameA.surname));
-}
-
-function sortAge(objectPerson: Student[], order: SortOrder): Student[] {
-  if (order === 'asc') {
-    return objectPerson
-      .sort((agePersonA, agePersonB) => agePersonA.age - agePersonB.age);
-  }
-
-  return objectPerson
-    .sort((agePersonA, agePersonB) => agePersonB.age - agePersonA.age);
-}
-
-function sortMarried(objectPerson: Student[], order: SortOrder): Student[] {
-  if (order === 'asc') {
-    return objectPerson
-      .sort((marriedPersonA, marriedPersonB) => (
-        (+marriedPersonA.married) - (+marriedPersonB.married)));
-  }
-
-  return objectPerson
-    .sort((marriedPersonA, marriedPersonB) => (
-      (+marriedPersonB.married) - (+marriedPersonA.married)));
-}
 
 function sortAverageGrade(
   objectPerson: Student[],
@@ -95,16 +47,24 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return sortName(newStudents, order);
-
     case SortType.Surname:
-      return sortSurname(newStudents, order);
+      if (order === 'asc') {
+        return newStudents
+          .sort((nameA, nameB) => nameA[sortBy].localeCompare(nameB[sortBy]));
+      }
+
+      return newStudents
+        .sort((nameA, nameB) => nameB[sortBy].localeCompare(nameA[sortBy]));
 
     case SortType.Age:
-      return sortAge(newStudents, order);
-
     case SortType.Married:
-      return sortMarried(newStudents, order);
+      if (order === 'asc') {
+        return newStudents
+          .sort((ageA, ageB) => +ageA[sortBy] - +ageB[sortBy]);
+      }
+
+      return newStudents
+        .sort((ageA, ageB) => +ageB[sortBy] - +ageA[sortBy]);
 
     case SortType.AverageGrade:
       return sortAverageGrade(newStudents, order);
