@@ -8,15 +8,22 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+function averageGr(firstStudent: Student, secondStudent: Student): number {
+  return secondStudent.grades.reduce((grade1: number, grade2: number) => grade1
+  + grade2, 0) / secondStudent.grades.length
+  - firstStudent.grades.reduce((grade1: number, grade2: number) => grade1
+  + grade2, 0) / firstStudent.grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -42,31 +49,19 @@ export function sortStudents(
         return +firstStudent.married - +secondStudent.married;
 
       case SortType.Name:
-        if (order === 'desc') {
-          return secondStudent.name.localeCompare(firstStudent.name);
-        }
-
-        return firstStudent.name.localeCompare(secondStudent.name);
-
       case SortType.Surname:
         if (order === 'desc') {
-          return secondStudent.surname.localeCompare(firstStudent.surname);
+          return secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
         }
 
-        return firstStudent.surname.localeCompare(secondStudent.surname);
+        return firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
 
       case SortType.AverageGrade:
         if (order === 'desc') {
-          return secondStudent.grades.reduce((grade1, grade2) => grade1
-            + grade2, 0) / secondStudent.grades.length
-            - firstStudent.grades.reduce((grade1, grade2) => grade1
-            + grade2, 0) / firstStudent.grades.length;
+          return averageGr(firstStudent, secondStudent);
         }
 
-        return firstStudent.grades.reduce((grade1, grade2) => grade1
-          + grade2, 0) / firstStudent.grades.length
-          - secondStudent.grades.reduce((grade1, grade2) => grade1
-          + grade2, 0) / secondStudent.grades.length;
+        return averageGr(secondStudent, firstStudent);
 
       default:
         return 0;
