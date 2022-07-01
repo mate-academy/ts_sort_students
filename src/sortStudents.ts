@@ -29,78 +29,57 @@ export function sortStudents(
   });
 
   copyStudents.sort((a: Student, b: Student): number => {
-    const nameA = a.name;
-    const nameB = b.name;
-    const surnameA = a.surname;
-    const surnameB = b.surname;
-    const ageA = a.age;
-    const ageB = b.age;
-    const marriedA = a.married;
-    const marriedB = b.married;
-    const averageGradeA = a.grades.reduce((sum, n) => sum + n)
+    const {
+      name: nameA,
+      surname: surnameA,
+      age: ageA,
+      married: marriedA,
+      grades: gradesA,
+    } = a;
+
+    const {
+      name: nameB,
+      surname: surnameB,
+      age: ageB,
+      married: marriedB,
+      grades: gradesB,
+    } = b;
+
+    const averageGradeA = gradesA.reduce((sum, n) => sum + n)
       / a.grades.length;
-    const averageGradeB = b.grades.reduce((sum, n) => sum + n)
+    const averageGradeB = gradesB.reduce((sum, n) => sum + n)
     / b.grades.length;
+
+    const orderSwitcher = order === 'asc' ? 1 : -1;
 
     switch (sortBy) {
       case SortType.Name:
-
-        switch (order) {
-          case ('asc'):
-            return nameA < nameB ? -1 : 1;
-
-          default:
-            return nameA < nameB ? 1 : -1;
-        }
+        return nameA < nameB ? (-1 * orderSwitcher) : (1 * orderSwitcher);
 
       case SortType.Surname:
-
-        switch (order) {
-          case ('asc'):
-            return surnameA < surnameB ? -1 : 1;
-
-          default:
-            return surnameA < surnameB ? 1 : -1;
-        }
+        return surnameA < surnameB ? (-1 * orderSwitcher) : (1 * orderSwitcher);
 
       case SortType.Age:
         if (ageA === ageB) {
           return 0;
         }
 
-        switch (order) {
-          case ('asc'):
-            return ageA < ageB ? -1 : 1;
-
-          default:
-            return ageA < ageB ? 1 : -1;
-        }
+        return ageA < ageB ? (-1 * orderSwitcher) : (1 * orderSwitcher);
 
       case SortType.Married:
         if (marriedA === marriedB) {
           return 0;
         }
 
-        switch (order) {
-          case ('asc'):
-            return marriedA < marriedB ? -1 : 1;
-
-          default:
-            return marriedA < marriedB ? 1 : -1;
-        }
+        return marriedA < marriedB ? (-1 * orderSwitcher) : (1 * orderSwitcher);
 
       case SortType.AverageGrade:
         if (averageGradeA === averageGradeB) {
           return 0;
         }
 
-        switch (order) {
-          case ('asc'):
-            return averageGradeA < averageGradeB ? -1 : 1;
-
-          default:
-            return averageGradeA < averageGradeB ? 1 : -1;
-        }
+        return averageGradeA < averageGradeB
+          ? (-1 * orderSwitcher) : (1 * orderSwitcher);
 
       default:
         return 0;
