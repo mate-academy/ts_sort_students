@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 
-import { sortStudents, SortType } from './sortStudents';
+import { sortStudents, SortType, Student } from './sortStudents';
 
-const students = [
+const students: Student = [
   {
     name: 'Diana',
     surname: 'Dorsey',
