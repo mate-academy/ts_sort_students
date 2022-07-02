@@ -46,7 +46,7 @@ export function sortStudents(
           : student2.sortBy.reduce((sum, t) => sum + t, 0)
             - student1.sortBy.reduce((sum, t) => sum + t, 0);
       default:
-        return [];
+        return 'Cant\'t sort this type of data!';
     }
   });
 }
