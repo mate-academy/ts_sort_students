@@ -16,8 +16,8 @@ export enum SortType {
 }
 
 export enum SortOrder {
-  asc = 'asc',
-  desc = 'desc',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export function sortStudents(
@@ -29,22 +29,24 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
+        return order === SortOrder.Asc
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
+        return order === SortOrder.Asc
           ? +student1[sortBy] - +student2[sortBy]
           : +student2[sortBy] - +student1[sortBy];
 
-      default:
-        return order === 'asc'
+      case SortType.AverageGrade:
+        return order === SortOrder.Asc
           ? student1.sortBy.reduce((sum, t) => sum + t, 0)
             - student2.sortBy.reduce((sum, t) => sum + t, 0)
           : student2.sortBy.reduce((sum, t) => sum + t, 0)
             - student1.sortBy.reduce((sum, t) => sum + t, 0);
+      default:
+        return [];
     }
   });
 }
