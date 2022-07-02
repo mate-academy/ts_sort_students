@@ -17,33 +17,42 @@ export enum SortType {
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
-// eslint-disable-next-line
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
-  const copyStudents: Student[] = JSON.parse(JSON.stringify(students));
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const copyStudents: Student[] = [...students];
+
+  function calculateAverage(grades: number[]):number {
+    return grades.reduce((sum, x) => sum + x, 0) / grades.length;
+  }
 
   copyStudents.sort((a, b) => {
     const sortA = order === 'asc' ? a : b;
     const sortB = order === 'asc' ? b : a;
+    const marriedA = sortA.married ? 1 : 0;
+    const marriedB = sortB.married ? 1 : 0;
+    let averageA: number;
+    let averageB: number;
 
-    if (sortBy === SortType.Age) {
-      return sortA.age - sortB.age;
+    switch (sortBy) {
+      case SortType.Age:
+        return sortA.age - sortB.age;
+
+      case SortType.Married:
+        return marriedA - marriedB;
+
+      case SortType.AverageGrade:
+        averageA = calculateAverage(sortA.grades);
+        averageB = calculateAverage(sortB.grades);
+
+        return averageA - averageB;
+
+      default:
+        return sortA[sortBy].localeCompare(sortB[sortBy]);
     }
-
-    if (sortBy === SortType.AverageGrade) {
-      // eslint-disable-next-line
-      const averageA = sortA.grades.reduce((sum, x) => sum + x, 0) / sortA.grades.length;
-      // eslint-disable-next-line
-      const averageB = sortB.grades.reduce((sum, x) => sum + x, 0) / sortB.grades.length;
-
-      return averageA - averageB;
-    }
-
-    if (sortBy === SortType.Married) {
-      // eslint-disable-next-line
-      return (sortA.married === sortB.married) ? 0 : sortB.married ? -1 : 1;
-    }
-
-    return sortA[sortBy].localeCompare(sortB[sortBy]);
   });
 
   return copyStudents;
