@@ -15,39 +15,47 @@ export enum SortType {
   AverageGrade = 'averageAge'
 }
 
-// create SortOrder type
 export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
 
-// eslint-disable-next-line no-multiple-empty-lines
-
-// eslint-disable-next-line max-len
-export function sortStudents(students: Student, sortBy: SortType, order: SortOrder): [] {
+export function sortStudents(
+  students: Student,
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   if (order === SortOrder.asc) {
     switch (sortBy) {
-      case SortType.Name || SortType.Surname:
-        return students.slice().sort((x, y) =>
-          x.sortBy.localeCompare(y.sortBy));
+      case SortType.Name:
+        return [...students].sort((student1, student2) =>
+          student1.sortBy.localeCompare(student2.sortBy));
+      case SortType.Surname:
+        return [...students].sort((student1, student2) =>
+          student1.sortBy.localeCompare(student2.sortBy));
       case SortType.Age || SortType.Married:
-        return students.slice().sort((x, y) => x.sortBy - y.sortBy);
+        return [...students].sort((student1, student2) =>
+          student1.sortBy - student2.sortBy);
       default:
-        return students.slice().sort((x, y) =>
-          x.sortBy.reduce((sum, t) => sum + t, 0)
-          - y.sortBy.reduce((sum, t) => sum + t, 0));
+        return [...students].sort((student1, student2) =>
+          student1.sortBy.reduce((sum, t) => sum + t, 0)
+          - student2.sortBy.reduce((sum, t) => sum + t, 0));
     }
   } else {
     switch (sortBy) {
       case SortType.Name || SortType.Surname:
-        return students.slice().sort((x, y) =>
-          y.sortBy.localeCompare(x.sortBy));
+        return [...students].sort((student1, student2) =>
+          student2.sortBy.localeCompare(student1.sortBy));
+      case SortType.Surname:
+        return [...students].sort((student1, student2) =>
+          student1.sortBy.localeCompare(student2.sortBy));
       case SortType.Age || SortType.Married:
-        return students.slice().sort((x, y) => y.sortBy - x.sortBy);
+        return [...students].sort((student1, student2) =>
+          student2.sortBy - student1.sortBy);
       default:
-        return students.slice().sort((x, y) =>
-          y.sortBy.reduce((sum, t) => sum + t, 0)
-          - x.sortBy.reduce((sum, t) => sum + t, 0));
+        [...students].sort((student1, student2) =>
+          student2.sortBy.reduce((sum, t) => sum + t, 0)
+          - student1.sortBy.reduce((sum, t) => sum + t, 0));
     }
   }
 }
