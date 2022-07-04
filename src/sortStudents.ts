@@ -17,43 +17,49 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function SortByAvarageGrade(stdArray: Student[], order: SortOrder): Student[] {
+  return order === 'asc'
+    ? stdArray.sort((a: Student, b: Student) => (
+      a.grades.reduce(
+        (gradeSum: number, currentGrade: number) => gradeSum + currentGrade, 0,
+      ) / a.grades.length)
+            - (b.grades.reduce(
+              (gradeSum: number, currentGrade: number) => gradeSum
+              + currentGrade, 0,
+            ) / b.grades.length))
+    : stdArray.sort((a: Student, b: Student) => (
+      b.grades.reduce(
+        (gradeSum: number, currentGrade: number) => gradeSum + currentGrade, 0,
+      ) / b.grades.length)
+            - (a.grades.reduce(
+              (gradeSum: number, currentGrade: number) => gradeSum
+              + currentGrade, 0,
+            ) / a.grades.length));
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order:SortOrder,
+  order: SortOrder,
 ): Student[] {
-  const sorted: Student[] = [...students];
+  const sortedStd = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? sorted.sort((a: Student, b: Student) => a[sortBy]
+        ? sortedStd.sort((a: Student, b: Student) => a[sortBy]
           .localeCompare(b[sortBy]))
-        : sorted.sort((a: Student, b: Student) => b[sortBy]
+        : sortedStd.sort((a: Student, b: Student) => b[sortBy]
           .localeCompare(a[sortBy]));
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? sorted.sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy])
-        : sorted.sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
+        ? sortedStd.sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy])
+        : sortedStd.sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? sorted.sort((a: Student, b: Student) => (
-          a.grades.reduce(
-            (prV: number, nxtV: number) => prV + nxtV, 0,
-          ) / a.grades.length)
-            - (b.grades.reduce(
-              (prV: number, nxtV: number) => prV + nxtV, 0,
-            ) / b.grades.length))
-        : sorted.sort((a: Student, b: Student) => (
-          b.grades.reduce(
-            (prV: number, nxtV: number) => prV + nxtV, 0,
-          ) / b.grades.length)
-            - (a.grades.reduce(
-              (prV: number, nxtV: number) => prV + nxtV, 0,
-            ) / a.grades.length));
+      return SortByAvarageGrade(sortedStd, order);
     default:
-      return sorted;
+      return sortedStd;
   }
 }
