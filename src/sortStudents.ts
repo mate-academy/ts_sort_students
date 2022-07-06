@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 
 export interface Student {
   name: string,
@@ -41,10 +42,10 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === SortOrder.Asc
-          ? student1.sortBy.reduce((sum, t) => sum + t, 0)
-            - student2.sortBy.reduce((sum, t) => sum + t, 0)
-          : student2.sortBy.reduce((sum, t) => sum + t, 0)
-            - student1.sortBy.reduce((sum, t) => sum + t, 0);
+          ? (student1.grades.reduce((sum: number, t: number) => sum + t, 0) / student1.grades.length)
+            - (student2.grades.reduce((sum: number, t: number) => sum + t, 0) / student2.grades.length)
+          : (student2.grades.reduce((sum: number, t: number) => sum + t, 0) / student1.grades.length)
+            - (student1.grades.reduce((sum: number, t: number) => sum + t, 0) / student2.grades.length);
       default:
         return 'Cant\'t sort this type of data!';
     }
