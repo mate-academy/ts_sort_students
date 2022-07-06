@@ -26,9 +26,9 @@ function sortByAverageGrade(
   order: string,
 ): Student[] {
   if (order === 'asc') {
-    return students
-      .sort((prev, next) => getAverageGrade(prev.grades)
-        - getAverageGrade(next.grades));
+    return students.sort((prev, next) => 
+      getAverageGrade(prev.grades) - getAverageGrade(next.grades)
+    );
   }
 
   return students.sort((prev, next) => getAverageGrade(next.grades)
