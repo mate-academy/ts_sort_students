@@ -13,7 +13,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageAge'
+  AverageGrade = 'grades'
 }
 
 export enum SortOrder {
@@ -21,12 +21,18 @@ export enum SortOrder {
   Desc = 'desc',
 }
 
+function AverageGrade(arrGrades: number[]): number {
+  return arrGrades.reduce((a, b) => a + b, 0) / arrGrades.length;
+}
+
 export function sortStudents(
-  students: Student,
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((student1, student2) => {
+  const studentsCopy: Student[] = [...students];
+
+  return studentsCopy.sort((student1: Student, student2: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -42,12 +48,12 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === SortOrder.Asc
-          ? (student1.grades.reduce((sum: number, t: number) => sum + t, 0) / student1.grades.length)
-            - (student2.grades.reduce((sum: number, t: number) => sum + t, 0) / student2.grades.length)
-          : (student2.grades.reduce((sum: number, t: number) => sum + t, 0) / student1.grades.length)
-            - (student1.grades.reduce((sum: number, t: number) => sum + t, 0) / student2.grades.length);
+          ? AverageGrade(student1[sortBy])
+            - AverageGrade(student2[sortBy])
+          : AverageGrade(student2[sortBy])
+            - AverageGrade(student1[sortBy]);
       default:
-        return 'Cant\'t sort this type of data!';
+        return 0;
     }
   });
 }
