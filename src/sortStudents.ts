@@ -29,54 +29,39 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        copyArrStudents.sort((student1, student2) => {
+      copyArrStudents.sort((student1, student2) => {
+        if (order === 'asc') {
           return student1[sortBy].localeCompare(student2[sortBy]);
-        });
-      }
+        }
 
-      if (order === 'desc') {
-        copyArrStudents.sort((student1, student2) => {
-          return student2[sortBy].localeCompare(student1[sortBy]);
-        });
-      }
+        return student2[sortBy].localeCompare(student1[sortBy]);
+      });
       break;
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        copyArrStudents.sort((student1, student2) => {
+      copyArrStudents.sort((student1, student2) => {
+        if (order === 'asc') {
           return Number(student1[sortBy]) - Number(student2[sortBy]);
-        });
-      }
+        }
 
-      if (order === 'desc') {
-        copyArrStudents.sort((student1, student2) => {
-          return Number(student2[sortBy]) - Number(student1[sortBy]);
-        });
-      }
+        return Number(student2[sortBy]) - Number(student1[sortBy]);
+      });
       break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        copyArrStudents.sort((student1, student2) => {
-          const gradesOfStudent1: number = student1[sortBy].reduce(callback);
-          const gradesOfStudent2: number = student2[sortBy].reduce(callback);
+      copyArrStudents.sort((student1, student2) => {
+        const gradesOfStudent1: number = student1[sortBy].reduce(callback);
+        const gradesOfStudent2: number = student2[sortBy].reduce(callback);
 
-          return (gradesOfStudent1 / student1[sortBy].length)
-            - (gradesOfStudent2 / student2[sortBy].length);
-        });
-      }
+        if (order === 'asc') {
+          return ((gradesOfStudent1 / student1[sortBy].length)
+            - (gradesOfStudent2 / student2[sortBy].length));
+        }
 
-      if (order === 'desc') {
-        copyArrStudents.sort((student1, student2) => {
-          const gradesOfStudent1: number = student1[sortBy].reduce(callback);
-          const gradesOfStudent2: number = student2[sortBy].reduce(callback);
-
-          return (gradesOfStudent2 / student2[sortBy].length)
-          - (gradesOfStudent1 / student1[sortBy].length);
-        });
-      }
+        return ((gradesOfStudent2 / student2[sortBy].length)
+          - (gradesOfStudent1 / student1[sortBy].length));
+      });
       break;
 
     default:
