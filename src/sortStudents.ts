@@ -23,47 +23,44 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copy: Student[] = [...students];
+  const copyStudent: Student[] = [...students];
   const sortOrder: number = order === 'asc' ? 1 : -1;
-  const callbackSum = (
-    sum: number,
-    nextValue: number,
-  ): number => sum + nextValue;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-
       if (order === 'desc') {
-        copy.sort((a: Student, b: Student) => b[sortBy]
+        copyStudent.sort((a: Student, b: Student) => b[sortBy]
           .localeCompare(a[sortBy]));
       }
 
-      copy.sort((a: Student, b: Student) => a[sortBy]
+      copyStudent.sort((a: Student, b: Student) => a[sortBy]
         .localeCompare(b[sortBy]));
 
       break;
 
     case SortType.Married:
     case SortType.Age:
-
-      copy.sort((a: Student, b: Student) => (
+      copyStudent.sort((a: Student, b: Student) => (
         (Number(a[sortBy]) - Number(b[sortBy])) * sortOrder
       ));
 
       break;
 
     case SortType.AverageGrade:
-
-      copy.sort((a: Student, b: Student) => (
-        (a[sortBy].reduce(callbackSum, 0) / a[sortBy].length
-          - b[sortBy].reduce(callbackSum, 0) / b[sortBy].length) * sortOrder
+      copyStudent.sort((a: Student, b: Student) => (
+        (a[sortBy].reduce(
+          (sum: number, nextValue: number) => sum + nextValue, 0,
+        ) / a[sortBy].length
+          - b[sortBy].reduce(
+            (sum: number, nextValue: number) => sum + nextValue, 0,
+          ) / b[sortBy].length) * sortOrder
       ));
 
       break;
     default:
-      return [];
+      return copyStudent;
   }
 
-  return copy;
+  return copyStudent;
 }
