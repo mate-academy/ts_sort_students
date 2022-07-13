@@ -18,55 +18,39 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrade(student: Student): number {
+  return student.grades.reduce((sum, x) => sum + x, 0) / student.grades.length;
+}
+
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
-  const copyArrStudents: Student[] = [...students];
-  const callback = (sum: number, x: number): number => {
-    return sum + x;
-  };
+  return [...students].sort((student1, student2) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      copyArrStudents.sort((student1, student2) => {
-        if (order === 'asc') {
-          return student1[sortBy].localeCompare(student2[sortBy]);
-        }
+        return (order === 'asc')
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
 
-        return student2[sortBy].localeCompare(student1[sortBy]);
-      });
-      break;
+      case SortType.Age:
+      case SortType.Married:
 
-    case SortType.Age:
-    case SortType.Married:
-      copyArrStudents.sort((student1, student2) => {
-        if (order === 'asc') {
-          return Number(student1[sortBy]) - Number(student2[sortBy]);
-        }
+        return (order === 'asc')
+          ? Number(student1[sortBy]) - Number(student2[sortBy])
+          : Number(student2[sortBy]) - Number(student1[sortBy]);
 
-        return Number(student2[sortBy]) - Number(student1[sortBy]);
-      });
-      break;
+      case SortType.AverageGrade:
 
-    case SortType.AverageGrade:
-      copyArrStudents.sort((student1, student2) => {
-        const gradesOfStudent1: number = student1[sortBy].reduce(callback);
-        const gradesOfStudent2: number = student2[sortBy].reduce(callback);
+        return (order === 'asc')
+          ? getAverageGrade(student1) - getAverageGrade(student2)
+          : getAverageGrade(student2) - getAverageGrade(student1);
 
-        if (order === 'asc') {
-          return ((gradesOfStudent1 / student1[sortBy].length)
-            - (gradesOfStudent2 / student2[sortBy].length));
-        }
-
-        return ((gradesOfStudent2 / student2[sortBy].length)
-          - (gradesOfStudent1 / student1[sortBy].length));
-      });
-      break;
-
-    default:
-      break;
-  }
-
-  return copyArrStudents;
+      default:
+        return 0;
+    }
+  });
 }
