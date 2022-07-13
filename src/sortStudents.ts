@@ -50,7 +50,7 @@ export function sortStudents(
           : getAverageGrade(student2) - getAverageGrade(student1);
 
       default:
-        return 0;
+        throw new Error('Please, choose correct sorting parameter');
     }
   });
 }
