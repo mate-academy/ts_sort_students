@@ -1,3 +1,10 @@
+/* eslint-disable no-case-declarations */
+function getAvarageGrade(grades: number[]): number {
+  return grades.reduce(
+    (prev: number, cur: number): number => prev + cur,
+    0,
+  ) / grades.length;
+}
 
 export interface Student {
   // describe Student interface
@@ -25,38 +32,40 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  // write your function
+  return [...students].sort((
+    currentStudent: Student,
+    nextStudent: Student,
+  ): number => {
+    switch (true) {
+      case sortBy === SortType.AverageGrade:
+        const currentStudentGrades = currentStudent[SortType.AverageGrade];
+        const nextStudentGrades = nextStudent[SortType.AverageGrade];
+        const curentStudentAverageGrade = getAvarageGrade(currentStudentGrades);
+        const nextStudentAverageGrade = getAvarageGrade(nextStudentGrades);
 
-  return [...students].sort((currentStudent, nextStudent) => {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      if (order === 'asc') {
-        return currentStudent[sortBy].localeCompare(nextStudent[sortBy]);
-      }
+        if (order === 'asc') {
+          return curentStudentAverageGrade - nextStudentAverageGrade;
+        }
 
-      return nextStudent[sortBy].localeCompare(currentStudent[sortBy]);
+        return nextStudentAverageGrade - curentStudentAverageGrade;
+
+      case sortBy === SortType.Name || sortBy === SortType.Surname:
+        if (order === 'asc') {
+          return currentStudent[sortBy].localeCompare(
+            nextStudent[sortBy],
+          );
+        }
+
+        return nextStudent[sortBy].localeCompare(
+          currentStudent[sortBy],
+        );
+
+      default:
+        if (order === 'asc') {
+          return currentStudent[sortBy] - nextStudent[sortBy];
+        }
+
+        return nextStudent[sortBy] - currentStudent[sortBy];
     }
-
-    if (sortBy === SortType.AverageGrade) {
-      const currentStudentAverageGrade = currentStudent[sortBy].reduce(
-        (prev, cur) => prev + cur,
-        0,
-      ) / currentStudent[sortBy].length;
-      const nextStudentAverageGrade = nextStudent[sortBy].reduce(
-        (prev, cur) => prev + cur,
-        0,
-      ) / nextStudent[sortBy].length;
-
-      if (order === 'asc') {
-        return currentStudentAverageGrade - nextStudentAverageGrade;
-      }
-
-      return nextStudentAverageGrade - currentStudentAverageGrade;
-    }
-
-    if (order === 'asc') {
-      return currentStudent[sortBy] - nextStudent[sortBy];
-    }
-
-    return nextStudent[sortBy] - currentStudent[sortBy];
   });
 }
