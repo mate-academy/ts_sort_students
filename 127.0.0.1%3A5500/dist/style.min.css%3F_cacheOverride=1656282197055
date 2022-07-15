@@ -1,0 +1,2 @@
+body{padding:0;margin:0 auto}li{list-style:none}.calendar{width:700px;background-color:yellow;text-align:center;justify-content:center;align-items:center;margin:20px auto;border:1px solid black}.calendar__week{display:grid;grid-template-columns:repeat(7, 1fr);padding:0;background-color:aqua}.calendar__list{display:grid;grid-template-columns:repeat(7, 1fr);padding:0;}.calendar__item{box-sizing:border-box;width:100px;height:100px;background-color:red;border:2px solid black}.calendar__item-week{box-sizing:border-box;border:2px solid black;width:100px;height:100px}
+
