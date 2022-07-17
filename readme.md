@@ -21,11 +21,7 @@ You also need to add correct types:
     ```
 - Create a `SortType` enum, having the next values:
     ```
-    Name
-    Surname
-    Age
-    Married
-    AverageGrade
+
     ```
     Hint: `AverageGrade` is sorting by an average value in `grades` array.
 - Create `SortOrder` type with only 2 values `'asc'` and `'desc'` 
