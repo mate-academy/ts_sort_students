@@ -36,8 +36,8 @@ export function sortStudents(
     currentStudent: Student,
     nextStudent: Student,
   ): number => {
-    switch (true) {
-      case sortBy === SortType.AverageGrade:
+    switch (sortBy) {
+      case SortType.AverageGrade:
         const currentStudentGrades = currentStudent[SortType.AverageGrade];
         const nextStudentGrades = nextStudent[SortType.AverageGrade];
         const curentStudentAverageGrade = getAvarageGrade(currentStudentGrades);
@@ -49,7 +49,8 @@ export function sortStudents(
 
         return nextStudentAverageGrade - curentStudentAverageGrade;
 
-      case sortBy === SortType.Name || sortBy === SortType.Surname:
+      case SortType.Name:
+      case SortType.Surname:
         if (order === 'asc') {
           return currentStudent[sortBy].localeCompare(
             nextStudent[sortBy],
