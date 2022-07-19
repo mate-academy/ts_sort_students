@@ -24,6 +24,10 @@ export function sortStudents(
 ): Student[] {
   const copy = [...students];
 
+  const average = (numArr: number[]): number => numArr.reduce(
+    (sum: number, el: number) => sum + el, 0,
+  ) / numArr.length;
+
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
@@ -48,22 +52,17 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      if (order
-        === 'asc') {
-        return copy.sort((a, b) => (
-          a.grades.reduce((sum, el) => sum + el, 0) / a.grades.length)
-          - (b.grades.reduce((sum, el) => sum + el, 0) / b.grades.length));
+      if (order === 'asc') {
+        return copy.sort((a, b) => average(a.grades) - average(b.grades));
       }
 
       if (order === 'desc') {
-        return copy.sort((a, b) => (
-          b.grades.reduce((sum, el) => sum + el, 0) / b.grades.length)
-          - (a.grades.reduce((sum, el) => sum + el, 0) / a.grades.length));
+        return copy.sort((a, b) => average(b.grades) - average(a.grades));
       }
       break;
 
     default:
-      return copy;
+      return students;
   }
 
   return students;
