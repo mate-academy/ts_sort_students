@@ -1,4 +1,9 @@
 {
+  "compilerOptions": {
+  "lib":["ESNext", "DOM"],
+  },
+  "watch": true,
+  "files": ["./sortStudents.ts"],                   
   "extends": "@mate-academy/students-ts-config",
   "include": [
     "src"
