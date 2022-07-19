@@ -21,42 +21,49 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-):Student[] {
+): Student[] {
   const copy = [...students];
 
-  if (sortBy === 'name' || sortBy === 'surname') {
-    if (order === 'asc') {
-      return copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-    }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      if (order === 'asc') {
+        return copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+      }
 
-    if (order === 'desc') {
-      return copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-    }
-  }
+      if (order === 'desc') {
+        return copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      }
+      break;
 
-  if (sortBy === 'age' || sortBy === 'married') {
-    if (order === 'asc') {
-      return copy.sort((a, b) => +a[sortBy] - +b[sortBy]);
-    }
+    case SortType.Age:
+    case SortType.Married:
+      if (order === 'asc') {
+        return copy.sort((a, b) => +a[sortBy] - +b[sortBy]);
+      }
 
-    if (order === 'desc') {
-      return copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
-    }
-  }
+      if (order === 'desc') {
+        return copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
+      }
+      break;
 
-  if (sortBy === 'grades') {
-    if (order
-      === 'asc') {
-      return copy.sort((a, b) => (
-        a.grades.reduce((sum, el) => sum + el, 0) / a.grades.length)
-        - (b.grades.reduce((sum, el) => sum + el, 0) / b.grades.length));
-    }
+    case SortType.AverageGrade:
+      if (order
+        === 'asc') {
+        return copy.sort((a, b) => (
+          a.grades.reduce((sum, el) => sum + el, 0) / a.grades.length)
+          - (b.grades.reduce((sum, el) => sum + el, 0) / b.grades.length));
+      }
 
-    if (order === 'desc') {
-      return copy.sort((a, b) => (
-        b.grades.reduce((sum, el) => sum + el, 0) / b.grades.length)
-        - (a.grades.reduce((sum, el) => sum + el, 0) / a.grades.length));
-    }
+      if (order === 'desc') {
+        return copy.sort((a, b) => (
+          b.grades.reduce((sum, el) => sum + el, 0) / b.grades.length)
+          - (a.grades.reduce((sum, el) => sum + el, 0) / a.grades.length));
+      }
+      break;
+
+    default:
+      return copy;
   }
 
   return students;
