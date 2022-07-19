@@ -20,21 +20,17 @@ export type SortOrder = 'asc' | 'desc';
 function sortedString(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  if (order === 'asc') {
-    return students.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-  }
-
-  return students.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+  return order === 'asc'
+    ? students.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+    : students.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 }
 
-function sortedAll(
+function sortedDefault(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  if (order === 'asc') {
-    return students.sort((a, b) => a[sortBy] - b[sortBy]);
-  }
-
-  return students.sort((a, b) => b[sortBy] - a[sortBy]);
+  return order === 'asc'
+    ? students.sort((a, b) => a[sortBy] - b[sortBy])
+    : students.sort((a, b) => b[sortBy] - a[sortBy]);
 }
 
 export function sortStudents(students: Student[], sortBy: SortType,
@@ -46,10 +42,29 @@ export function sortStudents(students: Student[], sortBy: SortType,
       / newStudents[i].grades.length;
   }
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    newStudents = sortedString(newStudents, sortBy, order);
-  } else {
-    newStudents = sortedAll(newStudents, sortBy, order);
+  switch (sortBy) {
+    case SortType.Name:
+      newStudents = sortedString(newStudents, SortType.Name, order);
+      break;
+
+    case SortType.Surname:
+      newStudents = sortedString(newStudents, SortType.Surname, order);
+      break;
+
+    case SortType.Age:
+      newStudents = sortedDefault(newStudents, SortType.Age, order);
+      break;
+
+    case SortType.Married:
+      newStudents = sortedDefault(newStudents, SortType.Married, order);
+      break;
+
+    case SortType.AverageGrade:
+      newStudents = sortedDefault(newStudents, SortType.AverageGrade, order);
+      break;
+
+    default:
+      newStudents = sortedDefault(newStudents, sortBy, order);
   }
 
   return newStudents;
