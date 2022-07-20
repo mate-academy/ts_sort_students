@@ -1,4 +1,4 @@
-
+/*eslint-disable*/
 export interface Student {
   // describe Student interface
   name:string;
@@ -17,6 +17,10 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
+enum Order {
+  asc = 'asc',
+  desc = 'desc',
+}
 // create SortOrder type
 export type SortOrder = string;
 
@@ -36,33 +40,47 @@ export function sortStudents(
       };
     };
 
-  if (sortBy === 'age') {
-    callback = (a:Student, b:Student):number => {
-      return order === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+  const marriedHandler
+    = ():Student[] => {
+      const married = students.filter((student) => student.married);
+      const single = students.filter((student) => !student.married);
+
+      stringHandler('name');
+
+      return [...married.sort(callback), ...single];
     };
-  } else if (sortBy === 'grades') {
-    callback = (a:Student, b:Student):number => {
-      const sum1 = a.grades
-        .reduce((prev, curr) => prev + curr);
 
-      const sum2 = b.grades
-        .reduce((prev, curr) => prev + curr);
+  switch (sortBy) {
+    case 'age':
+      callback = (a:Student, b:Student):number => {
+        return order === Order.asc
+          ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+      };
+      break;
 
-      if (order === 'asc') {
-        return sum1 / a.grades.length - sum2 / b.grades.length;
-      }
+    case 'grades':
+      callback = (a:Student, b:Student):number => {
+        const sum1 = a.grades
+          .reduce((prev, curr) => prev + curr);
 
-      return sum2 / b.grades.length - sum1 / a.grades.length;
-    };
-  } else if (sortBy === 'married') {
-    const married = students.filter((student:Student) => student.married);
-    const single = students.filter((student:Student) => !student.married);
+        const sum2 = b.grades
+          .reduce((prev, curr) => prev + curr);
 
-    stringHandler('name', 'desc');
+        if (order === Order.asc) {
+          return sum1 / a.grades.length - sum2 / b.grades.length;
+        }
 
-    return [...married.sort(callback), ...single];
-  } else {
-    stringHandler();
+        return sum2 / b.grades.length - sum1 / a.grades.length;
+      };
+      break;
+
+    case 'married':
+      return marriedHandler();
+      break;
+
+    default:
+      stringHandler();
+      break;
   }
 
   return students.sort(callback);

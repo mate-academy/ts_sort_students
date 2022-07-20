@@ -164,9 +164,9 @@ describe('Function \'sortStudents\'', () => {
 
     expect(sortedData)
       .toEqual([
-        'Christina Branscome 23 married',
-        'Douglas Paez 23 married',
         'Jessica Buxton 26 married',
+        'Douglas Paez 23 married',
+        'Christina Branscome 23 married',
         'Diana Dorsey 24',
         'Willie Barrera 22',
         'Richard Hall 23',

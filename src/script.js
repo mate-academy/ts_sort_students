@@ -82,6 +82,13 @@ function sortStudents(students, sortBy, order) {
     callback = (a, b) => order ==='asc' ? a[`${param}`].localeCompare(b[param]): b[`${param}`].localeCompare(a[param])
   }
 
+  const marriedHandler = () => {
+    const married = students.filter((student) => student.married);
+    const single = students.filter((student) => !student.married);
+    stringHandler('name');
+    return [...married.sort(callback), ...single];
+  }
+
   if(sortBy ==='age') {
     callback = (a, b) =>order === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
   }
@@ -102,13 +109,8 @@ function sortStudents(students, sortBy, order) {
     }
   }else if(sortBy === 'married') {
     //changes
-    const married = students.filter((student) => student.married);
-    const single = students.filter((student) => !student.married);
-
-    stringHandler('name');
-
-
-    return [...married.sort(callback), ...single];
+    return marriedHandler();
+    
   } else {
     stringHandler();
   }
