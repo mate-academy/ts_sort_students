@@ -31,39 +31,22 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      }
-
-      if (order === 'desc') {
-        return copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-      }
-      break;
+      return order === 'asc'
+        ? copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        return copy.sort((a, b) => +a[sortBy] - +b[sortBy]);
-      }
-
-      if (order === 'desc') {
-        return copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
-      }
-      break;
+      return order === 'asc'
+        ? copy.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return copy.sort((a, b) => average(a.grades) - average(b.grades));
-      }
-
-      if (order === 'desc') {
-        return copy.sort((a, b) => average(b.grades) - average(a.grades));
-      }
-      break;
+      return order === 'asc'
+        ? copy.sort((a, b) => average(a.grades) - average(b.grades))
+        : copy.sort((a, b) => average(b.grades) - average(a.grades));
 
     default:
       return students;
   }
-
-  return students;
 }
