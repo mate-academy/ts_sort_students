@@ -1,16 +1,54 @@
 
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
 // create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' |'desc';
 
+function getAverage(arr: number[]): number {
+  return arr.reduce((acc, curr) => acc + curr, 0) / arr.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  return [...students].sort((a, b) => {
+    const firstEl = order === 'asc' ? a : b;
+    const secondEl = order === 'asc' ? b : a;
+
+    const firstAverage = getAverage(firstEl.grades);
+    const secondAverage = getAverage(secondEl.grades);
+
+    switch (sortBy) {
+      case SortType.Name:
+        return firstEl.name.localeCompare(secondEl.name);
+
+      case SortType.Surname:
+        return firstEl.surname.localeCompare(secondEl.surname);
+
+      case SortType.Age:
+        return firstEl.age - secondEl.age;
+
+      case SortType.Married:
+        return Number(firstEl.married) - Number(secondEl.married);
+
+      default:
+        return firstAverage - secondAverage;
+    }
+  });
 }
