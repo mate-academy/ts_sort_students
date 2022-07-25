@@ -28,11 +28,11 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((a, b) => {
-    const ascAverage = getAverage(a.grades);
-    const descAverage = getAverage(b.grades);
-
     const firstEl = order === 'asc' ? a : b;
     const secondEl = order === 'asc' ? b : a;
+
+    const firstAverage = getAverage(firstEl.grades);
+    const secondAverage = getAverage(secondEl.grades);
 
     switch (sortBy) {
       case SortType.Name:
@@ -48,8 +48,7 @@ export function sortStudents(
         return Number(firstEl.married) - Number(secondEl.married);
 
       default:
-        return order === 'asc'
-          ? ascAverage - descAverage : descAverage - ascAverage;
+        return firstAverage - secondAverage;
     }
   });
 }
