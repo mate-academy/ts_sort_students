@@ -10,11 +10,11 @@ export interface Student {
 
 export enum SortType {
   // describe SortType enum
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -31,55 +31,25 @@ export function sortStudents(students: Student[],
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return arrStudents.sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      if (order === 'desc') {
-        return arrStudents.sort((a, b) => b.name.localeCompare(a.name));
-      }
-      break;
     case SortType.Surname:
-      if (order === 'asc') {
-        return arrStudents.sort((a, b) => a.surname.localeCompare(b.surname));
-      }
 
-      if (order === 'desc') {
-        return arrStudents.sort((a, b) => b.surname.localeCompare(a.surname));
-      }
-      break;
+      return order === 'asc'
+        ? arrStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : arrStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+
     case SortType.Age:
-      if (order === 'asc') {
-        return arrStudents.sort((a, b) => a.age - b.age);
-      }
-
-      if (order === 'desc') {
-        return arrStudents.sort((a, b) => b.age - a.age);
-      }
-      break;
     case SortType.Married:
-      if (order === 'asc') {
-        return arrStudents.sort((a, b) => a.married - b.married);
-      }
+      return order === 'asc'
+        ? arrStudents.sort((a, b) => a[sortBy] - b[sortBy])
+        : arrStudents.sort((a, b) => b[sortBy] - a[sortBy]);
 
-      if (order === 'desc') {
-        return arrStudents.sort((a, b) => b.married - a.married);
-      }
-      break;
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return arrStudents.sort((a, b) => sumAverage(a.grades)
-          - sumAverage(b.grades));
-      }
-
-      if (order === 'desc') {
-        return arrStudents.sort((a, b) => sumAverage(b.grades)
-          - sumAverage(a.grades));
-      }
-      break;
+      return order === 'asc'
+        ? arrStudents.sort((a, b) => sumAverage(a[sortBy])
+          - sumAverage(b[sortBy]))
+        : arrStudents.sort((a, b) => sumAverage(b[sortBy])
+          - sumAverage(a[sortBy]));
 
     default: return arrStudents;
   }
-
-  return arrStudents;
 }
