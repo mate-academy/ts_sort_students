@@ -1,3 +1,8 @@
+function GetAvg(arr:number[]):number {
+  return arr.reduce((prev, curr) => (
+    prev + curr
+  ), 0) / arr.length;
+}
 
 export interface Student {
   name:string;
@@ -15,7 +20,6 @@ export enum SortType {
   AverageGrade
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -42,16 +46,9 @@ export function sortStudents(
           : Number(b.married) - Number(a.married);
 
       default: {
-        const firstAvg:number = a.grades.reduce((prev, curr) => (
-          prev + curr
-        ), 0) / a.grades.length;
-        const secondAvg:number = b.grades.reduce((prev, curr) => (
-          prev + curr
-        ), 0) / b.grades.length;
-
         return order === 'asc'
-          ? firstAvg - secondAvg
-          : secondAvg - firstAvg;
+          ? GetAvg(a.grades) - GetAvg(b.grades)
+          : GetAvg(b.grades) - GetAvg(a.grades);
       }
     }
   });
