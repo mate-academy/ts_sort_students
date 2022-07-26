@@ -196,7 +196,7 @@ describe('Function \'sortStudents\'', () => {
       ]);
   });
 
-  test('should correctly sort students by AverageGrade in ascending order', () => {
+  test.only('should correctly sort students by AverageGrade in ascending order', () => {
     const sortedData = sortStudents(students, SortType.AverageGrade, 'asc')
       .map((user) => `${user.name} ${user.surname} [${user.grades}]`);
 
