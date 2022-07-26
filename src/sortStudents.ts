@@ -22,11 +22,11 @@ function getAverageGrade(arrGrades: number[]): number {
 }
 
 export function sortStudents(
-  students:Student[],
-  sortBy:SortType,
-  order:SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): object[] {
-  return [...students].sort((a:Student, b:Student) => {
+  return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
         return order === 'asc'
