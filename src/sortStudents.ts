@@ -1,4 +1,3 @@
-
 export interface Student {
   // describe Student interface
   name: string;
@@ -41,8 +40,10 @@ export function sortStudents(students: Student[],
 
     switch (sortBy) {
       case SortType.Name:
-      case SortType.Surname:
         return a.name.localeCompare(b.name);
+
+      case SortType.Surname:
+        return a.surname.localeCompare(b.surname);
 
       case SortType.AverageGrade:
         return averageGrade(a.grades) - averageGrade(b.grades);
