@@ -19,29 +19,24 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType,
-  order: SortOrder): Student[] {
-  const copyOfStudents: Student[] = [];
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const copyOfStudents: Student[] = [...students];
 
-  students.forEach((item) => copyOfStudents.push({ ...item }));
+  // students.forEach((item) => copyOfStudents.push({ ...item }));
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       copyOfStudents.sort((a: Student, b: Student): number => {
         if (order === 'asc') {
-          return a[sortBy] >= b[sortBy]
-            ? 1
-            : -1;
+          return a[sortBy].localeCompare(b[sortBy]);
         }
 
-        if (order === 'desc') {
-          return b[sortBy] >= a[sortBy]
-            ? 1
-            : -1;
-        }
-
-        return 0;
+        return b[sortBy].localeCompare(a[sortBy]);
       });
       break;
 
@@ -49,27 +44,22 @@ export function sortStudents(students: Student[], sortBy: SortType,
     case SortType.Age:
       copyOfStudents.sort((a: Student, b: Student): number => {
         if (order === 'asc') {
-          return a[sortBy] >= b[sortBy]
-            ? 1
-            : -1;
+          return +a[sortBy] - +b[sortBy];
         }
 
-        if (order === 'desc') {
-          return b[sortBy] >= a[sortBy]
-            ? 1
-            : -1;
-        }
-
-        return 0;
+        return +b[sortBy] - +a[sortBy];
       });
       break;
 
     case SortType.AverageGrade:
       copyOfStudents.sort((a: Student, b: Student):number => {
-        const avarSumOne = a.grades.reduce((acc, mark) => acc + mark)
-      / a.grades.length;
-        const avarSumTwo = b.grades.reduce((acc, mark) => acc + mark)
-      / b.grades.length;
+        function sumOfArray(arrey: number[]):number {
+          return arrey.reduce((acc, mark) => acc + mark)
+              / arrey.length;
+        }
+
+        const avarSumOne = sumOfArray(a.grades);
+        const avarSumTwo = sumOfArray(b.grades);
 
         if (order === 'asc') {
           return avarSumOne >= avarSumTwo
@@ -77,13 +67,9 @@ export function sortStudents(students: Student[], sortBy: SortType,
             : -1;
         }
 
-        if (order === 'desc') {
-          return avarSumTwo >= avarSumOne
-            ? 1
-            : -1;
-        }
-
-        return 0;
+        return avarSumTwo >= avarSumOne
+          ? 1
+          : -1;
       });
       break;
 
