@@ -25,14 +25,15 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  copyStudents.sort((itemA: Student, itemB: Student) => {
-    const a: number = (
-      itemA.grades.reduce((acc: number, item: number) => acc + item, 0)
-    ) / (itemA.grades).length;
+  function AverageGrade(arr: number[]): number {
+    return (arr.reduce((acc: number, item: number) => acc + item, 0)
+    ) / (arr).length;
+  }
 
-    const b: number = (
-      itemB.grades.reduce((acc: number, item: number) => acc + item, 0)
-    ) / (itemB.grades).length;
+  copyStudents.sort((itemA: Student, itemB: Student) => {
+    const a: number = AverageGrade(itemA.grades);
+
+    const b: number = AverageGrade(itemB.grades);
 
     switch (sortBy) {
       case SortType.Name:
