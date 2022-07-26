@@ -1,3 +1,5 @@
+// import { arrayExpression } from '@babel/types';
+
 export interface Student {
   // describe Student interface
   name: string;
@@ -24,7 +26,7 @@ export function sortStudents(students: Student[],
   order: SortOrder)
   : Student[] {
   // write your function
-  const result: Student[] = [...students];
+  const result = [...students];
 
   const averageGrade = (array:
   number[]): number => (array.reduce((a, b) => a + b) / array.length);
@@ -55,7 +57,7 @@ export function sortStudents(students: Student[],
         return Number(a.married) - Number(b.married);
 
       default:
-        return undefined;
+        throw new Error('Data is wrong');
     }
   });
 
