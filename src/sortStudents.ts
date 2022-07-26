@@ -16,23 +16,21 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students:Student[], sortBy: SortType,
-  order: SortOrder): Student[] {
-  const res = [...students];
+export function sortStudents(
+  students:Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const StudentsSort = [...students];
 
   const getAverage = (array: number[]): number => array
     .reduce((acc, el) => acc + el, 0) / array.length;
 
-  res.sort((firstEl, secondEl) => {
+  StudentsSort.sort((firstEl, secondEl) => {
     const orderElement = {
-      first: firstEl,
-      second: secondEl,
+      first: order === 'asc' ? firstEl : secondEl,
+      second: order === 'asc' ? secondEl : firstEl,
     };
-
-    if (order === 'desc') {
-      orderElement.first = secondEl;
-      orderElement.second = firstEl;
-    }
 
     switch (sortBy) {
       case SortType.Name:
@@ -46,11 +44,14 @@ export function sortStudents(students:Student[], sortBy: SortType,
       case SortType.Married:
         return (+orderElement.first[sortBy]) - (+orderElement.second[sortBy]);
 
-      default:
+      case SortType.AverageGrade:
         return getAverage(orderElement.first[sortBy])
-        - getAverage(orderElement.second[sortBy]);
+          - getAverage(orderElement.second[sortBy]);
+
+      default:
+        return 0;
     }
   });
 
-  return res;
+  return StudentsSort;
 }
