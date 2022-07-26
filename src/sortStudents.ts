@@ -20,7 +20,7 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(students: Student[],
   sortBy: SortType,
   order: SortOrder): Student[] {
-  let copyOfStudents: Student[];
+  let copyOfStudents: Student[] = [];
 
   function calulateAverageGrade(grades: number[]): number {
     return grades
@@ -28,37 +28,80 @@ export function sortStudents(students: Student[],
       / grades.length;
   }
 
+  function sortAsc(
+    a: string | number,
+    b: string | number,
+  ): number {
+    let result: number = 0;
+
+    if (typeof a === 'number' && typeof b === 'number') {
+      result = a - b;
+    }
+
+    if (typeof a === 'string' && typeof b === 'string') {
+      result = a.localeCompare(b);
+    }
+
+    return result;
+  }
+
+  function sortDesc(
+    a: string | number,
+    b: string | number,
+  ): number {
+    let result: number = 0;
+
+    if (typeof a === 'number' && typeof b === 'number') {
+      result = b - a;
+    }
+
+    if (typeof a === 'string' && typeof b === 'string') {
+      result = b.localeCompare(a);
+    }
+
+    return result;
+  }
+
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+          ? sortAsc(a[sortBy], b[sortBy])
+          : sortDesc(a[sortBy], b[sortBy]);
       });
       break;
 
-    case 'age':
+    case SortType.Age:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
         return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
+          ? sortAsc(a.age, b.age)
+          : sortDesc(a.age, b.age);
       });
       break;
 
-    case 'married':
+    case SortType.Married:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
+        const stringFromA = a.married.toString();
+        const stringFromB = b.married.toString();
+
         return order === 'asc'
-          ? a.married.toString().localeCompare(b.married.toString())
-          : b.married.toString().localeCompare(a.married.toString());
+          ? sortAsc(stringFromA, stringFromB)
+          : sortDesc(stringFromA, stringFromB);
       });
       break;
 
-    case 'grades':
+    case SortType.AverageGrade:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
         return order === 'asc'
-          ? calulateAverageGrade(a.grades) - calulateAverageGrade(b.grades)
-          : calulateAverageGrade(b.grades) - calulateAverageGrade(a.grades);
+          ? sortAsc(
+            calulateAverageGrade(a.grades),
+            calulateAverageGrade(b.grades),
+          )
+          : sortDesc(
+            calulateAverageGrade(a.grades),
+            calulateAverageGrade(b.grades),
+          );
       });
       break;
 
