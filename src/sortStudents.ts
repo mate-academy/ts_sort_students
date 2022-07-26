@@ -17,51 +17,45 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-/* eslint-disable max-len */
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): object[] {
-  const studentsCopy = students.map((student) => ({ ...student }));
+const getAverage = (nums: number[]): number => {
+  return nums.reduce((a, b) => a + b, 0) / nums.length;
+};
 
-  if (sortBy === SortType.Name && order === 'asc') {
-    return studentsCopy.sort((a, b) => a.name.localeCompare(b.name));
-  }
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): object[] {
+  const studentsCopy = [...students];
 
-  if (sortBy === SortType.Name && order === 'desc') {
-    return studentsCopy.sort((a, b) => b.name.localeCompare(a.name));
-  }
+  studentsCopy.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+        return order === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
 
-  if (sortBy === SortType.Surname && order === 'asc') {
-    return studentsCopy.sort((a, b) => a.surname.localeCompare(b.surname));
-  }
+      case SortType.Surname:
+        return order === 'asc'
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
 
-  if (sortBy === SortType.Surname && order === 'desc') {
-    return studentsCopy.sort((a, b) => b.surname.localeCompare(a.surname));
-  }
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
 
-  if (sortBy === SortType.Age && order === 'asc') {
-    return studentsCopy.sort((a, b) => a.age - b.age);
-  }
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
 
-  if (sortBy === SortType.Age && order === 'desc') {
-    return studentsCopy.sort((a, b) => b.age - a.age);
-  }
-
-  if (sortBy === SortType.Married && order === 'asc') {
-    return studentsCopy.sort((a, b) => Number(a.married) - Number(b.married));
-  }
-
-  if (sortBy === SortType.Married && order === 'desc') {
-    return studentsCopy.sort((a, b) => Number(b.married) - Number(a.married));
-  }
-
-  if (sortBy === SortType.AverageGrade && order === 'asc') {
-    return studentsCopy
-      .sort((a, b) => (a.grades.reduce((x, y) => x + y) / a.grades.length) - (b.grades.reduce((x, y) => x + y) / b.grades.length));
-  }
-
-  if (sortBy === SortType.AverageGrade && order === 'desc') {
-    return studentsCopy
-      .sort((a, b) => (b.grades.reduce((x, y) => x + y) / b.grades.length) - (a.grades.reduce((x, y) => x + y) / a.grades.length));
-  }
+      default:
+        return order === 'asc'
+          ? getAverage(a.grades) - getAverage(b.grades)
+          : getAverage(b.grades) - getAverage(a.grades);
+    }
+  });
 
   return studentsCopy;
 }
