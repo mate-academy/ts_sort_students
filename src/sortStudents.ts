@@ -3,7 +3,7 @@ export interface Student {
   name: string;
   surname: string;
   age: number;
-  married: false;
+  married: boolean;
   grades: number[];
 }
 
@@ -17,8 +17,9 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const averageGrade = (array: number[]): number => (
-  array.reduce((a, b) => a + b, 0) / array.length);
+const averageGrade = (student: Student): number => {
+  return student.grades.reduce((a, b) => a + b, 0) / student.grades.length;
+};
 
 export function sortStudents(
   students: Student[],
@@ -29,28 +30,33 @@ export function sortStudents(
 
   switch (sortBy) {
     case (SortType.Name):
-      copyStudents.sort((a, b) => b.name.localeCompare(a.name));
-      break;
+      return order === 'asc'
+        ? copyStudents.sort((a, b) => a.name.localeCompare(b.name))
+        : copyStudents.sort((a, b) => b.name.localeCompare(a.name));
 
     case (SortType.Surname):
-      copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
-      break;
+      return order === 'asc'
+        ? copyStudents.sort((a, b) => a.surname.localeCompare(b.surname))
+        : copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
 
     case (SortType.Age):
-      copyStudents.sort((a, b) => b.age - a.age);
-      break;
+      return order === 'asc'
+        ? copyStudents.sort((a, b) => a.age - b.age)
+        : copyStudents.sort((a, b) => b.age - a.age);
 
     case (SortType.Married):
-      copyStudents.sort((a, b) => +b.married - +a.married);
-      break;
+      return order === 'asc'
+        ? copyStudents.sort((a, b) => +a.married - +b.married)
+        : copyStudents.sort((a, b) => +b.married - +a.married);
 
     case (SortType.AverageGrade):
-      copyStudents.sort((a, b) => averageGrade(b.grades) - averageGrade(a.grades));
-      break;
+      return order === 'asc'
+        ? copyStudents.sort((a, b) => averageGrade(a) - averageGrade(b))
+        : copyStudents.sort((a, b) => averageGrade(b) - averageGrade(a));
 
     default:
       break;
   }
 
-  return order === 'asc' ? copyStudents.reverse() : copyStudents;
+  return copyStudents;
 }
