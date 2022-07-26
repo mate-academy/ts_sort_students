@@ -25,7 +25,7 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Student [] {
+): Student[] {
   const studentsClone = [...students];
 
   return studentsClone.sort((studentA, studentB) => {
