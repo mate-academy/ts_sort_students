@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AvrageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -27,34 +27,27 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      copy.sort((person1: Student, person2: Student) => {
-        return order === 'asc'
-          ? person1.name.localeCompare(person2.name)
-          : person2.name.localeCompare(person1.name);
-      });
-      break;
-
     case SortType.Surname:
       copy.sort((person1: Student, person2: Student) => {
         return order === 'asc'
-          ? person1.surname.localeCompare(person2.surname)
-          : person2.surname.localeCompare(person1.surname);
+          ? person1[sortBy].localeCompare(person2[sortBy])
+          : person2[sortBy].localeCompare(person1[sortBy]);
       });
       break;
 
     case SortType.Age:
       copy.sort((person1: Student, person2: Student) => {
         return order === 'asc'
-          ? person1.age - person2.age
-          : person2.age - person1.age;
+          ? person1[sortBy] - person2[sortBy]
+          : person2[sortBy] - person1[sortBy];
       });
       break;
 
     case SortType.Married:
       copy.sort((person1: Student, person2: Student) => {
         return order === 'asc'
-          ? +person1.married - +person2.married
-          : +person2.married - +person1.married;
+          ? +person1[sortBy] - +person2[sortBy]
+          : +person2[sortBy] - +person1[sortBy];
       });
       break;
 
