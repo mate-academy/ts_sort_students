@@ -22,10 +22,17 @@ export function sortStudents(
   order: SortOrder,
 ) : Student [] {
   const studentsCopy = [...students];
+  const averageGrade = (student: Student): number => student.grades
+    .reduce((a, b) => a + b, 0) / student.grades.length;
 
   studentsCopy.sort((student1, student2) => {
     switch (sortBy) {
       case SortType.Name:
+        if (order === 'asc') {
+          return student1[sortBy].localeCompare(student2[sortBy]);
+        }
+
+        return student2.name.localeCompare(student1.name);
       case SortType.Surname:
         if (order === 'asc') {
           return student1[sortBy].localeCompare(student2[sortBy]);
@@ -49,20 +56,10 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         if (order === 'asc') {
-          return student1.grades
-            .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
-            / student1.grades.length
-            - student2.grades
-              .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
-            / student2.grades.length;
+          return averageGrade(student1) - averageGrade(student2);
         }
 
-        return student2.grades
-          .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
-        / student2.grades.length
-        - student1.grades
-          .reduce((gradeSum, currentGrade) => gradeSum + currentGrade)
-        / student1.grades.length;
+        return averageGrade(student2) - averageGrade(student1);
 
       default:
         return 0;
