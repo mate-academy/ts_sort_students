@@ -16,15 +16,15 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+const avarage = (numbers: number[]): number => (
+  numbers.reduce((acc, num) => acc + num, 0) / numbers.length
+);
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const avarage = (numbers: number[]): number => (
-    numbers.reduce((acc, num) => acc + num, 0) / numbers.length
-  );
-
   return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
