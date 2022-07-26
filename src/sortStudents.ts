@@ -22,7 +22,7 @@ function getAverageGrade(grades: number[]): number {
 }
 
 export function sortStudents(
-  students: Student [],
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student [] {
@@ -52,10 +52,13 @@ export function sortStudents(
           ? Number(studentA.married) - Number(studentB.married)
           : Number(studentB.married) - Number(studentA.married);
 
-      default:
+      case SortType.AverageGrade:
         return order === 'asc'
           ? getAverageGrade(studentA.grades) - getAverageGrade(studentB.grades)
           : getAverageGrade(studentB.grades) - getAverageGrade(studentA.grades);
+
+      default:
+        throw new Error('No such sort type');
     }
   });
 }
