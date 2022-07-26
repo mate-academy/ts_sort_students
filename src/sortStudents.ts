@@ -23,30 +23,25 @@ export function sortStudents(
 ):object[] {
   return [...students].sort((a:Student, b:Student):number => {
     switch (sortBy) {
-      case SortType.Age:
-        if (order === 'asc') {
-          return a.age - b.age;
-        }
+      case SortType.Name:
+        return order === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
 
-        if (order === 'desc') {
-          return b.age - a.age;
-        }
-
-        break;
       case SortType.Surname:
-        return (a.surname > b.surname) ? 1 : -1;
+        return order === 'asc'
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
+
+      case SortType.Age:
+        return order === 'asc' ? a.age - b.age : b.age - a.age;
 
       case SortType.Married:
-        if (order === 'asc') {
-          return Number(a.married) - Number(b.married);
-        }
+        return order === 'asc'
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
 
-        if (order === 'desc') {
-          return Number(b.married) - Number(a.married);
-        }
-        break;
-
-      case SortType.AverageGrade: {
+      default: {
         const firstAvg:number = a.grades.reduce((prev, curr) => (
           prev + curr
         ), 0) / a.grades.length;
@@ -54,26 +49,10 @@ export function sortStudents(
           prev + curr
         ), 0) / b.grades.length;
 
-        if (order === 'asc') {
-          return firstAvg - secondAvg;
-        }
-
-        if (order === 'desc') {
-          return secondAvg - firstAvg;
-        }
-        break;
+        return order === 'asc'
+          ? firstAvg - secondAvg
+          : secondAvg - firstAvg;
       }
-
-      default:
-        if (order === 'asc') {
-          return (a.name > b.name) ? 1 : -1;
-        }
-
-        if (order === 'desc') {
-          return (b.name > a.name) ? 1 : -1;
-        }
     }
-
-    return (a[SortType.Name] > b[SortType.Name]) ? 1 : -1;
   });
 }
