@@ -17,13 +17,13 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getGrade(grades: number[]): number {
+  return grades.reduce((a: number, b: number) => a + b) / grades.length;
+}
+
 export function sortStudents(
   students: Student[], sortBy: SortType, order:SortOrder,
 ): Student[] {
-  function getGrade(grades: number[]): number {
-    return grades.reduce((a: number, b: number) => a + b) / grades.length;
-  }
-
   return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Surname:
