@@ -25,6 +25,12 @@ export function sortStudents(
   const result = [...students];
   let orderr = 1;
 
+  function getAverageGrade(student: Student): number {
+    return student.grades
+      .reduce((sum: number, next: number): number => sum + next)
+      / student.grades.length;
+  }
+
   if (order === 'desc') {
     orderr = -1;
   }
@@ -48,13 +54,8 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       result.sort((a: Student, b:Student): number => {
-        const aAverageGrade = a.grades
-          .reduce((sum: number, next: number): number => sum + next)
-          / a.grades.length;
-
-        const bAverageGrade = b.grades
-          .reduce((sum: number, next: number): number => sum + next)
-          / b.grades.length;
+        const aAverageGrade = getAverageGrade(a);
+        const bAverageGrade = getAverageGrade(b);
 
         return orderr * (aAverageGrade - bAverageGrade);
       });
