@@ -31,26 +31,20 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        if (order === 'asc') {
-          return +a[sortBy] - +b[sortBy];
-        }
-
-        return +b[sortBy] - +a[sortBy];
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
       case SortType.AverageGrade:
-        if (order === 'asc') {
-          return averageGrage(a) - averageGrage(b);
-        }
-
-        return averageGrage(b) - averageGrage(a);
+        return order === 'asc'
+          ? averageGrage(a) - averageGrage(b)
+          : averageGrage(b) - averageGrage(a);
 
       default:
         return 0;
