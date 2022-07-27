@@ -39,30 +39,29 @@ export function sortStudents(
   });
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
-      if (order === 'asc') {
-        return studentsWithAverage.sort((student1, student2) => (
-          student1[sortBy].localeCompare(student2[sortBy])
-        ));
-      }
-
+    case SortType.Name:
+    case SortType.Surname:
       return studentsWithAverage.sort((student1, student2) => (
-        student2[sortBy].localeCompare(student1[sortBy])
+        (order === 'asc')
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy])
       ));
 
-    case 'age':
-    case 'married':
-    case 'averageGrades':
-      if (order === 'asc') {
-        return studentsWithAverage.sort((student1, student2) => (
-          +student1[sortBy] - +student2[sortBy]
-        ));
-      }
+    case SortType.Age:
+    case SortType.Married:
+    case SortType.AverageGrade:
+      return studentsWithAverage.sort((student1, student2) => {
+        const st1 = student1[sortBy];
+        const st2 = student2[sortBy];
 
-      return studentsWithAverage.sort((student1, student2) => (
-        +student2[sortBy] - +student1[sortBy]
-      ));
+        if (st1 !== undefined && st2 !== undefined) {
+          return (order === 'asc')
+            ? +st1 - +st2
+            : +st2 - +st1;
+        }
+
+        return 0;
+      });
 
     default:
       throw new Error('wrong sort type');
