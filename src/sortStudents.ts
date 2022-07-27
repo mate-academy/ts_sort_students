@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'avarageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -29,19 +29,24 @@ export function sortStudents(
   const copy: Student[] = [...students];
   const result: Student[] = [];
 
-  function sortAvarageGradeASC(a, b): number {
+  function sortAvarageGradeASC(
+    a: Student,
+    b: Student,
+  ): number {
     return getAvarageGrades(a.grades) - getAvarageGrades(b.grades);
   }
 
-  function sortAvarageGradeDESC(a, b): number {
+  function sortAvarageGradeDESC(
+    a:Student,
+    b:Student,
+  ): number {
     return getAvarageGrades(b.grades) - getAvarageGrades(a.grades);
   }
 
   switch (sortBy) {
     case SortType.Name:
-      return copy.sort((a, b) => a.name.localeCompare(b.name));
     case SortType.Surname:
-      return copy.sort((a, b) => a.surname.localeCompare(b.surname));
+      return copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
     case SortType.Age:
       if (order === 'asc') {
         return copy.sort((a, b) => a.age - b.age);
