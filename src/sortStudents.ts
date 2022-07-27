@@ -29,18 +29,12 @@ export function sortStudents(
   return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-
       case SortType.Surname:
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
-        return order === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-
       case SortType.Married:
         return order === 'asc'
           ? Number(a[sortBy]) - Number(b[sortBy])
