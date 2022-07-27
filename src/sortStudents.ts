@@ -15,7 +15,11 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
+const getAverage = (grades: number[]): number => {
+  return grades
+    .reduce((prev: number, curr: number) => prev + curr) / grades.length;
+};
+
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -24,11 +28,6 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copy = [...students];
-
-  const getAverage = (grades: number[]): number => {
-    return grades
-      .reduce((prev: number, curr: number) => prev + curr) / grades.length;
-  };
 
   switch (sortBy) {
     case SortType.Age:
