@@ -21,6 +21,20 @@ function getAvarageGrades(grades: number[]): number {
   return [...grades].reduce((sum, el) => sum + el, 0) / grades.length;
 }
 
+function sortAvarageGradeASC(
+  a: Student,
+  b: Student,
+): number {
+  return getAvarageGrades(a.grades) - getAvarageGrades(b.grades);
+}
+
+function sortAvarageGradeDESC(
+  a:Student,
+  b:Student,
+): number {
+  return getAvarageGrades(b.grades) - getAvarageGrades(a.grades);
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -28,20 +42,6 @@ export function sortStudents(
 ): Student[] {
   const copy: Student[] = [...students];
   const result: Student[] = [];
-
-  function sortAvarageGradeASC(
-    a: Student,
-    b: Student,
-  ): number {
-    return getAvarageGrades(a.grades) - getAvarageGrades(b.grades);
-  }
-
-  function sortAvarageGradeDESC(
-    a:Student,
-    b:Student,
-  ): number {
-    return getAvarageGrades(b.grades) - getAvarageGrades(a.grades);
-  }
 
   switch (sortBy) {
     case SortType.Name:
