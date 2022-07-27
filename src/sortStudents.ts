@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'isMarried',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -31,39 +31,25 @@ export function sortStudents(
   studentCopy.sort((firstStudent, secondStudent) => {
     switch (sortBy) {
       case SortType.Name:
-        if (order === 'asc') {
-          return firstStudent.name.localeCompare(secondStudent.name);
-        }
-
-        return secondStudent.name.localeCompare(firstStudent.name);
-
       case SortType.Surname:
-        if (order === 'asc') {
-          return firstStudent.surname.localeCompare(secondStudent.surname);
-        }
-
-        return secondStudent.surname.localeCompare(firstStudent.surname);
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
       case SortType.Age:
-        if (order === 'asc') {
-          return firstStudent.age - secondStudent.age;
-        }
-
-        return secondStudent.age - firstStudent.age;
+        return order === 'asc'
+          ? firstStudent.age - secondStudent.age
+          : secondStudent.age - firstStudent.age;
 
       case SortType.AverageGrade:
-        if (order === 'asc') {
-          return avagareGrade(firstStudent) - avagareGrade(secondStudent);
-        }
-
-        return avagareGrade(secondStudent) - avagareGrade(firstStudent);
+        return order === 'asc'
+          ? avagareGrade(firstStudent) - avagareGrade(secondStudent)
+          : avagareGrade(secondStudent) - avagareGrade(firstStudent);
 
       case SortType.Married:
-        if (order === 'asc') {
-          return Number(firstStudent.married) - Number(secondStudent.married);
-        }
-
-        return Number(secondStudent.married) - Number(firstStudent.married);
+        return order === 'asc'
+          ? Number(firstStudent.married) - Number(secondStudent.married)
+          : Number(secondStudent.married) - Number(firstStudent.married);
 
       default:
         return 0;
