@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function AverageGradesValue(student: Student): number {
+function getAverageGradesValue(student: Student): number {
   return student.grades.reduce((sum, n) => sum + n, 0) / student.grades.length;
 }
 
@@ -31,31 +31,22 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((s1, s2) => s1[sortBy].localeCompare(s2[sortBy]));
-      }
-
-      return studentsCopy
-        .sort((s1, s2) => s2[sortBy].localeCompare(s1[sortBy]));
+      return (order === 'asc')
+        ? studentsCopy.sort((s1, s2) => s1[sortBy].localeCompare(s2[sortBy]))
+        : studentsCopy.sort((s1, s2) => s2[sortBy].localeCompare(s1[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        return studentsCopy.sort((s1, s2) => +s1[sortBy] - +s2[sortBy]);
-      }
-
-      return studentsCopy.sort((s1, s2) => +s2[sortBy] - +s1[sortBy]);
+      return (order === 'asc')
+        ? studentsCopy.sort((s1, s2) => +s1[sortBy] - +s2[sortBy])
+        : studentsCopy.sort((s1, s2) => +s2[sortBy] - +s1[sortBy]);
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((s1, s2) => AverageGradesValue(s1) - AverageGradesValue(s2));
-      }
-
-      return studentsCopy
-        .sort((s1, s2) => AverageGradesValue(s2) - AverageGradesValue(s1));
-
+      return (order === 'asc')
+        // eslint-disable-next-line max-len
+        ? studentsCopy.sort((s1, s2) => getAverageGradesValue(s1) - getAverageGradesValue(s2))
+        // eslint-disable-next-line max-len
+        : studentsCopy.sort((s1, s2) => getAverageGradesValue(s2) - getAverageGradesValue(s1));
     default:
       return studentsCopy;
   }
