@@ -1,4 +1,7 @@
-// import { type } from "os";
+function sumOfArray(arrey: number[]):number {
+  return arrey.reduce((acc, mark) => acc + mark)
+      / arrey.length;
+}
 
 export interface Student {
   name: string,
@@ -16,7 +19,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -26,38 +28,27 @@ export function sortStudents(
 ): Student[] {
   const copyOfStudents: Student[] = [...students];
 
-  // students.forEach((item) => copyOfStudents.push({ ...item }));
-
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       copyOfStudents.sort((a: Student, b: Student): number => {
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
       });
       break;
 
     case SortType.Married:
     case SortType.Age:
       copyOfStudents.sort((a: Student, b: Student): number => {
-        if (order === 'asc') {
-          return +a[sortBy] - +b[sortBy];
-        }
-
-        return +b[sortBy] - +a[sortBy];
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
       });
       break;
 
     case SortType.AverageGrade:
       copyOfStudents.sort((a: Student, b: Student):number => {
-        function sumOfArray(arrey: number[]):number {
-          return arrey.reduce((acc, mark) => acc + mark)
-              / arrey.length;
-        }
-
         const avarSumOne = sumOfArray(a.grades);
         const avarSumTwo = sumOfArray(b.grades);
 
