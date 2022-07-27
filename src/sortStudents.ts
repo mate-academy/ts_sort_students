@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade,
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function getAvarageGrades(grades: number[]): number {
@@ -30,17 +29,25 @@ export function sortStudents(
   const copy: Student[] = [...students];
   const result: Student[] = [];
 
+  function sortAvarageGradeASC(a, b): number {
+    return getAvarageGrades(a.grades) - getAvarageGrades(b.grades);
+  }
+
+  function sortAvarageGradeDESC(a, b): number {
+    return getAvarageGrades(b.grades) - getAvarageGrades(a.grades);
+  }
+
   switch (sortBy) {
     case SortType.Name:
-      return [...students].sort((a, b) => a.name.localeCompare(b.name));
+      return copy.sort((a, b) => a.name.localeCompare(b.name));
     case SortType.Surname:
-      return [...students].sort((a, b) => a.surname.localeCompare(b.surname));
+      return copy.sort((a, b) => a.surname.localeCompare(b.surname));
     case SortType.Age:
       if (order === 'asc') {
-        return [...students].sort((a, b) => a.age - b.age);
+        return copy.sort((a, b) => a.age - b.age);
       }
 
-      return [...students].sort((a, b) => b.age - a.age);
+      return copy.sort((a, b) => b.age - a.age);
 
     case SortType.Married:
       for (let i: number = 0; i < copy.length; i += 1) {
@@ -56,13 +63,12 @@ export function sortStudents(
 
       return [...result, ...copy];
     case SortType.AverageGrade:
+
       if (order === 'asc') {
-        return [...students].sort((a, b) => getAvarageGrades(a.grades)
-          - getAvarageGrades(b.grades));
+        return copy.sort(sortAvarageGradeASC);
       }
 
-      return [...students].sort((a, b) => getAvarageGrades(b.grades)
-        - getAvarageGrades(a.grades));
+      return copy.sort(sortAvarageGradeDESC);
     default:
       throw new Error('Err!');
   }
