@@ -8,14 +8,18 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+const getAverageGrade = (student: Student): number => {
+  return student.grades.reduce((a, b) => a + b, 0) / student.grades.length;
+};
 
 export function sortStudents(
   students: Student[],
@@ -25,50 +29,31 @@ export function sortStudents(
   const studentsCopy = [...students];
 
   switch (sortBy) {
-    case SortType.Name:
-      studentsCopy.sort((student1: Student, student2: Student) => {
-        return order === 'asc'
-          ? student1.name.localeCompare(student2.name)
-          : student2.name.localeCompare(student1.name);
-      });
-
-      break;
     case SortType.Surname:
-      studentsCopy.sort((student1: Student, student2: Student) => {
+    case SortType.Name:
+      studentsCopy.sort((student1, student2) => {
         return order === 'asc'
-          ? student1.surname.localeCompare(student2.surname)
-          : student2.surname.localeCompare(student1.surname);
-      });
-
-      break;
-
-    case SortType.Age:
-      studentsCopy.sort((student1:Student, student2: Student) => {
-        return order === 'asc'
-          ? student1.age - student2.age
-          : student2.age - student1.age;
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
       });
 
       break;
 
     case SortType.Married:
-      studentsCopy.sort((student1: Student, student2: Student) => {
+    case SortType.Age:
+      studentsCopy.sort((student1, student2) => {
         return order === 'asc'
-          ? Number(student1.married) - Number(student2.married)
-          : Number(student2.married) - Number(student1.married);
+          ? Number(student1[sortBy]) - Number(student2[sortBy])
+          : Number(student2[sortBy]) - Number(student1[sortBy]);
       });
+
       break;
 
     case SortType.AverageGrade:
-      studentsCopy.sort((student1: Student, student2: Student) => {
-        const averageGrade1 = student1.grades.reduce((a, b) => a + b, 0)
-          / student1.grades.length;
-        const averageGrade2 = student2.grades.reduce((a, b) => a + b, 0)
-          / student2.grades.length;
-
+      studentsCopy.sort((student1, student2) => {
         return order === 'asc'
-          ? averageGrade1 - averageGrade2
-          : averageGrade2 - averageGrade1;
+          ? getAverageGrade(student1) - getAverageGrade(student2)
+          : getAverageGrade(student2) - getAverageGrade(student1);
       });
       break;
 
