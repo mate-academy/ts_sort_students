@@ -31,19 +31,23 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'grades': copy.sort((a: Student, b: Student) => {
-      return order === 'asc' ? averageGrade(a.grades) - averageGrade(b.grades)
+      return order === 'asc'
+        ? averageGrade(a.grades) - averageGrade(b.grades)
         : averageGrade(b.grades) - averageGrade(a.grades);
     }); break;
     case 'married': copy.sort((a: Student, b: Student) => {
-      return order === 'asc' ? +a.married - +b.married
+      return order === 'asc'
+        ? +a.married - +b.married
         : +b.married - +a.married;
     }); break;
     case 'age': copy.sort((a: Student, b: Student) => {
-      return order === 'asc' ? a.age - b.age
+      return order === 'asc'
+        ? a.age - b.age
         : +b.age - +a.age;
     }); break;
     default: copy.sort((a: Student, b: Student) => {
-      return order === 'asc' ? a[sortBy].localeCompare(b[sortBy])
+      return order === 'asc'
+        ? a[sortBy].localeCompare(b[sortBy])
         : b[sortBy].localeCompare(a[sortBy]);
     }); break;
   }
