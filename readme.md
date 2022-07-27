@@ -35,7 +35,7 @@ You also need to add correct types:
 Examples:
 ```js
 // from the youngest to the oldest
-const studentsByAge = sortStudents(students, SortType.Age, 'asc');
+const studentsByAge = sortStudents(students:, SortType.Age, 'asc');
 
 // Surnames from Z to A
 const studentsBySurnameDesc = sortStudents(students, SortType.Surname, 'desc');
