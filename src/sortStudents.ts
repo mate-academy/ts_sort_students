@@ -1,80 +1,55 @@
-
 export interface Student {
-  // describe Student interface
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
   grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'SortByAverageGrades',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+const getAverage = (numbers: number[]): number => {
+  return numbers.reduce((acc, n) => acc + n, 0) / numbers.length;
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: SortOrder,
-) : Student[] {
-  // write your function
-  const person: Student[] = [...students];
+  sortOrder: SortOrder,
+): Student[] {
+  return [...students].sort((aEl, bEl) => {
+    const a = sortOrder === 'asc'
+      ? aEl
+      : bEl;
+    const b = sortOrder === 'asc'
+      ? bEl
+      : aEl;
 
-  switch (sortBy) {
-    case SortType.Name:
-      person.sort((a, b) => a.name.localeCompare(b.name));
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return a[sortBy].localeCompare(b[sortBy]);
 
-      break;
+      case SortType.Age:
+        return a[sortBy] - b[sortBy];
 
-    case SortType.Surname:
-      person.sort((a, b) => a.surname.localeCompare(b.surname));
+      case SortType.Married:
+        return Number(a[sortBy]) - Number(b[sortBy]);
 
-      break;
+      case SortType.AverageGrade:
+        return getAverage(a.grades) - getAverage(b.grades);
 
-    case SortType.Age:
-      person.sort((a, b) => b.age - a.age).reverse();
-
-      break;
-
-    case SortType.Married:
-      person.sort((a, b) => +b.married - +a.married).reverse();
-
-      break;
-
-    case SortType.AverageGrade:
-      person.sort((a, b) => (
-        a.grades.reduce((firstVal, secondVal) => firstVal + secondVal, 0)
-        / a.grades.length
-        - b.grades.reduce((firstVal, secondVal) => firstVal + secondVal, 0)
-        / b.grades.length
-      ));
-
-      break;
-
-    default:
-      break;
-  }
-
-  if (order === 'desc' && sortBy === SortType.AverageGrade) {
-    person.sort((a, b) => (
-      b.grades.reduce((firstVal, secondVal) => firstVal + secondVal, 0)
-      / b.grades.length
-      - a.grades.reduce((firstVal, secondVal) => firstVal + secondVal, 0)
-      / a.grades.length
-    )).reverse();
-  }
-
-  if (order === 'desc') {
-    return person.reverse();
-  }
-
-  return person;
+      default:
+        throw Error(`Key: (${sortBy}) not exist`);
+    }
+  });
 }
