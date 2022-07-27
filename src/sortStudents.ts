@@ -8,74 +8,46 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'firstName',
-  Surname = 'lastName',
-  Age = 'yearsOld',
-  Married = 'isMarried',
-  AverageGrade = 'averageGrade',
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+const averageGrade = (grades: number[]): number => grades
+  .reduce((prev: number, curr: number) => prev + curr, 0) / grades.length;
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = [...students];
+  const studentsCopy: Student[] = [...students];
 
-  const averageGrade = (grades: number[]): number => grades
-    .reduce((prev: number, curr: number) => prev + curr, 0) / grades.length;
-
-  switch (sortBy) {
-    case SortType.Name:
-      studentsCopy.sort((first: Student, second: Student) => {
+  return studentsCopy.sort((first: Student, second: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
-          ? first.name.localeCompare(second.name)
-          : second.name.localeCompare(first.name);
-      });
+          ? first[sortBy].localeCompare(second[sortBy])
+          : second[sortBy].localeCompare(first[sortBy]);
 
-      break;
-
-    case SortType.Surname:
-      studentsCopy.sort((first: Student, second: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
-          ? first.surname.localeCompare(second.surname)
-          : second.surname.localeCompare(first.surname);
-      });
+          ? +first[sortBy] - +second[sortBy]
+          : +second[sortBy] - +first[sortBy];
 
-      break;
-
-    case SortType.Age:
-      studentsCopy.sort((first: Student, second: Student) => {
+      case SortType.AverageGrade:
         return order === 'asc'
-          ? first.age - second.age
-          : second.age - first.age;
-      });
+          ? averageGrade(first[sortBy]) - averageGrade(second[sortBy])
+          : averageGrade(second[sortBy]) - averageGrade(first[sortBy]);
 
-      break;
-
-    case SortType.Married:
-      studentsCopy.sort((first: Student, second: Student) => {
-        return order === 'asc'
-          ? +first.married - +second.married
-          : +second.married - +first.married;
-      });
-
-      break;
-
-    case SortType.AverageGrade:
-      studentsCopy.sort((first: Student, second: Student) => {
-        return order === 'asc'
-          ? averageGrade(first.grades) - averageGrade(second.grades)
-          : averageGrade(second.grades) - averageGrade(first.grades);
-      });
-
-      break;
-
-    default:
-      throw new Error('Wrong Sort Type');
-  }
-
-  return studentsCopy;
+      default:
+        throw new Error('Wrong Sort Type');
+    }
+  });
 }
