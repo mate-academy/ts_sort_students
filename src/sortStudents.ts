@@ -12,12 +12,12 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrade(grades: number[]): number {
+function getAverage(grades: number[]): number {
   return grades.reduce((sum, prev) => sum + prev, 0) / grades.length;
 }
 
@@ -31,31 +31,26 @@ export function sortStudents(
   return studentsClone.sort((studentA, studentB) => {
     switch (sortBy) {
       case SortType.Name:
-
-        return order === 'asc'
-          ? studentA.name.localeCompare(studentB.name)
-          : studentB.name.localeCompare(studentA.name);
-
       case SortType.Surname:
 
         return order === 'asc'
-          ? studentA.surname.localeCompare(studentB.surname)
-          : studentB.surname.localeCompare(studentA.surname);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
       case SortType.Age:
         return order === 'asc'
-          ? studentA.age - studentB.age
-          : studentB.age - studentA.age;
+          ? studentA[sortBy] - studentB[sortBy]
+          : studentB[sortBy] - studentA[sortBy];
 
       case SortType.Married:
         return order === 'asc'
-          ? Number(studentA.married) - Number(studentB.married)
-          : Number(studentB.married) - Number(studentA.married);
+          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverageGrade(studentA.grades) - getAverageGrade(studentB.grades)
-          : getAverageGrade(studentB.grades) - getAverageGrade(studentA.grades);
+          ? getAverage(studentA[sortBy]) - getAverage(studentB[sortBy])
+          : getAverage(studentB[sortBy]) - getAverage(studentA[sortBy]);
 
       default:
         throw new Error('No such sort type');
