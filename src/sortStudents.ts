@@ -28,35 +28,23 @@ export function sortStudents(students: Student[],
       / grades.length;
   }
 
-  function sortAsc(
+  function sorting(
     a: string | number,
     b: string | number,
+    sortingType: SortOrder,
   ): number {
     let result: number = 0;
 
     if (typeof a === 'number' && typeof b === 'number') {
-      result = a - b;
+      result = sortingType === 'asc'
+        ? a - b
+        : b - a;
     }
 
     if (typeof a === 'string' && typeof b === 'string') {
-      result = a.localeCompare(b);
-    }
-
-    return result;
-  }
-
-  function sortDesc(
-    a: string | number,
-    b: string | number,
-  ): number {
-    let result: number = 0;
-
-    if (typeof a === 'number' && typeof b === 'number') {
-      result = b - a;
-    }
-
-    if (typeof a === 'string' && typeof b === 'string') {
-      result = b.localeCompare(a);
+      result = sortingType === 'asc'
+        ? a.localeCompare(b)
+        : b.localeCompare(a);
     }
 
     return result;
@@ -66,17 +54,13 @@ export function sortStudents(students: Student[],
     case SortType.Name:
     case SortType.Surname:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? sortAsc(a[sortBy], b[sortBy])
-          : sortDesc(a[sortBy], b[sortBy]);
+        return sorting(a[sortBy], b[sortBy], order);
       });
       break;
 
     case SortType.Age:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? sortAsc(a.age, b.age)
-          : sortDesc(a.age, b.age);
+        return sorting(a.age, b.age, order);
       });
       break;
 
@@ -85,23 +69,17 @@ export function sortStudents(students: Student[],
         const stringFromA = a.married.toString();
         const stringFromB = b.married.toString();
 
-        return order === 'asc'
-          ? sortAsc(stringFromA, stringFromB)
-          : sortDesc(stringFromA, stringFromB);
+        return sorting(stringFromA, stringFromB, order);
       });
       break;
 
     case SortType.AverageGrade:
       copyOfStudents = [...students].sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? sortAsc(
-            calulateAverageGrade(a.grades),
-            calulateAverageGrade(b.grades),
-          )
-          : sortDesc(
-            calulateAverageGrade(a.grades),
-            calulateAverageGrade(b.grades),
-          );
+        return sorting(
+          calulateAverageGrade(a.grades),
+          calulateAverageGrade(b.grades),
+          order,
+        );
       });
       break;
 
