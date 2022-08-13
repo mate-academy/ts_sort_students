@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -24,34 +24,25 @@ export function sortStudents(
 ): Student[] {
   switch (sortBy) {
     case SortType.Age:
-      if (order === 'asc') {
-        return [...students].sort((a, b) => a.age - b.age);
-      }
-
-      return [...students].sort((a, b) => b.age - a.age);
-    case SortType.Name:
-      return [...students].sort((a, b) => a.name.localeCompare(b.name));
-    case SortType.Surname:
-      if (order === 'asc') {
-        return [...students].sort((a, b) => a.surname.localeCompare(b.surname));
-      }
-
-      return [...students].sort((a, b) => b.surname.localeCompare(a.surname));
     case SortType.Married:
-      return [...students]
-        .sort((x, y) => Number(y.married) - Number(x.married));
+      return (order === 'asc')
+        ? [...students].sort((a, b) => +a[sortBy] - +b[sortBy])
+        : [...students].sort((a, b) => +b[sortBy] - +a[sortBy]);
+    case SortType.Name:
+    case SortType.Surname:
+      return (order === 'asc')
+        ? [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return [...students].sort(
-          (a, b) => a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length
-            - b.grades.reduce((sum, x) => sum + x, 0) / b.grades.length,
+      return (order === 'asc')
+        ? [...students].sort(
+          (a, b) => a[sortBy].reduce((sum, x) => sum + x, 0) / a[sortBy].length
+            - b[sortBy].reduce((sum, x) => sum + x, 0) / b[sortBy].length,
+        )
+        : [...students].sort(
+          (a, b) => b[sortBy].reduce((sum, x) => sum + x, 0) / b[sortBy].length
+            - a[sortBy].reduce((sum, x) => sum + x, 0) / a[sortBy].length,
         );
-      }
-
-      return [...students].sort(
-        (a, b) => b.grades.reduce((sum, x) => sum + x, 0) / b.grades.length
-            - a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length,
-      );
     default:
       break;
   }
