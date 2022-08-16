@@ -7,9 +7,19 @@ The parameters are:
 - `students` an initial array of students
 - `sortBy` a type of sort (see `SortType` enum)
 - `order` a sort order that can be `asc` or `desc`
+Создайте функцию sortStudents, которая принимает 3 параметра и возвращает новый массив
+со студентами, отсортированными в соответствии с заданными параметрами. Исходный массив не должен
+меняться.
+
+Параметры:
+- `students` начальный массив учеников
+- `sortBy` тип сортировки (см. перечисление `SortType`)
+- `order` порядок сортировки, который может быть `asc` или `desc`
 
 You also need to add correct types:
 - Create `Student` interface matching the next data:
+необходимо добавить правильные типы:
+- Создать интерфейс `Студент`, соответствующий следующим данным:
     ```
     {
       name: 'Jessica',
@@ -31,7 +41,10 @@ You also need to add correct types:
 - Create `SortOrder` type with only 2 values `'asc'` and `'desc'` 
     Hint: If values are the same the students should go in the original order 
     (no matter we use `asc` or `desc` order)
-
+Подсказка: `AverageGrade` сортирует по среднему значению в массиве `grades`.
+- Создайте тип `SortOrder` только с двумя значениями `'asc'` и `'desc'`
+    Подсказка: если значения совпадают, учащиеся должны идти в первоначальном порядке.
+    (независимо от того, используем ли мы порядок `asc` или `desc`)
 Examples:
 ```js
 // from the youngest to the oldest
