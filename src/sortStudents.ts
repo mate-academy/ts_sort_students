@@ -33,37 +33,31 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return sortedStudents.sort((st1: Student, st2: Student): number => {
-          return st1.name.localeCompare(st2.name);
-        });
-      }
-
-      return sortedStudents.sort((st1: Student, st2: Student): number => {
-        return st2.name.localeCompare(st1.name);
-      });
+      return order === 'asc'
+        ? sortedStudents.sort((st1: Student, st2: Student): number => (
+          st1.name.localeCompare(st2.name)
+        ))
+        : sortedStudents.sort((st1: Student, st2: Student): number => (
+          st2.name.localeCompare(st1.name)
+        ));
 
     case SortType.Surname:
-      if (order === 'asc') {
-        return sortedStudents.sort((st1: Student, st2: Student): number => {
-          return st1.surname.localeCompare(st2.surname);
-        });
-      }
-
-      return sortedStudents.sort((st1: Student, st2: Student): number => {
-        return st2.surname.localeCompare(st1.surname);
-      });
+      return order === 'asc'
+        ? sortedStudents.sort((st1: Student, st2: Student): number => (
+          st1.surname.localeCompare(st2.surname)
+        ))
+        : sortedStudents.sort((st1: Student, st2: Student): number => (
+          st2.surname.localeCompare(st1.surname)
+        ));
 
     case SortType.Age:
-      if (order === 'asc') {
-        return sortedStudents.sort((st1: Student, st2: Student): number => {
-          return st1.age - st2.age;
-        });
-      }
-
-      return sortedStudents.sort((st1: Student, st2: Student): number => {
-        return st2.age - st1.age;
-      });
+      return order === 'asc'
+        ? sortedStudents.sort((st1: Student, st2: Student): number => (
+          st1.age - st2.age
+        ))
+        : sortedStudents.sort((st1: Student, st2: Student): number => (
+          st2.age - st1.age
+        ));
 
     case SortType.Married:
       married = sortedStudents
@@ -72,22 +66,18 @@ export function sortStudents(
       notMarried = sortedStudents
         .filter((st: Student): boolean => st.married === false);
 
-      if (order === 'asc') {
-        return [...notMarried, ...married];
-      }
-
-      return [...married, ...notMarried];
+      return order === 'asc'
+        ? [...notMarried, ...married]
+        : [...married, ...notMarried];
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return sortedStudents.sort((st1: Student, st2: Student): number => {
-          return getAverageGrade(st1.grades) - getAverageGrade(st2.grades);
-        });
-      }
-
-      return sortedStudents.sort((st1: Student, st2: Student): number => {
-        return getAverageGrade(st2.grades) - getAverageGrade(st1.grades);
-      });
+      return order === 'asc'
+        ? sortedStudents.sort((st1: Student, st2: Student): number => (
+          getAverageGrade(st1.grades) - getAverageGrade(st2.grades)
+        ))
+        : sortedStudents.sort((st1: Student, st2: Student): number => (
+          getAverageGrade(st2.grades) - getAverageGrade(st1.grades)
+        ));
 
     default:
       throw new Error('Something went wrong...');
