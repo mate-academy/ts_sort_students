@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable max-len */
 
 import { sortStudents, SortType } from './sortStudents';
