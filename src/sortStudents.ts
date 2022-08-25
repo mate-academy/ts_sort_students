@@ -30,39 +30,21 @@ export function sortStudents(
   copyStudents.sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
       case SortType.Name:
-        if (order === 'asc') {
-          return studentA.name.localeCompare(studentB.name);
-        }
-
-        return studentB.name.localeCompare(studentA.name);
-
       case SortType.Surname:
-        if (order === 'asc') {
-          return studentA.surname.localeCompare(studentB.surname);
-        }
-
-        return studentB.surname.localeCompare(studentA.surname);
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
       case SortType.Age:
-        if (order === 'asc') {
-          return studentA.age - studentB.age;
-        }
-
-        return studentB.age - studentA.age;
-
       case SortType.Married:
-        if (order === 'asc') {
-          return +studentA.married - +studentB.married;
-        }
-
-        return +studentB.married - +studentA.married;
+        return order === 'asc'
+          ? +studentA[sortBy] - +studentB[sortBy]
+          : +studentB[sortBy] - +studentA[sortBy];
 
       default:
-        if (order === 'asc') {
-          return aveGrade(studentA.grades) - aveGrade(studentB.grades);
-        }
-
-        return aveGrade(studentB.grades) - aveGrade(studentA.grades);
+        return order === 'asc'
+          ? aveGrade(studentA[sortBy]) - aveGrade(studentB[sortBy])
+          : aveGrade(studentB[sortBy]) - aveGrade(studentA[sortBy]);
     }
   });
 
