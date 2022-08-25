@@ -1,5 +1,3 @@
-/* eslint-disable default-case */
-
 export interface Student {
   name: string;
   surname: string;
