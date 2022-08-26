@@ -31,32 +31,31 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-
     case SortType.Surname:
       studentsCopy.sort(
-        (a, b) => a.surname.localeCompare(b.surname) * theSortOrder,
+        (student1, student2) => student1[sortBy].localeCompare(student2[sortBy])
+         * theSortOrder,
       );
       break;
 
     case SortType.Age:
-      studentsCopy.sort((a, b) => (a.age - b.age) * theSortOrder);
+    case SortType.Married:
+      studentsCopy.sort((student1, student2) => (
+        +student1[sortBy] - +student2[sortBy]) * theSortOrder);
       break;
 
-    case SortType.Married:
-      studentsCopy.sort((a, b) => (+a.married - +b.married) * theSortOrder);
+    case SortType.AverageGrade:
+      studentsCopy.sort((student1, student2) => (
+        (student1[sortBy]
+          .reduce((sum, current) => sum + current, 0) / student1[sortBy].length)
+        - (student2[sortBy]
+          .reduce((
+            sum, current,
+          ) => sum + current, 0) / student2[sortBy].length)) * theSortOrder);
       break;
 
     default:
-      studentsCopy.sort((a, b) => (
-        (a.grades
-          .reduce((sum, current) => sum + current, 0) / a.grades.length)
-        - (b.grades
-          .reduce((
-            sum, current,
-          ) => sum + current, 0) / b.grades.length)) * theSortOrder);
-      break;
+      throw new Error('Enter valid sort type');
   }
 
   return studentsCopy;
