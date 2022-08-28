@@ -27,17 +27,27 @@ function sortStudents(students, sortBy, order) {
                 var key1 = a[sortBy].toUpperCase();
                 var key2 = b[sortBy].toUpperCase();
                 if (key1 < key2) {
-                    return -1;
+                    return order === 'asc' ? -1 : 1;
                 }
                 if (key1 > key2) {
-                    return 1;
+                    return order === 'asc' ? 1 : -1;
                 }
                 return 0;
             });
             break;
-        case 'married':
         case 'age':
-            copyOfStudents.sort(function (a, b) { return (+a.married - +b.married); });
+            copyOfStudents.sort(function (a, b) {
+                return order === 'asc'
+                    ? a.age - b.age
+                    : b.age - a.age;
+            });
+            break;
+        case 'married':
+            copyOfStudents.sort(function (a, b) {
+                return order === 'asc'
+                    ? +a.married - +b.married
+                    : +b.married - +a.married;
+            });
             break;
         case 'grades':
             copyOfStudents.sort(function (a, b) {
@@ -45,14 +55,11 @@ function sortStudents(students, sortBy, order) {
                     / a.grades.length;
                 var avg2 = b.grades.reduce(function (acc, prev) { return acc + prev; })
                     / b.grades.length;
-                return avg1 - avg2;
+                return order === 'asc' ? avg1 - avg2 : avg2 - avg1;
             });
             break;
         default:
             break;
-    }
-    if (order === 'desc') {
-        copyOfStudents.reverse();
     }
     return copyOfStudents;
 }
