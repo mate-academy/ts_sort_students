@@ -42,9 +42,12 @@ export function sortStudents(
         : copyStudents.sort((a, b) => getAverage(b.grades)
         - getAverage(a.grades));
 
-    default:
+    case SortType.Age:
+    case SortType.Married:
       return order === 'asc'
         ? copyStudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
         : copyStudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+
+    default: throw new Error('Got wrong parameter');
   }
 }
