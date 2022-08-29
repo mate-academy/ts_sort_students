@@ -29,35 +29,24 @@ export function sortStudents(
   }
 
   copyStudents.sort((a: Student, b: Student) => {
+    let direction = -1;
+
+    if (order === 'asc') {
+      direction = 1;
+    }
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
+        return a[sortBy].localeCompare(b[sortBy]) * direction;
 
       case SortType.Age:
-        if (order === 'asc') {
-          return a.age - b.age;
-        }
-
-        return b.age - a.age;
-
       case SortType.Married:
-        if (order === 'asc') {
-          return +a.married - +b.married;
-        }
-
-        return +b.married - +a.married;
+        return (+a[sortBy] - +b[sortBy]) * direction;
 
       case SortType.AverageGrade:
-        if (order === 'asc') {
-          return calculateAverage(a.grades) - calculateAverage(b.grades);
-        }
-
-        return calculateAverage(b.grades) - calculateAverage(a.grades);
+        return (calculateAverage(a.grades)
+        - calculateAverage(b.grades)) * direction;
 
       default:
         throw new Error('Wrong data');
