@@ -17,6 +17,11 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+export const averageArray = (arr: Array<number>): number => {
+  return arr.reduce((acc: number, prev: number): number => acc + prev)
+  / arr.length;
+};
+
 export function sortStudents(
   students: Array<Student>,
   sortBy: SortType,
@@ -27,45 +32,32 @@ export function sortStudents(
   switch (sortBy) {
     case 'name':
     case 'surname':
-      copyOfStudents.sort((a: Student, b: Student): number => {
-        const key1 = a[sortBy].toUpperCase();
-        const key2 = b[sortBy].toUpperCase();
+      copyOfStudents.sort((student1: Student, student2: Student): number => {
+        const key1 = student1[sortBy].toUpperCase();
+        const key2 = student2[sortBy].toUpperCase();
 
-        if (key1 < key2) {
-          return order === 'asc' ? -1 : 1;
-        }
+        const orderDirection: number = order === 'asc' ? -1 : 1;
 
-        if (key1 > key2) {
-          return order === 'asc' ? 1 : -1;
-        }
-
-        return 0;
-      });
-      break;
-
-    case 'age':
-      copyOfStudents.sort((a: Student, b: Student): number => {
-        return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
+        return key1 <= key2
+          ? orderDirection
+          : (-1) * orderDirection;
       });
       break;
 
     case 'married':
-      copyOfStudents.sort((a: Student, b: Student): number => {
+    case 'age':
+      copyOfStudents.sort((student1: Student, student2: Student): number => {
         return order === 'asc'
-          ? +a.married - +b.married
-          : +b.married - +a.married;
+          ? +student1[sortBy] - +student2[sortBy]
+          : +student2[sortBy] - +student1[sortBy];
       });
       break;
 
     case 'grades':
-      copyOfStudents.sort((a: Student, b: Student): number => {
-        const avg1 = a.grades.reduce((acc, prev) => acc + prev)
-        / a.grades.length;
+      copyOfStudents.sort((student1: Student, student2: Student): number => {
+        const avg1 = averageArray(student1.grades);
 
-        const avg2 = b.grades.reduce((acc, prev) => acc + prev)
-        / b.grades.length;
+        const avg2 = averageArray(student2.grades);
 
         return order === 'asc' ? avg1 - avg2 : avg2 - avg1;
       });

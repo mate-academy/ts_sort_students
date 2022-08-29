@@ -9,7 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 exports.__esModule = true;
-exports.sortStudents = exports.SortType = void 0;
+exports.sortStudents = exports.averageArray = exports.SortType = void 0;
 var SortType;
 (function (SortType) {
     SortType["Name"] = "name";
@@ -18,43 +18,37 @@ var SortType;
     SortType["Married"] = "married";
     SortType["AverageGrade"] = "grades";
 })(SortType = exports.SortType || (exports.SortType = {}));
+var averageArray = function (arr) {
+    return arr.reduce(function (acc, prev) { return acc + prev; })
+        / arr.length;
+};
+exports.averageArray = averageArray;
 function sortStudents(students, sortBy, order) {
     var copyOfStudents = __spreadArray([], students, true);
     switch (sortBy) {
         case 'name':
         case 'surname':
-            copyOfStudents.sort(function (a, b) {
-                var key1 = a[sortBy].toUpperCase();
-                var key2 = b[sortBy].toUpperCase();
-                if (key1 < key2) {
-                    return order === 'asc' ? -1 : 1;
-                }
-                if (key1 > key2) {
-                    return order === 'asc' ? 1 : -1;
-                }
-                return 0;
-            });
-            break;
-        case 'age':
-            copyOfStudents.sort(function (a, b) {
-                return order === 'asc'
-                    ? a.age - b.age
-                    : b.age - a.age;
+            copyOfStudents.sort(function (student1, student2) {
+                var key1 = student1[sortBy].toUpperCase();
+                var key2 = student2[sortBy].toUpperCase();
+                var orderDirection = order === 'asc' ? -1 : 1;
+                return key1 <= key2
+                    ? orderDirection
+                    : (-1) * orderDirection;
             });
             break;
         case 'married':
-            copyOfStudents.sort(function (a, b) {
+        case 'age':
+            copyOfStudents.sort(function (student1, student2) {
                 return order === 'asc'
-                    ? +a.married - +b.married
-                    : +b.married - +a.married;
+                    ? +student1[sortBy] - +student2[sortBy]
+                    : +student2[sortBy] - +student1[sortBy];
             });
             break;
         case 'grades':
-            copyOfStudents.sort(function (a, b) {
-                var avg1 = a.grades.reduce(function (acc, prev) { return acc + prev; })
-                    / a.grades.length;
-                var avg2 = b.grades.reduce(function (acc, prev) { return acc + prev; })
-                    / b.grades.length;
+            copyOfStudents.sort(function (student1, student2) {
+                var avg1 = (0, exports.averageArray)(student1.grades);
+                var avg2 = (0, exports.averageArray)(student2.grades);
                 return order === 'asc' ? avg1 - avg2 : avg2 - avg1;
             });
             break;
