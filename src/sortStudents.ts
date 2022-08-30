@@ -22,38 +22,38 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function ascStudentsSort(newStudents: Student[]): Student[] {
-    return newStudents
-      .sort((student1: Student, student2: Student) => (
-        student1[sortBy].toString().localeCompare(student2[sortBy].toString())
-      ));
-  }
-
-  function descStudentsSort(newStudents: Student[]): Student[] {
-    return newStudents
-      .sort((student1: Student, student2: Student) => (
-        Number(student2[sortBy]) - Number(student1[sortBy])
-      ));
-  }
-
   const studentsCopy = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'desc') {
-        throw new Error('Cannot convert letter string to number');
+      if (order === 'asc') {
+        return studentsCopy
+          .sort((student1: Student, student2: Student) => (
+            student1[sortBy].toString()
+              .localeCompare(student2[sortBy].toString())
+          ));
       }
 
-      return ascStudentsSort(studentsCopy);
+      return studentsCopy
+        .sort((student1: Student, student2: Student) => (
+          student2[sortBy].toString()
+            .localeCompare(student1[sortBy].toString())
+        ));
 
     case SortType.Age:
     case SortType.Married:
       if (order === 'asc') {
-        return ascStudentsSort(studentsCopy);
+        return studentsCopy
+          .sort((student1: Student, student2: Student) => (
+            Number(student1[sortBy]) - Number(student2[sortBy])
+          ));
       }
 
-      return descStudentsSort(studentsCopy);
+      return studentsCopy
+        .sort((student1: Student, student2: Student) => (
+          Number(student2[sortBy]) - Number(student1[sortBy])
+        ));
 
     case SortType.AverageGrade:
       if (order === 'asc') {
@@ -68,7 +68,7 @@ export function sortStudents(
                 sum + el
               ), 0) / student2.grades.length;
 
-            return average1.toString().localeCompare(average2.toString());
+            return average1 - average2;
           });
       }
 
