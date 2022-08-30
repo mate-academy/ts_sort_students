@@ -15,7 +15,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-const aveGrade = (points: number[]): number => (
+const getAverageGrade = (points: number[]): number => (
   points.reduce((sum, point) => sum + point, 0) / points.length);
 
 export type SortOrder = 'asc' | 'desc';
@@ -43,8 +43,10 @@ export function sortStudents(
 
       default:
         return order === 'asc'
-          ? aveGrade(studentA[sortBy]) - aveGrade(studentB[sortBy])
-          : aveGrade(studentB[sortBy]) - aveGrade(studentA[sortBy]);
+          ? getAverageGrade(studentA[sortBy])
+            - getAverageGrade(studentB[sortBy])
+          : getAverageGrade(studentB[sortBy])
+            - getAverageGrade(studentA[sortBy]);
     }
   });
 
