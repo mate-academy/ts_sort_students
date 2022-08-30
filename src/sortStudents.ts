@@ -29,11 +29,7 @@ export function sortStudents(
   }
 
   copyStudents.sort((a: Student, b: Student) => {
-    let direction = -1;
-
-    if (order === 'asc') {
-      direction = 1;
-    }
+    const direction = order === 'asc' ? 1 : -1;
 
     switch (sortBy) {
       case SortType.Name:
