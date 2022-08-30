@@ -23,30 +23,35 @@ export function sortStudents(
 ): Student[] {
   const direction: -1 | 1 = order === 'asc' ? 1 : -1;
 
-  return [...students]
-    .sort(({ [sortBy]: paramA }, { [sortBy]: paramB }): number => {
-      let diff: number = 0;
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return [...students].sort(
+        ({ [sortBy]: paramA }, { [sortBy]: paramB }) => (
+          paramA.localeCompare(paramB) * direction
+        ),
+      );
 
-      if (typeof paramA === 'number' && typeof paramB === 'number') {
-        diff = paramA - paramB;
-      }
+    case SortType.Age:
+    case SortType.Married:
+      return [...students].sort(
+        ({ [sortBy]: paramA }, { [sortBy]: paramB }) => (
+          (Number(paramA) - Number(paramB)) * direction
+        ),
+      );
 
-      if (typeof paramA === 'string' && typeof paramB === 'string') {
-        diff = paramA.localeCompare(paramB);
-      }
+    case SortType.AverageGrade:
+      return [...students].sort(
+        ({ [sortBy]: paramA }, { [sortBy]: paramB }) => {
+          const getAverage = (param: number[]): number => (
+            param.reduce((sum, num) => sum + num, 0) / param.length
+          );
 
-      if (typeof paramA === 'boolean' && typeof paramB === 'boolean') {
-        diff = Number(paramA) - Number(paramB);
-      }
+          return (getAverage(paramA) - getAverage(paramB)) * direction;
+        },
+      );
 
-      if (Array.isArray(paramA) && Array.isArray(paramB)) {
-        const getAverage = (param: number[]): number => (
-          param.reduce((sum, num) => sum + num, 0) / param.length
-        );
-
-        diff = getAverage(paramA) - getAverage(paramB);
-      }
-
-      return diff * direction;
-    });
+    default:
+      return [...students];
+  }
 }
