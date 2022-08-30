@@ -25,30 +25,30 @@ function averageGrades(grades: number[]): number {
 export function sortStudents(students: Student[], sortBy: SortType,
   order: SortOrder)
   : Student[] {
-  const temp: Student[] = [...students];
+  const copy: Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? temp.sort((student, nextStudent) => student[sortBy]
+        ? copy.sort((student, nextStudent) => student[sortBy]
           .localeCompare(nextStudent[sortBy]))
-        : temp.sort((student, nextStudent) => nextStudent[sortBy]
+        : copy.sort((student, nextStudent) => nextStudent[sortBy]
           .localeCompare(student[sortBy]));
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? temp.sort((student, nextStudent) => Number(student[sortBy])
+        ? copy.sort((student, nextStudent) => Number(student[sortBy])
           - Number(nextStudent[sortBy]))
-        : temp.sort((student, nextStudent) => Number(nextStudent[sortBy])
+        : copy.sort((student, nextStudent) => Number(nextStudent[sortBy])
           - Number(student[sortBy]));
     case SortType.AverageGrade:
       return order === 'asc'
-        ? temp.sort((student, nextStudent) => averageGrades(student[sortBy])
+        ? copy.sort((student, nextStudent) => averageGrades(student[sortBy])
           - averageGrades(nextStudent[sortBy]))
-        : temp.sort((student, nextStudent) => averageGrades(nextStudent[sortBy])
+        : copy.sort((student, nextStudent) => averageGrades(nextStudent[sortBy])
           - averageGrades(student[sortBy]));
     default:
-      return temp;
+      return copy;
   }
 }
