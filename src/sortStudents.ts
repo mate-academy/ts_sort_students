@@ -30,26 +30,25 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return studentsCopy.sort((a, b) => (order === 'asc'
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy])
+      ));
 
     case SortType.Age:
     case SortType.Married:
-      return order === 'asc'
-        ? studentsCopy.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : studentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy]);
+      return studentsCopy.sort((a, b) => (order === 'asc'
+        ? +a[sortBy] - +b[sortBy]
+        : +b[sortBy] - +a[sortBy]
+      ));
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? studentsCopy.sort((a, b) => (
-          getAverage(a[sortBy]) - getAverage(b[sortBy])))
-        : studentsCopy.sort((a, b) => (
-          getAverage(b[sortBy]) - getAverage(a[sortBy])));
+      return studentsCopy.sort((a, b) => (order === 'asc'
+        ? getAverage(a[sortBy]) - getAverage(b[sortBy])
+        : getAverage(b[sortBy]) - getAverage(a[sortBy])
+      ));
 
     default:
-      break;
+      throw new Error('an error occured');
   }
-
-  return studentsCopy;
 }
