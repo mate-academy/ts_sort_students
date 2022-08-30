@@ -29,7 +29,7 @@ export function sortStudents(
 
     return gradesSum / student.grades.length;
   };
-  let sortFunction: (a: Student, b: Student) => number;
+  let sortFunction: (firstStudent: Student, secondStudent: Student) => number;
 
   switch (sortBy) {
     case SortType.Name:
