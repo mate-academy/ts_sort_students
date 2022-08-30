@@ -22,22 +22,22 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const averageGrade = (gradesArray:number[]):number => (
-    gradesArray.reduce((sum, num) => sum + num, 0) / gradesArray.length
+    gradesArray.reduce((sum, grade) => sum + grade, 0) / gradesArray.length
   );
 
   return [...students].sort((firstStudent, nextStudent) => {
     switch (sortBy) {
-      case 'age':
-      case 'married':
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
           ? (+firstStudent[sortBy] - +nextStudent[sortBy])
           : (+nextStudent[sortBy] - +firstStudent[sortBy]);
 
-      case 'name':
-      case 'surname':
+      case SortType.Name:
+      case SortType.Surname:
         return firstStudent[sortBy] > nextStudent[sortBy] ? 1 : -1;
 
-      case 'grades': {
+      case SortType.AverageGrade: {
         const firstStudAverage = averageGrade(firstStudent[sortBy]);
         const nextStudAverage = averageGrade(nextStudent[sortBy]);
 
