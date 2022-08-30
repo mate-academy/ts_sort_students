@@ -18,7 +18,9 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAvarageGrade(grades: number[]): number {
-  return grades.reduce((a, b) => a + b, 0) / grades.length;
+  return grades.reduce((previous, current) => (
+    previous + current
+  ), 0) / grades.length;
 }
 
 export function sortStudents(
