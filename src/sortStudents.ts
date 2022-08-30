@@ -1,16 +1,81 @@
 
+function getAvarageGrade(gradeArr: number[]): number {
+  return gradeArr.reduce((prev, item) => {
+    return prev + item;
+  }, 0) / gradeArr.length;
+}
+
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const studentsCopy: Student[] = [...students];
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  switch (sortBy) {
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            getAvarageGrade(prevStudent.grades)
+            - getAvarageGrade(nextStudent.grades)))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            getAvarageGrade(nextStudent.grades)
+            - getAvarageGrade(prevStudent.grades)));
+
+    case SortType.Age:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            prevStudent.age - nextStudent.age))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            nextStudent.age - prevStudent.age));
+
+    case SortType.Name:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            prevStudent.name.localeCompare(nextStudent.name)))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            nextStudent.name.localeCompare(prevStudent.name)));
+
+    case SortType.Married:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            Number(prevStudent.married) - Number(nextStudent.married)))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            Number(nextStudent.married) - Number(prevStudent.married)));
+
+    default:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            prevStudent.surname.localeCompare(nextStudent.surname)))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            nextStudent.surname.localeCompare(prevStudent.surname)));
+  }
 }
