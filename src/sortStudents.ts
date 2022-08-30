@@ -9,11 +9,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'name',
-  Surname = 'surname',
-  Age = 'age',
-  Married = 'married',
-  AverageGrade = 'grades',
+  Name = 'NAME',
+  Surname = 'SURNAME',
+  Age = 'AGE',
+  Married = 'MARRIED',
+  AverageGrade = 'GRADES',
 }
 
 export type SortOrder = 'asc' | 'desc';
