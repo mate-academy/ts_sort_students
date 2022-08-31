@@ -31,30 +31,40 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       return order === 'asc'
-        ? studentsCopyArr.sort((a, b) => a.name.localeCompare(b.name))
-        : studentsCopyArr.sort((a, b) => b.name.localeCompare(a.name));
+        ? studentsCopyArr.sort((studentA, studentB) => studentA.name
+          .localeCompare(studentB.name))
+        : studentsCopyArr.sort((studentA, studentB) => studentB.name
+          .localeCompare(studentA.name));
 
     case SortType.Surname:
       return order === 'asc'
-        ? studentsCopyArr.sort((a, b) => a.surname.localeCompare(b.surname))
-        : studentsCopyArr.sort((a, b) => b.surname.localeCompare(a.surname));
+        ? studentsCopyArr.sort((studentA, studentB) => studentA.surname
+          .localeCompare(studentB.surname))
+        : studentsCopyArr.sort((studentA, studentB) => studentB.surname
+          .localeCompare(studentA.surname));
 
     case SortType.Age:
       return order === 'asc'
-        ? studentsCopyArr.sort((a, b) => a.age - b.age)
-        : studentsCopyArr.sort((a, b) => b.age - a.age);
+        ? studentsCopyArr
+          .sort((studentA, studentB) => studentA.age - studentB.age)
+        : studentsCopyArr
+          .sort((studentA, studentB) => studentB.age - studentA.age);
 
     case SortType.Married:
       return order === 'asc'
-        ? studentsCopyArr.sort((a, b) => Number(a.married) - Number(b.married))
-        : studentsCopyArr.sort((a, b) => Number(b.married) - Number(a.married));
+        ? studentsCopyArr.sort((studentA, studentB) => Number(studentA.married)
+        - Number(studentB.married))
+        : studentsCopyArr.sort((studentA, studentB) => Number(studentB.married)
+        - Number(studentA.married));
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? studentsCopyArr.sort((a, b) => averageGrades(a.grades)
-          - averageGrades(b.grades))
-        : studentsCopyArr.sort((a, b) => averageGrades(b.grades)
-          - averageGrades(a.grades));
+        ? studentsCopyArr
+          .sort((studentA, studentB) => averageGrades(studentA.grades)
+        - averageGrades(studentB.grades))
+        : studentsCopyArr
+          .sort((studentA, studentB) => averageGrades(studentB.grades)
+          - averageGrades(studentA.grades));
 
     default:
       return studentsCopyArr;
