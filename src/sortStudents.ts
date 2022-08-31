@@ -14,7 +14,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 const calcAver = (grades: number[]): number => grades
