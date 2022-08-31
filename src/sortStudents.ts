@@ -51,5 +51,5 @@ export function sortStudents(
       default:
         return 0;
     }
-  };)
+  });
 }
