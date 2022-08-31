@@ -19,6 +19,12 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrade(grades: number[]): number {
+  return grades
+    .reduce((firstGreads, secondGreads) => firstGreads + secondGreads, 0)
+    / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -31,29 +37,23 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       studentsCopy
-        .sort((prev, next) => prev[sortBy].localeCompare(next[sortBy])
-        * orderSwitch);
+        .sort((firstStudent, secondStudent) => firstStudent[sortBy]
+          .localeCompare(secondStudent[sortBy]) * orderSwitch);
       break;
     case SortType.Age:
       studentsCopy
-        .sort((prev, next) => (prev.age - next.age)
-        * orderSwitch);
+        .sort((firstStudent, secondStudent) => (firstStudent.age
+          - secondStudent.age) * orderSwitch);
       break;
     case SortType.Married:
       studentsCopy
-        .sort((prev, next) => (Number(prev.married) - Number(next.married))
-        * orderSwitch);
+        .sort((firstStudent, secondStudent) => (Number(firstStudent.married)
+        - Number(secondStudent.married)) * orderSwitch);
       break;
     default:
       studentsCopy
-        .sort((prev, next) => (
-          ((prev.grades
-            .reduce((numPrev, numNext) => numPrev + numNext, 0))
-            / prev.grades.length)
-          - ((next.grades
-            .reduce((numPrev, numNext) => numPrev + numNext, 0))
-            / next.grades.length))
-          * orderSwitch);
+        .sort((first, second) => (getAverageGrade(first.grades)
+        - getAverageGrade(second.grades)) * orderSwitch);
   }
 
   return studentsCopy;
