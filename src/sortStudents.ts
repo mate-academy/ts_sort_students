@@ -49,9 +49,6 @@ export function sortStudents(
         : getAverageMarks(b[sortBy]) - getAverageMarks(a[sortBy])
       ));
 
-    default:
-      break;
+    default: throw new Error('error');
   }
-
-  return copyStudents;
 }
