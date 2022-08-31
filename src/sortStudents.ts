@@ -1,5 +1,3 @@
-// import { TSConstructSignatureDeclaration } from "@babel/types";
-
 export interface Student {
   name: string;
   surname: string;
