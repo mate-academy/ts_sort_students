@@ -30,27 +30,31 @@ export function sortStudents(
   switch (sort) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return copyStudList.sort((a, b) => a[sort].localeCompare(b[sort]));
-      }
-
-      return copyStudList.sort((a, b) => b[sort].localeCompare(a[sort]));
+      return (order === 'asc')
+        ? copyStudList
+          .sort((firstStudent, secondStudent) => firstStudent[sort]
+            .localeCompare(secondStudent[sort]))
+        : copyStudList
+          .sort((firstStudent, secondStudent) => secondStudent[sort]
+            .localeCompare(firstStudent[sort]));
     case SortType.Married:
     case SortType.Age:
-      if (order === 'asc') {
-        return copyStudList.sort((a, b) => Number(a[sort]) - Number(b[sort]));
-      }
-
-      return copyStudList.sort((a, b) => Number(b[sort]) - Number(a[sort]));
+      return (order === 'asc')
+        ? copyStudList
+          .sort((firstStudent, secondStudent) => Number(firstStudent[sort])
+          - Number(secondStudent[sort]))
+        : copyStudList
+          .sort((firstStudent, secondStudent) => Number(secondStudent[sort])
+          - Number(firstStudent[sort]));
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return copyStudList
-          .sort((a, b) => getAverage(a[sort]) - getAverage(b[sort]));
-      }
-
-      return copyStudList
-        .sort((a, b) => getAverage(b[sort]) - getAverage(a[sort]));
+      return (order === 'asc')
+        ? copyStudList
+          .sort((firstStudent, secondStudent) => getAverage(firstStudent[sort])
+          - getAverage(secondStudent[sort]))
+        : copyStudList
+          .sort((firstStudent, secondStudent) => getAverage(secondStudent[sort])
+          - getAverage(firstStudent[sort]));
 
     default:
       return 0;
