@@ -8,47 +8,43 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+const calculateAverage = (grades: number[]): number => {
+  return grades.reduce((a, b) => a + b) / grades.length;
+};
 
 export function sortStudents(
   students: Array<Student>,
   sortBy: SortType,
   order: SortOrder,
 ): Array<Student> {
-  // write your function
   const result: Array<Student> = [...students]
     .sort((a, b) => {
       switch (sortBy) {
         case SortType.Age:
-          return order === 'asc' ? a.age - b.age : b.age - a.age;
-
-        case SortType.Name:
-          return order === 'asc'
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
-
         case SortType.Married:
           return order === 'asc'
-            ? Number(a.married) - Number(b.married)
-            : Number(b.married) - Number(a.married);
+            ? Number(a[sortBy]) - Number(b[sortBy])
+            : Number(b[sortBy]) - Number(a[sortBy]);
 
+        case SortType.Name:
         case SortType.Surname:
           return order === 'asc'
-            ? a.surname.localeCompare(b.surname)
-            : b.surname.localeCompare(a.surname);
+            ? a[sortBy].localeCompare(b[sortBy])
+            : b[sortBy].localeCompare(a[sortBy]);
 
         case SortType.AverageGrade:
           return order === 'asc'
-            ? a.grades.reduce((acc, curr) => acc + curr, 0) / a.grades.length
-              - b.grades.reduce((acc, curr) => acc + curr, 0) / b.grades.length
+            ? calculateAverage(a.grades) - calculateAverage(b.grades)
             : b.grades.reduce((acc, curr) => acc + curr, 0) / b.grades.length
               - a.grades.reduce((acc, curr) => acc + curr, 0) / a.grades.length;
 
