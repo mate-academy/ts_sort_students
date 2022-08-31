@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverageAge(nums): number {
-  const result = nums.reduce((prev, current) => prev + current);
+function calculateAverageAge(nums: number[]): number {
+  const result = nums.reduce((prev: number, current: number) => prev + current);
 
   return result / nums.length;
 }
@@ -32,51 +32,34 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return copy.sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      return copy.sort((a, b) => b.name.localeCompare(a.name));
+      return copy.sort((a, b) => (order === 'asc'
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name)
+      ));
 
     case SortType.Surname:
-      if (order === 'asc') {
-        return copy.sort((a, b) => a.surname.localeCompare(b.surname));
-      }
-
-      return copy.sort((a, b) => b.surname.localeCompare(a.surname));
+      return copy.sort((a, b) => (order === 'asc'
+        ? a.surname.localeCompare(b.surname)
+        : b.surname.localeCompare(a.surname)
+      ));
 
     case SortType.Age:
-      if (order === 'asc') {
-        return copy.sort((a, b) => a.age - b.age);
-      }
-
-      return copy.sort((a, b) => b.age - a.age);
+      return copy.sort((a, b) => (order === 'asc'
+        ? a.age - b.age
+        : b.age - a.age
+      ));
 
     case SortType.Married:
-      if (order === 'asc') {
-        return copy.sort((a, b) => +a.married - +b.married);
-      }
-
-      return copy.sort((a, b) => +b.married - +a.married);
+      return copy.sort((a, b) => (order === 'asc'
+        ? +a.married - +b.married
+        : +b.married - +a.married
+      ));
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return copy
-          .sort(
-            (
-              a,
-              b,
-            ) => calculateAverageAge(a.grades) - calculateAverageAge(b.grades),
-          );
-      }
-
-      return copy
-        .sort(
-          (
-            a,
-            b,
-          ) => calculateAverageAge(b.grades) - calculateAverageAge(a.grades),
-        );
+      return copy.sort((a, b) => (order === 'asc'
+        ? calculateAverageAge(a.grades) - calculateAverageAge(b.grades)
+        : calculateAverageAge(b.grades) - calculateAverageAge(a.grades)
+      ));
 
     default:
       throw new Error('Sorry, wrong arguments');
