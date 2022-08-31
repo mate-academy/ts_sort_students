@@ -1,16 +1,58 @@
 
 export interface Student {
-  // describe Student interface
+  name:string;
+  surname:string;
+  age:number;
+  married:boolean;
+  grades:number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students:Student[],
+  sortBy:SortType,
+  order:SortOrder,
+):Student[] {
+  const studentsCopy:Student[] = [...students];
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  function getAverageGrade(grades:number[]):number {
+    return grades.reduce((sum, currentValue) => sum
+    + currentValue, 0) / grades.length;
+  }
+
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return studentsCopy.sort(
+        (first, second) => first[sortBy].localeCompare(second[sortBy]),
+      );
+    case SortType.Age:
+    case SortType.Married:
+      return studentsCopy.sort(
+        (first, second) => {
+          return order === 'asc'
+            ? +first[sortBy] - +second[sortBy]
+            : +second[sortBy] - +first[sortBy];
+        },
+      );
+    case SortType.AverageGrade:
+      return studentsCopy.sort(
+        (first, second) => {
+          return order === 'asc'
+            ? getAverageGrade(first[sortBy]) - getAverageGrade(second[sortBy])
+            : getAverageGrade(second[sortBy]) - getAverageGrade(first[sortBy]);
+        },
+      );
+    default:
+      throw Error('Incorrect sort type request');
+  }
 }
