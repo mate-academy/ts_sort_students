@@ -6,9 +6,6 @@ export interface Student {
   age: number,
   married: boolean,
   grades: number[],
-}
-
-interface StudentCopy extends Student {
   ag: number,
 }
 
@@ -26,8 +23,8 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Student[] | StudentCopy[] {
-  const studentsCopy: StudentCopy[] = [...students]
+): Student[] {
+  const studentsCopy: Student[] = [...students]
     .map((student) => ({...student, ag: student.grades.reduce((prev, cur) => prev + cur) / student.grades.length}));
 
   switch (sortBy) {
