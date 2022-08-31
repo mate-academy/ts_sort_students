@@ -6,7 +6,7 @@ export interface Student {
   grades: number[],
 }
 
-export interface StudentCopy extends Student {
+interface StudentCopy extends Student {
   ag: number,
 }
 
@@ -26,27 +26,21 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] | StudentCopy[] {
   const studentsCopy: StudentCopy[] = [...students]
-    .map((student) => ({
-      ...student,
-      ag: student.grades
-        .reduce((prev, cur) => prev + cur) / student.grades.length,
-    }));
+    .map((student) => ({...student, ag: student.grades.reduce((prev, cur) => prev + cur) / student.grades.length}));
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return studentsCopy
-        .sort((prev, cur) => (order === 'asc'
-          ? prev[sortBy].localeCompare(cur[sortBy])
-          : cur[sortBy].localeCompare(prev[sortBy])));
+      return studentsCopy.sort((prev, cur) => order === 'asc'
+        ? prev[sortBy].localeCompare(cur[sortBy])
+        : cur[sortBy].localeCompare(prev[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
     case SortType.AverageGrade:
-      return studentsCopy
-        .sort((prev, cur) => (order === 'asc'
-          ? +prev[sortBy] - +cur[sortBy]
-          : +cur[sortBy] - +prev[sortBy]));
+      return studentsCopy.sort((prev, cur) => order === 'asc'
+        ? +prev[sortBy] - +cur[sortBy]
+        : +cur[sortBy] - +prev[sortBy]);
 
     default:
       return students;
