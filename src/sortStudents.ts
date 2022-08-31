@@ -16,32 +16,32 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const getAverage = (value : number[]) : number => value
-  .reduce((prev, curr) => prev + curr, 0) / value.length;
+const getAverage = (grades : number[]) : number => grades
+  .reduce((sum, grade) => sum + grade, 0) / grades.length;
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ) : Student[] {
-  return [...students].sort((a, b) => {
+  return [...students].sort((studentA, studentB) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
+          ? +studentA[sortBy] - +studentB[sortBy]
+          : +studentB[sortBy] - +studentA[sortBy];
 
       case SortType.AverageGrade: {
         return order === 'asc'
-          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
-          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
+          ? getAverage(studentA[sortBy]) - getAverage(studentB[sortBy])
+          : getAverage(studentB[sortBy]) - getAverage(studentA[sortBy]);
       }
 
       default:
