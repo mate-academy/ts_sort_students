@@ -57,8 +57,6 @@ export function sortStudents(
           getAverageGrades(b.grades) - getAverageGrades(a.grades)));
 
     default:
-      break;
+      return arrSortStudents;
   }
-
-  return arrSortStudents;
 }
