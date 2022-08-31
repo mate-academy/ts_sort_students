@@ -1,5 +1,6 @@
 
 export interface Student {
+
   name: string,
   surname: string,
   age: number,
@@ -19,11 +20,12 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students:Student[],
-  sortBy:SortType,
-  order:SortOrder,
-):Student[] {
-  function averageGrades(grades:number[]):number {
+
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  function averageGrades(grades: number[]): number {
     return grades.reduce((sum, current) => sum + current) / grades.length;
   }
 
@@ -65,7 +67,8 @@ export function sortStudents(
           return averageGrades(secondStudent[sortBy])
           - averageGrades(firstStudent[sortBy]);
         });
+
     default:
-      throw new Error('all is bad');
+      throw new Error('Invalid sort type');
   }
 }
