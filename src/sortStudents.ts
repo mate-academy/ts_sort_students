@@ -26,19 +26,19 @@ export function sortStudents(
   };
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return order === 'asc'
         ? [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
         : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
-    case 'age':
-    case 'married':
+    case SortType.Age:
+    case SortType.Married:
       return order === 'asc'
         ? [...students].sort((a, b) => +a[sortBy] - +b[sortBy])
         : [...students].sort((a, b) => +b[sortBy] - +a[sortBy]);
 
-    case 'grades':
+    case SortType.AverageGrade:
       return order === 'asc'
         ? [...students].sort((a, b) => {
           return calulateAverge(a[sortBy]) - calulateAverge(b[sortBy]);
