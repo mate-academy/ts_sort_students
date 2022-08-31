@@ -22,7 +22,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function averageStudentsGrade(student: Student): number {
+  function getAverageGrade(student: Student): number {
     return student.grades
       .reduce((sum: number, el: number) => (
         sum + el
@@ -61,15 +61,15 @@ export function sortStudents(
       return order === 'asc'
         ? studentsCopy
           .sort((student1: Student, student2: Student) => {
-            const average1 = averageStudentsGrade(student1);
-            const average2 = averageStudentsGrade(student2);
+            const average1 = getAverageGrade(student1);
+            const average2 = getAverageGrade(student2);
 
             return average1 - average2;
           })
         : studentsCopy
           .sort((student1: Student, student2: Student) => {
-            const average1 = averageStudentsGrade(student1);
-            const average2 = averageStudentsGrade(student2);
+            const average1 = getAverageGrade(student1);
+            const average2 = getAverageGrade(student2);
 
             return average2 - average1;
           });
