@@ -8,16 +8,16 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'Name',
+  Surname = 'Surname',
+  Age = 'Age',
+  Married = 'Married',
+  AverageGrade = 'AverageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverage(grades: number[]): number {
+function getAver(grades: number[]): number {
   const average = grades.reduce((sum, iteracionItem) => sum + iteracionItem, 0);
 
   return average / grades.length;
@@ -33,28 +33,52 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       return order === 'asc'
-        ? copy.sort((a, b) => a.name.localeCompare(b.name))
-        : copy.sort((a, b) => b.name.localeCompare(a.name));
+        ? copy.sort((firstStudent, secondStudent) => {
+          return firstStudent.name.localeCompare(secondStudent.name);
+        })
+        : copy.sort((firstStudent, secondStudent) => {
+          return secondStudent.name.localeCompare(firstStudent.name);
+        });
 
     case SortType.Surname:
       return order === 'asc'
-        ? copy.sort((a, b) => a.surname.localeCompare(b.surname))
-        : copy.sort((a, b) => b.surname.localeCompare(a.surname));
+        ? copy.sort((firstStudent, secondStudent) => {
+          return firstStudent.surname.localeCompare(secondStudent.surname);
+        })
+        : copy.sort((firstStudent, secondStudent) => {
+          return secondStudent.surname.localeCompare(firstStudent.surname);
+        });
 
     case SortType.Age:
       return order === 'asc'
-        ? copy.sort((a, b) => a.age - b.age)
-        : copy.sort((a, b) => b.age - a.age);
+        ? copy.sort((firstStudent, secondStudent) => {
+          return firstStudent.age - secondStudent.age;
+        })
+        : copy.sort((firstStudent, secondStudent) => {
+          return secondStudent.age - firstStudent.age;
+        });
 
     case SortType.Married:
       return order === 'asc'
-        ? copy.sort((a, b) => Number(a.married) - Number(b.married))
-        : copy.sort((a, b) => Number(b.married) - Number(a.married));
+        ? copy.sort((firstStudent, secondStudent) => {
+          return Number(firstStudent.married) - Number(secondStudent.married);
+        })
+        : copy.sort((firstStudent, secondStudent) => {
+          return Number(secondStudent.married) - Number(firstStudent.married);
+        });
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? copy.sort((a, b) => getAverage(a.grades) - getAverage(b.grades))
-        : copy.sort((a, b) => getAverage(b.grades) - getAverage(a.grades));
+        ? copy.sort((firstStud, secondStud) => {
+          const aver = getAver(firstStud.grades) - getAver(secondStud.grades);
+
+          return aver;
+        })
+        : copy.sort((firstStud, secondStud) => {
+          const aver = getAver(secondStud.grades) - getAver(firstStud.grades);
+
+          return aver;
+        });
 
     default:
       return copy;
