@@ -45,10 +45,10 @@ export function sortStudents(
       return order === 'asc'
         ? listOfStudents
           .sort((studentOne, studentTwo) => (
-            studentOne[sortBy] - studentTwo[sortBy]))
+            +studentOne[sortBy] - +studentTwo[sortBy]))
         : listOfStudents
           .sort((studentOne, studentTwo) => (
-            studentTwo[sortBy] - studentOne[sortBy]));
+            +studentTwo[sortBy] - +studentOne[sortBy]));
 
     default:
       return order === 'asc'
