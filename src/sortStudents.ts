@@ -1,5 +1,5 @@
 function getAverage([...args]: number[]): number {
-  return args.reduce((x, y) => x + y, 0) / args.length;
+  return args.reduce((sum, current) => sum + current, 0) / args.length;
 }
 
 export interface Student {
