@@ -34,7 +34,7 @@ export function sortStudents(
     case SortType.Surname:
       return order === 'asc'
         ? copyOfStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copyOfStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+        : copyOfStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
