@@ -3,7 +3,7 @@ export interface Student {
   name: string;
   surname: string;
   age: number;
-  married?: true,
+  married: boolean,
   grades: number[],
 }
 
@@ -22,44 +22,41 @@ function getAverageGrade(grades: number[]): number {
 export type SortOrder = 'asc'|'desc';
 
 export function sortStudents(
-  students:Student[],
-  sortBy:SortType,
-  order:SortOrder,
-):Student[] {
-  let arrCopyStudents:Student[] = [...students];
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const arrCopyStudents:Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      arrCopyStudents = (order === 'asc')
+      return order === 'asc'
         ? arrCopyStudents
-          .sort((a:Student, b:Student) => a[sortBy].localeCompare(b[sortBy]))
+          .sort((student1, student2) => (
+            student1[sortBy].localeCompare(student2[sortBy])))
         : arrCopyStudents
-          .sort((a:Student, b:Student) => b[sortBy].localeCompare(a[sortBy]));
-      break;
+          .sort((student1, student2) => (
+            student2[sortBy].localeCompare(student1[sortBy])));
 
     case SortType.AverageGrade:
-      arrCopyStudents = (order === 'asc')
-        ? arrCopyStudents.sort((a:Student, b:Student) => (
-          getAverageGrade(a.grades) - getAverageGrade(b.grades)))
+      return order === 'asc'
+        ? arrCopyStudents.sort((student1, student2) => (
+          getAverageGrade(student1.grades) - getAverageGrade(student2.grades)))
 
-        : arrCopyStudents.sort((a:Student, b:Student) => (
-          getAverageGrade(b.grades) - getAverageGrade(a.grades)));
-      break;
+        : arrCopyStudents.sort((student1, student2) => (
+          getAverageGrade(student2.grades) - getAverageGrade(student1.grades)));
 
     case SortType.Age:
     case SortType.Married:
-      arrCopyStudents = (order === 'asc')
+      return order === 'asc'
         ? arrCopyStudents
-          .sort((a:Student, b:Student) => (
-            Number(a[sortBy]) - Number(b[sortBy])))
+          .sort((student1, student2) => (
+            Number(student1[sortBy]) - Number(student2[sortBy])))
         : arrCopyStudents
-          .sort((a:Student, b:Student) => (
-            Number(b[sortBy]) - Number(a[sortBy])));
-      break;
+          .sort((student1, student2) => (
+            Number(student2[sortBy]) - Number(student1[sortBy])));
 
     default: throw new Error('Impossible! But parameter is wrong.');
   }
-
-  return arrCopyStudents;
 }
