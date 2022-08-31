@@ -28,29 +28,24 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  return copyStudents.sort((a, b) => {
-    const studentA = a[sortBy];
-    const studentB = b[sortBy];
+  return copyStudents.sort((studentA: Student, studentB: Student) => {
+    switch (sortBy) {
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +studentA[sortBy] - +studentB[sortBy]
+          : +studentB[sortBy] - +studentA[sortBy];
 
-    if (typeof studentA === 'number' && typeof studentB === 'number') {
-      return order === 'asc' ? studentA - studentB : studentB - studentA;
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
+
+      default:
+        return order === 'asc'
+          ? calcAverage(studentA[sortBy]) - calcAverage(studentB[sortBy])
+          : calcAverage(studentB[sortBy]) - calcAverage(studentA[sortBy]);
     }
-
-    if (typeof studentA === 'string' && typeof studentB === 'string') {
-      return order === 'asc' ? studentA.localeCompare(studentB)
-        : studentB.localeCompare(studentA);
-    }
-
-    if (typeof studentA === 'object' && typeof studentB === 'object') {
-      return order === 'asc'
-        ? calcAverage(studentA) - calcAverage(studentB)
-        : calcAverage(studentB) - calcAverage(studentA);
-    }
-
-    if (typeof studentA === 'boolean' && typeof studentB === 'boolean') {
-      return order === 'asc' ? +studentA - +studentB : +studentB - +studentA;
-    }
-
-    return 0;
   });
 }
