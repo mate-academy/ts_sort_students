@@ -6,7 +6,7 @@ export interface Student {
   age: number,
   married: boolean,
   grades: number[],
-  ag?: number
+  ag?: number,
 }
 
 export enum SortType {
@@ -14,7 +14,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'ag'
+  AverageGrade = 'ag',
 }
 
 export type SortOrder = 'asc' | 'desc';
