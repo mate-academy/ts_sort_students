@@ -25,7 +25,9 @@ export function sortStudents(
   const studentsCopy: Student[] = [...students];
 
   function getAverageGrade(grades: number[]): number {
-    const gradesSum = grades.reduce((s: number, c: number) => s + c);
+    const gradesSum = grades.reduce((storage: number, current: number) => {
+      return storage + current;
+    });
 
     return gradesSum / grades.length;
   }
