@@ -21,8 +21,8 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-const getAverage = (value : number[]): number => value
-  .reduce((a, b) => a + b, 0) / value.length;
+const getAverage = (dataArray : number[]): number => dataArray
+  .reduce((sum, current) => sum + current, 0) / dataArray.length;
 
 export function sortStudents(
   students: Student[],
@@ -30,25 +30,35 @@ export function sortStudents(
   order: SortOrder,
 ):Student[] | number {
   // write your function
+  const copyStudetsArray = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? copyStudetsArray
+          .sort((prevStudent, nextStudent) => prevStudent[sortBy]
+            .localeCompare(nextStudent[sortBy]))
+        : copyStudetsArray
+          .sort((prevStudent, nextStudent) => nextStudent[sortBy]
+            .localeCompare(prevStudent[sortBy]));
 
     case SortType.AverageGrade:
-      return [...students].sort((a, b) => (order === 'asc'
-        ? getAverage(a.grades) - getAverage(b.grades)
-        : getAverage(b.grades) - getAverage(a.grades)
-      ));
+      return copyStudetsArray
+        .sort((prevStudent, nextStudent) => (order === 'asc'
+          ? getAverage(prevStudent.grades) - getAverage(nextStudent.grades)
+          : getAverage(nextStudent.grades) - getAverage(prevStudent.grades)
+        ));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? [...students].sort((a, b) => +(a[sortBy]) - +(b[sortBy]))
-        : [...students].sort((a, b) => +(b[sortBy]) - +(a[sortBy]));
+        ? copyStudetsArray
+          .sort((prevStudent, nextStudent) => +(prevStudent[sortBy])
+          - +(nextStudent[sortBy]))
+        : copyStudetsArray
+          .sort((prevStudent, nextStudent) => +(nextStudent[sortBy])
+          - +(prevStudent[sortBy]));
 
     default: throw new Error('Please,enter valid param');
   }
