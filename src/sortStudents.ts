@@ -1,4 +1,9 @@
 // import { getEffectiveConstraintOfTypeParameter } from 'typescript';
+function getAvarage(arr: number[]): number {
+  return arr.reduce((sum: number, num: number) => {
+    return sum + num;
+  }) / arr.length;
+}
 
 export interface Student {
   name: string;
@@ -44,15 +49,9 @@ export function sortStudents(
           : +student2[sortBy] - +student1[sortBy];
 
       case SortType.AverageGrade: {
-        const prevAvarage = student1[sortBy]
-          .reduce((sum: number, num: number) => {
-            return sum + num;
-          }) / student1[sortBy].length;
+        const prevAvarage = getAvarage(student1[sortBy]);
 
-        const nextAvarage = student2[sortBy]
-          .reduce((sum: number, num: number) => {
-            return sum + num;
-          }) / student2[sortBy].length;
+        const nextAvarage = getAvarage(student2[sortBy]);
 
         return order === 'asc'
           ? (prevAvarage - nextAvarage)
