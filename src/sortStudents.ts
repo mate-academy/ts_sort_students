@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export interface Student {
   name: string,
   surname: string,
@@ -21,29 +22,30 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newStudents: Student[] = [...students];
-
   const average = (numArr: number[]): number => numArr.reduce(
-    (sum: number, el: number) => sum + el, 0,
+    (sum: number, element: number) => sum + element, 0,
   ) / numArr.length;
+
+  const newStudents: Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? newStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : newStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? newStudents.sort((firstStudent, secondStudent) => firstStudent[sortBy].localeCompare(secondStudent[sortBy]))
+        : newStudents.sort((firstStudent, secondStudent) => secondStudent[sortBy].localeCompare(firstStudent[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? newStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : newStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+        ? newStudents.sort((firstStudent, secondStudent) => +firstStudent[sortBy] - +secondStudent[sortBy])
+        : newStudents.sort((firstStudent, secondStudent) => +secondStudent[sortBy] - +firstStudent[sortBy]);
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? newStudents.sort((a, b) => average(a.grades) - average(b.grades))
-        : newStudents.sort((a, b) => average(b.grades) - average(a.grades));
+
+        ? newStudents.sort((firstStudent, secondStudent) => average(firstStudent.grades) - average(secondStudent.grades))
+        : newStudents.sort((firstStudent, secondStudent) => average(secondStudent.grades) - average(firstStudent.grades));
 
     default:
       return students;
