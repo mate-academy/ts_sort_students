@@ -33,22 +33,38 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? copyOfStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copyOfStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? copyOfStudents.sort(
+          (firstStudent, secondStudent) => firstStudent[sortBy]
+            .localeCompare(secondStudent[sortBy]),
+        )
+        : copyOfStudents.sort(
+          (firstStudent, secondStudent) => secondStudent[sortBy]
+            .localeCompare(firstStudent[sortBy]),
+        );
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? copyOfStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : copyOfStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+        ? copyOfStudents.sort(
+          (firstStudent, secondStudent) => +firstStudent[sortBy]
+          - +secondStudent[sortBy],
+        )
+        : copyOfStudents.sort(
+          (firstStudent, secondStudent) => +secondStudent[sortBy]
+          - +firstStudent[sortBy],
+        );
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? copyOfStudents.sort(
-          (a, b) => calculateAverage(a[sortBy]) - calculateAverage(b[sortBy]),
+          (firstStudent, secondStudent) => (
+            calculateAverage(firstStudent[sortBy])
+            - calculateAverage(secondStudent[sortBy])),
         )
         : copyOfStudents.sort(
-          (a, b) => calculateAverage(b[sortBy]) - calculateAverage(a[sortBy]),
+          (firstStudent, secondStudent) => (
+            calculateAverage(secondStudent[sortBy])
+            - calculateAverage(firstStudent[sortBy])),
         );
 
     default:
