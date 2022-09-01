@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 export interface Student {
   name: string,
   surname: string,
@@ -18,7 +20,7 @@ export type SortOrder = 'asc' | 'desc';
 
 const getAverageGrade = (grades: number[]): number => {
   return grades
-    .reduce((prev, int) => prev + int, 0) / grades.length;
+    .reduce((sum, grade) => sum + grade, 0) / grades.length;
 };
 
 export function sortStudents(
@@ -32,27 +34,25 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return sortorder === 'asc'
-        ? copyStudents.sort((first, next) => first[sortBy]
-          .localeCompare(next[sortBy]))
-        : copyStudents.sort((first, next) => next[sortBy]
+        ? copyStudents.sort((first, second) => first[sortBy]
+          .localeCompare(second[sortBy]))
+        : copyStudents.sort((first, second) => second[sortBy]
           .localeCompare(first[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
       return sortorder === 'asc'
         ? copyStudents
-          .sort((first, next) => Number(first[sortBy]) - Number(next[sortBy]))
+          .sort((first, second) => Number(first[sortBy]) - Number(second[sortBy]))
         : copyStudents
-          .sort((first, next) => Number(next[sortBy]) - Number(first[sortBy]));
-
-      /* eslint-disable max-len */
+          .sort((first, second) => Number(second[sortBy]) - Number(first[sortBy]));
 
     case SortType.AverageGrade:
       return sortorder === 'asc'
         ? copyStudents
-          .sort((first, next) => getAverageGrade(first[sortBy]) - getAverageGrade(next[sortBy]))
+          .sort((first, second) => getAverageGrade(first[sortBy]) - getAverageGrade(second[sortBy]))
         : copyStudents
-          .sort((first, next) => getAverageGrade(next[sortBy]) - getAverageGrade(first[sortBy]));
+          .sort((first, second) => getAverageGrade(second[sortBy]) - getAverageGrade(first[sortBy]));
 
     default:
 
