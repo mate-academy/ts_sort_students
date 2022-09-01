@@ -41,32 +41,27 @@ export function sortStudents(
           .sort((prevStudent, nextStudent) => (
             getAvarageGrade(nextStudent.grades)
             - getAvarageGrade(prevStudent.grades)));
-
     case SortType.Age:
-      return order === 'asc'
-        ? studentsCopy
-          .sort((prevStudent, nextStudent) => (
-            prevStudent.age - nextStudent.age))
-        : studentsCopy
-          .sort((prevStudent, nextStudent) => (
-            nextStudent.age - prevStudent.age));
-
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
         ? studentsCopy
           .sort((prevStudent, nextStudent) => (
-            prevStudent[sortBy].localeCompare(nextStudent[sortBy])))
+            prevStudent[sortBy]
+              .toString()
+              .localeCompare(nextStudent[sortBy].toString())))
         : studentsCopy
           .sort((prevStudent, nextStudent) => (
-            nextStudent[sortBy].localeCompare(prevStudent[sortBy])));
+            nextStudent[sortBy]
+              .toString()
+              .localeCompare(prevStudent[sortBy].toString())));
     default:
       return order === 'asc'
         ? studentsCopy
           .sort((prevStudent, nextStudent) => (
-            Number(prevStudent.married) - Number(nextStudent.married)))
+            Number(prevStudent[sortBy]) - Number(nextStudent[sortBy])))
         : studentsCopy
           .sort((prevStudent, nextStudent) => (
-            Number(nextStudent.married) - Number(prevStudent.married)));
+            Number(nextStudent[sortBy]) - Number(prevStudent[sortBy])));
   }
 }
