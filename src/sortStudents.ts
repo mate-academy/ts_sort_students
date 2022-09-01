@@ -19,8 +19,8 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-const average = (grades: number[]): number => {
-  return grades.reduce((a, b) => a + b) / grades.length;
+const getAverageGrade = (grades: number[]): number => {
+  return grades.reduce((sum, grade) => sum + grade) / grades.length;
 };
 
 export function sortStudents(
@@ -34,28 +34,30 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? arrayStudent.sort((init, current) => (
-          init[sortBy].localeCompare(current[sortBy])))
-        : arrayStudent.sort((init, current) => (
-          current[sortBy].localeCompare(init[sortBy])));
+        ? arrayStudent.sort((firstStudent, secondStudent) => (
+          firstStudent[sortBy].localeCompare(secondStudent[sortBy])))
+        : arrayStudent.sort((firstStudent, secondStudent) => (
+          secondStudent[sortBy].localeCompare(firstStudent[sortBy])));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? arrayStudent.sort((init, current) => (
-          Number(init[sortBy]) - Number(current[sortBy])))
-        : arrayStudent.sort((init, current) => (
-          Number(current[sortBy]) - Number(init[sortBy])));
+        ? arrayStudent.sort((firstStudent, secondStudent) => (
+          Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])))
+        : arrayStudent.sort((firstStudent, secondStudent) => (
+          Number(secondStudent[sortBy]) - Number(firstStudent[sortBy])));
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? arrayStudent.sort(
-          (init, current) => (
-            average(init[sortBy]) - average(current[sortBy])),
+          (firstStudent, secondStudent) => (
+            getAverageGrade(firstStudent[sortBy])
+            - getAverageGrade(secondStudent[sortBy])),
         )
         : arrayStudent.sort(
-          (init, current) => (
-            average(current[sortBy]) - average(init[sortBy])),
+          (firstStudent, secondStudent) => (
+            getAverageGrade(secondStudent[sortBy])
+            - getAverageGrade(firstStudent[sortBy])),
         );
 
     default:
