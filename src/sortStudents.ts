@@ -31,32 +31,37 @@ export function sortStudents(
     / student.grades.length;
   });
 
-  if (order === 'asc') {
-    sortedStudens.sort((first: Student, second: Student) => {
-      if (first[sortBy] < second[sortBy]) {
-        return -1;
-      }
+  switch (order) {
+    case 'asc':
+      sortedStudens.sort((first: Student, second: Student) => {
+        if (first[sortBy] < second[sortBy]) {
+          return -1;
+        }
 
-      if (first[sortBy] > second[sortBy]) {
-        return 1;
-      }
+        if (first[sortBy] > second[sortBy]) {
+          return 1;
+        }
 
-      return 0;
-    });
-  }
+        return 0;
+      });
+      break;
 
-  if (order === 'desc') {
-    sortedStudens.sort((first: Student, second: Student) => {
-      if (first[sortBy] > second[sortBy]) {
-        return -1;
-      }
+    case 'desc':
+      sortedStudens.sort((first: Student, second: Student) => {
+        if (first[sortBy] > second[sortBy]) {
+          return -1;
+        }
 
-      if (first[sortBy] < second[sortBy]) {
-        return 1;
-      }
+        if (first[sortBy] < second[sortBy]) {
+          return 1;
+        }
 
-      return 0;
-    });
+        return 0;
+      });
+      break;
+
+    default:
+      return sortedStudens;
   }
 
   return sortedStudens;
