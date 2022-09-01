@@ -52,15 +52,15 @@ export function sortStudents(
             nextStudent.age - prevStudent.age));
 
     case SortType.Name:
+    case SortType.Surname:
       return order === 'asc'
         ? studentsCopy
           .sort((prevStudent, nextStudent) => (
-            prevStudent.name.localeCompare(nextStudent.name)))
+            prevStudent[sortBy].localeCompare(nextStudent[sortBy])))
         : studentsCopy
           .sort((prevStudent, nextStudent) => (
-            nextStudent.name.localeCompare(prevStudent.name)));
-
-    case SortType.Married:
+            nextStudent[sortBy].localeCompare(prevStudent[sortBy])));
+    default:
       return order === 'asc'
         ? studentsCopy
           .sort((prevStudent, nextStudent) => (
@@ -68,14 +68,5 @@ export function sortStudents(
         : studentsCopy
           .sort((prevStudent, nextStudent) => (
             Number(nextStudent.married) - Number(prevStudent.married)));
-
-    default:
-      return order === 'asc'
-        ? studentsCopy
-          .sort((prevStudent, nextStudent) => (
-            prevStudent.surname.localeCompare(nextStudent.surname)))
-        : studentsCopy
-          .sort((prevStudent, nextStudent) => (
-            nextStudent.surname.localeCompare(prevStudent.surname)));
   }
 }
