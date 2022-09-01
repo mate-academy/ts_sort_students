@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export interface Student {
   name: string,
   surname: string,
@@ -23,30 +24,34 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const average = (array: number[]): number => array
-    .reduce((total: number, item: number) => total + item, 0) / array.length;
+  const getAverage = (array: number[]): number => array
+    .reduce((total: number, grade: number) => total + grade, 0) / array.length;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
         ? studentsCopy
-          .sort((prev, next) => prev[sortBy].localeCompare(next[sortBy]))
+          .sort((firstStudent, secondStudent) => firstStudent[sortBy]
+            .localeCompare(secondStudent[sortBy]))
         : studentsCopy
-          .sort((prev, next) => next[sortBy].localeCompare(prev[sortBy]));
+          .sort((firstStudent, secondStudent) => secondStudent[sortBy]
+            .localeCompare(firstStudent[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? studentsCopy.sort((prev, next) => +prev[sortBy] - +next[sortBy])
-        : studentsCopy.sort((prev, next) => +next[sortBy] - +prev[sortBy]);
+        ? studentsCopy
+          .sort((firstStudent, secondStudent) => +firstStudent[sortBy] - +secondStudent[sortBy])
+        : studentsCopy
+          .sort((firstStudent, secondStudent) => +secondStudent[sortBy] - +firstStudent[sortBy]);
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? studentsCopy
-          .sort((prev, next) => average(prev.grades) - average(next.grades))
+          .sort((firstStudent, secondStudent) => getAverage(firstStudent.grades) - getAverage(secondStudent.grades))
         : studentsCopy
-          .sort((prev, next) => average(next.grades) - average(prev.grades));
+          .sort((firstStudent, secondStudent) => getAverage(secondStudent.grades) - getAverage(firstStudent.grades));
 
     default:
       return students;
