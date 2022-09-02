@@ -50,15 +50,18 @@ export function sortStudents(
           .sort((studentOne, studentTwo) => (
             +studentTwo[sortBy] - +studentOne[sortBy]));
 
-    default:
+    case SortType.AverageGrade:
       return order === 'asc'
         ? listOfStudents
           .sort((studentOne, studentTwo) => (
             averageGrades(studentOne[sortBy])
-            - averageGrades(studentTwo[sortBy])))
+           - averageGrades(studentTwo[sortBy])))
         : listOfStudents
           .sort((studentOne, studentTwo) => (
             averageGrades(studentTwo[sortBy])
-            - averageGrades(studentOne[sortBy])));
+          - averageGrades(studentOne[sortBy])));
+
+    default:
+      throw new Error('undefined sort type');
   }
 }
