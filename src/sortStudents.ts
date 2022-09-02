@@ -23,7 +23,7 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const average = (numArr: number[]): number => numArr.reduce(
-    (sum: number, element: number) => sum + element, 0,
+    (sum: number, currentElement: number) => sum + currentElement, 0,
   ) / numArr.length;
 
   const newStudents: Student[] = [...students];
