@@ -58,6 +58,6 @@ export function sortStudents(
           calculateAvarageGrade(second[sortBy]) - calculateAvarageGrade(first[sortBy])));
 
     default:
-      return copyStudents;
+      throw new Error('Unknown sort type');
   }
 }
