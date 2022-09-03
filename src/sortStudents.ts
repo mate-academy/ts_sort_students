@@ -29,48 +29,21 @@ export function sortStudents(
       grade2: number) => grade1 + grade2, 0) / grades.length;
   }
 
-  switch (true) {
-    case ((sortBy === SortType.Name || sortBy === SortType.Surname)
-      && order === 'asc'): {
-      studentsCopy.sort((student1: Student,
-        student2: Student) => String(student1[sortBy])
-        .localeCompare(String(student2[sortBy])));
-      break;
+  return studentsCopy.sort((student1: Student, student2: Student) => {
+    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
+      return (order === 'asc')
+        ? String(student1[sortBy]).localeCompare(String(student2[sortBy]))
+        : String(student2[sortBy]).localeCompare(String(student1[sortBy]));
     }
 
-    case ((sortBy === SortType.Name || sortBy === SortType.Surname)
-      && order === 'desc'): {
-      studentsCopy.sort((student1: Student,
-        student2: Student) => String(student2[sortBy])
-        .localeCompare(String(student1[sortBy])));
-      break;
+    if (sortBy === SortType.Age || sortBy === SortType.Married) {
+      return (order === 'asc')
+        ? +(student1[sortBy]) - +(student2[sortBy])
+        : +(student2[sortBy]) - +(student1[sortBy]);
     }
 
-    case ((sortBy === SortType.Age || sortBy === SortType.Married)
-      && order === 'asc'): {
-      studentsCopy.sort((student1: Student,
-        student2: Student) => +(student1[sortBy]) - +(student2[sortBy]));
-      break;
-    }
-
-    case ((sortBy === SortType.Age || sortBy === SortType.Married)
-      && order === 'desc'): {
-      studentsCopy.sort((student1: Student,
-        student2: Student) => +(student2[sortBy]) - +(student1[sortBy]));
-      break;
-    }
-
-    case (sortBy === SortType.AverageGrade && order === 'asc'): {
-      studentsCopy.sort((student1: Student,
-        student2: Student) => countAverage(student1.grades)
-        - countAverage(student2.grades));
-      break;
-    }
-
-    default: studentsCopy.sort((student1: Student,
-      student2: Student) => countAverage(student2.grades)
-      - countAverage(student1.grades));
-  }
-
-  return studentsCopy;
+    return (order === 'asc')
+      ? countAverage(student1[sortBy]) - countAverage(student2[sortBy])
+      : countAverage(student2[sortBy]) - countAverage(student1[sortBy]);
+  });
 }
