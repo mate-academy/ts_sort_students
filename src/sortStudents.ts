@@ -28,64 +28,33 @@ export function sortStudents(
 ): Student[] {
   const newStudent = [...students];
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    if (order === 'asc') {
-      return newStudent
-        .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]));
-    }
+  newStudent.sort((studentA, studentB) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
+      default: throw new Error('Error');
 
-    if (order === 'desc') {
-      return newStudent
-        .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
-    }
-  }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +studentA[sortBy] - +studentB[sortBy]
+          : +studentB[sortBy] - +studentA[sortBy];
 
-  if (sortBy === SortType.Age) {
-    if (order === 'asc') {
-      return newStudent.sort((a: Student, b: Student) => a[sortBy] - b[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? studentA.grades.reduce((acc, val) => acc + val, 0)
+          / studentA.grades.length
+            - studentB.grades.reduce((acc, val) => acc + val, 0)
+            / studentB.grades.length
+          : studentB.grades.reduce((acc, val) => acc + val, 0)
+          / studentB.grades.length
+          - studentA.grades.reduce((acc, val) => acc + val, 0)
+          / studentA.grades.length;
     }
-
-    if (order === 'desc') {
-      return newStudent.sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
-    }
-  }
-
-  if (sortBy === SortType.Married) {
-    const married: Student[] = newStudent
-      .filter((person: Student) => person.married === true);
-    const notMarried: Student[] = newStudent
-      .filter((person: Student) => person.married === false);
-
-    if (order === 'asc') {
-      return [...notMarried, ...married];
-    }
-
-    if (order === 'desc') {
-      return [...married, ...notMarried];
-    }
-  }
-
-  if (sortBy === SortType.AverageGrade) {
-    if (order === 'asc') {
-      return newStudent.sort((a: Student, b: Student) => {
-        return a.grades
-          .reduce((acc: number, val: number) => acc + val, 0) / a.grades.length
-          - b.grades
-            .reduce((acc: number, val: number) => acc + val, 0)
-            / b.grades.length;
-      });
-    }
-
-    if (order === 'desc') {
-      return newStudent.sort((a: Student, b: Student) => {
-        return b.grades
-          .reduce((acc: number, val: number) => acc + val, 0) / b.grades.length
-          - a.grades
-            .reduce((acc: number, val: number) => acc + val, 0)
-            / a.grades.length;
-      });
-    }
-  }
+  });
 
   return newStudent;
 }
