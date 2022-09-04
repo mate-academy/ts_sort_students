@@ -45,13 +45,14 @@ export function sortStudents(
         return (order === 'asc'
           ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
           : firstStudent[sortBy].localeCompare(secondStudent[sortBy]));
-
-      default:
+      case SortType.AverageGrade:
         return (order === 'asc'
           ? getAverageGrade(firstStudent.grades)
-        - getAverageGrade(secondStudent.grades)
+      - getAverageGrade(secondStudent.grades)
           : getAverageGrade(secondStudent.grades)
-        - getAverageGrade(firstStudent.grades));
+      - getAverageGrade(firstStudent.grades));
+      default:
+        throw new Error('Wrong Sort.type');
     }
   });
 
