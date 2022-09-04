@@ -1,7 +1,7 @@
 
 function getAvarageGrade(gradeArr: number[]): number {
-  return gradeArr.reduce((prev, item) => {
-    return prev + item;
+  return gradeArr.reduce((total, grade) => {
+    return total + grade;
   }, 0) / gradeArr.length;
 }
 
@@ -55,7 +55,7 @@ export function sortStudents(
             nextStudent[sortBy]
               .toString()
               .localeCompare(prevStudent[sortBy].toString())));
-    default:
+    case SortType.Married:
       return order === 'asc'
         ? studentsCopy
           .sort((prevStudent, nextStudent) => (
@@ -63,5 +63,7 @@ export function sortStudents(
         : studentsCopy
           .sort((prevStudent, nextStudent) => (
             Number(nextStudent[sortBy]) - Number(prevStudent[sortBy])));
+    default:
+      throw new Error('Invalid sort type');
   }
 }
