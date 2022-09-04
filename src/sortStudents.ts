@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -33,35 +33,35 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       return copy.sort((a, b) => (order === 'asc'
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name)
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy])
       ));
 
     case SortType.Surname:
       return copy.sort((a, b) => (order === 'asc'
-        ? a.surname.localeCompare(b.surname)
-        : b.surname.localeCompare(a.surname)
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy])
       ));
 
     case SortType.Age:
       return copy.sort((a, b) => (order === 'asc'
-        ? a.age - b.age
-        : b.age - a.age
+        ? a[sortBy] - b[sortBy]
+        : b[sortBy] - a[sortBy]
       ));
 
     case SortType.Married:
       return copy.sort((a, b) => (order === 'asc'
-        ? +a.married - +b.married
-        : +b.married - +a.married
+        ? +a[sortBy] - +b[sortBy]
+        : +b[sortBy] - +a[sortBy]
       ));
 
     case SortType.AverageGrade:
       return copy.sort((a, b) => (order === 'asc'
-        ? calculateAverageAge(a.grades) - calculateAverageAge(b.grades)
-        : calculateAverageAge(b.grades) - calculateAverageAge(a.grades)
+        ? calculateAverageAge(a[sortBy]) - calculateAverageAge(b[sortBy])
+        : calculateAverageAge(b[sortBy]) - calculateAverageAge(a[sortBy])
       ));
 
     default:
-      throw new Error('Sorry, wrong arguments');
+      throw new Error('Sorry, wrong arguments !!!');
   }
 }
