@@ -1,16 +1,69 @@
 
+function getAvarageGrade(gradeArr: number[]): number {
+  return gradeArr.reduce((total, grade) => {
+    return total + grade;
+  }, 0) / gradeArr.length;
+}
+
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const studentsCopy: Student[] = [...students];
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  switch (sortBy) {
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            getAvarageGrade(prevStudent.grades)
+            - getAvarageGrade(nextStudent.grades)))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            getAvarageGrade(nextStudent.grades)
+            - getAvarageGrade(prevStudent.grades)));
+    case SortType.Age:
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            prevStudent[sortBy]
+              .toString()
+              .localeCompare(nextStudent[sortBy].toString())))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            nextStudent[sortBy]
+              .toString()
+              .localeCompare(prevStudent[sortBy].toString())));
+    case SortType.Married:
+      return order === 'asc'
+        ? studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            Number(prevStudent[sortBy]) - Number(nextStudent[sortBy])))
+        : studentsCopy
+          .sort((prevStudent, nextStudent) => (
+            Number(nextStudent[sortBy]) - Number(prevStudent[sortBy])));
+    default:
+      throw new Error('Invalid sort type');
+  }
 }
