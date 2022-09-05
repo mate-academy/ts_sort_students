@@ -32,16 +32,19 @@ export function sortStudents(
   });
 
   sortedStudens.sort((firstStudent: Student, secondStudent: Student) => {
-    switch (order) {
-      case 'asc':
-        return firstStudent[sortBy] < secondStudent[sortBy]
-          ? -1
-          : 1;
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-      case 'desc':
-        return firstStudent[sortBy] > secondStudent[sortBy]
-          ? -1
-          : 1;
+      case SortType.Age:
+      case SortType.Married:
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
 
       default:
         return 0;
