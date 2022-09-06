@@ -22,28 +22,29 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = JSON.parse(JSON.stringify(students));
-
   function countAverage(grades: number[]): number {
     return grades.reduce((grade1: number,
       grade2: number) => grade1 + grade2, 0) / grades.length;
   }
 
-  return studentsCopy.sort((student1: Student, student2: Student) => {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      return (order === 'asc')
-        ? String(student1[sortBy]).localeCompare(String(student2[sortBy]))
-        : String(student2[sortBy]).localeCompare(String(student1[sortBy]));
-    }
+  return [...students].sort((student1: Student, student2: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return (order === 'asc')
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
 
-    if (sortBy === SortType.Age || sortBy === SortType.Married) {
-      return (order === 'asc')
-        ? +(student1[sortBy]) - +(student2[sortBy])
-        : +(student2[sortBy]) - +(student1[sortBy]);
-    }
+      case SortType.Age:
+      case SortType.Married:
+        return (order === 'asc')
+          ? +(student1[sortBy]) - +(student2[sortBy])
+          : +(student2[sortBy]) - +(student1[sortBy]);
 
-    return (order === 'asc')
-      ? countAverage(student1[sortBy]) - countAverage(student2[sortBy])
-      : countAverage(student2[sortBy]) - countAverage(student1[sortBy]);
+      default:
+        return (order === 'asc')
+          ? countAverage(student1.grades) - countAverage(student2.grades)
+          : countAverage(student2.grades) - countAverage(student1.grades);
+    }
   });
 }
