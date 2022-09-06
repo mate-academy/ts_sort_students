@@ -43,8 +43,8 @@ export function sortStudents(
 
       default:
         return (order === 'asc')
-          ? countAverage(student1.grades) - countAverage(student2.grades)
-          : countAverage(student2.grades) - countAverage(student1.grades);
+          ? countAverage(student1[sortBy]) - countAverage(student2[sortBy])
+          : countAverage(student2[sortBy]) - countAverage(student1[sortBy]);
     }
   });
 }
