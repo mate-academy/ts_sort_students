@@ -28,22 +28,19 @@ export function sortStudents(
   const studentsCopy: Student[] = [...students];
 
   switch (sortBy) {
-    case SortType.Name: {
-      return studentsCopy.sort((
-        studentA, studentB,
-      ) => (order === 'asc'
-        ? studentA.name.localeCompare(studentB.name)
-        : studentB.name.localeCompare(studentA.name)
-      ));
-    }
-
+    /* eslint-disable padding-line-between-statements */
+    case SortType.Name:
     case SortType.Surname: {
-      return studentsCopy.sort((
-        studentA, studentB,
-      ) => (order === 'asc'
-        ? studentA.surname.localeCompare(studentB.surname)
-        : studentB.surname.localeCompare(studentA.surname)
-      ));
+    /* eslint-enable padding-line-between-statements */
+      if (order === 'desc') {
+        return studentsCopy.sort((studentA, studentB) => {
+          return studentB[sortBy].localeCompare(studentA[sortBy]);
+        });
+      }
+
+      return studentsCopy.sort((studentA, studentB) => {
+        return studentA[sortBy].localeCompare(studentB[sortBy]);
+      });
     }
 
     case SortType.Age: {
