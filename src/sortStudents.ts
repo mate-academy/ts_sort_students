@@ -17,53 +17,68 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function sortNum(numA: number, numB: number, order: SortOrder): number {
+  return (order === 'asc'
+    ? numA - numB
+    : numB - numA);
+}
+
+function sortString(strA: string, strB: string, order: SortOrder): number {
+  return (order === 'asc'
+    ? strA.localeCompare(strB)
+    : strB.localeCompare(strA));
+}
+
+function sortAverage(numA: number[], numB: number[], order: SortOrder): number {
+  return (order === 'asc'
+    ? (numA.reduce((sum, n) => sum + n) / numA.length)
+        - (numB.reduce((sum, n) => sum + n) / numB.length)
+    : (numB.reduce((sum, n) => sum + n) / numB.length)
+      - (numA.reduce((sum, n) => sum + n) / numA.length));
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let result: Student[];
-  let resultUnmarried: Student[];
+  let result: Student[] = [];
+  let arrayObjTrue: Student[] = [];
+  let arrayObjFalse: Student[] = [];
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'desc') {
-        result = [...students].sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      }
-      result = [...students].sort((a, b) => a.name.localeCompare(b.name));
+      result = [...students]
+        .sort((a, b) => sortString(
+          a.name,
+          b.name,
+          order,
+        ));
       break;
     case SortType.Surname:
-      if (order === 'desc') {
-        result = [...students]
-          .sort((a, b) => b.surname.localeCompare(a.surname));
-        break;
-      }
-      result = [...students].sort((a, b) => a.surname.localeCompare(b.surname));
+      result = [...students]
+        .sort((a, b) => sortString(
+          a.surname,
+          b.surname,
+          order,
+        ));
       break;
     case SortType.Age:
-      if (order === 'desc') {
-        result = [...students].sort((a, b) => b.age - a.age);
-        break;
-      }
-      result = [...students].sort((a, b) => a.age - b.age);
+      result = [...students]
+        .sort((a, b) => sortNum(a.age, b.age, order));
       break;
+
     case SortType.Married:
-      result = [...students].filter((a) => a.married);
-      resultUnmarried = [...students].filter((a) => !a.married);
-      result = result.concat(resultUnmarried);
+      arrayObjTrue = [...students].filter((a) => a.married);
+      arrayObjFalse = [...students].filter((a) => !a.married);
+
+      result = order === 'asc'
+        ? [...arrayObjFalse, ...arrayObjTrue]
+        : [...arrayObjTrue, ...arrayObjFalse];
       break;
     case SortType.AverageGrade:
-      if (order === 'desc') {
-        result = [...students].sort((a, b) => (
-          b.grades.reduce((sum, n) => (sum + n)) / b.grades.length) - (
-          a.grades.reduce((sum, n) => (sum + n)) / a.grades.length));
-        break;
-      }
-
-      result = [...students].sort((a, b) => (
-        a.grades.reduce((sum, n) => (sum + n)) / a.grades.length) - (
-        b.grades.reduce((sum, n) => (sum + n)) / b.grades.length));
+      result = [...students]
+        .sort((a, b) => sortAverage(a.grades, b.grades, order));
       break;
     default:
   }
