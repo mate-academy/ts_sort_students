@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name= 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -37,19 +37,19 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Age:
-        return studentA.age - studentB.age;
+      case SortType.Married:
+
+        return +studentA[sortBy] - +studentB[sortBy];
 
       case SortType.AverageGrade:
         return avaregeA - avaregeB;
 
-      case SortType.Married:
-        return +studentA.married - +studentB.married;
-
+      case SortType.Name:
       case SortType.Surname:
-        return studentA.surname.localeCompare(studentB.surname);
+        return studentA[sortBy].localeCompare(studentB[sortBy]);
 
       default:
-        return studentA.name.localeCompare(studentB.name);
+        return 0;
     }
   });
 }
