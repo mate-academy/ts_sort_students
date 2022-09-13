@@ -34,17 +34,11 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      resArr.sort((firstStudent: Student, secondStudent: Student): number => {
-        return sortOrder
-          ? firstStudent.name.localeCompare(secondStudent.name)
-          : secondStudent.name.localeCompare(firstStudent.name);
-      });
-      break;
     case SortType.Surname:
       resArr.sort((firstStudent: Student, secondStudent: Student): number => {
         return sortOrder
-          ? firstStudent.surname.localeCompare(secondStudent.surname)
-          : secondStudent.surname.localeCompare(firstStudent.surname);
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
       });
       break;
     case SortType.Age:
