@@ -17,6 +17,13 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+const averageStudentGrade = (student: Student):number => {
+  return student
+    .grades.reduce((accum: number, grade: number): number => {
+      return accum + grade;
+    }, 0) / student.grades.length;
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -27,94 +34,63 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      resArr.sort((a: Student, b: Student): number => {
-        if (sortOrder) {
-          return a.name.localeCompare(b.name);
-        }
-
-        return b.name.localeCompare(a.name);
+      resArr.sort((firstStudent: Student, secondStudent: Student): number => {
+        return sortOrder
+          ? firstStudent.name.localeCompare(secondStudent.name)
+          : secondStudent.name.localeCompare(firstStudent.name);
       });
       break;
     case SortType.Surname:
-      resArr.sort((a: Student, b: Student): number => {
-        if (sortOrder) {
-          return a.surname.localeCompare(b.surname);
-        }
-
-        return b.surname.localeCompare(a.surname);
+      resArr.sort((firstStudent: Student, secondStudent: Student): number => {
+        return sortOrder
+          ? firstStudent.surname.localeCompare(secondStudent.surname)
+          : secondStudent.surname.localeCompare(firstStudent.surname);
       });
       break;
     case SortType.Age:
-      resArr.sort((a: Student, b: Student): number => {
+      resArr.sort((firstStudent: Student, secondStudent: Student): number => {
         let res = 0;
 
-        if (Number(a.age) > Number(b.age)) {
-          if (sortOrder) {
-            res = 1;
-          } else {
-            res = -1;
-          }
+        if (firstStudent.age > secondStudent.age) {
+          res = sortOrder ? 1 : -1;
         }
 
-        if (Number(a.age) < Number(b.age)) {
-          if (!sortOrder) {
-            res = 1;
-          } else {
-            res = -1;
-          }
+        if (firstStudent.age < secondStudent.age) {
+          res = !sortOrder ? 1 : -1;
         }
 
         return res;
       });
       break;
     case SortType.Married:
-      resArr.sort((a: Student, b: Student): number => {
+      resArr.sort((firstStudent: Student, secondStudent: Student): number => {
         let res = 0;
 
-        if (a.married && !b.married) {
-          if (sortOrder) {
-            res = 1;
-          } else {
-            res = -1;
-          }
+        if (firstStudent.married && !secondStudent.married) {
+          res = sortOrder ? 1 : -1;
         }
 
-        if (!a.married && b.married) {
-          if (!sortOrder) {
-            res = 1;
-          } else {
-            res = -1;
-          }
+        if (!firstStudent.married && secondStudent.married) {
+          res = !sortOrder ? 1 : -1;
         }
 
         return res;
       });
       break;
     case SortType.AverageGrade:
-      resArr.sort((a: Student, b: Student): number => {
-        const averageStudentGrade = (student: Student):number => {
-          return student
-            .grades.reduce((accum: number, grade: number): number => {
-              return accum + grade;
-            }, 0) / student.grades.length;
-        };
-
+      resArr.sort((firstStudent: Student, secondStudent: Student): number => {
         let res = 0;
 
-        if (averageStudentGrade(a) > averageStudentGrade(b)) {
-          if (sortOrder) {
-            res = 1;
-          } else {
-            res = -1;
-          }
+        if (averageStudentGrade(firstStudent)
+          > averageStudentGrade(secondStudent)
+        ) {
+          res = sortOrder ? 1 : -1;
         }
 
-        if (averageStudentGrade(a) < averageStudentGrade(b)) {
-          if (!sortOrder) {
-            res = 1;
-          } else {
-            res = -1;
-          }
+        if (averageStudentGrade(firstStudent)
+          < averageStudentGrade(secondStudent)
+        ) {
+          res = !sortOrder ? 1 : -1;
         }
 
         return res;
