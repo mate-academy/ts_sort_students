@@ -43,51 +43,25 @@ export function sortStudents(
       break;
     case SortType.Age:
       resArr.sort((firstStudent: Student, secondStudent: Student): number => {
-        let res = 0;
-
-        if (firstStudent.age > secondStudent.age) {
-          res = sortOrder ? 1 : -1;
-        }
-
-        if (firstStudent.age < secondStudent.age) {
-          res = !sortOrder ? 1 : -1;
-        }
-
-        return res;
+        return sortOrder
+          ? firstStudent.age - secondStudent.age
+          : secondStudent.age - firstStudent.age;
       });
       break;
     case SortType.Married:
       resArr.sort((firstStudent: Student, secondStudent: Student): number => {
-        let res = 0;
-
-        if (firstStudent.married && !secondStudent.married) {
-          res = sortOrder ? 1 : -1;
-        }
-
-        if (!firstStudent.married && secondStudent.married) {
-          res = !sortOrder ? 1 : -1;
-        }
-
-        return res;
+        return sortOrder
+          ? Number(firstStudent.married) - Number(secondStudent.married)
+          : Number(secondStudent.married) - Number(firstStudent.married);
       });
       break;
     case SortType.AverageGrade:
       resArr.sort((firstStudent: Student, secondStudent: Student): number => {
-        let res = 0;
-
-        if (averageStudentGrade(firstStudent)
-          > averageStudentGrade(secondStudent)
-        ) {
-          res = sortOrder ? 1 : -1;
-        }
-
-        if (averageStudentGrade(firstStudent)
-          < averageStudentGrade(secondStudent)
-        ) {
-          res = !sortOrder ? 1 : -1;
-        }
-
-        return res;
+        return sortOrder
+          ? averageStudentGrade(firstStudent)
+            - averageStudentGrade(secondStudent)
+          : averageStudentGrade(secondStudent)
+            - averageStudentGrade(firstStudent);
       });
       break;
     default:
