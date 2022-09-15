@@ -27,48 +27,44 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        unsorted
-          .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]));
-      }
-
-      if (order === 'desc') {
-        unsorted
-          .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
-      }
-      break;
+      return order === 'asc'
+        ? unsorted.sort((
+          firstStud: Student,
+          secondStud: Student,
+        ) => firstStud[sortBy].localeCompare(secondStud[sortBy]))
+        : unsorted.sort((
+          firstStud: Student,
+          secondStud: Student,
+        ) => secondStud[sortBy].localeCompare(firstStud[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        unsorted.sort((a, b) => {
-          return (+a[sortBy] - +b[sortBy]);
+      return order === 'asc'
+        ? unsorted.sort((firstStud, secondStud) => {
+          return (+firstStud[sortBy] - +secondStud[sortBy]);
+        })
+        : unsorted.sort((firstStud, secondStud) => {
+          return (+secondStud[sortBy] - +firstStud[sortBy]);
         });
-      }
-
-      if (order === 'desc') {
-        unsorted.sort((a, b) => {
-          return (+b[sortBy] - +a[sortBy]);
-        });
-      }
-      break;
 
     case SortType.AverageGrade:
       if (order === 'asc') {
-        unsorted.sort((a, b) => {
-          const sumA = a[sortBy].reduce((x, y) => x + y);
-          const sumB = b[sortBy].reduce((x, y) => x + y);
+        unsorted.sort((firstStud, secondStud) => {
+          const sumA = firstStud[sortBy].reduce((x, y) => x + y);
+          const sumB = secondStud[sortBy].reduce((x, y) => x + y);
 
-          return sumA / a.grades.length - sumB / b.grades.length;
+          // eslint-disable-next-line max-len
+          return sumA / firstStud.grades.length - sumB / secondStud.grades.length;
         });
       }
 
       if (order === 'desc') {
-        unsorted.sort((a, b) => {
-          const sumA = a[sortBy].reduce((x, y) => x + y);
-          const sumB = b[sortBy].reduce((x, y) => x + y);
+        unsorted.sort((firstStud, secondStud) => {
+          const sumA = firstStud[sortBy].reduce((x, y) => x + y);
+          const sumB = secondStud[sortBy].reduce((x, y) => x + y);
 
-          return sumB / b[sortBy].length - sumA / a[sortBy].length;
+          // eslint-disable-next-line max-len
+          return sumB / secondStud[sortBy].length - sumA / firstStud[sortBy].length;
         });
       }
       break;
