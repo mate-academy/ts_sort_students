@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverage(grades: number[]): number {
+function getAverageGrade(grades: number[]): number {
   return grades.reduce((sum, value) => sum + value, 0) / grades.length;
 }
 
@@ -32,36 +32,38 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       if (order === 'asc') {
-        return sortedStudents.sort((a, b) => {
-          return a[sortBy].localeCompare(b[sortBy]);
+        return sortedStudents.sort((studentA, studentB) => {
+          return studentA[sortBy].localeCompare(studentB[sortBy]);
         });
       }
 
-      return sortedStudents.sort((a, b) => {
-        return b[sortBy].localeCompare(a[sortBy]);
+      return sortedStudents.sort((studentA, studentB) => {
+        return studentB[sortBy].localeCompare(studentA[sortBy]);
       });
 
     case SortType.Age:
     case SortType.Married:
       if (order === 'asc') {
-        return sortedStudents.sort((a, b) => {
-          return +a[sortBy] - +b[sortBy];
+        return sortedStudents.sort((studentA, studentB) => {
+          return Number(studentA[sortBy]) - Number(studentB[sortBy]);
         });
       }
 
-      return sortedStudents.sort((a, b) => {
-        return +b[sortBy] - +a[sortBy];
+      return sortedStudents.sort((studentA, studentB) => {
+        return Number(studentB[sortBy]) - Number(studentA[sortBy]);
       });
 
     case SortType.AverageGrade:
       if (order === 'asc') {
-        return sortedStudents.sort((a, b) => {
-          return getAverage(a[sortBy]) - getAverage(b[sortBy]);
+        return sortedStudents.sort((studentA, studentB) => {
+          return getAverageGrade(studentA[sortBy])
+            - getAverageGrade(studentB[sortBy]);
         });
       }
 
-      return sortedStudents.sort((a, b) => {
-        return getAverage(b[sortBy]) - getAverage(a[sortBy]);
+      return sortedStudents.sort((studentA, studentB) => {
+        return getAverageGrade(studentB[sortBy])
+          - getAverageGrade(studentA[sortBy]);
       });
 
     default:
