@@ -40,12 +40,10 @@ export function sortStudents(
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? unsorted.sort((firstStud, secondStud) => {
-          return (+firstStud[sortBy] - +secondStud[sortBy]);
-        })
-        : unsorted.sort((firstStud, secondStud) => {
-          return (+secondStud[sortBy] - +firstStud[sortBy]);
-        });
+        ? unsorted.sort((firstStud, secondStud) => (
+          +firstStud[sortBy] - +secondStud[sortBy]))
+        : unsorted.sort((firstStud, secondStud) => (
+          +secondStud[sortBy] - +firstStud[sortBy]));
 
     case SortType.AverageGrade:
       if (order === 'asc') {
@@ -53,8 +51,8 @@ export function sortStudents(
           const sumA = firstStud[sortBy].reduce((x, y) => x + y);
           const sumB = secondStud[sortBy].reduce((x, y) => x + y);
 
-          // eslint-disable-next-line max-len
-          return sumA / firstStud.grades.length - sumB / secondStud.grades.length;
+          return sumA
+          / firstStud.grades.length - sumB / secondStud.grades.length;
         });
       }
 
@@ -63,8 +61,8 @@ export function sortStudents(
           const sumA = firstStud[sortBy].reduce((x, y) => x + y);
           const sumB = secondStud[sortBy].reduce((x, y) => x + y);
 
-          // eslint-disable-next-line max-len
-          return sumB / secondStud[sortBy].length - sumA / firstStud[sortBy].length;
+          return sumB
+          / secondStud[sortBy].length - sumA / firstStud[sortBy].length;
         });
       }
       break;
