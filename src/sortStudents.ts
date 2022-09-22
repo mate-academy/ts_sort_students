@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -32,20 +32,19 @@ export function sortStudents(
   if (order === 'asc') {
     switch (sortBy) {
       case SortType.Name:
-        return newStudents.sort((a, b) => (a.name.localeCompare(b.name)));
-
       case SortType.Surname:
-        return newStudents.sort((a, b) => (a.surname.localeCompare(b.surname)));
+        return newStudents.sort((student1, student2) => (
+          student1[sortBy].localeCompare(student2[sortBy])));
 
       case SortType.Age:
-        return newStudents.sort((a, b) => (a.age - b.age));
-
       case SortType.Married:
-        return newStudents.sort((a, b) => (+a.married - +b.married));
+        return newStudents.sort((student1, student2) => (
+          +student1[sortBy] - (+student2[sortBy])));
 
       case SortType.AverageGrade:
         return newStudents
-          .sort((a, b) => getAvgGrade(a.grades) - getAvgGrade(b.grades));
+          .sort((student1, student2) => (
+            getAvgGrade(student1.grades) - getAvgGrade(student2.grades)));
 
       default:
         return [];
@@ -55,20 +54,19 @@ export function sortStudents(
   if (order === 'desc') {
     switch (sortBy) {
       case SortType.Name:
-        return newStudents.sort((a, b) => (b.name.localeCompare(a.name)));
-
       case SortType.Surname:
-        return newStudents.sort((a, b) => (b.surname.localeCompare(a.surname)));
+        return newStudents.sort((student1, student2) => (
+          student2[sortBy].localeCompare(student1[sortBy])));
 
       case SortType.Age:
-        return newStudents.sort((a, b) => (b.age - a.age));
-
       case SortType.Married:
-        return newStudents.sort((a, b) => (+b.married - +a.married));
+        return newStudents.sort((student1, student2) => (
+          +student2[sortBy] - (+student1[sortBy])));
 
       case SortType.AverageGrade:
         return newStudents
-          .sort((a, b) => getAvgGrade(b.grades) - getAvgGrade(a.grades));
+          .sort((student1, student2) => (
+            getAvgGrade(student2.grades) - getAvgGrade(student1.grades)));
 
       default:
         return [];
