@@ -29,25 +29,17 @@ export function sortStudents(
 
   const callback: CallBack = (student1, student2) => {
     switch (sortBy) {
+      case SortType.Surname:
       case SortType.Name:
         return order === 'asc'
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy]);
 
-      case SortType.Surname:
-        return order === 'asc'
-          ? student1[sortBy].localeCompare(student2[sortBy])
-          : student2[sortBy].localeCompare(student1[sortBy]);
-
       case SortType.Age:
-        return order === 'asc'
-          ? student1[sortBy] - student2[sortBy]
-          : student2[sortBy] - student1[sortBy];
-
       case SortType.Married:
         return order === 'asc'
-          ? Number(student1[sortBy]) - Number(student2[sortBy])
-          : Number(student2[sortBy]) - Number(student1[sortBy]);
+          ? +student1[sortBy] - +student2[sortBy]
+          : +student2[sortBy] - +student1[sortBy];
 
       case SortType.AverageGrade:
         return order === 'asc'
