@@ -22,6 +22,11 @@ export function sortStudents(
 ): Student[] {
   type CallBack = (student1: Student, student2: Student) => number;
 
+  function calculateAverageGrade(student:Student): number {
+    return student.grades.reduce((sum: number, n: number) => sum + n, 0)
+    / student.grades.length;
+  }
+
   const callback: CallBack = (student1, student2) => {
     switch (sortBy) {
       case SortType.Name:
@@ -46,14 +51,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? student1[sortBy].reduce((sum, n) => sum + n, 0)
-            / student1[sortBy].length
-            - student2[sortBy].reduce((sum, n) => sum + n, 0)
-            / student2[sortBy].length
-          : student2[sortBy].reduce((sum, n) => sum + n, 0)
-            / student2[sortBy].length
-            - student1[sortBy].reduce((sum, n) => sum + n, 0)
-              / student1[sortBy].length;
+          ? calculateAverageGrade(student1) - calculateAverageGrade(student2)
+          : calculateAverageGrade(student2) - calculateAverageGrade(student1);
 
       default:
         return 0;
