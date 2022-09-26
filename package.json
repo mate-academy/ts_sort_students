@@ -8,7 +8,7 @@
     "start": "mate-scripts start",
     "test:only": "mate-scripts test",
     "update": "mate-scripts update",
-    "postinstall": "npm run update",
+    "postinstall": "npm audit fix --legacy-peer-deps",
     "lint": "eslint src/*.ts",
     "test": "npm run lint && npm run test:only"
   },
