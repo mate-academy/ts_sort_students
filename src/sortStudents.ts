@@ -47,7 +47,7 @@ export function sortStudents(
             getAvgGrade(student1.grades) - getAvgGrade(student2.grades)));
 
       default:
-        return [];
+        return newStudents;
     }
   }
 
@@ -69,7 +69,7 @@ export function sortStudents(
             getAvgGrade(student2.grades) - getAvgGrade(student1.grades)));
 
       default:
-        return [];
+        return newStudents;
     }
   }
 
