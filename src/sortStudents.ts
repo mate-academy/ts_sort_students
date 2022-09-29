@@ -53,6 +53,22 @@ export function sortStudents(
       );
 
     case SortType.Married:
+      if (order === 'asc') {
+        return studentList.sort(
+          (a, b) => {
+            if (a.married && b.married) {
+              return 0;
+            }
+
+            if (a.married) {
+              return 1;
+            }
+
+            return -1;
+          },
+        );
+      }
+
       return studentList.sort(
         (a, b) => {
           if (a.married && b.married) {
