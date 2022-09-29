@@ -18,56 +18,61 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const sortedStudents: Student[] = [...students];
 
-  // Sort by name and surname and return result:
-  if (sortBy === 'name' || sortBy === 'surname') {
-    sortedStudents.sort((prev: Student, curr: Student) => (
-      prev[sortBy].localeCompare(curr[sortBy])
-    ));
+  switch (sortBy) {
+    // Sort by name and surname and return result:
+    case SortType.Name:
+    case SortType.Surname:
+      sortedStudents.sort((prev: Student, curr: Student) => (
+        prev[sortBy].localeCompare(curr[sortBy])
+      ));
 
-    return order === 'asc' ? sortedStudents : sortedStudents.reverse();
-  }
+      return order === 'asc' ? sortedStudents : sortedStudents.reverse();
 
-  // Sort by age:
-  if (sortBy === 'age') {
-    sortedStudents.sort((prev: Student, curr: Student) => (
-      order === 'asc'
-        ? prev[sortBy] - curr[sortBy]
-        : curr[sortBy] - prev[sortBy]
-    ));
+    // Sort by age:
+    case SortType.Age:
+      sortedStudents.sort((prev: Student, curr: Student) => (
+        order === 'asc'
+          ? prev[sortBy] - curr[sortBy]
+          : curr[sortBy] - prev[sortBy]
+      ));
+      break;
 
-  // Sort by married:
-  } else if (sortBy === 'married') {
-    sortedStudents.sort((prev: Student, curr: Student) => (
-      order === 'asc'
-        ? Number(prev[sortBy]) - Number(curr[sortBy])
-        : Number(curr[sortBy]) - Number(prev[sortBy])
-    ));
+    // Sort by married:
+    case SortType.Married:
+      sortedStudents.sort((prev: Student, curr: Student) => (
+        order === 'asc'
+          ? Number(prev[sortBy]) - Number(curr[sortBy])
+          : Number(curr[sortBy]) - Number(prev[sortBy])
+      ));
+      break;
 
-  // Sort by grades:
-  } else if (sortBy === 'grades') {
-    sortedStudents.sort((prev: Student, curr: Student) => (
-      order === 'asc'
-
-        // ASC:
-        ? (prev[sortBy].reduce(
+    // Sort by grades:
+    case SortType.AverageGrade:
+      sortedStudents.sort((prev: Student, curr: Student) => {
+        const prevAverage = prev[sortBy].reduce(
           (accum: number, current: number) => accum + current,
-        ) / prev[sortBy].length)
-        - (curr[sortBy].reduce(
-          (accum: number, current: number) => accum + current,
-        ) / curr[sortBy].length)
+        ) / prev[sortBy].length;
 
-        // DESC:
-        : (curr[sortBy].reduce(
+        const currAverage = curr[sortBy].reduce(
           (accum: number, current: number) => accum + current,
-        ) / curr[sortBy].length)
-          - (prev[sortBy].reduce(
-            (accum: number, current: number) => accum + current,
-          ) / prev[sortBy].length)
-    ));
+        ) / curr[sortBy].length;
+
+        return order === 'asc'
+          // ASC:
+          ? prevAverage - currAverage
+          // DESC:
+          : currAverage - prevAverage;
+      });
+      break;
+
+    default:
+      break;
   }
 
   return sortedStudents;
