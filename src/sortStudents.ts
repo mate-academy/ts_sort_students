@@ -40,19 +40,20 @@ export function sortStudents(
         });
 
     case SortType.Age:
-    case SortType.AverageGrade:
     case SortType.Married:
       return studentsList
         .sort((studA: Student, studB: Student) => {
-          if (sortBy === SortType.AverageGrade) {
-            return order === 'asc'
-              ? avGrades(studA[sortBy]) - avGrades(studB[sortBy])
-              : avGrades(studB[sortBy]) - avGrades(studA[sortBy]);
-          }
-
           return order === 'asc'
             ? Number(studA[sortBy]) - Number(studB[sortBy])
             : Number(studB[sortBy]) - Number(studA[sortBy]);
+        });
+
+    case SortType.AverageGrade:
+      return studentsList
+        .sort((studA: Student, studB: Student) => {
+          return order === 'asc'
+            ? avGrades(studA[sortBy]) - avGrades(studB[sortBy])
+            : avGrades(studB[sortBy]) - avGrades(studA[sortBy]);
         });
 
     default:
