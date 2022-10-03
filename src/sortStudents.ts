@@ -16,7 +16,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrades(grades: number[]): number {
+function avGrades(grades: number[]): number {
   return grades.reduce((acc: number, curr: number) => (
     acc + curr
   ), 0) / grades.length;
@@ -32,44 +32,28 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? studentsList
-          .sort((studA: Student, studB: Student) => (
-            studA[sortBy].localeCompare(studB[sortBy])
-          ))
-        : studentsList
-          .sort((studA: Student, studB: Student) => (
-            studA[sortBy].localeCompare(studB[sortBy])
-          ));
+      return studentsList
+        .sort((studA: Student, studB: Student) => {
+          return order === 'asc'
+            ? studA[sortBy].localeCompare(studB[sortBy])
+            : studA[sortBy].localeCompare(studB[sortBy]);
+        });
 
     case SortType.Age:
     case SortType.AverageGrade:
     case SortType.Married:
-      return order === 'asc'
-        ? studentsList
-          .sort((studA: Student, studB: Student) => {
-            if (sortBy === SortType.Age) {
-              return studA[sortBy] - studB[sortBy];
-            }
+      return studentsList
+        .sort((studA: Student, studB: Student) => {
+          if (sortBy === SortType.AverageGrade) {
+            return order === 'asc'
+              ? avGrades(studA[sortBy]) - avGrades(studB[sortBy])
+              : avGrades(studB[sortBy]) - avGrades(studA[sortBy]);
+          }
 
-            if (sortBy === SortType.Married) {
-              return Number(studA[sortBy]) - Number(studB[sortBy]);
-            }
-
-            return averageGrades(studA[sortBy]) - averageGrades(studB[sortBy]);
-          })
-        : studentsList
-          .sort((studA: Student, studB: Student) => {
-            if (sortBy === SortType.Age) {
-              return studB[sortBy] - studA[sortBy];
-            }
-
-            if (sortBy === SortType.Married) {
-              return Number(studB[sortBy]) - Number(studA[sortBy]);
-            }
-
-            return averageGrades(studB[sortBy]) - averageGrades(studA[sortBy]);
-          });
+          return order === 'asc'
+            ? Number(studA[sortBy]) - Number(studB[sortBy])
+            : Number(studB[sortBy]) - Number(studA[sortBy]);
+        });
 
     default:
       return studentsList;
