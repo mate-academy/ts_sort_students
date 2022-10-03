@@ -76,7 +76,7 @@ export function sortStudents(
       break;
 
     default:
-      break;
+      throw new Error('Unknown type');
   }
 
   return sortedStudents;
