@@ -17,6 +17,12 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrades(grades:number[]):number {
+  return grades.reduce(
+    (acc:number, current:number) => acc + current,
+  ) / grades.length;
+}
+
 export function sortStudents(
   students:Student[],
   sortBy:SortType,
@@ -28,14 +34,13 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       sortedStudents.sort((prev: Student, curr: Student) => {
-        return prev[sortBy].localeCompare(curr[sortBy]);
+        if (order === 'asc') {
+          return prev[sortBy].localeCompare(curr[sortBy]);
+        }
+
+        return curr[sortBy].localeCompare(prev[sortBy]);
       });
-
-      if (order === 'asc') {
-        return sortedStudents;
-      }
-
-      return sortedStudents.reverse();
+      break;
 
     case SortType.Age:
       sortedStudents.sort((prev: Student, curr: Student) => {
@@ -59,13 +64,9 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       sortedStudents.sort((prev: Student, curr: Student) => {
-        const previousAverage = prev[sortBy].reduce(
-          (acc:number, current:number) => acc + current,
-        ) / prev[sortBy].length;
+        const previousAverage = getAverageGrades(prev[sortBy]);
 
-        const currentAverage = curr[sortBy].reduce(
-          (previous:number, current:number) => previous + current,
-        ) / curr[sortBy].length;
+        const currentAverage = getAverageGrades(curr[sortBy]);
 
         if (order === 'asc') {
           return previousAverage - currentAverage;
