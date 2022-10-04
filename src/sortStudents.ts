@@ -35,8 +35,8 @@ export function sortStudents(
     case SortType.Married:
       copyOfStudents.sort((studentA: Student, studentB: Student) => {
         return order === 'asc'
-          ? studentA[sortBy] - studentB[sortBy]
-          : studentB[sortBy] - studentA[sortBy];
+          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
       });
       break;
 
