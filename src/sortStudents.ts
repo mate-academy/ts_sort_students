@@ -21,23 +21,19 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): object[] {
-  const copyOfStudents: object[] = students.map(
-    (student: object): object => {
-      return { ...student };
-    },
-  );
+  const copyOfStudents: object[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copyOfStudents.sort((studentA: object, stundentB: object) => (
+      copyOfStudents.sort((studentA: Student, stundentB: Student) => (
         studentA[sortBy].localeCompare(stundentB[sortBy])
       ));
       break;
 
     case SortType.Age:
     case SortType.Married:
-      copyOfStudents.sort((studentA: object, studentB: object) => {
+      copyOfStudents.sort((studentA: Student, studentB: Student) => {
         return order === 'asc'
           ? studentA[sortBy] - studentB[sortBy]
           : studentB[sortBy] - studentA[sortBy];
@@ -45,7 +41,7 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      copyOfStudents.sort((studentA: object, studentB: object) => {
+      copyOfStudents.sort((studentA: Student, studentB: Student) => {
         const studentAAverage = studentA[sortBy].reduce(
           (previous: number, current: number) => previous + current,
         ) / studentA[sortBy].length;
