@@ -22,6 +22,18 @@ function getAverageMark(marks: number[]): number {
     / marks.length;
 }
 
+function sortNums(order: SortOrder, numA: number, numB: number): number {
+  return order === 'asc'
+    ? numA - numB
+    : numB - numA;
+}
+
+function sortStrings(order: SortOrder, strA: string, strB: string): number {
+  return order === 'asc'
+    ? strA.localeCompare(strB)
+    : strB.localeCompare(strA);
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -33,27 +45,21 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       studentsCopy.sort((studentA: Student, studentB: Student) => (
-        order === 'asc'
-          ? studentA[sortBy].localeCompare(studentB[sortBy])
-          : studentB[sortBy].localeCompare(studentA[sortBy])
+        sortStrings(order, studentA[sortBy], studentB[sortBy])
       ));
 
       break;
 
     case SortType.Age:
       studentsCopy.sort((studentA: Student, studentB: Student) => (
-        order === 'asc'
-          ? studentA[sortBy] - studentB[sortBy]
-          : studentB[sortBy] - studentA[sortBy]
+        sortNums(order, studentA[sortBy], studentB[sortBy])
       ));
 
       break;
 
     case SortType.Married:
       studentsCopy.sort((studentA: Student, studentB: Student) => (
-        order === 'asc'
-          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-          : Number(studentB[sortBy]) - Number(studentA[sortBy])
+        sortNums(order, Number(studentA[sortBy]), Number(studentB[sortBy]))
       ));
 
       break;
@@ -63,9 +69,7 @@ export function sortStudents(
         const averageMarkA = getAverageMark(studentA[sortBy]);
         const averageMarkB = getAverageMark(studentB[sortBy]);
 
-        return order === 'asc'
-          ? (averageMarkA - averageMarkB)
-          : (averageMarkB - averageMarkA);
+        return sortNums(order, averageMarkA, averageMarkB);
       });
   }
 
