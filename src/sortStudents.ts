@@ -51,12 +51,6 @@ export function sortStudents(
       break;
 
     case SortType.Age:
-      studentsCopy.sort((studentA: Student, studentB: Student) => (
-        sortNums(order, studentA[sortBy], studentB[sortBy])
-      ));
-
-      break;
-
     case SortType.Married:
       studentsCopy.sort((studentA: Student, studentB: Student) => (
         sortNums(order, Number(studentA[sortBy]), Number(studentB[sortBy]))
