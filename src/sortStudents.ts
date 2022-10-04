@@ -51,24 +51,26 @@ function sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
   const sortedStudents: Student[] = students
     .map((person: Student) => ({ ...person }));
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    return sortedStudents.sort((first: Student, second: Student) => {
-      return sortStrings(first[sortBy], second[sortBy], order);
-    });
-  }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return sortedStudents.sort((first: Student, second: Student) => {
+        return sortStrings(first[sortBy], second[sortBy], order);
+      });
 
-  if (sortBy === 'age' || sortBy === 'married') {
-    return sortedStudents.sort((first: Student, second: Student) => {
-      return sortNumbers(first[sortBy], second[sortBy], order);
-    });
-  }
+    case SortType.Age:
+    case SortType.Married:
+      return sortedStudents.sort((first: Student, second: Student) => {
+        return sortNumbers(first[sortBy], second[sortBy], order);
+      });
 
-  if (sortBy === 'averageGrade') {
-    return sortedStudents.sort((first: Student, second: Student) => {
-      return sortNumbers(getAverage(first.grades),
-        getAverage(second.grades), order);
-    });
-  }
+    case SortType.AverageGrade:
+      return sortedStudents.sort((first: Student, second: Student) => {
+        return sortNumbers(getAverage(first.grades),
+          getAverage(second.grades), order);
+      });
 
-  return students;
+    default:
+      return students;
+  }
 }
