@@ -30,36 +30,30 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return copyStudents
-        .sort((firstStudent: Student, secondStudent: Student) => (
-          order === 'asc'
+  return copyStudents
+    .sort((firstStudent: Student, secondStudent: Student): number => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return order === 'asc'
             ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-            : secondStudent[sortBy].localeCompare(firstStudent[sortBy])
-        ));
+            : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      return copyStudents
-        .sort((firstStudent: Student, secondStudent: Student) => (
-          order === 'asc'
+        case SortType.Age:
+        case SortType.Married:
+          return order === 'asc'
             ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
-            : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy])
-        ));
+            : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
 
-    case SortType.AverageGrade:
-      return copyStudents
-        .sort((firstStudent: Student, secondStudent: Student) => (
-          order === 'asc'
+        case SortType.AverageGrade:
+          return order === 'asc'
             ? getAverageGrade(firstStudent[sortBy])
               - getAverageGrade(secondStudent[sortBy])
             : getAverageGrade(secondStudent[sortBy])
-              - getAverageGrade(firstStudent[sortBy])
-        ));
+              - getAverageGrade(firstStudent[sortBy]);
 
-    default:
-      return copyStudents;
-  }
+        default:
+          return 1;
+      }
+    });
 }
