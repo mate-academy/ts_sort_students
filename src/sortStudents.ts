@@ -15,7 +15,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-function getAvarage(grades: number[]): number {
+function getAverage(grades: number[]): number {
   return grades.reduce((prev: number, curr: number) => (
     prev + curr
   ), 0) / grades.length;
@@ -50,8 +50,8 @@ export function sortStudents(
     case SortType.AverageGrade:
       return studentsCopy.sort((prev: Student, curr: Student) => (
         order === 'asc'
-          ? getAvarage(prev[sortBy]) - getAvarage(curr[sortBy])
-          : getAvarage(curr[sortBy]) - getAvarage(prev[sortBy])
+          ? getAverage(prev[sortBy]) - getAverage(curr[sortBy])
+          : getAverage(curr[sortBy]) - getAverage(prev[sortBy])
       ));
     default:
       return studentsCopy;
