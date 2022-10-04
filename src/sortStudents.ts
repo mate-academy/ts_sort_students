@@ -51,26 +51,47 @@ function sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
   const sortedStudents: Student[] = students
     .map((person: Student) => ({ ...person }));
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return sortedStudents.sort((first: Student, second: Student) => {
+  sortedStudents.sort((first: Student, second: Student): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return sortStrings(first[sortBy], second[sortBy], order);
-      });
 
-    case SortType.Age:
-    case SortType.Married:
-      return sortedStudents.sort((first: Student, second: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return sortNumbers(first[sortBy], second[sortBy], order);
-      });
 
-    case SortType.AverageGrade:
-      return sortedStudents.sort((first: Student, second: Student) => {
+      case SortType.AverageGrade:
         return sortNumbers(getAverage(first.grades),
           getAverage(second.grades), order);
-      });
 
-    default:
-      return students;
-  }
+      default:
+        return 1;
+    }
+  });
+
+  return sortedStudents;
 }
+
+// switch (sortBy) {
+//   case SortType.Name:
+//   case SortType.Surname:
+//     return sortedStudents.sort((first: Student, second: Student) => {
+//       return sortStrings(first[sortBy], second[sortBy], order);
+//     });
+
+//   case SortType.Age:
+//   case SortType.Married:
+//     return sortedStudents.sort((first: Student, second: Student) => {
+//       return sortNumbers(first[sortBy], second[sortBy], order);
+//     });
+
+//   case SortType.AverageGrade:
+//     return sortedStudents.sort((first: Student, second: Student) => {
+//       return sortNumbers(getAverage(first.grades),
+//         getAverage(second.grades), order);
+//     });
+
+//   default:
+//     return students;
+// }
