@@ -19,7 +19,7 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function getAvarageGrades(grades: number[]): number {
+function getAverageGrades(grades: number[]): number {
   return grades.reduce((acc: number, currGrade: number): number => (
     acc + currGrade
   ), 0) / grades.length;
@@ -47,26 +47,29 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   // write your function
-  return [...students].sort((
-    prevStudent: Student,
-    currStudent: Student,
-  ): number => {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      return stringCompare(prevStudent[sortBy], currStudent[sortBy], order);
-    }
+  return [...students]
+    .sort((
+      prevStudent: Student,
+      currStudent: Student,
+    ): number => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return stringCompare(prevStudent[sortBy], currStudent[sortBy], order);
 
-    if (sortBy === SortType.AverageGrade) {
-      return numberCompare(
-        getAvarageGrades(prevStudent[sortBy]),
-        getAvarageGrades(currStudent[sortBy]),
-        order,
-      );
-    }
+        case SortType.AverageGrade:
+          return numberCompare(
+            getAverageGrades(prevStudent[sortBy]),
+            getAverageGrades(currStudent[sortBy]),
+            order,
+          );
 
-    return numberCompare(
-      Number(prevStudent[sortBy]),
-      Number(currStudent[sortBy]),
-      order,
-    );
-  });
+        default:
+          return numberCompare(
+            Number(prevStudent[sortBy]),
+            Number(currStudent[sortBy]),
+            order,
+          );
+      }
+    });
 }
