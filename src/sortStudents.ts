@@ -16,13 +16,11 @@ export enum SortType {
   AverageGrade = 'averageGrade'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  // write your function
   const studentsWithAverageGrade: Student[] = students.map((student) => {
     const averageGrade: number = student.grades
       .reduce((total, current) => total + current) / student.grades.length;
