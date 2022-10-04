@@ -20,8 +20,8 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): object[] {
-  const copyOfStudents: object[] = [...students];
+): Student[] {
+  const copyOfStudents = [...students];
 
   switch (sortBy) {
     case SortType.Name:
