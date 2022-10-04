@@ -31,14 +31,6 @@ export function sortStudents(
   const sortedStudents: Student[] = [...students];
 
   switch (sortBy) {
-    case SortType.Age:
-      return sortedStudents.sort(
-        (studentA: Student, studentB: Student) => (
-          order === 'asc'
-            ? studentA[sortBy] - studentB[sortBy]
-            : studentB[sortBy] - studentA[sortBy]),
-      );
-
     case SortType.Name:
     case SortType.Surname:
       return sortedStudents.sort(
@@ -48,6 +40,7 @@ export function sortStudents(
             : studentB[sortBy].localeCompare(studentA[sortBy])),
       );
 
+    case SortType.Age:
     case SortType.Married:
       return sortedStudents.sort(
         (studentA: Student, studentB: Student) => (
