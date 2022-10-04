@@ -21,14 +21,14 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrade(grades:number[]):number {
+function getAverageGrade(grades: number[]): number {
   return grades.reduce((sum, currentValue) => sum
   + currentValue, 0) / grades.length;
 }
 
-export function sortStudents(students: Student, sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
   // write your function
-  const copy: Student[] = Object.assign([], students);
+  const copy = [...students];
 
   switch (sortBy) {
     case SortType.Name:
