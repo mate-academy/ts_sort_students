@@ -32,34 +32,28 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? copy.sort((firstStudent, secondStudent) => (
-          firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-        ))
-        : copy.sort((firstStudent, secondStudent) => (
-          secondStudent[sortBy].localeCompare(firstStudent[sortBy])
-        ));
+      return copy.sort((firstStudent, secondStudent) => (
+        order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy])
+      ));
 
     case SortType.Age:
     case SortType.Married:
-      return order === 'asc'
-        ? copy.sort((firstStudent, secondStudent) => (
-          +(firstStudent[sortBy]) - +(secondStudent[sortBy])
-        ))
-        : copy.sort((firstStudent, secondStudent) => (
-          +(secondStudent[sortBy]) - +(firstStudent[sortBy])
-        ));
+      return copy.sort((firstStudent, secondStudent) => (
+        order === 'asc'
+          ? +(firstStudent[sortBy]) - +(secondStudent[sortBy])
+          : +(secondStudent[sortBy]) - +(firstStudent[sortBy])
+      ));
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? copy.sort((firstStudent, secondStudent) => (
-          getAverageGrade(firstStudent[sortBy])
-          - getAverageGrade(secondStudent[sortBy])
-        ))
-        : copy.sort((firstStudent, secondStudent) => (
-          getAverageGrade(secondStudent[sortBy])
-          - getAverageGrade(firstStudent[sortBy])
-        ));
+      return copy.sort((firstStudent, secondStudent) => (
+        order === 'asc'
+          ? getAverageGrade(firstStudent[sortBy])
+            - getAverageGrade(secondStudent[sortBy])
+          : getAverageGrade(secondStudent[sortBy])
+            - getAverageGrade(firstStudent[sortBy])
+      ));
 
     default:
       return copy;
