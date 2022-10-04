@@ -33,33 +33,33 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? copy.sort((firstStudent, secondStudent) => {
-          return firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
-        })
-        : copy.sort((firstStudent, secondStudent) => {
-          return secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
-        });
+        ? copy.sort((firstStudent, secondStudent) => (
+          firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+        ))
+        : copy.sort((firstStudent, secondStudent) => (
+          secondStudent[sortBy].localeCompare(firstStudent[sortBy])
+        ));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? copy.sort((firstStudent, secondStudent) => {
-          return +(firstStudent[sortBy]) - +(secondStudent[sortBy]);
-        })
-        : copy.sort((firstStudent, secondStudent) => {
-          return +(secondStudent[sortBy]) - +(firstStudent[sortBy]);
-        });
+        ? copy.sort((firstStudent, secondStudent) => (
+          +(firstStudent[sortBy]) - +(secondStudent[sortBy])
+        ))
+        : copy.sort((firstStudent, secondStudent) => (
+          +(secondStudent[sortBy]) - +(firstStudent[sortBy])
+        ));
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? copy.sort((firstStudent, secondStudent) => {
-          return getAverageGrade(firstStudent[sortBy])
-          - getAverageGrade(secondStudent[sortBy]);
-        })
-        : copy.sort((firstStudent, secondStudent) => {
-          return getAverageGrade(secondStudent[sortBy])
-          - getAverageGrade(firstStudent[sortBy]);
-        });
+        ? copy.sort((firstStudent, secondStudent) => (
+          getAverageGrade(firstStudent[sortBy])
+          - getAverageGrade(secondStudent[sortBy])
+        ))
+        : copy.sort((firstStudent, secondStudent) => (
+          getAverageGrade(secondStudent[sortBy])
+          - getAverageGrade(firstStudent[sortBy])
+        ));
 
     default:
       return copy;
