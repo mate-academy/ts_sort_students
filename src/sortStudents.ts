@@ -32,48 +32,34 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return copyStudents
-        .sort((firstStudent: Student, secondStudent: Student) => (
-          order === 'asc'
-            ? firstStudent.name.localeCompare(secondStudent.name)
-            : secondStudent.name.localeCompare(firstStudent.name)
-        ));
-
     case SortType.Surname:
       return copyStudents
         .sort((firstStudent: Student, secondStudent: Student) => (
           order === 'asc'
-            ? firstStudent.surname.localeCompare(secondStudent.surname)
-            : secondStudent.surname.localeCompare(firstStudent.surname)
+            ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+            : secondStudent[sortBy].localeCompare(firstStudent[sortBy])
         ));
 
     case SortType.Age:
-      return copyStudents
-        .sort((firstStudent: Student, secondStudent: Student) => (
-          order === 'asc'
-            ? firstStudent.age - secondStudent.age
-            : secondStudent.age - firstStudent.age
-        ));
-
     case SortType.Married:
       return copyStudents
         .sort((firstStudent: Student, secondStudent: Student) => (
           order === 'asc'
-            ? Number(firstStudent.married) - Number(secondStudent.married)
-            : Number(secondStudent.married) - Number(firstStudent.married)
+            ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+            : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy])
         ));
 
     case SortType.AverageGrade:
       return copyStudents
         .sort((firstStudent: Student, secondStudent: Student) => (
           order === 'asc'
-            ? getAverageGrade(firstStudent.grades)
-              - getAverageGrade(secondStudent.grades)
-            : getAverageGrade(secondStudent.grades)
-              - getAverageGrade(firstStudent.grades)
+            ? getAverageGrade(firstStudent[sortBy])
+              - getAverageGrade(secondStudent[sortBy])
+            : getAverageGrade(secondStudent[sortBy])
+              - getAverageGrade(firstStudent[sortBy])
         ));
 
     default:
-      return [];
+      return copyStudents;
   }
 }
