@@ -24,41 +24,33 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents: Student[] = [...students];
 
-  switch (sortBy) {
-    // Sort by name and surname and return result:
-    case SortType.Name:
-    case SortType.Surname:
-      sortedStudents.sort((prev: Student, curr: Student) => (
-        prev[sortBy].localeCompare(curr[sortBy])
-      ));
+  sortedStudents.sort((prev: Student, curr: Student): number => {
+    switch (sortBy) {
+      // Sort by name and surname and return result:
+      case SortType.Name:
+      case SortType.Surname:
+        return prev[sortBy].localeCompare(curr[sortBy]);
 
-      return order === 'asc' ? sortedStudents : sortedStudents.reverse();
-
-    // Sort by age:
-    case SortType.Age:
-      sortedStudents.sort((prev: Student, curr: Student) => (
-        order === 'asc'
+      // Sort by age:
+      case SortType.Age:
+        return order === 'asc'
           ? prev[sortBy] - curr[sortBy]
-          : curr[sortBy] - prev[sortBy]
-      ));
-      break;
+          : curr[sortBy] - prev[sortBy];
 
-    // Sort by married:
-    case SortType.Married:
-      sortedStudents.sort((prev: Student, curr: Student) => (
-        order === 'asc'
+      // Sort by married:
+      case SortType.Married:
+        return order === 'asc'
           ? Number(prev[sortBy]) - Number(curr[sortBy])
-          : Number(curr[sortBy]) - Number(prev[sortBy])
-      ));
-      break;
+          : Number(curr[sortBy]) - Number(prev[sortBy]);
 
-    // Sort by grades:
-    case SortType.AverageGrade:
-      sortedStudents.sort((prev: Student, curr: Student) => {
+      // Sort by grades:
+      case SortType.AverageGrade:
+        // eslint-disable-next-line no-case-declarations
         const prevAverage = prev[sortBy].reduce(
           (accum: number, current: number) => accum + current,
         ) / prev[sortBy].length;
 
+        // eslint-disable-next-line no-case-declarations
         const currAverage = curr[sortBy].reduce(
           (accum: number, current: number) => accum + current,
         ) / curr[sortBy].length;
@@ -68,12 +60,12 @@ export function sortStudents(
           ? prevAverage - currAverage
           // DESC:
           : currAverage - prevAverage;
-      });
-      break;
 
-    default:
-      break;
-  }
+      default:
+        return 0;
+    }
+  });
 
   return sortedStudents;
 }
+//
