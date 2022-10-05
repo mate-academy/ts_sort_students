@@ -1,7 +1,4 @@
-/* eslint-disable max-len */
-
 export interface Student {
-  // describe Student interface
   name: string,
   surname: string,
   age: number,
@@ -10,7 +7,6 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
@@ -18,7 +14,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(grades: number[]): number {
@@ -26,7 +21,11 @@ function getAverageGrade(grades: number[]): number {
   + currentValue, 0) / grades.length;
 }
 
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   // write your function
   const copy = [...students];
 
