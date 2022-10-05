@@ -41,31 +41,28 @@ export function sortStudents(
 ) : Student[] {
   const studentsCopy = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      studentsCopy.sort((studentA: Student, studentB: Student) => (
-        sortStrings(order, studentA[sortBy], studentB[sortBy])
-      ));
+  studentsCopy.sort((studentA: Student, studentB: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return sortStrings(order, studentA[sortBy], studentB[sortBy]);
 
-      break;
+      case SortType.Age:
+      case SortType.Married:
+        return sortNums(
+          order,
+          Number(studentA[sortBy]),
+          Number(studentB[sortBy]),
+        );
 
-    case SortType.Age:
-    case SortType.Married:
-      studentsCopy.sort((studentA: Student, studentB: Student) => (
-        sortNums(order, Number(studentA[sortBy]), Number(studentB[sortBy]))
-      ));
-
-      break;
-
-    default:
-      studentsCopy.sort((studentA: Student, studentB: Student) => {
+      default: {
         const averageMarkA = getAverageMark(studentA[sortBy]);
         const averageMarkB = getAverageMark(studentB[sortBy]);
 
         return sortNums(order, averageMarkA, averageMarkB);
-      });
-  }
+      }
+    }
+  });
 
   return studentsCopy;
 }
