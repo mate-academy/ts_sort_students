@@ -5,7 +5,6 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
-  averageGrade?: number;
 }
 
 export enum SortType {
@@ -13,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade'
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -21,15 +20,7 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const studentsWithAverageGrade: Student[] = students.map((student) => {
-    const averageGrade: number = student.grades
-      .reduce((total, current) => total + current) / student.grades.length;
-
-    return {
-      ...student,
-      averageGrade,
-    };
-  });
+  const studentsCopy = [...students];
 
   let sortingCallback: (a: Student, b: Student) => number;
 
@@ -43,15 +34,29 @@ export function sortStudents(
 
     case SortType.Age:
     case SortType.Married:
-    case SortType.AverageGrade:
       sortingCallback = order === 'asc'
         ? (a, b): number => Number(a[sortBy]) - Number(b[sortBy])
         : (a, b): number => Number(b[sortBy]) - Number(a[sortBy]);
+      break;
+
+    case SortType.AverageGrade:
+      sortingCallback = (a, b): number => {
+        const averageGradeA = a[sortBy]
+          .reduce((total, current) => total + current) / a[sortBy].length;
+        const averageGradeB = b[sortBy]
+          .reduce((total, current) => total + current) / b[sortBy].length;
+
+        if (order === 'asc') {
+          return averageGradeA - averageGradeB;
+        }
+
+        return averageGradeB - averageGradeA;
+      };
       break;
 
     default:
       throw new Error('Wrong type!');
   }
 
-  return studentsWithAverageGrade.sort(sortingCallback);
+  return studentsCopy.sort(sortingCallback);
 }
