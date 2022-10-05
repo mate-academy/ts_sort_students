@@ -19,44 +19,8 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function compare(
-  order: SortOrder,
-  sortBy: SortType,
-  students: Student[],
-): Student[] {
-  if (order === 'asc') {
-    return students.sort((firstStudent: Student, nextStudent: Student) => {
-      if (firstStudent[sortBy] > nextStudent[sortBy]) {
-        return 1;
-      }
-
-      return (nextStudent[sortBy] > firstStudent[sortBy]) ? -1 : 0;
-    });
-  }
-
-  return students.sort((firstStudent: Student, nextStudent: Student) => {
-    if (nextStudent[sortBy] > firstStudent[sortBy]) {
-      return 1;
-    }
-
-    return (firstStudent[sortBy] > nextStudent[sortBy]) ? -1 : 0;
-  });
-}
-
 function getAverageGrades(grades: number[]): number {
   return grades.reduce((prev, curr) => prev + curr) / grades.length;
-}
-
-function compareGrades(order: SortOrder, students: Student[]): Student[] {
-  return (order === 'asc')
-    ? students.sort((firstStudent: Student, nextStudent: Student) => {
-      return getAverageGrades(firstStudent.grades)
-        - getAverageGrades(nextStudent.grades);
-    })
-    : students.sort((firstStudent: Student, nextStudent: Student) => {
-      return getAverageGrades(nextStudent.grades)
-        - getAverageGrades(firstStudent.grades);
-    });
 }
 
 export function sortStudents(
@@ -64,34 +28,26 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let filteredArray: Student[] = [];
-  // write your function
-  const newArray = [...students];
+  return [...students].sort((firstStudent: Student, nextStudent: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return (order === 'asc')
+          ? firstStudent[sortBy].localeCompare(nextStudent[sortBy])
+          : nextStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-  switch (sortBy) {
-    case SortType.Name:
-      filteredArray = compare(order, sortBy, newArray);
-      break;
+      case SortType.Married:
+      case SortType.Age:
+        return (order === 'asc')
+          ? +(firstStudent[sortBy]) - +(nextStudent[sortBy])
+          : +(nextStudent[sortBy]) - +(firstStudent[sortBy]);
 
-    case SortType.Surname:
-      filteredArray = compare(order, sortBy, newArray);
-      break;
-
-    case SortType.Age:
-      filteredArray = compare(order, sortBy, newArray);
-      break;
-
-    case SortType.Married:
-      filteredArray = compare(order, sortBy, newArray);
-      break;
-
-    case SortType.AverageGrade:
-      filteredArray = compareGrades(order, newArray);
-      break;
-
-    default:
-      break;
-  }
-
-  return filteredArray;
+      default:
+        return (order === 'asc')
+          ? getAverageGrades(firstStudent.grades)
+            - getAverageGrades(nextStudent.grades)
+          : getAverageGrades(nextStudent.grades)
+            - getAverageGrades(firstStudent.grades);
+    }
+  });
 }
