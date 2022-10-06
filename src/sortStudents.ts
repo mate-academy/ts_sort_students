@@ -18,12 +18,9 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function calculateAverageGrade(student: Student): number {
-  const sumOfMarks
-    = student.grades.reduce((acc: number, prev: number) => acc + prev, 0);
-  const allMarks = student.grades.length;
-  const averageMarks = sumOfMarks / allMarks;
-
-  return averageMarks;
+  return student.grades
+    .reduce((acc: number, prev: number) => acc + prev, 0)
+    / student.grades.length;
 }
 
 export function sortStudents(
@@ -35,10 +32,11 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'age':
+    case 'married':
       outputArray.sort((currentStudent, previousStudent) => (
         order === 'asc'
-          ? currentStudent.age - previousStudent.age
-          : previousStudent.age - currentStudent.age
+          ? Number(currentStudent[sortBy]) - Number(previousStudent[sortBy])
+          : Number(previousStudent[sortBy]) - Number(currentStudent[sortBy])
       ));
       break;
 
@@ -48,14 +46,6 @@ export function sortStudents(
         order === 'asc'
           ? currentStudent[sortBy].localeCompare(previousStudent[sortBy])
           : previousStudent[sortBy].localeCompare(currentStudent[sortBy])
-      ));
-      break;
-
-    case 'married':
-      outputArray.sort((currentStudent, previousStudent) => (
-        order === 'asc'
-          ? +currentStudent.married - +previousStudent.married
-          : +previousStudent.married - +currentStudent.married
       ));
       break;
 
