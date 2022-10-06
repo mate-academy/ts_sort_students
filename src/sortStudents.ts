@@ -8,11 +8,15 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
+}
+
+function avaregeGrades(grades:number[]):number {
+  return grades.reduce((sum, value) => sum + value) / grades.length;
 }
 
 // create SortOrder type
@@ -23,22 +27,19 @@ export function sortStudents(
   sortBy:SortType,
   order:SortOrder,
 ):Student[] {
-  const studentList:Student[] = students.map(
-    (student:Student) => ({ ...student }),
-  );
+  const studentList:Student[] = [...students];
 
-  // eslint-disable-next-line default-case
   switch (sortBy) {
-    // eslint-disable-next-line no-undef
     case SortType.Surname:
+    case SortType.Name:
       if (order === 'asc') {
         return studentList.sort(
-          (a, b) => a.surname.localeCompare(b.surname),
+          (a, b) => a[sortBy].localeCompare(b[sortBy]),
         );
       }
 
       return studentList.sort(
-        (a, b) => b.surname.localeCompare(a.surname),
+        (a, b) => b[sortBy].localeCompare(a[sortBy]),
       );
 
     case SortType.Age:
@@ -85,30 +86,14 @@ export function sortStudents(
     case SortType.AverageGrade:
       if (order === 'asc') {
         return studentList.sort(
-          (a, b) => a.grades.reduce(
-            (sum, value) => sum + value,
-          ) / a.grades.length - b.grades.reduce(
-            (sum, value) => sum + value,
-          ) / b.grades.length,
+          (a, b) => avaregeGrades(a.grades) - avaregeGrades(b.grades),
         );
       }
 
       return studentList.sort(
-        (a, b) => b.grades.reduce(
-          (sum, value) => sum + value,
-        ) / b.grades.length - a.grades.reduce(
-          (sum, value) => sum + value,
-        ) / a.grades.length,
+        (a, b) => avaregeGrades(b.grades) - avaregeGrades(a.grades),
       );
     default:
-      if (order === 'asc') {
-        return studentList.sort(
-          (a, b) => a.name.localeCompare(b.name),
-        );
-      }
-
-      return studentList.sort(
-        (a, b) => b.name.localeCompare(a.name),
-      );
+      return students;
   }
 }
