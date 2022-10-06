@@ -1,10 +1,9 @@
-
 export interface Student {
-  name : string;
-  surname : string;
-  age : number;
-  married : boolean;
-  grades : number[];
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -15,54 +14,48 @@ export enum SortType {
   AverageGrade = 'grades'
 }
 
-function getAverage(s : number[]) : number {
-  return s.reduce((r : number, i : number) => r + i, 0)
-  / s.length;
+function getAverage(grades: number[]): number {
+  return grades.reduce((element: number, grade: number) => element + grade, 0)
+    / grades.length;
 }
 
 // create SortOrder type
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc'
+}
 
-export function sortStudents(students : Student[],
-  sortBy : string, order : string) : object[] {
+export function sortStudents(students: Student[],
+  sortBy: string, order: string): Student[] {
   const copy = [...students];
 
-  // eslint-disable-next-line default-case
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        copy.sort(
+      return order === SortOrder.Asc
+        ? copy.sort(
           (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]),
-        );
-      } else {
-        copy.sort(
+        )
+        : copy.sort(
           (a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]),
         );
-      }
-      break;
 
     case SortType.Age:
-      if (order === 'asc') {
-        copy.sort((a: Student, b: Student) => (a[sortBy] - b[sortBy]));
-      } else {
-        copy.sort((a: Student, b: Student) => (b[sortBy] - a[sortBy]));
-      }
-      break;
+      return order === SortOrder.Asc
+        ? copy.sort((a: Student, b: Student) => (a[sortBy] - b[sortBy]))
+        : copy.sort((a: Student, b: Student) => (b[sortBy] - a[sortBy]));
 
     case SortType.Married:
-      copy.sort((a: Student, b: Student) => ((Number(b[sortBy])
-      - Number(a[sortBy]))));
-      break;
+      return copy.sort((a: Student, b: Student) => ((Number(b[sortBy])
+        - Number(a[sortBy]))));
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        copy.sort((a: Student, b: Student) => (getAverage(a[sortBy])
-        - getAverage(b[sortBy])));
-      } else {
-        copy.sort((a: Student, b: Student) => (getAverage(b[sortBy])
-        - getAverage(a[sortBy])));
-      }
+      return order === SortOrder.Asc
+        ? copy.sort((a: Student, b: Student) => (getAverage(a[sortBy])
+          - getAverage(b[sortBy])))
+        : copy.sort((a: Student, b: Student) => (getAverage(b[sortBy])
+          - getAverage(a[sortBy])));
+    default:
       break;
   }
 
