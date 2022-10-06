@@ -6,8 +6,6 @@ export interface Student {
   age: number,
   married: boolean,
   grades: number[],
-  middle: number;
-
 }
 
 export enum SortType {
@@ -22,56 +20,51 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+// function sortLiteral((a, b) => a.localeCompare(b);
+
+// function sortNumbers((a, b) => a - b;
+
+function findAverageGrade(grades: number[]): number {
+  return grades.reduce((sum: number, x: number) => sum + x, 0) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  // write your function
   const sortedStudents = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return sortedStudents
-          .sort((person: Student, nextPerson: Student) => (person[sortBy])
-            .localeCompare(nextPerson[sortBy]));
-      }
+      return sortedStudents.sort((person: Student, nextPerson: Student) => {
+        if (order === 'asc') {
+          return (person[sortBy]).localeCompare(nextPerson[sortBy]);
+        }
 
-      return sortedStudents
-        .sort((person: Student, nextPerson: Student) => (nextPerson[sortBy])
-          .localeCompare(person[sortBy]));
+        return (nextPerson[sortBy]).localeCompare(person[sortBy]);
+      });
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        return sortedStudents
-          .sort((person: Student,
-            nextPerson: Student) => person[sortBy] - nextPerson[sortBy]);
-      }
+      return sortedStudents.sort((person: Student, nextPerson: Student) => {
+        if (order === 'asc') {
+          return Number(person[sortBy]) - Number(nextPerson[sortBy]);
+        }
 
-      return sortedStudents
-        .sort((person: Student,
-          nextPerson: Student) => nextPerson[sortBy] - person[sortBy]);
+        return Number(nextPerson[sortBy]) - Number(person[sortBy]);
+      });
 
     case SortType.AverageGrade:
       sortedStudents.sort((person: Student, nextPerson: Student) => {
-        const prevPersonAverage = person[sortBy]
-          .reduce((sum: number, x: number) => {
-            return sum + x;
-          }, 0) / person[sortBy].length;
-
-        const curPersonAverage = nextPerson[sortBy]
-          .reduce((sum: number, x: number) => {
-            return sum + x;
-          }, 0) / nextPerson[sortBy].length;
-
         if (order === 'asc') {
-          return prevPersonAverage - curPersonAverage;
+          return findAverageGrade(person[sortBy])
+            - findAverageGrade(nextPerson[sortBy]);
         }
 
-        return curPersonAverage - prevPersonAverage;
+        return findAverageGrade(nextPerson[sortBy])
+          - findAverageGrade(person[sortBy]);
       });
 
       break;
