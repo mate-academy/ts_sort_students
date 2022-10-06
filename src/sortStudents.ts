@@ -26,13 +26,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      sortedListOfStudents.sort((person: Student, prevPerson: Student) => (
-        order === 'asc'
-          ? person[sortBy].localeCompare(prevPerson[sortBy])
-          : prevPerson[sortBy].localeCompare(person[sortBy])
-      ));
-      break;
-
     case SortType.Surname:
       sortedListOfStudents.sort((person: Student, prevPerson: Student) => (
         order === 'asc'
