@@ -31,26 +31,26 @@ export function sortStudents(
   const studentsCopy = [...students];
 
   return studentsCopy.sort((
-    firstStudent: Student,
-    secondStudent: Student,
+    prevStudent: Student,
+    currStudent: Student,
   ): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         return (order === 'asc')
-          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+          ? prevStudent[sortBy].localeCompare(currStudent[sortBy])
+          : currStudent[sortBy].localeCompare(prevStudent[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
         return (order === 'asc')
-          ? +firstStudent[sortBy] - +secondStudent[sortBy]
-          : +secondStudent[sortBy] - +firstStudent[sortBy];
+          ? +prevStudent[sortBy] - +currStudent[sortBy]
+          : +currStudent[sortBy] - +prevStudent[sortBy];
 
       case SortType.AverageGrade:
         return (order === 'asc')
-          ? averageAge(firstStudent.grades) - averageAge(secondStudent.grades)
-          : averageAge(secondStudent.grades) - averageAge(firstStudent.grades);
+          ? averageAge(prevStudent.grades) - averageAge(currStudent.grades)
+          : averageAge(currStudent.grades) - averageAge(prevStudent.grades);
 
       default:
         return 0;
