@@ -17,7 +17,7 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverageGrade(student: Student): number {
+function getAverage(student: Student): number {
   return student.grades
     .reduce((acc: number, prev: number) => acc + prev, 0)
     / student.grades.length;
@@ -30,38 +30,29 @@ export function sortStudents(
 ): Student[] {
   const outputArray: Student[] = [...students];
 
-  switch (sortBy) {
-    case 'age':
-    case 'married':
-      outputArray.sort((currentStudent, previousStudent) => (
-        order === 'asc'
-          ? Number(currentStudent[sortBy]) - Number(previousStudent[sortBy])
-          : Number(previousStudent[sortBy]) - Number(currentStudent[sortBy])
-      ));
-      break;
+  return outputArray.sort((currStudent: Student, prevStudent: Student) => {
+    switch (sortBy) {
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(currStudent[sortBy]) - Number(prevStudent[sortBy])
+          : Number(prevStudent[sortBy]) - Number(currStudent[sortBy]);
 
-    case 'name':
-    case 'surname':
-      outputArray.sort((currentStudent, previousStudent) => (
-        order === 'asc'
-          ? currentStudent[sortBy].localeCompare(previousStudent[sortBy])
-          : previousStudent[sortBy].localeCompare(currentStudent[sortBy])
-      ));
-      break;
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? currStudent[sortBy].localeCompare(prevStudent[sortBy])
+          : prevStudent[sortBy].localeCompare(currStudent[sortBy]);
 
-    case 'averageGrade':
-      outputArray.sort((currentStudent, previousStudent) => (
-        order === 'asc'
-          ? calculateAverageGrade(currentStudent)
-            - calculateAverageGrade(previousStudent)
-          : calculateAverageGrade(previousStudent)
-            - calculateAverageGrade(currentStudent)
-      ));
-      break;
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(currStudent)
+            - getAverage(prevStudent)
+          : getAverage(prevStudent)
+            - getAverage(currStudent);
 
-    default:
-      break;
-  }
-
-  return outputArray;
+      default:
+        return 0;
+    }
+  });
 }
