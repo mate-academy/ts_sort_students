@@ -18,6 +18,12 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(array: number[]): number {
+  const sum: number = array.reduce((a, b) => a + b, 0);
+
+  return sum / array.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -41,17 +47,9 @@ export function sortStudents(
           ? Number(person1[sortBy]) - Number(person2[sortBy])
           : Number(person2[sortBy]) - Number(person1[sortBy]);
       case SortType.AverageGrade:
-        // eslint-disable-next-line
-        const average1: number = person1[sortBy]
-          .reduce((a, b) => a + b, 0) / person1[sortBy].length;
-
-        // eslint-disable-next-line
-        const average2: number = person2[sortBy]
-          .reduce((a, b) => a + b, 0) / person2[sortBy].length;
-
         return order === 'asc'
-          ? average1 - average2
-          : average2 - average1;
+          ? getAverage(person1[sortBy]) - getAverage(person2[sortBy])
+          : getAverage(person2[sortBy]) - getAverage(person1[sortBy]);
       default:
         return 0;
     }
