@@ -17,50 +17,33 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(student: Student) :number {
+  return student.grades.reduce((sum, n) => sum + n) / student.grades.length;
+}
+
 export function sortStudents(
   [...students]: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Student[] | string {
-  switch (sortBy) {
-    case SortType.Name:
-      return order === 'asc'
-        ? students.sort((a: Student, b: Student) => (
-          (a.name).localeCompare(b.name)))
-
-        : students.sort((a: Student, b: Student) => (
-          (b.name).localeCompare(a.name)));
-    case SortType.Surname:
-      return order === 'asc'
-        ? students.sort((a: Student, b: Student) => (
-          (a.surname).localeCompare(b.surname)))
-
-        : students.sort((a: Student, b: Student) => (
-          (b.surname).localeCompare(a.surname)));
-    case SortType.Age:
-      return order === 'asc'
-        ? students.sort((a: Student, b: Student) => (
-          a.age - b.age))
-
-        : students.sort((a: Student, b: Student) => (
-          b.age - a.age));
-    case SortType.Married:
-      return order === 'asc'
-        ? students.sort((a: Student, b: Student) => (
-          Number(a.married) - Number(b.married)))
-
-        : students.sort((a: Student, b: Student) => (
-          Number(b.married) - Number(a.married)));
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? students.sort((a: Student, b: Student) => (
-          a.grades.reduce((sum, n) => sum + n) / a.grades.length
-            - b.grades.reduce((sum, n) => sum + n) / b.grades.length))
-
-        : students.sort((a: Student, b: Student) => (
-          b.grades.reduce((sum, n) => sum + n) / b.grades.length
-            - a.grades.reduce((sum, n) => sum + n) / a.grades.length));
-    default:
-      return students;
-  }
+): Student[] {
+  return students.sort((a: Student, b: Student): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(a) - getAverage(b)
+          : getAverage(b) - getAverage(a);
+      default:
+        return 0;
+    }
+  });
 }
