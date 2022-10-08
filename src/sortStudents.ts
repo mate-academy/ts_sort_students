@@ -13,7 +13,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'grade',
+  Grade = 'grade',
 }
 
 // create SortOrder type
@@ -27,24 +27,16 @@ export function sortStudents(
   const studentsCopy: Student[] = [...students];
 
   switch (sortBy) {
-    case 'name':
+    case SortType.Name:
+    case SortType.Surname:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
         order === 'asc'
-          ? firstPerson.name.localeCompare(secondPerson.name)
-          : secondPerson.name.localeCompare(firstPerson.name)
+          ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
+          : secondPerson[sortBy].localeCompare(firstPerson[sortBy])
       ));
       break;
 
-    case 'surname':
-      studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
-        order === 'asc'
-          ? firstPerson.surname.localeCompare(secondPerson.surname)
-          : secondPerson.surname.localeCompare(firstPerson.surname)
-      ));
-
-      break;
-
-    case 'age':
+    case SortType.Age:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
         order === 'asc'
           ? firstPerson.age - secondPerson.age
@@ -52,7 +44,7 @@ export function sortStudents(
       ));
       break;
 
-    case 'married':
+    case SortType.Married:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
         order === 'asc'
           ? +firstPerson.married - +secondPerson.married
@@ -60,7 +52,7 @@ export function sortStudents(
       ));
       break;
 
-    case 'grade':
+    case SortType.Grade:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => {
         const firstPersonAvgGrade = firstPerson.grades.reduce(
           (accum: number, curr: number) => accum + curr,
