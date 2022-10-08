@@ -20,14 +20,7 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-// type Collection<T> = {
-//   items: T[],
-//   limit: number,
-//   sum: number,
-//   x: number,
-// }
-
-function getAverage<T>(numbers: T[]): number {
+function getAverage(numbers: number[]): number {
   return numbers.reduce((sum, x) => sum + x, 0) / numbers.length;
 }
 
@@ -38,40 +31,33 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return sortedStudents.sort((person: Student, nextPerson: Student) => {
+  return sortedStudents.sort((person: Student, nextPerson: Student): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         if (order === 'asc') {
           return (person[sortBy]).localeCompare(nextPerson[sortBy]);
         }
 
         return (nextPerson[sortBy]).localeCompare(person[sortBy]);
-      });
-
-    case SortType.Age:
-    case SortType.Married:
-      return sortedStudents.sort((person: Student, nextPerson: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         if (order === 'asc') {
           return Number(person[sortBy]) - Number(nextPerson[sortBy]);
         }
 
         return Number(nextPerson[sortBy]) - Number(person[sortBy]);
-      });
-
-    case SortType.AverageGrade:
-      return sortedStudents.sort((person: Student, nextPerson: Student) => {
+      case SortType.AverageGrade:
         if (order === 'asc') {
-          return getAverage<number>(person[sortBy])
-            - getAverage<number>(nextPerson[sortBy]);
+          return getAverage(person[sortBy])
+            - getAverage(nextPerson[sortBy]);
         }
 
-        return getAverage<number>(nextPerson[sortBy])
-          - getAverage<number>(person[sortBy]);
-      });
+        return getAverage(nextPerson[sortBy])
+          - getAverage(person[sortBy]);
+      default:
 
-    default:
-
-      return sortedStudents;
-  }
+        return 0;
+    }
+  });
 }
