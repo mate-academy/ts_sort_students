@@ -20,12 +20,15 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-// function sortLiteral((a, b) => a.localeCompare(b);
+// type Collection<T> = {
+//   items: T[],
+//   limit: number,
+//   sum: number,
+//   x: number,
+// }
 
-// function sortNumbers((a, b) => a - b;
-
-function findAverageGrade(grades: number[]): number {
-  return grades.reduce((sum: number, x: number) => sum + x, 0) / grades.length;
+function getAverage<T>(numbers: T[]): number {
+  return numbers.reduce((sum, x) => sum + x, 0) / numbers.length;
 }
 
 export function sortStudents(
@@ -57,22 +60,18 @@ export function sortStudents(
       });
 
     case SortType.AverageGrade:
-      sortedStudents.sort((person: Student, nextPerson: Student) => {
+      return sortedStudents.sort((person: Student, nextPerson: Student) => {
         if (order === 'asc') {
-          return findAverageGrade(person[sortBy])
-            - findAverageGrade(nextPerson[sortBy]);
+          return getAverage<number>(person[sortBy])
+            - getAverage<number>(nextPerson[sortBy]);
         }
 
-        return findAverageGrade(nextPerson[sortBy])
-          - findAverageGrade(person[sortBy]);
+        return getAverage<number>(nextPerson[sortBy])
+          - getAverage<number>(person[sortBy]);
       });
-
-      break;
 
     default:
 
-      break;
+      return sortedStudents;
   }
-
-  return sortedStudents;
 }
