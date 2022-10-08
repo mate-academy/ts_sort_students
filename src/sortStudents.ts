@@ -16,6 +16,11 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calcAverage(student: Student): number {
+  return student.grades
+    .reduce((acc, curr) => acc + curr, 0) / student.grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -44,19 +49,14 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       studentsCopy.sort((currStudent, nextStudent) => {
-        const currStudentAver = currStudent[sortBy]
-          .reduce((acc, curr) => acc + curr, 0) / currStudent[sortBy].length;
-        const nextStudentAver = nextStudent[sortBy]
-          .reduce((acc, curr) => acc + curr, 0) / nextStudent[sortBy].length;
-
         return order === 'asc'
-          ? currStudentAver - nextStudentAver
-          : nextStudentAver - currStudentAver;
+          ? calcAverage(currStudent) - calcAverage(nextStudent)
+          : calcAverage(nextStudent) - calcAverage(currStudent);
       });
       break;
 
     default:
-      return studentsCopy.sort();
+      return studentsCopy;
   }
 
   return studentsCopy;
