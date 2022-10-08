@@ -15,10 +15,7 @@ export enum SortType {
   AverageGrade = 'grades'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
-
-// export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
   students: Student[],
