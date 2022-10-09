@@ -1,10 +1,10 @@
 
 export interface Student {
-  name:string,
+  name: string,
   surname: string,
   age: number,
-  married:boolean,
-  grades:number[],
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
@@ -15,85 +15,52 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-function avaregeGrades(grades:number[]):number {
-  return grades.reduce((sum, value) => sum + value) / grades.length;
+function getAverage(numbers: number[]): number {
+  return numbers.reduce((sum, value) => sum + value) / numbers.length;
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students:Student[],
-  sortBy:SortType,
-  order:SortOrder,
-):Student[] {
-  const studentList:Student[] = [...students];
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const studentList: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Surname:
-    case SortType.Name:
-      if (order === 'asc') {
-        return studentList.sort(
-          (a, b) => a[sortBy].localeCompare(b[sortBy]),
-        );
-      }
+  return studentList.sort((a, b): number => {
+    switch (sortBy) {
+      case SortType.Surname:
+      case SortType.Name:
+        if (order === 'asc') {
+          return a[sortBy].localeCompare(b[sortBy]);
+        }
 
-      return studentList.sort(
-        (a, b) => b[sortBy].localeCompare(a[sortBy]),
-      );
+        return b[sortBy].localeCompare(a[sortBy]);
 
-    case SortType.Age:
-      if (order === 'asc') {
-        return studentList.sort(
-          (a, b) => a.age - b.age,
-        );
-      }
+      case SortType.Age:
+        if (order === 'asc') {
+          return a.age - b.age;
+        }
 
-      return studentList.sort(
-        (a, b) => b.age - a.age,
-      );
+        return b.age - a.age;
 
-    case SortType.Married:
-      if (order === 'asc') {
-        return studentList.sort(
-          (a, b) => {
-            if (a.married && b.married) {
-              return 0;
-            }
+      case SortType.Married:
+        if (order === 'asc') {
+          return Number(a.married) - Number(b.married);
+        }
 
-            if (a.married) {
-              return 1;
-            }
+        return Number(b.married) - Number(a.married);
 
-            return -1;
-          },
-        );
-      }
+      case SortType.AverageGrade:
+        if (order === 'asc') {
+          return getAverage(a.grades) - getAverage(b.grades);
+        }
 
-      return studentList.sort(
-        (a, b) => {
-          if (a.married && b.married) {
-            return 0;
-          }
-
-          if (a.married) {
-            return -1;
-          }
-
-          return 1;
-        },
-      );
-    case SortType.AverageGrade:
-      if (order === 'asc') {
-        return studentList.sort(
-          (a, b) => avaregeGrades(a.grades) - avaregeGrades(b.grades),
-        );
-      }
-
-      return studentList.sort(
-        (a, b) => avaregeGrades(b.grades) - avaregeGrades(a.grades),
-      );
-    default:
-      return students;
-  }
+        return getAverage(b.grades) - getAverage(a.grades);
+      default:
+        return 0;
+    }
+  });
 }
