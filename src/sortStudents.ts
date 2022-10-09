@@ -26,13 +26,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort((curRerson: Student, prevPerson: Student) => (
-        order === 'asc'
-          ? curRerson[sortBy].localeCompare(prevPerson[sortBy])
-          : prevPerson[sortBy].localeCompare(curRerson[sortBy])
-      ));
-      break;
-
     case SortType.Surname:
       studentsCopy.sort((curRerson: Student, prevPerson: Student) => (
         order === 'asc'
@@ -42,18 +35,11 @@ export function sortStudents(
       break;
 
     case SortType.Age:
-      studentsCopy.sort((curRerson: Student, prevPerson: Student) => (
-        order === 'asc'
-          ? curRerson[sortBy] - prevPerson[sortBy]
-          : prevPerson[sortBy] - curRerson[sortBy]
-      ));
-      break;
-
     case SortType.Married:
       studentsCopy.sort((curRerson: Student, prevPerson: Student) => (
         order === 'asc'
-          ? Number(curRerson[sortBy]) - Number(prevPerson[sortBy])
-          : Number(prevPerson[sortBy]) - Number(curRerson[sortBy])
+          ? +curRerson[sortBy] - +prevPerson[sortBy]
+          : +prevPerson[sortBy] - +curRerson[sortBy]
       ));
       break;
 
