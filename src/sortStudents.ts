@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverageGrade(grades: number[]): number {
-  return grades.reduce((sum, grade) => sum + grade, 0) / (grades.length || 1);
+function getAverage(numbers: number[]): number {
+  return numbers.reduce((sum, cur) => sum + cur, 0) / (numbers.length || 1);
 }
 
 export function sortStudents(
@@ -28,33 +28,27 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'asc'
-        ? studentsCopy.sort((firstStudent, secondStudent) => (
-          firstStudent[sortBy].localeCompare(secondStudent[sortBy])))
-        : studentsCopy.sort((firstStudent, secondStudent) => (
-          secondStudent[sortBy].localeCompare(firstStudent[sortBy])));
+  studentsCopy.sort((firstStudent: Student, secondStudent: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'asc'
-        ? studentsCopy.sort((firstStudent, secondStudent) => (
-          +firstStudent[sortBy] - +secondStudent[sortBy]))
-        : studentsCopy.sort((firstStudent, secondStudent) => (
-          +secondStudent[sortBy] - +firstStudent[sortBy]));
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(firstStudent[sortBy])
+            - getAverage(secondStudent[sortBy])
+          : getAverage(secondStudent[sortBy])
+            - getAverage(firstStudent[sortBy]);
 
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? studentsCopy.sort((firstStudent, secondStudent) => (
-          calculateAverageGrade(firstStudent[sortBy])
-            - calculateAverageGrade(secondStudent[sortBy])))
-        : studentsCopy.sort((firstStudent, secondStudent) => (
-          calculateAverageGrade(secondStudent[sortBy])
-            - calculateAverageGrade(firstStudent[sortBy])));
+      default:
+        return order === 'asc'
+          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
+    }
+  });
 
-    default:
-      return studentsCopy;
-  }
+  return studentsCopy;
 }
