@@ -27,51 +27,38 @@ function getAverageGrade(grades: number[]): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   // swrite your function
   const sortedStudents: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      sortedStudents.sort((studentA: Student, studentB: Student) => (
-        studentA[sortBy].localeCompare(studentB[sortBy])
-      ));
+  return sortedStudents.sort(
+    (studentA: Student, studentB: Student) => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return order === 'asc'
+            ? studentA[sortBy].localeCompare(studentB[sortBy])
+            : studentB[sortBy].localeCompare(studentA[sortBy]);
 
-      return order === 'asc'
-        ? sortedStudents
-        : sortedStudents.reverse();
+        case SortType.Age:
+        case SortType.Married:
+          return order === 'asc'
+            ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+            : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
-    case SortType.Age:
-      sortedStudents.sort((studentA: Student, studentB: Student) => (
-        order === 'asc'
-          ? studentA[sortBy] - studentB[sortBy]
-          : studentB[sortBy] - studentA[sortBy]
-      ));
-      break;
-
-    case SortType.Married:
-      sortedStudents.sort((studentA: Student, studentB: Student) => (
-        order === 'asc'
-          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-          : Number(studentB[sortBy]) - Number(studentA[sortBy])
-      ));
-      break;
-
-    case SortType.AverageGrade:
-      sortedStudents.sort((studentA: Student, studentB: Student) => (
-        order === 'asc'
-          ? getAverageGrade(studentA[sortBy])
+        case SortType.AverageGrade:
+          return order === 'asc'
+            ? getAverageGrade(studentA[sortBy])
             - getAverageGrade(studentB[sortBy])
-          : getAverageGrade(studentB[sortBy])
-            - getAverageGrade(studentA[sortBy])
-      ));
-      break;
+            : getAverageGrade(studentB[sortBy])
+            - getAverageGrade(studentA[sortBy]);
 
-    default:
-      break;
-  }
-
-  return sortedStudents;
+        default:
+          return 0;
+      }
+    },
+  );
 }
