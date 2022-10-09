@@ -26,20 +26,17 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
+  const nameOrSurname = sortBy === SortType.Name ? 'name' : 'surname';
+
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
-        order === 'asc'
-          ? firstPerson.name.localeCompare(secondPerson.name)
-          : secondPerson.name.localeCompare(firstPerson.name)
-      ));
-      break;
-
     case SortType.Surname:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
         order === 'asc'
-          ? firstPerson.surname.localeCompare(secondPerson.surname)
-          : secondPerson.surname.localeCompare(firstPerson.surname)
+          ? firstPerson[nameOrSurname]
+            .localeCompare(secondPerson[nameOrSurname])
+          : secondPerson[nameOrSurname]
+            .localeCompare(firstPerson[nameOrSurname])
       ));
 
       break;
