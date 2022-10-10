@@ -27,25 +27,28 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'asc'
-        ? copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+  return copyStudents.sort((firstStudent, secondStudent) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-    case SortType.AverageGrade:
-      return copyStudents.sort((a, b) => (order === 'asc'
-        ? getAverage(a.grades) - getAverage(b.grades)
-        : getAverage(b.grades) - getAverage(a.grades)
-      ));
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +(firstStudent[sortBy]) - +(secondStudent[sortBy])
+          : +(secondStudent[sortBy]) - +(firstStudent[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'asc'
-        ? copyStudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : copyStudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(firstStudent[sortBy])
+            - getAverage(secondStudent[sortBy])
+          : getAverage(secondStudent[sortBy])
+            - getAverage(firstStudent[sortBy]);
 
-    default: throw new Error('Got wrong parameter');
-  }
+      default: throw new Error('Got wrong parameter');
+    }
+  });
 }
