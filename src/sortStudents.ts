@@ -27,31 +27,24 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return studentsCopy.sort((prev: Student, next: Student) => {
+  return studentsCopy.sort((prev: Student, next: Student): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
           ? prev[sortBy].localeCompare(next[sortBy])
           : next[sortBy].localeCompare(prev[sortBy]);
-      });
-
-    case SortType.Age:
-    case SortType.Married:
-      return studentsCopy.sort((prev: Student, next: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
           ? Number(prev[sortBy]) - Number(next[sortBy])
           : Number(next[sortBy]) - Number(prev[sortBy]);
-      });
-
-    case SortType.AverageGrade:
-      return studentsCopy.sort((prev: Student, next: Student) => {
+      case SortType.AverageGrade:
         return order === 'asc'
           ? calcAverage(prev[sortBy]) - calcAverage(next[sortBy])
           : calcAverage(next[sortBy]) - calcAverage(prev[sortBy]);
-      });
-
-    default:
-      return studentsCopy;
-  }
+      default:
+        return 0;
+    }
+  });
 }
