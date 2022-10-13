@@ -15,7 +15,7 @@ export enum SortType {
 }
 
 function getAverage(grades: number[]): number {
-  return grades.reduce((element: number, grade: number) => element + grade, 0)
+  return grades.reduce((sum: number, grade: number) => sum + grade, 0)
     / grades.length;
 }
 
@@ -27,37 +27,41 @@ export enum SortOrder {
 
 export function sortStudents(students: Student[],
   sortBy: string, order: string): Student[] {
-  const copy = [...students];
+  const copyOfStudents = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return order === SortOrder.Asc
-        ? copy.sort(
+        ? copyOfStudents.sort(
           (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]),
         )
-        : copy.sort(
+        : copyOfStudents.sort(
           (a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]),
         );
 
     case SortType.Age:
       return order === SortOrder.Asc
-        ? copy.sort((a: Student, b: Student) => (a[sortBy] - b[sortBy]))
-        : copy.sort((a: Student, b: Student) => (b[sortBy] - a[sortBy]));
+        ? copyOfStudents.sort(
+          (a: Student, b: Student) => (a[sortBy] - b[sortBy]),
+        )
+        : copyOfStudents.sort(
+          (a: Student, b: Student) => (b[sortBy] - a[sortBy]),
+        );
 
     case SortType.Married:
-      return copy.sort((a: Student, b: Student) => ((Number(b[sortBy])
+      return copyOfStudents.sort((a: Student, b: Student) => ((Number(b[sortBy])
         - Number(a[sortBy]))));
 
     case SortType.AverageGrade:
       return order === SortOrder.Asc
-        ? copy.sort((a: Student, b: Student) => (getAverage(a[sortBy])
+        ? copyOfStudents.sort((a: Student, b: Student) => (getAverage(a[sortBy])
           - getAverage(b[sortBy])))
-        : copy.sort((a: Student, b: Student) => (getAverage(b[sortBy])
+        : copyOfStudents.sort((a: Student, b: Student) => (getAverage(b[sortBy])
           - getAverage(a[sortBy])));
     default:
       break;
   }
 
-  return copy;
+  return copyOfStudents;
 }
