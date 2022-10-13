@@ -16,40 +16,52 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function gradesSort(
+  a: Student,
+  b: Student,
+  order: SortOrder,
+  sortBy: SortType,
+): number {
+  return order === 'asc'
+    ? (a[sortBy].reduce((sum: number, current: number) => sum + current)
+        / a[sortBy].length)
+      - (b[sortBy].reduce((sum: number, current: number) => sum + current)
+        / b[sortBy].length)
+    : (b[sortBy].reduce((sum: number, current: number) => sum + current)
+        / b[sortBy].length)
+      - (a[sortBy].reduce((sum: number, current: number) => sum + current)
+        / a[sortBy].length);
+}
+
+function stringSort(a: string, b: string, order: SortOrder): number {
+  return order === 'asc'
+    ? a.localeCompare(b)
+    : b.localeCompare(a);
+}
+
+function numberSort(a: number, b: number, order: SortOrder): number {
+  return order === 'asc'
+    ? a - b
+    : b - a;
+}
+
 export function sortStudents(
-  students: object[],
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): object[] {
-  const studentsCopy = [...students];
+): Student[] {
+  return [...students]
+    .sort((a: Student, b: Student) => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return stringSort(a[sortBy], b[sortBy], order);
 
-  if (order === 'asc') {
-    if (sortBy === 'grades') {
-      studentsCopy.sort((a, b) => (
-        (a[sortBy].reduce((sum, current) => sum + current) / a[sortBy].length)
-        - (b[sortBy].reduce((sum, current) => sum + current) / b[sortBy].length)
-      ));
-    }
+        case SortType.AverageGrade:
+          return gradesSort(a, b, order, sortBy);
 
-    if (sortBy === 'name' || sortBy === 'surname') {
-      studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-    } else {
-      studentsCopy.sort((a, b) => a[sortBy] - b[sortBy]);
-    }
-  } else if (order === 'desc') {
-    if (sortBy === 'grades') {
-      studentsCopy.sort((a, b) => (
-        (b[sortBy].reduce((sum, current) => sum + current) / b[sortBy].length)
-        - (a[sortBy].reduce((sum, current) => sum + current) / a[sortBy].length)
-      ));
-    }
-
-    if (sortBy === 'name' || sortBy === 'surname') {
-      studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-    } else {
-      studentsCopy.sort((a, b) => b[sortBy] - a[sortBy]);
-    }
-  }
-
-  return studentsCopy;
+        default:
+          return numberSort(a[sortBy], b[sortBy], order);
+      }
+    });
 }
