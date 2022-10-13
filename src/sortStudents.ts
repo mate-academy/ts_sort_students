@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function getAverage(array: number[]): number {
@@ -27,34 +26,28 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copiedArray: Student[] = [...students];
+  const studentsCopy = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return (order === 'asc')
-        ? copiedArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copiedArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
-      return (order === 'asc')
-        ? copiedArray.sort((a, b) => a[sortBy] - b[sortBy])
-        : copiedArray.sort((a, b) => b[sortBy] - a[sortBy]);
-
     case SortType.Married:
       return (order === 'asc')
-        ? copiedArray.sort((a: Student, b: Student) => +a.married - +b.married)
-        : copiedArray.sort((a: Student, b: Student) => +b.married - +a.married);
+        ? studentsCopy.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : studentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
     case SortType.AverageGrade:
       return (order === 'asc')
-        ? copiedArray
+        ? studentsCopy
           .sort((a, b) => getAverage(a[sortBy]) - getAverage(b[sortBy]))
-        : copiedArray
+        : studentsCopy
           .sort((a, b) => getAverage(b[sortBy]) - getAverage(a[sortBy]));
 
-    default: Error('Error?');
+    default: throw new Error('Error?');
   }
-
-  return students;
 }
