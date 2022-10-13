@@ -9,11 +9,11 @@ export interface Student {
 
 export enum SortType {
   // describe SortType enum
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 // create SortOrder type
@@ -26,34 +26,22 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  const nameOrSurname = sortBy === SortType.Name ? 'name' : 'surname';
-
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
         order === 'asc'
-          ? firstPerson[nameOrSurname]
-            .localeCompare(secondPerson[nameOrSurname])
-          : secondPerson[nameOrSurname]
-            .localeCompare(firstPerson[nameOrSurname])
+          ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
+          : secondPerson[sortBy].localeCompare(firstPerson[sortBy])
       ));
-
       break;
 
     case SortType.Age:
-      studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
-        order === 'asc'
-          ? firstPerson.age - secondPerson.age
-          : secondPerson.age - firstPerson.age
-      ));
-      break;
-
     case SortType.Married:
       studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
         order === 'asc'
-          ? +firstPerson.married - +secondPerson.married
-          : +secondPerson.married - +firstPerson.married
+          ? +firstPerson[sortBy] - +secondPerson[sortBy]
+          : +secondPerson[sortBy] - +firstPerson[sortBy]
       ));
       break;
 
