@@ -1,6 +1,6 @@
 export interface Student {
-  name: String,
-  surname: String,
+  name: string,
+  surname: string,
   age: number,
   married: boolean,
   grades: number[],
@@ -20,32 +20,6 @@ function calcAvg(arr: number[]): number {
   return arr.reduce((x, y) => x + y, 0) / arr.length;
 }
 
-function compareByAvgGrade(a:Student, b:Student) :number {
-  if (calcAvg(a.grades) > calcAvg(b.grades)) {
-    return 1;
-  }
-
-  if (calcAvg(a.grades) < calcAvg(b.grades)) {
-    return -1;
-  }
-
-  return 0;
-}
-
-type Compare = String | number | boolean;
-
-function compareByString(a: Compare, b: Compare) :number {
-  if (a > b) {
-    return 1;
-  }
-
-  if (a < b) {
-    return -1;
-  }
-
-  return 0;
-}
-
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -53,21 +27,22 @@ export function sortStudents(
 ):Student[] {
   const sortedStudents = [...students];
 
-  if (order === 'desc') {
-    if (sortBy === SortType.AverageGrade) {
-      sortedStudents.sort((a, b) => compareByAvgGrade(b, a));
-    } else {
-      sortedStudents.sort((a, b) => compareByString(b[sortBy], a[sortBy]));
-    }
-
-    return sortedStudents;
+  switch (sortBy) {
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => calcAvg(a.grades) - calcAvg(b.grades))
+        : sortedStudents.sort((a, b) => calcAvg(b.grades) - calcAvg(a.grades));
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : sortedStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+    default:
+      return sortedStudents;
   }
-
-  if (sortBy === SortType.AverageGrade) {
-    sortedStudents.sort((a, b) => compareByAvgGrade(a, b));
-  } else {
-    sortedStudents.sort((a, b) => compareByString(a[sortBy], b[sortBy]));
-  }
-
-  return sortedStudents;
 }
