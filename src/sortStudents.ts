@@ -19,7 +19,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function average(nums:number[]):number {
-  return nums.reduce((prev:number, current:number):number => prev + current, 0)
+  return nums.reduce((prev, current) => prev + current, 0)
     / nums.length;
 }
 
