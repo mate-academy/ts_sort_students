@@ -29,64 +29,38 @@ export function sortStudents(
   const studentsCopy: Student[] = students.slice();
   let callback;
 
-  if (order === 'asc') {
-    switch (sortBy) {
-      case 'name':
-      case 'surname':
-        callback = (
-          st1: Student, st2: Student,
-        ): number => st1[sortBy].localeCompare(st2[sortBy]);
-        break;
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      callback = (order === 'asc')
+        ? (st1: Student, st2: Student): number => st1[sortBy]
+          .localeCompare(st2[sortBy])
+        : (st1: Student, st2: Student): number => st2[sortBy]
+          .localeCompare(st1[sortBy]);
+      break;
 
-      case 'age':
-        callback = (
-          st1: Student, st2: Student,
-        ): number => st1[sortBy] - st2[sortBy];
-        break;
+    case SortType.Age:
+      callback = (order === 'asc')
+        ? (st1: Student, st2: Student): number => st1[sortBy] - st2[sortBy]
+        : (st1: Student, st2: Student): number => st2[sortBy] - st1[sortBy];
+      break;
 
-      case 'married':
-        callback = (st1: Student): number => (st1[sortBy] ? 1 : -1);
-        break;
+    case SortType.Married:
+      callback = (order === 'asc')
+        ? (st1: Student): number => (st1[sortBy] ? 1 : -1)
+        : (st1: Student): number => (st1[sortBy] ? -1 : 1);
+      break;
 
-      case 'grades':
-        callback = (
-          st1: Student, st2: Student,
-        ): number => getAverage(st1[sortBy]) - getAverage(st2[sortBy]);
-        break;
+    case SortType.AverageGrade:
+      callback = (order === 'asc')
+        ? (st1: Student, st2: Student): number => getAverage(st1[sortBy])
+          - getAverage(st2[sortBy])
+        : (st1: Student, st2: Student): number => getAverage(st2[sortBy])
+          - getAverage(st1[sortBy]);
+      break;
 
-      default:
-        break;
-    }
-  }
-
-  if (order === 'desc') {
-    switch (sortBy) {
-      case 'name':
-      case 'surname':
-        callback = (
-          st1: Student, st2: Student,
-        ): number => st2[sortBy].localeCompare(st1[sortBy]);
-        break;
-
-      case 'age':
-        callback = (
-          st1: Student, st2: Student,
-        ): number => st2[sortBy] - st1[sortBy];
-        break;
-
-      case 'married':
-        callback = (st1: Student): number => (st1[sortBy] ? -1 : 1);
-        break;
-
-      case 'grades':
-        callback = (
-          st1: Student, st2: Student,
-        ): number => getAverage(st2[sortBy]) - getAverage(st1[sortBy]);
-        break;
-
-      default:
-        break;
-    }
+    default:
+      break;
   }
 
   return studentsCopy.sort(callback);
