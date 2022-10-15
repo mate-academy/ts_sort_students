@@ -29,33 +29,29 @@ export function sortStudents(
     return grade.reduce((sum: number, x: number) => sum + x, 0) / grade.length;
   }
 
-  function mariedSort(a: boolean, b: boolean): number {
-    if (a === false && b === true) {
-      return -1;
-    }
-
-    return 1;
-  }
-
   function sortStudent(
     studentFirst: object,
     studentSecond: object,
-    sortType: number,
+    sortType: SortType,
   ): number {
     switch (sortType) {
-      case 0:
+      case SortType.Name:
         return studentFirst.name.localeCompare(studentSecond.name);
 
-      case 1:
+      case SortType.Surname:
         return studentFirst.surname.localeCompare(studentSecond.surname);
 
-      case 2:
+      case SortType.Age:
         return studentFirst.age - studentSecond.age;
 
-      case 3:
-        return mariedSort(studentFirst.married, studentSecond.married);
+      case SortType.Married:
+        if (studentFirst.married === false && studentSecond.married === true) {
+          return -1;
+        }
 
-      case 4:
+        return 1;
+
+      case SortType.AverageGrade:
         return getAverageGrade(studentFirst.grades)
           - getAverageGrade(studentSecond.grades);
 
