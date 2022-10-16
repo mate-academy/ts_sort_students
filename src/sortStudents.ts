@@ -45,11 +45,7 @@ export function sortStudents(
         return studentFirst.age - studentSecond.age;
 
       case SortType.Married:
-        if (studentFirst.married === false && studentSecond.married === true) {
-          return -1;
-        }
-
-        return 1;
+        return Number(studentFirst.married) - Number(studentSecond.married);
 
       case SortType.AverageGrade:
         return getAverageGrade(studentFirst.grades)
