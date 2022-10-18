@@ -17,6 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(arr: number[]): number {
+  return arr.reduce((prev, curr) => prev + curr, 0) / arr.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -24,48 +28,28 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      studentsCopy.sort((curRerson: Student, prevPerson: Student) => (
-        order === 'asc'
-          ? curRerson[sortBy].localeCompare(prevPerson[sortBy])
-          : prevPerson[sortBy].localeCompare(curRerson[sortBy])
-      ));
-      break;
+  return studentsCopy.sort((firstStudent, secondStudent) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      studentsCopy.sort((curRerson: Student, prevPerson: Student) => (
-        order === 'asc'
-          ? +curRerson[sortBy] - +prevPerson[sortBy]
-          : +prevPerson[sortBy] - +curRerson[sortBy]
-      ));
-      break;
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +(firstStudent[sortBy]) - +(secondStudent[sortBy])
+          : +(secondStudent[sortBy]) - +(firstStudent[sortBy]);
 
-    case SortType.AverageGrade:
-      studentsCopy.sort((person: Student, prevPerson: Student) => {
-        const firstAverage = person[sortBy]
-          .reduce((prev: number, curr: number) => {
-            return prev + curr;
-          }, 0) / person[sortBy].length;
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(firstStudent[sortBy])
+            - getAverage(secondStudent[sortBy])
+          : getAverage(secondStudent[sortBy])
+            - getAverage(firstStudent[sortBy]);
 
-        const secondAverage = prevPerson[sortBy]
-          .reduce((prev: number, curr: number) => {
-            return prev + curr;
-          }, 0) / prevPerson[sortBy].length;
-
-        if (order === 'asc') {
-          return firstAverage - secondAverage;
-        }
-
-        return secondAverage - firstAverage;
-      });
-      break;
-
-    default:
-      break;
-  }
-
-  return studentsCopy;
+      default: throw new Error('Wrong');
+    }
+  });
 }
