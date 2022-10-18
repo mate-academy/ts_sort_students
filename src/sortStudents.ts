@@ -16,6 +16,17 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(
+  a: Student,
+  b: Student,
+  sortBy: SortType,
+): number {
+  return (a[sortBy].reduce((sum: number, current: number) => sum + current)
+    / a[sortBy].length)
+    - (b[sortBy].reduce((sum: number, current: number) => sum + current)
+    / b[sortBy].length);
+}
+
 function gradesSort(
   a: Student,
   b: Student,
@@ -23,14 +34,8 @@ function gradesSort(
   sortBy: SortType,
 ): number {
   return order === 'asc'
-    ? (a[sortBy].reduce((sum: number, current: number) => sum + current)
-        / a[sortBy].length)
-      - (b[sortBy].reduce((sum: number, current: number) => sum + current)
-        / b[sortBy].length)
-    : (b[sortBy].reduce((sum: number, current: number) => sum + current)
-        / b[sortBy].length)
-      - (a[sortBy].reduce((sum: number, current: number) => sum + current)
-        / a[sortBy].length);
+    ? getAverage(a, b, sortBy)
+    : getAverage(b, a, sortBy);
 }
 
 function stringSort(a: string, b: string, order: SortOrder): number {
