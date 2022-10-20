@@ -42,7 +42,6 @@ export function sortStudents(students: Student[],
         : studentsCpy.sort((b, a) => averageGradeArr(a.grades)
           - averageGradeArr(b.grades));
     default:
+      return students;
   }
-
-  return studentsCpy;
 }
