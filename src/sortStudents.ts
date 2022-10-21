@@ -29,39 +29,21 @@ export function sortStudents(students: Student[],
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      }
-
-      if (order === 'desc') {
-        return studentsCopy.sort((b, a) => a[sortBy].localeCompare(b[sortBy]));
-      }
-      break;
+      return (order === 'asc')
+        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : studentsCopy.sort((b, a) => a[sortBy].localeCompare(b[sortBy]));
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
-      }
-
-      if (order === 'desc') {
-        return studentsCopy
-          .sort((b, a) => Number(a[sortBy]) - Number(b[sortBy]));
-      }
-      break;
+      return (order === 'asc')
+        ? studentsCopy.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+        : studentsCopy.sort((b, a) => Number(a[sortBy]) - Number(b[sortBy]));
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((a, b) => averageGrades(a.grades) - averageGrades(b.grades));
-      }
-
-      if (order === 'desc') {
-        return studentsCopy
-          .sort((b, a) => averageGrades(a.grades) - averageGrades(b.grades));
-      }
-      break;
+      return (order === 'asc')
+        ? studentsCopy.sort((a, b) => averageGrades(a.grades)
+        - averageGrades(b.grades))
+        : studentsCopy.sort((b, a) => averageGrades(a.grades)
+        - averageGrades(b.grades));
     default:
+      return students;
   }
-
-  return studentsCopy;
 }
