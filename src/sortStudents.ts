@@ -24,46 +24,49 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = [...students];
+  const sortedStudents: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
-        order === 'asc'
-          ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
-          : secondPerson[sortBy].localeCompare(firstPerson[sortBy])
-      ));
-      break;
+  sortedStudents.sort((prev: Student, curr: Student): number => {
+    switch (sortBy) {
+      // Sort by name and surname and return result:
+      case SortType.Name:
+      case SortType.Surname:
+        return prev[sortBy].localeCompare(curr[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      studentsCopy.sort((firstPerson: Student, secondPerson: Student) => (
-        order === 'asc'
-          ? +firstPerson[sortBy] - +secondPerson[sortBy]
-          : +secondPerson[sortBy] - +firstPerson[sortBy]
-      ));
-      break;
+      // Sort by age:
+      case SortType.Age:
+        return order === 'asc'
+          ? prev[sortBy] - curr[sortBy]
+          : curr[sortBy] - prev[sortBy];
 
-    case SortType.AverageGrade:
-      studentsCopy.sort((firstPerson: Student, secondPerson: Student) => {
-        const firstPersonAvgGrade = firstPerson.grades.reduce(
-          (accum: number, curr: number) => accum + curr,
-        ) / firstPerson.grades.length;
+      // Sort by married:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(prev[sortBy]) - Number(curr[sortBy])
+          : Number(curr[sortBy]) - Number(prev[sortBy]);
 
-        const secondPersonAvgGrade = secondPerson.grades.reduce(
-          (accum: number, curr: number) => accum + curr,
-        ) / secondPerson.grades.length;
+      // Sort by grades:
+      case SortType.AverageGrade:
+        // eslint-disable-next-line no-case-declarations
+        const prevAverage = prev[sortBy].reduce(
+          (accum: number, current: number) => accum + current,
+        ) / prev[sortBy].length;
+
+        // eslint-disable-next-line no-case-declarations
+        const currAverage = curr[sortBy].reduce(
+          (accum: number, current: number) => accum + current,
+        ) / curr[sortBy].length;
 
         return order === 'asc'
-          ? firstPersonAvgGrade - secondPersonAvgGrade
-          : secondPersonAvgGrade - firstPersonAvgGrade;
-      });
-      break;
+          // ASC:
+          ? prevAverage - currAverage
+          // DESC:
+          : currAverage - prevAverage;
 
-    default:
-      break;
-  }
+      default:
+        return 0;
+    }
+  });
 
-  return studentsCopy;
+  return sortedStudents;
 }
