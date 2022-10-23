@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverage(arr: number[]): number {
-  return arr.reduce((prev, curr) => prev + curr, 0) / arr.length;
+function getAverage(students: number[]): number {
+  return students.reduce((prev, curr) => prev + curr, 0) / students.length;
 }
 
 export function sortStudents(
@@ -49,7 +49,7 @@ export function sortStudents(
           : getAverage(secondStudent[sortBy])
             - getAverage(firstStudent[sortBy]);
 
-      default: throw new Error('Wrong');
+      default: throw new Error('Wrong sort data');
     }
   });
 }
