@@ -39,10 +39,12 @@ export function sortStudents(students: Student[],
         : studentsCopy.sort((b, a) => Number(a[sortBy]) - Number(b[sortBy]));
     case SortType.AverageGrade:
       return (order === 'asc')
-        ? studentsCopy.sort((a, b) => averageGrades(a.grades)
-        - averageGrades(b.grades))
-        : studentsCopy.sort((b, a) => averageGrades(a.grades)
-        - averageGrades(b.grades));
+        ? studentsCopy.sort(
+          (a, b) => averageGrades(a.grades) - averageGrades(b.grades),
+        )
+        : studentsCopy.sort(
+          (b, a) => averageGrades(a.grades) - averageGrades(b.grades),
+        );
     default:
       return studentsCopy;
   }
