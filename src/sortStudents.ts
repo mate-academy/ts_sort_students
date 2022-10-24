@@ -45,9 +45,11 @@ export function sortStudents(
       return order === 'asc'
         ? result.sort((a, b) => +a.married - +b.married)
         : result.sort((a, b) => +b.married - +a.married);
-    default:
+    case SortType.AverageGrade:
       return order === 'asc'
         ? result.sort((a, b) => getAverage(a) - getAverage(b))
         : result.sort((a, b) => getAverage(b) - getAverage(a));
+    default:
+      return result;
   }
 }
