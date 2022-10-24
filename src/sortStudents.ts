@@ -53,7 +53,7 @@ export function sortStudents(
       });
       break;
     default:
-      return students;
+      return studentsCopy;
   }
 
   return studentsCopy;
