@@ -13,11 +13,11 @@ export enum SortType {
   Married = 'married',
   AverageGrade = 'grades'
 }
-// create SortOrder type
+
 export type SortOrder = 'asc' | 'desc';
 
-const getAverageGrade = (item: number[]): number => item
-  .reduce((sum: number, element: number) => sum + element, 0) / item.length;
+const getAverageGrade = (grades: number[]): number => grades
+  .reduce((sum: number, element: number) => sum + element, 0) / grades.length;
 
 export function sortStudents(
   students: Student[],
@@ -31,27 +31,33 @@ export function sortStudents(
     case SortType.Surname:
       return order === 'asc'
         ? copyStudents
-          .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]))
+          .sort((studentA: Student, studentB: Student) => studentA[sortBy]
+            .localeCompare(studentB[sortBy]))
         : copyStudents
-          .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
+          .sort((studentA: Student, studentB: Student) => studentB[sortBy]
+            .localeCompare(studentA[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
         ? copyStudents
-          .sort((a:Student, b:Student) => +a[sortBy] - +b[sortBy])
+          .sort((studentA:Student, studentB:Student) => +studentA[sortBy]
+          - +studentB[sortBy])
         : copyStudents
-          .sort((a:Student, b:Student) => +b[sortBy] - +a[sortBy]);
+          .sort((studentA:Student, studentB:Student) => +studentB[sortBy]
+          - +studentA[sortBy]);
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? copyStudents
-          .sort((a: Student, b: Student) => (
-            getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          .sort((studentA: Student, studentB: Student) => (
+            getAverageGrade(studentA[sortBy])
+            - getAverageGrade(studentB[sortBy])
           ))
         : copyStudents
-          .sort((a: Student, b: Student) => (
-            getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy])
+          .sort((studentA: Student, studentB: Student) => (
+            getAverageGrade(studentB[sortBy])
+            - getAverageGrade(studentA[sortBy])
           ));
 
     default:
