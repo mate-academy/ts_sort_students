@@ -24,39 +24,32 @@ function averageGrade(grades: number[]): number {
   ), 0) / grades.length;
 }
 
-export function sortStudents(students, sortBy, order): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const copyOfStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      copyOfStudents.sort((studentA: Student, studentB: Student): number => {
-        return order === 'asc'
-          ? studentA[sortBy].localeCompare(studentB[sortBy])
-          : studentB[sortBy].localeCompare(studentA[sortBy]);
-      });
-      break;
+  return copyOfStudents.sort((studentA: Student, studentB: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return studentA[sortBy].localeCompare(studentB[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      copyOfStudents.sort((studentA: Student, studentB: Student): number => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
           ? Number(studentA[sortBy]) - Number(studentB[sortBy])
           : Number(studentB[sortBy]) - Number(studentA[sortBy]);
-      });
-      break;
 
-    case SortType.AverageGrade:
-      copyOfStudents.sort((studentA: Student, studentB: Student): number => {
+      case SortType.AverageGrade:
         return order === 'asc'
           ? averageGrade(studentA[sortBy]) - averageGrade(studentB[sortBy])
           : averageGrade(studentB[sortBy]) - averageGrade(studentA[sortBy]);
-      });
-      break;
 
-    default:
-      throw new Error('Unknown sort type');
-  }
-
-  return copyOfStudents;
+      default:
+        throw new Error('Unknown sort type');
+    }
+  });
 }
