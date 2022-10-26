@@ -5,7 +5,7 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
-  id?: number;
+  avgGrades: number;
 }
 
 export enum SortType {
@@ -13,35 +13,32 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'id',
+  AverageGrade = 'avgGrades',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function getResult(
+export function sortStudents(
   students: Student[],
   criteria: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = (criteria === SortType.AverageGrade)
-    ? students.map((student) => (
-      {
-        ...student,
-        id: student.grades.reduce((a, b) => a + b, 0) / student.grades.length,
-      }
-    ))
-    : students.map((student, id) => ({
-      ...student, id,
-    }));
+  const studentsCopy: Student[] = students.map((student) => (
+    {
+      ...student,
+      avgGrades: student.grades
+        .reduce((a, b) => a + b, 0) / student.grades.length,
+    }
+  ));
 
   if (order === 'asc') {
     return studentsCopy.sort((currentStud, nextStud) => {
-      if (currentStud[criteria] < nextStud[criteria]) {
+      if (currentStud?.[criteria] < nextStud[criteria]) {
         return -1;
       }
 
-      if (currentStud[criteria] > nextStud[criteria]) {
+      if (currentStud?.[criteria] > nextStud?.[criteria]) {
         return 1;
       }
 
@@ -51,7 +48,7 @@ export function getResult(
 
   if (order === 'desc') {
     return studentsCopy
-      .sort((currentStud, nextStud) => {
+      .sort((currentStud: Student, nextStud: Student) => {
         if (currentStud[criteria] > nextStud[criteria]) {
           return -1;
         }
@@ -65,12 +62,4 @@ export function getResult(
   }
 
   return students;
-}
-
-export function sortStudents(
-  students: Student[],
-  sortBy: SortType,
-  order: SortOrder,
-): Student[] {
-  return getResult(students, sortBy, order);
 }
