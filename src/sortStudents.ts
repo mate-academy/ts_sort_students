@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averCal(arr: number[]): number {
+function averalCalculation(arr: number[]): number {
   const average = arr.reduce((a, b) => a + b, 0) / arr.length;
 
   return average;
@@ -30,40 +30,29 @@ export function sortStudents(
 ): Student[] {
   const newStudent: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      if (order === 'asc') {
-        newStudent
-          .sort((a: Student, b:Student) => a[sortBy].localeCompare(b[sortBy]));
-      }
+  return newStudent.sort((
+    a: Student,
+    b: Student,
+  ):number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-      if (order === 'desc') {
-        newStudent
-          .sort((a:Student, b:Student) => b[sortBy].localeCompare(a[sortBy]));
-      }
-      break;
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? averalCalculation(a[sortBy]) - averalCalculation(b[sortBy])
+          : averalCalculation(b[sortBy]) - averalCalculation(a[sortBy]);
 
-    case SortType.AverageGrade:
-      if (order === 'asc') {
-        newStudent
-          .sort((a, b) => averCal(a[sortBy]) - averCal(b[sortBy]));
-      }
-
-      if (order === 'desc') {
-        newStudent.sort((a, b) => averCal(b[sortBy]) - averCal(a[sortBy]));
-      }
-      break;
-
-    default:
-      if (order === 'asc') {
-        newStudent.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
-      }
-
-      if (order === 'desc') {
-        newStudent.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
-      }
-  }
-
-  return newStudent;
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      default:
+        return 0;
+    }
+  });
 }
