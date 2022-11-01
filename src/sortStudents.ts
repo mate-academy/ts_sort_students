@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -25,29 +25,29 @@ export function sortStudents(students: Student[], sortBy: SortType,
   }
 
   function callBack(a: Student, b: Student): number {
-    const one = a;
-    const two = b;
-    let first = one;
-    let second = two;
+    let first = a[sortBy];
+    let second = b[sortBy];
 
     if (order === 'desc') {
-      first = two;
-      second = one;
+      first = b[sortBy];
+      second = a[sortBy];
     }
 
     switch (sortBy) {
-      case SortType.Age:
-        return first.age - second.age;
       case SortType.Married:
-        return Number(first.married) - Number(second.married);
+        return Number(first) - Number(second);
+
       case SortType.AverageGrade:
-        return averAge(first.grades) - averAge(second.grades);
+        return averAge(first) - averAge(second);
+
       case SortType.Name:
-        return first.name.localeCompare(second.name);
+        return first.localeCompare(second);
+
       case SortType.Surname:
-        return first.surname.localeCompare(second.surname);
+        return first.localeCompare(second);
+
       default:
-        return 0;
+        return first - second;
     }
   }
 
