@@ -40,10 +40,8 @@ export function sortStudents(students: Student[], sortBy: SortType,
       case SortType.AverageGrade:
         return averAge(first) - averAge(second);
 
-      case SortType.Name:
-        return first.localeCompare(second);
-
       case SortType.Surname:
+      case SortType.Name:
         return first.localeCompare(second);
 
       default:
