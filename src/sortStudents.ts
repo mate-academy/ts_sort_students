@@ -17,6 +17,10 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageValue(numbers: number[]): number {
+  return numbers.reduce((prev, curr) => prev + curr) / numbers.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -24,55 +28,24 @@ export function sortStudents(
 ): Student[] {
   const sortedListOfStudents: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      sortedListOfStudents.sort((person: Student, prevPerson: Student) => (
-        order === 'asc'
+  return sortedListOfStudents.sort((person: Student, prevPerson: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return (order === 'asc')
           ? person[sortBy].localeCompare(prevPerson[sortBy])
-          : prevPerson[sortBy].localeCompare(person[sortBy])
-      ));
-      break;
+          : prevPerson[sortBy].localeCompare(person[sortBy]);
 
-    case SortType.Age:
-      sortedListOfStudents.sort((person: Student, prevPerson: Student) => (
-        order === 'asc'
-          ? person[sortBy] - prevPerson[sortBy]
-          : prevPerson[sortBy] - person[sortBy]
-      ));
-      break;
-
-    case SortType.Married:
-      sortedListOfStudents.sort((person: Student, prevPerson: Student) => (
-        order === 'asc'
+      case SortType.Age:
+      case SortType.Married:
+        return (order === 'asc')
           ? Number(person[sortBy]) - Number(prevPerson[sortBy])
-          : Number(prevPerson[sortBy]) - Number(person[sortBy])
-      ));
-      break;
+          : Number(prevPerson[sortBy]) - Number(person[sortBy]);
 
-    case SortType.AverageGrade:
-      sortedListOfStudents.sort((person: Student, prevPerson: Student) => {
-        const firstAverage = person[sortBy]
-          .reduce((prev: number, curr: number) => {
-            return prev + curr;
-          }, 0) / person[sortBy].length;
-
-        const secondAverage = prevPerson[sortBy]
-          .reduce((prev: number, curr: number) => {
-            return prev + curr;
-          }, 0) / prevPerson[sortBy].length;
-
-        if (order === 'asc') {
-          return firstAverage - secondAverage;
-        }
-
-        return secondAverage - firstAverage;
-      });
-      break;
-
-    default:
-      break;
-  }
-
-  return sortedListOfStudents;
+      default:
+        return (order === 'asc')
+          ? getAverageValue(person.grades) - getAverageValue(prevPerson.grades)
+          : getAverageValue(prevPerson.grades) - getAverageValue(person.grades);
+    }
+  });
 }
