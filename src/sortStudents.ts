@@ -27,35 +27,35 @@ export function sortStudents(
 ): Student[] {
   return [...students].sort((a: Student, b: Student): number => {
     switch (sortBy) {
-      case 'name':
+      case SortType.Name:
         if (order === 'desc') {
           return b[sortBy].localeCompare(a[sortBy]);
         }
 
         return a[sortBy].localeCompare(b[sortBy]);
 
-      case 'surname':
+      case SortType.Surname:
         if (order === 'desc') {
           return b[sortBy].localeCompare(a[sortBy]);
         }
 
         return a[sortBy].localeCompare(b[sortBy]);
 
-      case 'married':
+      case SortType.Married:
         if (order === 'desc') {
           return a[sortBy] <= b[sortBy] ? 1 : -1;
         }
 
         return a[sortBy] <= b[sortBy] ? -1 : 1;
 
-      case 'age':
+      case SortType.Age:
         if (order === 'desc') {
           return b[sortBy] - a[sortBy];
         }
 
         return a[sortBy] - b[sortBy];
 
-      case 'grades':
+      case SortType.AverageGrade:
         if (order === 'desc') {
           return getAverage(b[sortBy]) - getAverage(a[sortBy]);
         }
