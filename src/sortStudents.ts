@@ -16,8 +16,11 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType,
-  order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const studentsArray: Student[] = [...students];
 
   function averAge(ageArray: number[]): number {
@@ -25,13 +28,8 @@ export function sortStudents(students: Student[], sortBy: SortType,
   }
 
   function callBack(a: Student, b: Student): number {
-    let first = a[sortBy];
-    let second = b[sortBy];
-
-    if (order === 'desc') {
-      first = b[sortBy];
-      second = a[sortBy];
-    }
+    const first = (order === 'asc') ? a[sortBy] : b[sortBy];
+    const second = (order === 'asc') ? b[sortBy] : a[sortBy];
 
     switch (sortBy) {
       case SortType.Married:
