@@ -47,11 +47,11 @@ export function sortStudents(
       break;
   }
 
-  if (order === 'desc') {
+  if (SortType.AverageGrade && order === 'desc') {
     copyStudents.sort(
       (a, b) => averageGrade(b.grades) - averageGrade(a.grades),
     );
-  } else {
+  } else if (SortType.AverageGrade) {
     copyStudents.sort(
       (a, b) => averageGrade(a.grades) - averageGrade(b.grades),
     );
