@@ -23,10 +23,10 @@ function getGrades(grade: number[]): number {
 
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
-): Student[] | 0 {
+): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  return studentsCopy.sort((student1: Student, student2: Student) => {
+  return studentsCopy.sort((student1: Student, student2: Student): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -40,13 +40,10 @@ export function sortStudents(
           ? +student1[sortBy] - +student2[sortBy]
           : +student2[sortBy] - +student1[sortBy];
 
-      case SortType.AverageGrade:
+      default:
         return order === 'asc'
           ? getGrades(student1[sortBy]) - getGrades(student2[sortBy])
           : getGrades(student2[sortBy]) - getGrades(student1[sortBy]);
-
-      default:
-        return 0;
     }
   });
 }
