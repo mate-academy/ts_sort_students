@@ -40,12 +40,12 @@ export const sortStudents: SortFunction = (students, sortBy, order) => {
 
     case 'grades':
 
-      return [...students].sort((arrOne: object, arrTwo: object) => {
+      return [...students].sort((arrOne, arrTwo) => {
         const sumOne = arrOne[sortBy].reduce(
-          (prev: number, curr: number) => prev + curr,
+          (prev, curr) => prev + curr,
         );
         const sumTwo = arrTwo[sortBy].reduce(
-          (prev: number, curr: number) => prev + curr,
+          (prev, curr) => prev + curr,
         );
 
         return order === 'asc'
