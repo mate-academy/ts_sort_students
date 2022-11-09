@@ -65,7 +65,7 @@ export function sortStudents(
       break;
 
     default:
-      return toSortStudents;
+      throw new Error('bad input: Check "bySort"');
   }
 
   return toSortStudents;
