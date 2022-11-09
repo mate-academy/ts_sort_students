@@ -9,18 +9,18 @@ export interface Student {
 
 export enum SortType {
   // describe SortType enum
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function getAverageGrade(student: Student) : number {
-  return student.grades.reduce((prev:number, cur: number) => prev + cur, 0)
+  return student.grades.reduce((prev: number, cur: number) => prev + cur, 0)
     / student.grades.length;
 }
 
@@ -31,29 +31,22 @@ export function sortStudents(students: Student[],
 
   switch (sortBy) {
     case SortType.Name:
-      return studentsCopy.sort(
-        (prev: Student, cur: Student) => {
-          return order === 'asc'
-            ? prev.name.localeCompare(cur.name)
-            : cur.name.localeCompare(prev.name);
-        },
-      );
-
     case SortType.Surname:
       return studentsCopy.sort(
         (prev: Student, cur: Student) => {
           return order === 'asc'
-            ? prev.surname.localeCompare(cur.surname)
-            : cur.surname.localeCompare(prev.surname);
+            ? prev[sortBy].localeCompare(cur[sortBy])
+            : cur[sortBy].localeCompare(prev[sortBy]);
         },
       );
 
     case SortType.Age:
+    case SortType.Married:
       return studentsCopy.sort(
         (prev: Student, cur: Student) => {
           return order === 'asc'
-            ? prev.age - cur.age
-            : cur.age - prev.age;
+            ? +prev[sortBy] - (+cur[sortBy])
+            : +cur[sortBy] - (+prev[sortBy]);
         },
       );
 
@@ -63,15 +56,6 @@ export function sortStudents(students: Student[],
           return order === 'asc'
             ? getAverageGrade(prev) - getAverageGrade(cur)
             : getAverageGrade(cur) - getAverageGrade(prev);
-        },
-      );
-
-    case SortType.Married:
-      return studentsCopy.sort(
-        (prev: Student, cur: Student) => {
-          return order === 'asc'
-            ? +prev.married - (+cur.married)
-            : +cur.married - (+prev.married);
         },
       );
 
