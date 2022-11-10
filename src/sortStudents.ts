@@ -58,6 +58,6 @@ export function sortStudents(
           : getAvarageNum(second.grades) - getAvarageNum(first.grades);
       });
 
-    default: throw new Error('');
+    default: throw new Error('Input type error');
   }
 }
