@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -26,85 +26,37 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-      }
-
-      if (order === 'desc') {
-        sortedStudents.sort((a, b) => {
-          return b.name.localeCompare(a.name);
-        });
-      }
-
-      break;
-
     case SortType.Surname:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => {
-          return a.surname.localeCompare(b.surname);
-        });
-      }
+      return sortedStudents.sort((a, b) => {
+        if (order === 'asc') {
+          return a[sortBy].localeCompare(b[sortBy]);
+        }
 
-      if (order === 'desc') {
-        sortedStudents.sort((a, b) => {
-          return b.surname.localeCompare(a.surname);
-        });
-      }
-
-      break;
+        return b.surname.localeCompare(a.surname);
+      });
 
     case SortType.Age:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => {
-          return a.age - b.age;
-        });
-      }
-
-      if (order === 'desc') {
-        sortedStudents.sort((a, b) => {
-          return b.age - a.age;
-        });
-      }
-
-      break;
-
     case SortType.Married:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => {
-          return +a.married - +b.married;
-        });
-      }
+      return sortedStudents.sort((a, b) => {
+        if (order === 'asc') {
+          return +a[sortBy] - +b[sortBy];
+        }
 
-      if (order === 'desc') {
-        sortedStudents.sort((a, b) => {
-          return +b.married - +a.married;
-        });
-      }
-
-      break;
+        return +b[sortBy] - +a[sortBy];
+      });
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => {
+      return sortedStudents.sort((a, b) => {
+        if (order === 'asc') {
           return a.grades.reduce((prev, cur) => prev + cur, 0) / a.grades.length
-            - b.grades.reduce((prev, cur) => prev + cur, 0) / b.grades.length;
-        });
-      }
+          - b.grades.reduce((prev, cur) => prev + cur, 0) / b.grades.length;
+        }
 
-      if (order === 'desc') {
-        sortedStudents.sort((a, b) => {
-          return b.grades.reduce((prev, cur) => prev + cur, 0) / b.grades.length
-            - a.grades.reduce((prev, cur) => prev + cur, 0) / a.grades.length;
-        });
-      }
-
-      break;
+        return b.grades.reduce((prev, cur) => prev + cur, 0) / b.grades.length
+        - a.grades.reduce((prev, cur) => prev + cur, 0) / a.grades.length;
+      });
 
     default:
-      throw new Error('Why? I thought TS will handle it');
+      throw new Error('Please, input the correct field');
   }
-
-  return sortedStudents;
 }
