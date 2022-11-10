@@ -22,39 +22,35 @@ export function getAverageGrade(grade: number[]): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
-): object[] {
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const stArr: Student[] = students.map((el: Student) => ({ ...el }));
 
   switch (sortBy) {
     case 'name':
     case 'surname':
-      return (order === 'asc')
-        ? stArr
-          .sort((a: Student, b: Student) => (
-            a[sortBy].localeCompare(b[sortBy])))
-        : stArr
-          .sort((a: Student, b: Student) => (
-            b[sortBy].localeCompare(a[sortBy])));
+      return stArr.sort((a: Student, b: Student) => {
+        return (order === 'asc')
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      });
 
     case 'age':
     case 'married':
-      return (order === 'asc')
-        ? stArr
-          .sort((a: Student, b: Student) => (
-            Number(a[sortBy]) - Number(b[sortBy])))
-        : stArr
-          .sort((a: Student, b: Student) => (
-            Number(b[sortBy]) - Number(a[sortBy])));
+      return stArr.sort((a: Student, b: Student) => {
+        return (order === 'asc')
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      });
 
     case 'grades':
-      return (order === 'asc')
-        ? stArr
-          .sort((a: Student, b: Student) => (
-            getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])))
-        : stArr
-          .sort((a: Student, b: Student) => (
-            getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy])));
+      return stArr.sort((a: Student, b: Student) => {
+        return (order === 'asc')
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
+      });
 
     default:
       throw new Error('invalid values!');
