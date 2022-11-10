@@ -30,17 +30,11 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return studentsCopy.sort((first: Student, second: Student) => {
-        return order === 'asc'
-          ? first.name.localeCompare(second.name)
-          : second.name.localeCompare(first.name);
-      });
-
     case SortType.Surname:
       return studentsCopy.sort((first: Student, second: Student) => {
         return order === 'asc'
-          ? first.surname.localeCompare(second.surname)
-          : second.surname.localeCompare(first.surname);
+          ? first[sortBy].localeCompare(second[sortBy])
+          : second[sortBy].localeCompare(first[sortBy]);
       });
 
     case SortType.Age:
@@ -53,8 +47,8 @@ export function sortStudents(
     case SortType.Married:
       return studentsCopy.sort((first: Student, second: Student) => {
         return order === 'asc'
-          ? first.married.toString().localeCompare(second.married.toString())
-          : second.married.toString().localeCompare(first.married.toString());
+          ? +first.married - +second.married
+          : +second.married - +first.married;
       });
 
     case SortType.AverageGrade:
