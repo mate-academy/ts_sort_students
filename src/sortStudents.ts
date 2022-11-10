@@ -21,7 +21,12 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: [], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = [...students];
+  function getAverageGrade(pupils: Student): number {
+    return pupils.grades.reduce((sum: number, curr: number) => sum + curr)
+    / pupils.grades.length;
+  }
+
+  const studentsCopy: Student[] & {averageGrade?: number} = [...students];
 
   switch (sortBy) {
     case SortType.Name:
@@ -70,20 +75,12 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       return studentsCopy
-        .map((pupil: Student) => {
-          return {
-            ...pupil,
-            averageGrade:
-              pupil.grades.reduce((sum: number, cur: number) => sum + cur)
-              / pupil.grades.length,
-          };
-        })
         .sort((student1, student2): number => {
           if (order === 'asc') {
-            return (student1.averageGrade) - (student2.averageGrade);
+            return getAverageGrade(student1) - getAverageGrade(student2);
           }
 
-          return (student2.averageGrade) - (student1.averageGrade);
+          return getAverageGrade(student2) - getAverageGrade(student1);
         });
 
     default:
