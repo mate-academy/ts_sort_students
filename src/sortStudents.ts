@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -26,56 +25,30 @@ export function sortStudents(
     / pupils.grades.length;
   }
 
-  const studentsCopy: Student[] & {averageGrade?: number} = [...students];
+  const studentsCopy: Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((student1: Student, student2: Student): number => (
-            student1[sortBy].localeCompare(student2[sortBy])));
-      }
-
-      return studentsCopy
-        .sort((student1: Student, student2: Student): number => (
-          student2[sortBy].localeCompare(student1[sortBy])));
-
     case SortType.Surname:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((student1: Student, student2: Student): number => (
-            student1[sortBy].localeCompare(student2[sortBy])));
-      }
-
       return studentsCopy
-        .sort((student1: Student, student2: Student): number => (
-          student2[sortBy].localeCompare(student1[sortBy])));
+        .sort((student1: Student, student2: Student): number => {
+          return (order === 'asc')
+            ? student1[sortBy].localeCompare(student2[sortBy])
+            : student2[sortBy].localeCompare(student1[sortBy]);
+        });
 
     case SortType.Age:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((student1: Student, student2: Student): number => (
-            student1[sortBy] - student2[sortBy]));
-      }
-
-      return studentsCopy
-        .sort((student1: Student, student2: Student): number => (
-          student2[sortBy] - student1[sortBy]));
-
     case SortType.Married:
-      if (order === 'asc') {
-        return studentsCopy
-          .sort((student1: Student, student2: Student): number => (
-            Number(student1[sortBy]) - Number(student2[sortBy])));
-      }
-
       return studentsCopy
-        .sort((student1: Student, student2: Student): number => (
-          Number(student2[sortBy]) - Number(student1[sortBy])));
+        .sort((student1: Student, student2: Student): number => {
+          return (order === 'asc')
+            ? Number(student1[sortBy]) - Number(student2[sortBy])
+            : Number(student2[sortBy]) - Number(student1[sortBy]);
+        });
 
     case SortType.AverageGrade:
       return studentsCopy
-        .sort((student1, student2): number => {
+        .sort((student1: Student, student2: Student): number => {
           if (order === 'asc') {
             return getAverageGrade(student1) - getAverageGrade(student2);
           }
