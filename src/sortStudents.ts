@@ -30,6 +30,7 @@ export function sortStudents(
   const studentCopy: Student[] = [...students];
 
   switch (sortBy) {
+    case (SortType.Surname):
     case (SortType.Name):
       return studentCopy.sort((a: Student, b: Student) => {
         if (order === 'asc') {
@@ -39,25 +40,8 @@ export function sortStudents(
         return b[sortBy].localeCompare(a[sortBy]);
       });
 
-    case (SortType.Surname):
-      return studentCopy.sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
-      });
-
-    case (SortType.Age):
-      return studentCopy.sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a[sortBy] - b[sortBy];
-        }
-
-        return b[sortBy] - a[sortBy];
-      });
-
     case (SortType.Married):
+    case (SortType.Age):
       return studentCopy.sort((a: Student, b: Student) => {
         if (order === 'asc') {
           return +a[sortBy] - +b[sortBy];
@@ -76,6 +60,6 @@ export function sortStudents(
       });
 
     default:
-      throw new Error('wrong type, pls try again');
+      throw new Error('wrong type of sort input, pls try again');
   }
 }
