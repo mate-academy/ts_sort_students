@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function getAvarageNum(arr: number[]): number {
-  return arr.reduce((a: number, b: number) => a + b, 0) / arr.length;
+export function getAvarageGrade(grades: number[]): number {
+  return grades.reduce((a: number, b: number) => a + b, 0) / grades.length;
 }
 
 export function sortStudents(
@@ -28,36 +28,26 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return studentsCopy.sort((first: Student, second: Student) => {
+  return studentsCopy.sort((first: Student, second: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
           ? first[sortBy].localeCompare(second[sortBy])
           : second[sortBy].localeCompare(first[sortBy]);
-      });
 
-    case SortType.Age:
-      return studentsCopy.sort((first: Student, second: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
-          ? first.age - second.age
-          : second.age - first.age;
-      });
+          ? +first[sortBy] - +second[sortBy]
+          : +second[sortBy] - +first[sortBy];
 
-    case SortType.Married:
-      return studentsCopy.sort((first: Student, second: Student) => {
+      case SortType.AverageGrade:
         return order === 'asc'
-          ? +first.married - +second.married
-          : +second.married - +first.married;
-      });
+          ? getAvarageGrade(first.grades) - getAvarageGrade(second.grades)
+          : getAvarageGrade(second.grades) - getAvarageGrade(first.grades);
 
-    case SortType.AverageGrade:
-      return studentsCopy.sort((first: Student, second: Student) => {
-        return order === 'asc'
-          ? getAvarageNum(first.grades) - getAvarageNum(second.grades)
-          : getAvarageNum(second.grades) - getAvarageNum(first.grades);
-      });
-
-    default: throw new Error('Input type error');
-  }
+      default: throw new Error('Invalid sort type input');
+    }
+  });
 }
