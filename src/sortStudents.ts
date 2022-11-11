@@ -26,33 +26,31 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const stArr: Student[] = students.map((el: Student) => ({ ...el }));
+  const stArr: Student[] = [...students];
 
-  switch (sortBy) {
-    case 'name':
-    case 'surname':
-      return stArr.sort((a: Student, b: Student) => {
+  stArr.sort((a: Student, b: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
+          : a[sortBy].localeCompare(b[sortBy]);
 
-    case 'age':
-    case 'married':
-      return stArr.sort((a: Student, b: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
           : Number(b[sortBy]) - Number(a[sortBy]);
-      });
 
-    case 'grades':
-      return stArr.sort((a: Student, b: Student) => {
+      case SortType.AverageGrade:
         return (order === 'asc')
           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
-      });
 
-    default:
-      throw new Error('invalid values!');
-  }
+      default:
+        throw new Error('invalid data!');
+    }
+  });
+
+  return stArr;
 }
