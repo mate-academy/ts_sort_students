@@ -18,21 +18,21 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function averageGrades(grade: number[]): number {
-  return grade
-    .reduce((a: number, b: number) => (a + b), 0) / grade.length;
+export function averageGrades(grades: number[]): number {
+  return grades
+    .reduce((a: number, b: number) => (a + b), 0) / grades.length;
 }
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): object[] {
+): Student[] {
   const newStudents = students.map((student: Student) => ({ ...student }));
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return (order === 'asc')
 
         ? newStudents.sort((stud1: Student, stud2: Student) => (
@@ -40,15 +40,15 @@ export function sortStudents(
         : newStudents.sort((stud1: Student, stud2: Student) => (
           stud1[sortBy].localeCompare(stud2[sortBy])));
 
-    case 'age':
-    case 'married':
+    case SortType.Age:
+    case SortType.Married:
       return (order === 'asc')
         ? newStudents.sort((stud1: Student, stud2: Student) => (
           Number(stud1[sortBy]) - Number(stud2[sortBy])))
         : newStudents.sort((stud1: Student, stud2: Student) => (
           Number(stud2[sortBy]) - Number(stud1[sortBy])));
 
-    case 'grades':
+    case SortType.AverageGrade:
       return (order === 'asc')
         ? newStudents.sort((stud1: Student, stud2: Student) => (
           averageGrades(stud1.grades) - averageGrades(stud2.grades)))
