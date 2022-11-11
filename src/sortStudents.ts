@@ -41,33 +41,29 @@ export function sortStudents(
         ));
 
     case SortType.Age:
-      return order === 'asc'
-        ? studentsCopy.sort((student1: Student, student2: Student) => (
-          student1[sortBy] - student2[sortBy]))
-        : studentsCopy.sort((student1: Student, student2: Student) => (
-          student2[sortBy] - student1[sortBy]));
+      return studentsCopy.sort((student1: Student, student2: Student) => (
+        order === 'asc'
+          ? student1[sortBy] - student2[sortBy]
+          : student2[sortBy] - student1[sortBy]));
 
     case SortType.Married:
-      return order === 'asc'
-        ? studentsCopy.sort((student1: Student, student2: Student): number => {
-          const married1: number = student1[sortBy] ? 1 : 0;
-          const married2: number = student2[sortBy] ? 1 : 0;
+      return studentsCopy.sort((
+        student1: Student,
+        student2: Student,
+      ): number => {
+        const married1: number = student1[sortBy] ? 1 : 0;
+        const married2: number = student2[sortBy] ? 1 : 0;
 
-          return married1 - married2;
-        })
-        : studentsCopy.sort((student1: Student, student2: Student): number => {
-          const married1: number = student1[sortBy] ? 1 : 0;
-          const married2: number = student2[sortBy] ? 1 : 0;
-
-          return married2 - married1;
-        });
+        return order === 'asc'
+          ? married1 - married2
+          : married2 - married1;
+      });
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? studentsCopy.sort((student1: Student, student2: Student) => (
-          getAvgGrade(student1[sortBy]) - getAvgGrade(student2[sortBy])))
-        : studentsCopy.sort((student1: Student, student2: Student) => (
-          getAvgGrade(student2[sortBy]) - getAvgGrade(student1[sortBy])));
+      return studentsCopy.sort((student1: Student, student2: Student) => (
+        order === 'asc'
+          ? getAvgGrade(student1[sortBy]) - getAvgGrade(student2[sortBy])
+          : getAvgGrade(student2[sortBy]) - getAvgGrade(student1[sortBy])));
 
     default:
       throw new Error('Program can not sort by that parameters');
