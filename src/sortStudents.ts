@@ -71,7 +71,7 @@ export function sortStudents(
         studentB: Student,
       ) => {
         if (order === 'asc') {
-          return +studentA[sortBy] - +studentB[sortBy];
+          return Number(studentA[sortBy]) - Number(studentB[sortBy]);
         }
 
         return +studentB[sortBy] - +studentA[sortBy];
