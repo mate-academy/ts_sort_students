@@ -28,41 +28,33 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
       result.sort((a, b) => {
-        if (order === 'asc') {
-          return a.name.localeCompare(b.name);
-        }
-
-        return b.name.localeCompare(a.name);
+        return (order === 'asc')
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
       });
       break;
 
     case SortType.Surname:
       result.sort((a, b) => {
-        if (order === 'asc') {
-          return a.surname.localeCompare(b.surname);
-        }
-
-        return b.surname.localeCompare(a.surname);
+        return (order === 'asc')
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
       });
       break;
 
     case SortType.Age:
       result.sort((a, b) => {
-        if (order === 'asc') {
-          return a.age - b.age;
-        }
-
-        return b.age - a.age;
+        return (order === 'asc')
+          ? a.age - b.age
+          : b.age - a.age;
       });
       break;
 
     case SortType.Married:
       result.sort((a, b) => {
-        if (order === 'asc') {
-          return +a.married - +b.married;
-        }
-
-        return +b.married - +a.married;
+        return (order === 'asc')
+          ? +a.married - +b.married
+          : +b.married - +a.married;
       });
       break;
 
@@ -73,11 +65,9 @@ export function sortStudents(
         const itemTwo = b.grades.reduce((prev, current) => prev + current, 0)
         / b.grades.length;
 
-        if (order === 'asc') {
-          return itemOne - itemTwo;
-        }
-
-        return itemTwo - itemOne;
+        return (order === 'asc')
+          ? itemOne - itemTwo
+          : itemTwo - itemOne;
       });
       break;
 
