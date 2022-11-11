@@ -11,18 +11,22 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+function calcAvgGrade(grades: number[]): number {
+  return grades.reduce((prev, cur) => prev + cur, 0) / grades.length;
+}
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-)
-  : object {
+) : object {
   const sortedStudents: Student[] = [...students];
+  const values = Object.values(SortType);
 
   switch (sortBy) {
     case SortType.Name:
@@ -48,15 +52,13 @@ export function sortStudents(
     case SortType.AverageGrade:
       return sortedStudents.sort((a, b) => {
         if (order === 'asc') {
-          return a.grades.reduce((prev, cur) => prev + cur, 0) / a.grades.length
-          - b.grades.reduce((prev, cur) => prev + cur, 0) / b.grades.length;
+          return calcAvgGrade(a[sortBy]) - calcAvgGrade(b[sortBy]);
         }
 
-        return b.grades.reduce((prev, cur) => prev + cur, 0) / b.grades.length
-        - a.grades.reduce((prev, cur) => prev + cur, 0) / a.grades.length;
+        return calcAvgGrade(b[sortBy]) - calcAvgGrade(a[sortBy]);
       });
 
     default:
-      throw new Error('Please, input the correct field');
+      throw new Error(`Invalid data, use on of these: ${values.join(', ')}`);
   }
 }
