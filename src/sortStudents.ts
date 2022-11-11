@@ -32,33 +32,21 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'name':
-      return (order === 'asc')
-
-        ? newStudents.sort((stud1: Student, stud2: Student) => (
-          stud1.name.localeCompare(stud2.name)))
-        : newStudents.sort((stud1: Student, stud2: Student) => (
-          stud1.name.localeCompare(stud2.name)));
-
     case 'surname':
       return (order === 'asc')
+
         ? newStudents.sort((stud1: Student, stud2: Student) => (
-          stud1.surname.localeCompare(stud2.surname)))
+          stud1[sortBy].localeCompare(stud2[sortBy])))
         : newStudents.sort((stud1: Student, stud2: Student) => (
-          stud1.surname.localeCompare(stud2.surname)));
+          stud1[sortBy].localeCompare(stud2[sortBy])));
 
     case 'age':
-      return (order === 'asc')
-        ? newStudents.sort((stud1: Student, stud2: Student) => (
-          Number(stud1.age) - Number(stud2.age)))
-        : newStudents.sort((stud1: Student, stud2: Student) => (
-          Number(stud2.age) - Number(stud1.age)));
-
     case 'married':
       return (order === 'asc')
         ? newStudents.sort((stud1: Student, stud2: Student) => (
-          Number(stud1.married) - Number(stud2.married)))
+          Number(stud1[sortBy]) - Number(stud2[sortBy])))
         : newStudents.sort((stud1: Student, stud2: Student) => (
-          Number(stud2.married) - Number(stud1.married)));
+          Number(stud2[sortBy]) - Number(stud1[sortBy])));
 
     case 'grades':
       return (order === 'asc')
