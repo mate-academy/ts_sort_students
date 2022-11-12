@@ -18,8 +18,8 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-const arrAvg = (arr:number[]): number => arr
-  .reduce((a, b) => a + b, 0) / arr.length;
+const arrAvg = (arr:number[]): number => (
+  arr.reduce((a, b) => a + b, 0) / arr.length);
 
 export function sortStudents(
   students: Student[],
@@ -31,42 +31,34 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      toSortStudents.sort(
-        (currentStudent: Student,
-          nextStudent: Student): number => {
+      return toSortStudents.sort(
+        (currentStudent: Student, nextStudent: Student): number => {
           return (order === 'asc')
             ? currentStudent[sortBy].localeCompare(nextStudent[sortBy])
             : nextStudent[sortBy].localeCompare(currentStudent[sortBy]);
         },
       );
-      break;
 
     case SortType.Age:
     case SortType.Married:
-      toSortStudents.sort(
-        (currentStudent: Student,
-          nextStudent: Student): number => {
+      return toSortStudents.sort(
+        (currentStudent: Student, nextStudent: Student): number => {
           return (order === 'asc')
             ? Number(currentStudent[sortBy]) - Number(nextStudent[sortBy])
             : Number(nextStudent[sortBy]) - Number(currentStudent[sortBy]);
         },
       );
-      break;
 
     case SortType.AverageGrade:
-      toSortStudents.sort(
-        (currentStudent: Student,
-          nextStudent: Student): number => {
+      return toSortStudents.sort(
+        (currentStudent: Student, nextStudent: Student): number => {
           return (order === 'asc')
             ? arrAvg(currentStudent[sortBy]) - arrAvg(nextStudent[sortBy])
             : arrAvg(nextStudent[sortBy]) - arrAvg(currentStudent[sortBy]);
         },
       );
-      break;
 
     default:
       throw new Error('bad input: Check "bySort"');
   }
-
-  return toSortStudents;
 }
