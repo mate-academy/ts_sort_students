@@ -29,39 +29,31 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return studentsCopy.sort(
-        (currentStudent: Student, nextStudent: Student) => {
+  return studentsCopy.sort(
+    (currentStudent: Student, nextStudent: Student) => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
           return order === 'asc'
             ? currentStudent[sortBy].localeCompare(nextStudent[sortBy])
             : nextStudent[sortBy].localeCompare(currentStudent[sortBy]);
-        },
-      );
 
-    case SortType.Age:
-    case SortType.Married:
-      return studentsCopy.sort(
-        (currentStudent: Student, nextStudent: Student) => {
+        case SortType.Age:
+        case SortType.Married:
           return order === 'asc'
             ? +currentStudent[sortBy] - +nextStudent[sortBy]
             : +nextStudent[sortBy] - +currentStudent[sortBy];
-        },
-      );
 
-    case SortType.AverageGrade:
-      return studentsCopy.sort(
-        (currentStudent: Student, nextStudent: Student) => {
+        case SortType.AverageGrade:
           return order === 'asc'
             ? getAverageGrade(currentStudent[sortBy])
-              - getAverageGrade(nextStudent[sortBy])
+            - getAverageGrade(nextStudent[sortBy])
             : getAverageGrade(nextStudent[sortBy])
-              - getAverageGrade(currentStudent[sortBy]);
-        },
-      );
+            - getAverageGrade(currentStudent[sortBy]);
 
-    default:
-      throw new Error('Something goes wrong - try other sort type');
-  }
+        default:
+          throw new Error('Something goes wrong - try other sort type');
+      }
+    },
+  );
 }
