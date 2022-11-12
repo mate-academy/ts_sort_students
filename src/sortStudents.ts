@@ -16,9 +16,9 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function getAverageGrade(grade: number[]): number {
-  return grade
-    .reduce((prev: number, el: number) => (prev + el), 0) / grade.length;
+export function getAverageGrade(grades: number[]): number {
+  return grades
+    .reduce((prev: number, el: number) => (prev + el), 0) / grades.length;
 }
 
 export function sortStudents(
@@ -26,9 +26,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const stArr: Student[] = [...students];
-
-  stArr.sort((a: Student, b: Student) => {
+  return [...students].sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -48,9 +46,7 @@ export function sortStudents(
           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
 
       default:
-        throw new Error('invalid data!');
+        throw new Error('invalid sort type! Try another one.');
     }
   });
-
-  return stArr;
 }
