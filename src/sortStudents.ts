@@ -24,93 +24,39 @@ export function sortStudents(
 ): Student[] {
   const studentsArr = Object.values(students);
 
-  switch (sortBy) {
-    case SortType.Name:
-      studentsArr.sort((a, b) => {
-        if (a.name > b.name) {
-          return order === 'asc' ? 1 : -1;
-        }
+  studentsArr.sort((a: Student, b: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return (order === 'asc')
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-        if (a.name < b.name) {
-          return order === 'asc' ? -1 : 1;
-        }
+      case SortType.Age:
+        return (order === 'asc')
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
 
-        return 0;
-      });
+      case SortType.Married:
+        return (order === 'asc')
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
 
-      break;
+      case SortType.AverageGrade:
+        return (order === 'asc')
+          ? (a[sortBy].reduce((acc, grade) => acc + grade, 0)
+            / a[sortBy].length)
+            - (b[sortBy].reduce((acc, grade) => acc + grade, 0)
+            / b[sortBy].length)
+          : (b[sortBy].reduce((acc, grade) => acc + grade, 0)
+            / b[sortBy].length)
+            - (a[sortBy].reduce((acc, grade) => acc + grade, 0)
+            / a[sortBy].length);
 
-    case SortType.Surname:
-      studentsArr.sort((a, b) => {
-        if (a.surname > b.surname) {
-          return order === 'asc' ? 1 : -1;
-        }
-
-        if (a.surname < b.surname) {
-          return order === 'asc' ? -1 : 1;
-        }
-
-        return 0;
-      });
-
-      break;
-
-    case SortType.Age:
-      studentsArr.sort((a, b) => {
-        if (a.age > b.age) {
-          return order === 'asc' ? 1 : -1;
-        }
-
-        if (a.age < b.age) {
-          return order === 'asc' ? -1 : 1;
-        }
-
-        return 0;
-      });
-
-      break;
-
-    case SortType.Married:
-      studentsArr.sort((a, b) => {
-        if (a.married > b.married) {
-          return order === 'asc' ? 1 : -1;
-        }
-
-        if (a.married < b.married) {
-          return order === 'asc' ? -1 : 1;
-        }
-
-        return 0;
-      });
-
-      break;
-
-    case SortType.AverageGrade:
-      studentsArr.sort((a, b) => {
-        const averageGradeA = a.grades
-          .reduce((acc, grade) => acc + grade, 0)
-          / a.grades.length;
-        const averageGradeB = b.grades
-          .reduce((acc, grade) => acc + grade, 0)
-          / b.grades.length;
-
-        if (averageGradeA > averageGradeB) {
-          return order === 'asc' ? 1 : -1;
-        }
-
-        if (averageGradeA < averageGradeB) {
-          return order === 'asc' ? -1 : 1;
-        }
-
-        return 0;
-      });
-
-      break;
-
-    default:
-
-      break;
-  }
+      default:
+        throw new Error('Wrong sort type parameter');
+    }
+  });
 
   return studentsArr;
 }
