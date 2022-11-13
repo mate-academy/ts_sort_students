@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrade(grades: Student['grades']): number {
-  return grades.reduce((batt: number, el: number) => batt + el) / grades.length;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((acc: number, el: number) => acc + el) / grades.length;
 }
 
 export function sortStudents(
@@ -28,31 +28,27 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return studentsCopy.sort((a: Student, b: Student) => {
+  return studentsCopy.sort((a: Student, b: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
-      });
 
-    case SortType.Age:
-    case SortType.Married:
-      return studentsCopy.sort((a: Student, b: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
-      });
 
-    case SortType.AverageGrade:
-      return studentsCopy.sort((a: Student, b: Student) => {
+      case SortType.AverageGrade:
         return order === 'asc'
           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
-      });
 
-    default:
-      throw new Error('Oops.. Wrong way!');
-  }
+      default:
+        throw new Error('Invalid sort type! Try another one...');
+    }
+  });
 }
