@@ -41,23 +41,15 @@ export function sortStudents(
         ));
 
     case SortType.Age:
-      return studentsCopy.sort((student1: Student, student2: Student) => (
-        order === 'asc'
-          ? student1[sortBy] - student2[sortBy]
-          : student2[sortBy] - student1[sortBy]));
-
     case SortType.Married:
       return studentsCopy.sort((
         student1: Student,
         student2: Student,
-      ): number => {
-        const married1: number = student1[sortBy] ? 1 : 0;
-        const married2: number = student2[sortBy] ? 1 : 0;
-
-        return order === 'asc'
-          ? married1 - married2
-          : married2 - married1;
-      });
+      ) => (
+        order === 'asc'
+          ? Number(student1[sortBy]) - Number(student2[sortBy])
+          : Number(student2[sortBy]) - Number(student1[sortBy])
+      ));
 
     case SortType.AverageGrade:
       return studentsCopy.sort((student1: Student, student2: Student) => (
