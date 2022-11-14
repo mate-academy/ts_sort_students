@@ -50,6 +50,6 @@ export function sortStudents(students: Student[],
         });
 
     default:
-      throw new Error('Something went wrong');
+      throw new Error('Sort type didn/t find');
   }
 }
