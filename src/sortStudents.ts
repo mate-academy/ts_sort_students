@@ -17,6 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(grades: number[]): number {
+  return grades.reduce((acc, grade) => acc + grade, 0) / grades.length;
+}
+
 export function sortStudents(
   students: Student,
   sortBy: SortType,
@@ -44,14 +48,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return (order === 'asc')
-          ? (a[sortBy].reduce((acc, grade) => acc + grade, 0)
-            / a[sortBy].length)
-            - (b[sortBy].reduce((acc, grade) => acc + grade, 0)
-            / b[sortBy].length)
-          : (b[sortBy].reduce((acc, grade) => acc + grade, 0)
-            / b[sortBy].length)
-            - (a[sortBy].reduce((acc, grade) => acc + grade, 0)
-            / a[sortBy].length);
+          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
+          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
 
       default:
         throw new Error('Wrong sort type parameter');
