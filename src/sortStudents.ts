@@ -15,8 +15,8 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-function getAverageGrade(arr: number[]): number {
-  return arr.reduce((prev, item) => prev + item, 0) / arr.length;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((prev, item) => prev + item, 0) / grades.length;
 }
 
 export type SortOrder = 'asc' | 'desc';
