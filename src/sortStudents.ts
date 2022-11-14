@@ -23,33 +23,34 @@ function getAverageGrade(averageGrade: number[]): number {
     / averageGrade.length;
 }
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const copyStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'asc'
-        ? copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copyStudents.sort((a, b) => -a[sortBy].localeCompare(b[sortBy]));
+  return copyStudents.sort((a: Student, b: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : -a[sortBy].localeCompare(b[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'asc'
-        ? copyStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : copyStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? copyStudents.sort((a, b) => {
-          return getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy]);
-        })
-        : copyStudents.sort((a, b) => {
-          return getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
-        });
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
 
-    default:
-      throw new Error('Sort type didn/t find');
-  }
+      default:
+        throw new Error('Sort type didn/t find');
+    }
+  });
 }
