@@ -22,11 +22,11 @@ function getAverage(grades: number[]): number {
 }
 
 export function sortStudents(
-  students: Student,
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsArr = Object.values(students);
+  const studentsArr: Student[] = [...students];
 
   studentsArr.sort((a: Student, b: Student) => {
     switch (sortBy) {
@@ -37,10 +37,6 @@ export function sortStudents(
           : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
-        return (order === 'asc')
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-
       case SortType.Married:
         return (order === 'asc')
           ? a[sortBy] - b[sortBy]
