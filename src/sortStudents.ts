@@ -18,14 +18,14 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function calcAvgGrade(arrOfGrades: number[]): number {
-  return arrOfGrades.reduce((x: number, y:number) => {
-    return x + y;
-  }) / arrOfGrades.length;
+function calcAvgGrade(gradesArr: number[]): number {
+  return gradesArr.reduce((x: number, y:number) => x + y, 0) / gradesArr.length;
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const copyOfSt: Student[] = [...students];
 
@@ -42,8 +42,8 @@ export function sortStudents(
     case SortType.Married:
       return copyOfSt.sort((x: Student, y: Student) => {
         return order === 'asc'
-          ? x[sortBy] - y[sortBy]
-          : y[sortBy] - x[sortBy];
+          ? +x[sortBy] - +y[sortBy]
+          : +y[sortBy] - +x[sortBy];
       });
 
     case SortType.AverageGrade:
