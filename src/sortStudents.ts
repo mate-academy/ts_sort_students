@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -30,56 +30,25 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        copyStudent
-          .sort((student, nextStudent) => student.name
-            .localeCompare(nextStudent.name));
-      } else {
-        copyStudent
-          .sort((student, nextStudent) => nextStudent.name
-            .localeCompare(student.name));
-      }
-
-      break;
-
     case SortType.Surname:
-      if (order === 'asc') {
-        copyStudent
-          .sort((student, nextStudent) => student.surname
-            .localeCompare(nextStudent.surname));
-      } else {
-        copyStudent
-          .sort((student, nextStudent) => nextStudent.surname
-            .localeCompare(student.surname));
-      }
-
-      break;
+      return order === 'asc'
+        ? copyStudent.sort((student: Student, nextStudent: Student) => (
+          student[sortBy].localeCompare(nextStudent[sortBy])
+        ))
+        : copyStudent.sort((student: Student, nextStudent: Student) => (
+          nextStudent[sortBy].localeCompare(student[sortBy])
+        ));
 
     case SortType.Age:
-      if (order === 'asc') {
-        copyStudent
-          .sort((student, nextStudent) => Number(student.age)
-            - Number(nextStudent.age));
-      } else {
-        copyStudent
-          .sort((student, nextStudent) => Number(nextStudent.age)
-            - Number(student.age));
-      }
-
-      break;
-
     case SortType.Married:
-      if (order === 'asc') {
-        copyStudent
-          .sort((student, nextStudent) => Number(student.married)
-            - Number(nextStudent.married));
-      } else {
-        copyStudent
-          .sort((student, nextStudent) => Number(nextStudent.married)
-            - Number(student.married));
-      }
-
-      break;
+      return copyStudent.sort((
+        student: Student,
+        nextStudent: Student,
+      ) => (
+        order === 'asc'
+          ? Number(student[sortBy]) - Number(nextStudent[sortBy])
+          : Number(nextStudent[sortBy]) - Number(student[sortBy])
+      ));
 
     case SortType.AverageGrade:
       if (order === 'asc') {
@@ -96,7 +65,8 @@ export function sortStudents(
 
       break;
 
-    default: break;
+    default:
+      throw new Error('Can not sort by that parameters');
   }
 
   return copyStudent;
