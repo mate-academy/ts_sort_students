@@ -51,23 +51,13 @@ export function sortStudents(
       ));
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        copyStudent.sort(
-          (student, nextStudent) => getAverage(student.grades)
-            - getAverage(nextStudent.grades),
-        );
-      } else {
-        copyStudent.sort(
-          (student, nextStudent) => getAverage(nextStudent.grades)
-            - getAverage(student.grades),
-        );
-      }
-
-      break;
+      return copyStudent.sort((student: Student, nextStudent: Student) => {
+        return order === 'asc'
+          ? getAverage(student[sortBy]) - getAverage(nextStudent[sortBy])
+          : getAverage(nextStudent[sortBy]) - getAverage(student[sortBy]);
+      });
 
     default:
       throw new Error('Can not sort by that parameters');
   }
-
-  return copyStudent;
 }
