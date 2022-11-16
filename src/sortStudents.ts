@@ -31,13 +31,14 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? copyStudent.sort((student: Student, nextStudent: Student) => (
-          student[sortBy].localeCompare(nextStudent[sortBy])
-        ))
-        : copyStudent.sort((student: Student, nextStudent: Student) => (
-          nextStudent[sortBy].localeCompare(student[sortBy])
-        ));
+      return copyStudent.sort((
+        student: Student,
+        nextStudent: Student,
+      ) => (
+        order === 'asc'
+          ? student[sortBy].localeCompare(nextStudent[sortBy])
+          : nextStudent[sortBy].localeCompare(student[sortBy])
+      ));
 
     case SortType.Age:
     case SortType.Married:
