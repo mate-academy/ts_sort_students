@@ -31,43 +31,25 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      }
-
-      return studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-
     case SortType.Surname:
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      }
-
-      return studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return studentsCopy.sort((a, b) => {
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      });
 
     case SortType.Age:
-      return studentsCopy.sort((a, b) => b[sortBy] - a[sortBy]);
-
     case SortType.Married:
       return studentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy]);
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => {
-          return getAverageNum(a[sortBy]) - getAverageNum(b[sortBy]);
-        });
-      }
-
-      if (order === 'desc') {
-        return studentsCopy.sort((a, b) => {
-          return getAverageNum(b[sortBy]) - getAverageNum(a[sortBy]);
-        });
-      }
-
-      break;
+      return studentsCopy.sort((a, b) => {
+        return order === 'asc'
+          ? getAverageNum(a[sortBy]) - getAverageNum(b[sortBy])
+          : getAverageNum(b[sortBy]) - getAverageNum(a[sortBy]);
+      });
 
     default:
       return studentsCopy;
   }
-
-  return studentsCopy;
 }
