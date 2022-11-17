@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function Average(arr: number[]): number {
@@ -30,53 +29,29 @@ export function sortStudents(
 ): Student[] {
   const StudentsCopy: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-      if (order === 'asc') {
-        return StudentsCopy.sort((a: Student, b: Student) => (
-          a[sortBy].localeCompare(b[sortBy])));
+  return StudentsCopy.sort(
+    (currentStudent: Student, nextStudent: Student) => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return order === 'asc'
+            ? currentStudent[sortBy].localeCompare(nextStudent[sortBy])
+            : nextStudent[sortBy].localeCompare(currentStudent[sortBy]);
+
+        case SortType.Age:
+        case SortType.Married:
+          return order === 'asc'
+            ? +currentStudent[sortBy] - +nextStudent[sortBy]
+            : +nextStudent[sortBy] - +currentStudent[sortBy];
+
+        case SortType.AverageGrade:
+          return order === 'asc'
+            ? Average(currentStudent[sortBy]) - Average(nextStudent[sortBy])
+            : Average(nextStudent[sortBy]) - Average(currentStudent[sortBy]);
+
+        default:
+          throw new Error('Wrong sort type!');
       }
-
-      return StudentsCopy.sort((a: Student, b: Student) => (
-        b[sortBy].localeCompare(a[sortBy])));
-
-    case SortType.Surname:
-      if (order === 'asc') {
-        return StudentsCopy.sort((a: Student, b: Student) => (
-          a[sortBy].localeCompare(b[sortBy])));
-      }
-
-      return StudentsCopy.sort((a: Student, b: Student) => (
-        b[sortBy].localeCompare(a[sortBy])));
-
-    case SortType.Age:
-      if (order === 'asc') {
-        return StudentsCopy.sort((a: Student, b: Student) => (
-          a[sortBy] - b[sortBy]));
-      }
-
-      return StudentsCopy.sort((a: Student, b: Student) => (
-        b[sortBy] - a[sortBy]));
-
-    case SortType.Married:
-      if (order === 'asc') {
-        return StudentsCopy.sort((a: Student, b: Student) => (
-          +a[sortBy] - +b[sortBy]));
-      }
-
-      return StudentsCopy.sort((a: Student, b: Student) => (
-        +b[sortBy] - +a[sortBy]));
-
-    case SortType.AverageGrade:
-      if (order === 'asc') {
-        return StudentsCopy.sort((a: Student, b: Student) => (
-          Average(a[sortBy]) - Average(b[sortBy])));
-      }
-
-      return StudentsCopy.sort((a: Student, b: Student) => (
-        Average(b[sortBy]) - Average(a[sortBy])));
-
-    default:
-      throw new Error('Wrong sort type!');
-  }
+    },
+  );
 }
