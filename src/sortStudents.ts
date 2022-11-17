@@ -20,6 +20,14 @@ export type SortOrder = 'asc' | 'desc';
 const getAverageGrade = (grades: number[]): number => grades
   .reduce((sum: number, element: number) => sum + element, 0) / grades.length;
 
+function sortByNumber(a: number | boolean): number {
+  if (typeof a === 'number') {
+    return a;
+  }
+
+  return Number(a);
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -42,8 +50,8 @@ export function sortStudents(
       return copy.sort(
         (a: Student, b: Student) => (
           order === 'asc'
-            ? Number(a[sortBy]) - Number(b[sortBy])
-            : Number(b[sortBy]) - Number(a[sortBy])),
+            ? sortByNumber(a[sortBy]) - sortByNumber(b[sortBy])
+            : sortByNumber(b[sortBy]) - sortByNumber(a[sortBy])),
       );
 
     case SortType.AverageGrade:
