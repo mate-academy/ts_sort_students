@@ -18,61 +18,78 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+export function getAverageNum(grades: number[]): number {
+  return grades.reduce((prev: number, curr: number) => prev + curr)
+  / grades.length;
+}
+
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
-  let newArray: Student[] = students.slice();
+  const newArray: Student[] = [...students];
+  let result: Student[] = [];
 
-  if (sortBy === 'grades') {
-    return newArray.sort((a: Student, b: Student): number => {
-      const valueA: number = a[sortBy].reduce(
-        (prev: number, curr: number) => prev + curr,
-      ) / a[sortBy].length;
-
-      const valueB: number = b[sortBy].reduce(
-        (prev: number, curr: number) => prev + curr,
-      ) / b[sortBy].length;
-
-      return order === 'asc' ? valueA - valueB : valueB - valueA;
-    });
-  }
-
-  if (sortBy === 'married') {
-    const arrA: Student[] = newArray
-      .filter((student: Student) => !!student.married);
-    const arrB: Student[] = newArray
-      .filter((student: Student) => !student.married);
-
-    return order === 'asc' ? arrB.concat(arrA) : arrA.concat(arrB);
-  }
-
-  if (order === 'asc') {
-    newArray = newArray.sort((a: Student, b: Student): number => {
-      if (a[sortBy] < b[sortBy]) {
-        return -1;
+  switch (order) {
+    case 'asc':
+      if (sortBy === 'name' || sortBy === 'surname') {
+        result = newArray.sort((a: Student, b: Student) => {
+          return a[sortBy].localeCompare(b[sortBy]);
+        });
       }
 
-      if (a[sortBy] > b[sortBy]) {
-        return 1;
+      if (sortBy === 'age') {
+        result = newArray.sort((a: Student, b: Student) => a.age - b.age);
       }
 
-      return 0;
-    });
+      if (sortBy === 'married') {
+        result = newArray.sort((a: Student, b: Student) => {
+          return +a.married - +b.married;
+        });
+      }
+
+      if (sortBy === 'grades') {
+        result = newArray.sort((a: Student, b: Student) => {
+          const averageFirst = getAverageNum(a.grades);
+          const averageSecond = getAverageNum(b.grades);
+
+          return averageFirst - averageSecond;
+        });
+      }
+
+      break;
+
+    case 'desc':
+      if (sortBy === 'name' || sortBy === 'surname') {
+        result = newArray.sort((a:Student, b: Student) => {
+          return b[sortBy].localeCompare(a[sortBy]);
+        });
+      }
+
+      if (sortBy === 'age') {
+        result = newArray.sort((a: Student, b: Student) => b.age - a.age);
+      }
+
+      if (sortBy === 'married') {
+        result = newArray.sort((a: Student, b: Student) => {
+          return +b.married - +a.married;
+        });
+      }
+
+      if (sortBy === 'grades') {
+        result = newArray.sort((a: Student, b: Student) => {
+          const averageFirst = getAverageNum(a.grades);
+          const averageSecond = getAverageNum(b.grades);
+
+          return averageSecond - averageFirst;
+        });
+      }
+
+      break;
+    default:
+      return result;
   }
 
-  if (order === 'desc') {
-    newArray = newArray.sort((a: Student, b: Student): number => {
-      if (a[sortBy] < b[sortBy]) {
-        return 1;
-      }
-
-      if (a[sortBy] > b[sortBy]) {
-        return -1;
-      }
-
-      return 0;
-    });
-  }
-
-  return newArray;
+  return result;
 }
