@@ -2,8 +2,8 @@
 export interface Student {
   name: string;
   surname: string;
-  age: 26;
-  married: true;
+  age: number;
+  married: boolean;
   grades: number[];
 }
 
