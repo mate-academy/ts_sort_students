@@ -26,44 +26,37 @@ export function sortStudents(
 ): Student[] {
   let studentsList = [...students];
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    studentsList = studentsList
-      .sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsList = studentsList
+        .sort((a: Student, b: Student) => {
+          return order === 'asc' ? a[sortBy].localeCompare(b[sortBy])
+            : b[sortBy].localeCompare(a[sortBy]);
+        });
+      break;
+    case SortType.Age:
+    case SortType.Married:
+      studentsList = studentsList
+        .sort((a: Student, b: Student) => {
+          return order === 'asc' ? a[sortBy] - b[sortBy]
+            : b[sortBy] - a[sortBy];
+        });
+      break;
+    case SortType.AverageGrade:
+      studentsList = studentsList
+        .sort((a: Student, b: Student) => {
+          const first = a[sortBy].reduce((prev, curr) => {
+            return prev + curr;
+          }, 0) / a[sortBy].length;
+          const second = b[sortBy].reduce((prev, curr) => {
+            return prev + curr;
+          }, 0) / b[sortBy].length;
 
-        return b[sortBy].localeCompare(a[sortBy]);
-      });
-  }
-
-  if (sortBy === SortType.Age || sortBy === SortType.Married) {
-    studentsList = studentsList
-      .sort((a: Student, b: Student) => {
-        if (order === 'asc') {
-          return a[sortBy] - b[sortBy];
-        }
-
-        return b[sortBy] - a[sortBy];
-      });
-  }
-
-  if (sortBy === SortType.AverageGrade) {
-    studentsList = studentsList
-      .sort((a: Student, b: Student) => {
-        const first = a[sortBy].reduce((prev, curr) => {
-          return prev + curr;
-        }, 0) / a[sortBy].length;
-        const second = b[sortBy].reduce((prev, curr) => {
-          return prev + curr;
-        }, 0) / b[sortBy].length;
-
-        if (order === 'asc') {
-          return first - second;
-        }
-
-        return second - first;
-      });
+          return order === 'asc' ? first - second
+            : second - first;
+        });
+      break;
   }
 
   return studentsList;
