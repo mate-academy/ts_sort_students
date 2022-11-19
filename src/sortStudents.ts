@@ -17,14 +17,17 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageGradeCalc(student: Student): number {
+export function averageGradeCalc(student: Student): number {
   return student.grades.reduce((acc, curr) => {
     return acc + curr;
   }, 0) / student.grades.length;
 }
 
-export function
-sortStudent(students: Student[], sortBy: SortType, order: SortOrder): string[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): string[] {
   const studentsCopy = [...students];
 
   if (sortBy === 'grades') {
@@ -72,11 +75,11 @@ sortStudent(students: Student[], sortBy: SortType, order: SortOrder): string[] {
 
   if (sortBy === 'name' || sortBy === 'surname') {
     if (order === 'desc') {
-      studentsCopy.sort((a, b) => {
+      studentsCopy.sort((a: Student, b: Student): number => {
         return b[sortBy].localeCompare(a[sortBy]);
       });
     } else {
-      studentsCopy.sort((a, b) => {
+      studentsCopy.sort((a: Student, b: Student): number => {
         return a[sortBy].localeCompare(b[sortBy]);
       });
     }
