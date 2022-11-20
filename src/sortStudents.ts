@@ -26,64 +26,41 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): string[] {
+): Student[] {
   const studentsCopy = [...students];
 
   switch (sortBy) {
     case ('name'):
     case ('surname'):
-      if (order === 'desc') {
-        studentsCopy.sort((a: Student, b: Student): number => {
+      return order === 'desc'
+        ? studentsCopy.sort((a: Student, b: Student): number => {
           return b[sortBy].localeCompare(a[sortBy]);
-        });
-      } else {
-        studentsCopy.sort((a: Student, b: Student): number => {
+        })
+        : studentsCopy.sort((a: Student, b: Student): number => {
           return a[sortBy].localeCompare(b[sortBy]);
         });
-      }
-
-      return studentsCopy.map((student) => {
-        return `${student.name} ${student.surname} ${student.age}`;
-      });
 
     case 'age':
-      if (order === 'desc') {
-        studentsCopy.sort((a, b) => {
+      return order === 'desc'
+        ? studentsCopy.sort((a, b) => {
           return b[sortBy] - a[sortBy];
-        });
-      } else {
-        studentsCopy.sort((a, b) => {
+        })
+        : studentsCopy.sort((a, b) => {
           return a[sortBy] - b[sortBy];
         });
-      }
-
-      return studentsCopy.map((student) => {
-        return `${student.name} ${student.surname} ${student.age}`;
-      });
 
     case ('married'):
-      studentsCopy.sort((a: Student): number => {
+      return studentsCopy.sort((a: Student): number => {
         return a[sortBy] ? -1 : 1;
       });
 
-      return studentsCopy.map((student) => {
-        return `${student.name} ${student.surname}
-        ${student.age}${student.married ? ' married' : ''}`;
-      });
-
     default:
-      if (order === 'desc') {
-        studentsCopy.sort((a, b) => {
+      return order === 'desc'
+        ? studentsCopy.sort((a, b) => {
           return averageGradeCalc(b) - averageGradeCalc(a);
-        });
-      } else {
-        studentsCopy.sort((a, b) => {
+        })
+        : studentsCopy.sort((a, b) => {
           return averageGradeCalc(a) - averageGradeCalc(b);
         });
-      }
-
-      return studentsCopy.map((student) => {
-        return `${student.name} ${student.surname} [${student.grades}]`;
-      });
   }
 }
