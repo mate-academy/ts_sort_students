@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -30,64 +29,61 @@ export function sortStudents(
 ): string[] {
   const studentsCopy = [...students];
 
-  if (sortBy === 'grades') {
-    if (order === 'desc') {
-      studentsCopy.sort((a, b) => {
-        return averageGradeCalc(b) - averageGradeCalc(a);
-      });
-    } else {
-      studentsCopy.sort((a, b) => {
-        return averageGradeCalc(a) - averageGradeCalc(b);
-      });
-    }
+  switch (sortBy) {
+    case ('name'):
+    case ('surname'):
+      if (order === 'desc') {
+        studentsCopy.sort((a: Student, b: Student): number => {
+          return b[sortBy].localeCompare(a[sortBy]);
+        });
+      } else {
+        studentsCopy.sort((a: Student, b: Student): number => {
+          return a[sortBy].localeCompare(b[sortBy]);
+        });
+      }
 
-    return studentsCopy.map((student) => {
-      return `${student.name} ${student.surname} [${student.grades}]`;
-    });
+      return studentsCopy.map((student) => {
+        return `${student.name} ${student.surname} ${student.age}`;
+      });
+
+    case 'age':
+      if (order === 'desc') {
+        studentsCopy.sort((a, b) => {
+          return b[sortBy] - a[sortBy];
+        });
+      } else {
+        studentsCopy.sort((a, b) => {
+          return a[sortBy] - b[sortBy];
+        });
+      }
+
+      return studentsCopy.map((student) => {
+        return `${student.name} ${student.surname} ${student.age}`;
+      });
+
+    case ('married'):
+      studentsCopy.sort((a: Student): number => {
+        return a[sortBy] ? -1 : 1;
+      });
+
+      return studentsCopy.map((student) => {
+        return `${student.name} ${student.surname}
+        ${student.age}${student.married ? ' married' : ''}`;
+      });
+
+    default:
+      if (order === 'desc') {
+        studentsCopy.sort((a, b) => {
+          return averageGradeCalc(b) - averageGradeCalc(a);
+        });
+      } else {
+        studentsCopy.sort((a, b) => {
+          return averageGradeCalc(a) - averageGradeCalc(b);
+        });
+      }
+
+      return studentsCopy.map((student) => {
+        return `${student.name} ${student.surname} [${student.grades}]`;
+      });
   }
-
-  if (sortBy === 'married') {
-    studentsCopy.sort((a: Student): number => {
-      return a[sortBy] ? -1 : 1;
-    });
-
-    return studentsCopy.map((student) => {
-      return `${student.name} ${student.surname}
-      ${student.age}${student.married ? ' married' : ''}`;
-    });
-  }
-
-  if (sortBy === 'age') {
-    if (order === 'desc') {
-      studentsCopy.sort((a, b) => {
-        return b[sortBy] - a[sortBy];
-      });
-    } else {
-      studentsCopy.sort((a, b) => {
-        return a[sortBy] - b[sortBy];
-      });
-    }
-
-    return studentsCopy.map((student) => {
-      return `${student.name} ${student.surname} ${student.age}`;
-    });
-  }
-
-  if (sortBy === 'name' || sortBy === 'surname') {
-    if (order === 'desc') {
-      studentsCopy.sort((a: Student, b: Student): number => {
-        return b[sortBy].localeCompare(a[sortBy]);
-      });
-    } else {
-      studentsCopy.sort((a: Student, b: Student): number => {
-        return a[sortBy].localeCompare(b[sortBy]);
-      });
-    }
-
-    return studentsCopy.map((student) => {
-      return `${student.name} ${student.surname} ${student.age}`;
-    });
-  }
-
-  return [''];
 }
