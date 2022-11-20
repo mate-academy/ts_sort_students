@@ -31,7 +31,8 @@ export function sortStudents(
     case SortType.Surname:
       studentsList = studentsList
         .sort((a: Student, b: Student) => {
-          return order === 'asc' ? a[sortBy].localeCompare(b[sortBy])
+          return order === 'asc'
+            ? a[sortBy].localeCompare(b[sortBy])
             : b[sortBy].localeCompare(a[sortBy]);
         });
       break;
@@ -39,7 +40,8 @@ export function sortStudents(
     case SortType.Married:
       studentsList = studentsList
         .sort((a: Student, b: Student) => {
-          return order === 'asc' ? a[sortBy] - b[sortBy]
+          return order === 'asc'
+            ? a[sortBy] - b[sortBy]
             : b[sortBy] - a[sortBy];
         });
       break;
@@ -53,10 +55,14 @@ export function sortStudents(
             return prev + curr;
           }, 0) / b[sortBy].length;
 
-          return order === 'asc' ? first - second
+          return order === 'asc'
+            ? first - second
             : second - first;
         });
       break;
+
+    default:
+      console.log('Wrong parameters!');
   }
 
   return studentsList;
