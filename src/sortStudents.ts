@@ -27,40 +27,26 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = [...students];
+  return [...students].sort((a: Student, b: Student): number => {
+    switch (sortBy) {
+      case ('name'):
+      case ('surname'):
+        return order === 'desc'
+          ? b[sortBy].localeCompare(a[sortBy])
+          : a[sortBy].localeCompare(b[sortBy]);
 
-  switch (sortBy) {
-    case ('name'):
-    case ('surname'):
-      return order === 'desc'
-        ? studentsCopy.sort((a: Student, b: Student): number => {
-          return b[sortBy].localeCompare(a[sortBy]);
-        })
-        : studentsCopy.sort((a: Student, b: Student): number => {
-          return a[sortBy].localeCompare(b[sortBy]);
-        });
+      case 'age':
+        return order === 'desc'
+          ? b[sortBy] - a[sortBy]
+          : a[sortBy] - b[sortBy];
 
-    case 'age':
-      return order === 'desc'
-        ? studentsCopy.sort((a, b) => {
-          return b[sortBy] - a[sortBy];
-        })
-        : studentsCopy.sort((a, b) => {
-          return a[sortBy] - b[sortBy];
-        });
-
-    case ('married'):
-      return studentsCopy.sort((a: Student): number => {
+      case ('married'):
         return a[sortBy] ? -1 : 1;
-      });
 
-    default:
-      return order === 'desc'
-        ? studentsCopy.sort((a, b) => {
-          return averageGradeCalc(b) - averageGradeCalc(a);
-        })
-        : studentsCopy.sort((a, b) => {
-          return averageGradeCalc(a) - averageGradeCalc(b);
-        });
-  }
+      default:
+        return order === 'desc'
+          ? averageGradeCalc(b) - averageGradeCalc(a)
+          : averageGradeCalc(a) - averageGradeCalc(b);
+    }
+  });
 }
