@@ -54,7 +54,7 @@ export function sortStudents(
           const sumB = Adding(secondStud[sortBy]);
 
           return sumA
-          / firstStud.grades.length - sumB / secondStud.grades.length;
+          / firstStud[sortBy].length - sumB / secondStud[sortBy].length;
         })
         : unsorted.sort((firstStud, secondStud) => {
           const sumA = Adding(firstStud[sortBy]);
