@@ -16,16 +16,16 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+const calcAvg = (arr: number[]): number => {
+  return arr.reduce((sum, grade) => sum + (grade / arr.length), 0);
+};
+
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const newStudents: Student[] = [...students];
+  const newStudents = [...students];
 
-  const calcAvg: (arr: number[])=> number = (arr) => {
-    return arr.reduce((sum, grade) => sum + (grade / arr.length), 0);
-  };
-
-  newStudents.sort((a: Student, b: Student) => {
+  newStudents.sort((a, b) => {
     switch (sortBy) {
       case 0:
         return order === 'asc'
@@ -48,7 +48,7 @@ export function sortStudents(
           return 0;
         }
 
-        if (a.married === true) {
+        if (a.married) {
           return order === 'asc' ? 1 : -1;
         }
 
