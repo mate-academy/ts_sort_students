@@ -16,7 +16,6 @@ export enum SortType {
   AverageGrade
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function
@@ -31,46 +30,46 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
   }
 
   if (order === 'asc') {
-    if (sortBy === SortType.Surname) {
-      dublicate.sort((a, b) => a.surname.localeCompare(b.surname));
-    }
+    switch (true) {
+      case sortBy === SortType.Surname:
+        dublicate.sort((a, b) => a.surname.localeCompare(b.surname));
+        break;
 
-    if (sortBy === SortType.Name) {
-      dublicate.sort((a, b) => a.name.localeCompare(b.name));
-    }
+      case sortBy === SortType.Name:
+        dublicate.sort((a, b) => a.name.localeCompare(b.name));
+        break;
 
-    if (sortBy === SortType.Age) {
-      dublicate.sort((a, b) => a.age - b.age);
-    }
+      case sortBy === SortType.Married:
+        dublicate
+          .sort((a, b) => String(b.married).localeCompare(String(a.married)));
+        break;
 
-    if (sortBy === SortType.Married) {
-      dublicate
-        .sort((a, b) => String(b.married).localeCompare(String(a.married)));
-    }
+      case sortBy === SortType.AverageGrade:
+        dublicate.sort((a, b) => average(a.grades) - average(b.grades));
+        break;
 
-    if (sortBy === SortType.AverageGrade) {
-      dublicate.sort((a, b) => average(a.grades) - average(b.grades));
+      default:
     }
   } else {
-    if (sortBy === SortType.Surname) {
-      dublicate.sort((a, b) => b.surname.localeCompare(a.surname));
-    }
+    switch (true) {
+      case sortBy === SortType.Surname:
+        dublicate.sort((a, b) => b.surname.localeCompare(a.surname));
+        break;
 
-    if (sortBy === SortType.Name) {
-      dublicate.sort((a, b) => b.name.localeCompare(a.name));
-    }
+      case sortBy === SortType.Name:
+        dublicate.sort((a, b) => b.name.localeCompare(a.name));
+        break;
 
-    if (sortBy === SortType.Age) {
-      dublicate.sort((a, b) => b.age - a.age);
-    }
+      case sortBy === SortType.Married:
+        dublicate
+          .sort((a, b) => String(b.married).localeCompare(String(a.married)));
+        break;
 
-    if (sortBy === SortType.Married) {
-      dublicate
-        .sort((a, b) => String(b.married).localeCompare(String(a.married)));
-    }
+      case sortBy === SortType.AverageGrade:
+        dublicate.sort((a, b) => average(b.grades) - average(a.grades));
+        break;
 
-    if (sortBy === SortType.AverageGrade) {
-      dublicate.sort((a, b) => average(b.grades) - average(a.grades));
+      default:
     }
   }
 
