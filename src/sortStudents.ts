@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -15,27 +14,24 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-// return the average grade of a student
-function averageGrade(student: Student): number {
+function getAverageGrade(student: Student): number {
   return student.grades.reduce((a, b) => a + b) / student.grades.length || 1;
 }
 
-// default compare for three basic types
 function defaultCompare(
-  st1: string | number | boolean,
-  st2: string | number | boolean,
+  student1: string | number | boolean,
+  student2: string | number | boolean,
   order: SortOrder,
 ): number {
-  if (st1 > st2) {
+  if (student1 > student2) {
     return order === 'asc'
       ? 1
       : -1;
   }
 
-  if (st1 < st2) {
+  if (student1 < student2) {
     return order === 'asc'
       ? -1
       : 1;
@@ -51,11 +47,15 @@ export function sortStudents(
 ): Student[] {
   switch (sortBy) {
     case SortType.AverageGrade:
-      return [...students].sort((st1, st2) => (order === 'asc'
-        ? averageGrade(st1) - averageGrade(st2)
-        : averageGrade(st2) - averageGrade(st1)));
+      return [...students].sort((student1, student2) => (order === 'asc'
+        ? getAverageGrade(student1) - getAverageGrade(student2)
+        : getAverageGrade(student2) - getAverageGrade(student1)));
     default:
       return [...students]
-        .sort((st1, st2) => defaultCompare(st1[sortBy], st2[sortBy], order));
+        .sort((student1, student2) => defaultCompare(
+          student1[sortBy],
+          student2[sortBy],
+          order,
+        ));
   }
 }
