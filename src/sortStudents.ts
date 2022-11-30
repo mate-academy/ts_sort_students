@@ -37,7 +37,14 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
       } else {
         dublicate.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
       }
+      break;
 
+    case SortType.Age:
+      if (order === 'asc') {
+        dublicate.sort((a, b) => a.age - b.age);
+      } else {
+        dublicate.sort((a, b) => b.age - a.age);
+      }
       break;
 
     case SortType.Married:
