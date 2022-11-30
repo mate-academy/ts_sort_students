@@ -9,11 +9,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -29,48 +29,36 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
     return sum / array.length;
   }
 
-  if (order === 'asc') {
-    switch (true) {
-      case sortBy === SortType.Surname:
-        dublicate.sort((a, b) => a.surname.localeCompare(b.surname));
-        break;
+  switch (sortBy) {
+    case SortType.Surname:
+    case SortType.Name:
+      if (order === 'asc') {
+        dublicate.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+      } else {
+        dublicate.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+      }
 
-      case sortBy === SortType.Name:
-        dublicate.sort((a, b) => a.name.localeCompare(b.name));
-        break;
+      break;
 
-      case sortBy === SortType.Married:
+    case SortType.Married:
+      if (order === 'asc') {
+        dublicate
+          .sort((a, b) => String(a.married).localeCompare(String(b.married)));
+      } else {
         dublicate
           .sort((a, b) => String(b.married).localeCompare(String(a.married)));
-        break;
+      }
+      break;
 
-      case sortBy === SortType.AverageGrade:
+    case SortType.AverageGrade:
+      if (order === 'asc') {
         dublicate.sort((a, b) => average(a.grades) - average(b.grades));
-        break;
-
-      default:
-    }
-  } else {
-    switch (true) {
-      case sortBy === SortType.Surname:
-        dublicate.sort((a, b) => b.surname.localeCompare(a.surname));
-        break;
-
-      case sortBy === SortType.Name:
-        dublicate.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-
-      case sortBy === SortType.Married:
-        dublicate
-          .sort((a, b) => String(b.married).localeCompare(String(a.married)));
-        break;
-
-      case sortBy === SortType.AverageGrade:
+      } else {
         dublicate.sort((a, b) => average(b.grades) - average(a.grades));
-        break;
+      }
+      break;
 
-      default:
-    }
+    default:
   }
 
   return dublicate;
