@@ -32,10 +32,13 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
   switch (sortBy) {
     case SortType.Surname:
     case SortType.Name:
+    case SortType.Married:
       if (order === 'asc') {
-        dublicate.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+        dublicate
+          .sort((a, b) => String(a[sortBy]).localeCompare(String(b[sortBy])));
       } else {
-        dublicate.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+        dublicate
+          .sort((a, b) => String(b[sortBy]).localeCompare(String(a[sortBy])));
       }
       break;
 
@@ -44,16 +47,6 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
         dublicate.sort((a, b) => a.age - b.age);
       } else {
         dublicate.sort((a, b) => b.age - a.age);
-      }
-      break;
-
-    case SortType.Married:
-      if (order === 'asc') {
-        dublicate
-          .sort((a, b) => String(a.married).localeCompare(String(b.married)));
-      } else {
-        dublicate
-          .sort((a, b) => String(b.married).localeCompare(String(a.married)));
       }
       break;
 
