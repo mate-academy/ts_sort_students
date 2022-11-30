@@ -1,16 +1,65 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
+
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function
+sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
+  : Student[] {
+  const dublicate = [...students];
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  function average(array: number[]): number {
+    const sum = array.reduce((prev, current) => prev + current);
+
+    return sum / array.length;
+  }
+
+  switch (sortBy) {
+    case SortType.Surname:
+    case SortType.Name:
+    case SortType.Married:
+      if (order === 'asc') {
+        dublicate
+          .sort((a, b) => String(a[sortBy]).localeCompare(String(b[sortBy])));
+      } else {
+        dublicate
+          .sort((a, b) => String(b[sortBy]).localeCompare(String(a[sortBy])));
+      }
+      break;
+
+    case SortType.Age:
+      if (order === 'asc') {
+        dublicate.sort((a, b) => a.age - b.age);
+      } else {
+        dublicate.sort((a, b) => b.age - a.age);
+      }
+      break;
+
+    case SortType.AverageGrade:
+      if (order === 'asc') {
+        dublicate.sort((a, b) => average(a.grades) - average(b.grades));
+      } else {
+        dublicate.sort((a, b) => average(b.grades) - average(a.grades));
+      }
+      break;
+
+    default:
+  }
+
+  return dublicate;
 }
