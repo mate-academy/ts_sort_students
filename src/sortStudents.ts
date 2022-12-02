@@ -24,42 +24,55 @@ export function sortStudents(
 ):Student [] {
   const studentsNew: Student [] = [...students];
 
-  if (sortBy === 'age') {
-    const result: Student[] = studentsNew.sort((x, y) => {
-      return (order === 'asc' ? x[sortBy] - y[sortBy] : y[sortBy] - x[sortBy]);
-    });
+  switch (sortBy) {
+    case 'age': {
+      const result: Student[] = studentsNew.sort((x, y) => {
+        return (order === 'asc' ? x[sortBy] - y[sortBy]
+          : y[sortBy] - x[sortBy]);
+      });
 
-    return result;
+      return result;
+    }
+
+    case 'name': {
+      const result: Student[] = studentsNew.sort((x, y) => {
+        return (order === 'asc' ? x[sortBy].localeCompare(y[sortBy])
+          : y[sortBy].localeCompare(x[sortBy]));
+      });
+
+      return result;
+    }
+
+    case 'surname': {
+      const result: Student[] = studentsNew.sort((x, y) => {
+        return (order === 'asc' ? x[sortBy].localeCompare(y[sortBy])
+          : y[sortBy].localeCompare(x[sortBy]));
+      });
+
+      return result;
+    }
+
+    case 'grades': {
+      const result: Student[] = studentsNew.sort((x, y) => {
+        return (
+          order === 'asc'
+            ? (x[sortBy].reduce((a, summ) => a + summ)) / x[sortBy].length
+          - (y[sortBy].reduce((b, summ) => b + summ)) / y[sortBy].length
+            : (y[sortBy].reduce((b, summ) => b + summ)) / y[sortBy].length
+          - (x[sortBy].reduce((a, summ) => a + summ)) / x[sortBy].length
+        );
+      });
+
+      return result;
+    }
+
+    default: {
+      const result: Student[] = studentsNew.sort((x, y) => {
+        return (order === 'asc' ? Number(x[sortBy]) - Number(y[sortBy])
+          : Number(y[sortBy]) - Number(x[sortBy]));
+      });
+
+      return result;
+    }
   }
-
-  if (sortBy === 'name' || sortBy === 'surname') {
-    const result: Student[] = studentsNew.sort((x, y) => {
-      return (order === 'asc' ? x[sortBy].localeCompare(y[sortBy])
-        : y[sortBy].localeCompare(x[sortBy]));
-    });
-
-    return result;
-  }
-
-  if (sortBy === 'grades') {
-    const result: Student[] = studentsNew.sort((x, y) => {
-      return (
-        order === 'asc'
-          ? (x[sortBy].reduce((a, summ) => a + summ)) / x[sortBy].length
-        - (y[sortBy].reduce((b, summ) => b + summ)) / y[sortBy].length
-          : (y[sortBy].reduce((b, summ) => b + summ)) / y[sortBy].length
-        - (x[sortBy].reduce((a, summ) => a + summ)) / x[sortBy].length
-
-      );
-    });
-
-    return result;
-  }
-
-  const result: Student[] = studentsNew.sort((x, y) => {
-    return (order === 'asc' ? Number(x[sortBy]) - Number(y[sortBy])
-      : Number(y[sortBy]) - Number(x[sortBy]));
-  });
-
-  return result;
 }
