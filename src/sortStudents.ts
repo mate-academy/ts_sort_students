@@ -22,7 +22,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ):Student [] {
-  const studentsNew: Student [] = students;
+  const studentsNew: Student [] = [...students];
 
   if (sortBy === 'age') {
     const result: Student[] = studentsNew.sort((x, y) => {
