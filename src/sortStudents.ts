@@ -34,14 +34,8 @@ export function sortStudents(
       return result;
     }
 
-    case 'name': {
-      const result: Student[] = studentsNew.sort((x, y) => {
-        return (order === 'asc' ? x[sortBy].localeCompare(y[sortBy])
-          : y[sortBy].localeCompare(x[sortBy]));
-      });
-
-      return result;
-    }
+    case 'name':
+    /* falls through */
 
     case 'surname': {
       const result: Student[] = studentsNew.sort((x, y) => {
