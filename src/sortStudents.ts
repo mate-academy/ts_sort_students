@@ -29,24 +29,34 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
+  const studentsCopy = [...students];
+
+  function sortByString(property: 'name'|'surname'): Student[] {
+    return order === 'asc'
+      ? studentsCopy.sort((a, b) => a[property].localeCompare(b[property]))
+      : studentsCopy.sort((a, b) => b[property].localeCompare(a[property]));
+  }
+
+  function sortByNumber(property: 'age'|'married'): Student[] {
+    return order === 'asc'
+      ? studentsCopy.sort((a, b) => Number(a[property]) - Number(b[property]))
+      : studentsCopy.sort((a, b) => Number(b[property]) - Number(a[property]));
+  }
+
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return sortByString(sortBy);
 
     case SortType.Age:
     case SortType.Married:
-      return order === 'asc'
-        ? [...students].sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : [...students].sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+      return sortByNumber(sortBy);
 
     default:
       return order === 'asc'
-        ? [...students]
+        ? studentsCopy
           .sort((a, b) => getAverageValue(a.grades) - getAverageValue(b.grades))
-        : [...students]
+        : studentsCopy
           .sort(
             (a, b) => getAverageValue(b.grades) - getAverageValue(a.grades),
           );
