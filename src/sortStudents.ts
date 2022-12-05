@@ -1,6 +1,5 @@
 
 export interface Student {
-  // describe Student interface
   name: string;
   surname: string;
   age: number;
@@ -9,7 +8,6 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
@@ -17,8 +15,7 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
-export type SortOrder = 'asc'|'desc';
+export type SortOrder = 'asc' | 'desc';
 
 function getAverageValue(value: number[]): number {
   return value.reduce((a, b) => a + b) / value.length;
@@ -31,13 +28,13 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  function sortByString(property: 'name'|'surname'): Student[] {
+  function sortByString(property: SortType.Name | SortType.Surname): Student[] {
     return order === 'asc'
       ? studentsCopy.sort((a, b) => a[property].localeCompare(b[property]))
       : studentsCopy.sort((a, b) => b[property].localeCompare(a[property]));
   }
 
-  function sortByNumber(property: 'age'|'married'): Student[] {
+  function sortByNumber(property: SortType.Age | SortType.Married): Student[] {
     return order === 'asc'
       ? studentsCopy.sort((a, b) => Number(a[property]) - Number(b[property]))
       : studentsCopy.sort((a, b) => Number(b[property]) - Number(a[property]));
@@ -52,13 +49,14 @@ export function sortStudents(
     case SortType.Married:
       return sortByNumber(sortBy);
 
+    case SortType.AverageGrade:
     default:
       return order === 'asc'
-        ? studentsCopy
-          .sort((a, b) => getAverageValue(a.grades) - getAverageValue(b.grades))
-        : studentsCopy
-          .sort(
-            (a, b) => getAverageValue(b.grades) - getAverageValue(a.grades),
-          );
+        ? studentsCopy.sort(
+          (a, b) => getAverageValue(a.grades) - getAverageValue(b.grades),
+        )
+        : studentsCopy.sort(
+          (a, b) => getAverageValue(b.grades) - getAverageValue(a.grades),
+        );
   }
 }
