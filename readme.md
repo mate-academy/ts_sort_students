@@ -1,12 +1,12 @@
 # Sort students
-Create a `sortStudents` function that takes 3 parameters and return a
-new array with students sorted according to the given params. Original array
-should not be changed.
+Create a `sortStudents` function that takes 3 parameters and return a new array
+with students sorted according to the given params. The original array must not
+change.
 
 The parameters are:
-- an initial array of students
-- a string representing a type of sort
-- a sort order that can be `asc` or `desc`
+- `students` an initial array of students
+- `sortBy` a type of sort (see `SortType` enum)
+- `order` a sort order that can be `asc` or `desc`
 
 You also need to add correct types:
 - Create `Student` interface matching the next data:
@@ -31,3 +31,15 @@ You also need to add correct types:
 - Create `SortOrder` type with only 2 values `'asc'` and `'desc'` 
     Hint: If values are the same the students should go in the original order 
     (no matter we use `asc` or `desc` order)
+
+Examples:
+```js
+// from the youngest to the oldest
+const studentsByAge = sortStudents(students, SortType.Age, 'asc');
+
+// Surnames from Z to A
+const studentsBySurnameDesc = sortStudents(students, SortType.Surname, 'desc');
+
+// from the lowest Average grade to the highest
+const studentsByGrade = sortStudents(students, SortType.AverageGrade, 'asc');
+```
