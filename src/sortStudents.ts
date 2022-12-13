@@ -1,5 +1,5 @@
 
-function averageGrade(grades: number[]): number {
+function getAverageGrade(grades: number[]): number {
   return grades.reduce((accum: number, curr: number) => {
     return accum + curr;
   }, 0) / grades.length;
@@ -71,8 +71,8 @@ export function sortStudents(
         .sort(
           (a: Student, b: Student) => {
             return order === 'asc'
-              ? averageGrade(a.grades) - averageGrade(b.grades)
-              : averageGrade(b.grades) - averageGrade(a.grades);
+              ? getAverageGrade(a.grades) - getAverageGrade(b.grades)
+              : getAverageGrade(b.grades) - getAverageGrade(a.grades);
           },
         );
 
