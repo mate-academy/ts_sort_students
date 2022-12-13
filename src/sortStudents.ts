@@ -33,36 +33,64 @@ export function sortStudents(
       return students
         .map((student: Student) => student)
         .sort((a: Student, b: Student) => {
-          return order === 'asc'
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
+          switch (order) {
+            case 'asc':
+              return a.name.localeCompare(b.name);
+
+            case 'desc':
+              return b.name.localeCompare(a.name);
+
+            default:
+              return 0;
+          }
         });
 
     case SortType.Surname:
       return students
         .map((student: Student) => student)
         .sort((a: Student, b: Student) => {
-          return order === 'asc'
-            ? a.surname.localeCompare(b.surname)
-            : b.surname.localeCompare(a.surname);
+          switch (order) {
+            case 'asc':
+              return a.surname.localeCompare(b.surname);
+
+            case 'desc':
+              return b.surname.localeCompare(a.surname);
+
+            default:
+              return 0;
+          }
         });
 
     case SortType.Age:
       return students
         .map((student: Student) => student)
         .sort((a: Student, b: Student) => {
-          return order === 'asc'
-            ? a.age - b.age
-            : b.age - a.age;
+          switch (order) {
+            case 'asc':
+              return a.age - b.age;
+
+            case 'desc':
+              return b.age - a.age;
+
+            default:
+              return 0;
+          }
         });
 
     case SortType.Married:
       return students
         .map((student: Student) => student)
         .sort((a: Student, b: Student) => {
-          return order === 'asc'
-            ? Number(a.married) - Number(b.married)
-            : Number(b.married) - Number(a.married);
+          switch (order) {
+            case 'asc':
+              return Number(a.married) - Number(b.married);
+
+            case 'desc':
+              return Number(b.married) - Number(a.married);
+
+            default:
+              return 0;
+          }
         });
 
     case SortType.AverageGrade:
@@ -70,9 +98,16 @@ export function sortStudents(
         .map((student: Student) => student)
         .sort(
           (a: Student, b: Student) => {
-            return order === 'asc'
-              ? getAverageGrade(a.grades) - getAverageGrade(b.grades)
-              : getAverageGrade(b.grades) - getAverageGrade(a.grades);
+            switch (order) {
+              case 'asc':
+                return getAverageGrade(a.grades) - getAverageGrade(b.grades);
+
+              case 'desc':
+                return getAverageGrade(b.grades) - getAverageGrade(a.grades);
+
+              default:
+                return 0;
+            }
           },
         );
 
