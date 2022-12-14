@@ -22,7 +22,9 @@ function getAverageGrade(grades: number[]): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const sortedStudents = [...students];
 
