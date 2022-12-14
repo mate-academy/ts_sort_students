@@ -19,8 +19,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function averageGrades(grades: number[]): number {
-  return grades
-    .reduce((a: number, b: number) => (a + b), 0) / grades.length;
+  return grades.reduce((a: number, b: number) => (a + b), 0) / grades.length;
 }
 
 export function sortStudents(
@@ -29,25 +28,25 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((firstStudent: Student, secondStudent: Student) => {
+    let first = firstStudent;
+    let second = secondStudent;
+
+    if (order === 'desc') {
+      first = secondStudent;
+      second = firstStudent;
+    }
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return (order === 'asc')
-          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+        return first[sortBy].localeCompare(second[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return (order === 'asc')
-          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
-          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
+        return Number(first[sortBy]) - Number(second[sortBy]);
 
       case SortType.AverageGrade:
-        return (order === 'asc')
-          ? averageGrades(firstStudent[sortBy])
-          - averageGrades(secondStudent[sortBy])
-          : averageGrades(secondStudent[sortBy])
-          - averageGrades(firstStudent[sortBy]);
+        return averageGrades(first[sortBy]) - averageGrades(second[sortBy]);
       default: throw new Error('invalid values');
     }
   });
