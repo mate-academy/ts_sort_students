@@ -1,10 +1,9 @@
-
 export interface Student {
-  name: string;
-  surname: string;
-  age: number;
-  married: boolean;
-  grades: number[];
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
@@ -17,42 +16,53 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverageGrade(grades: number[]): number {
-  return grades.reduce((acum, current) => acum + current) / grades.length;
-}
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const allStudents = [...students];
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
-  return [...students].sort(
-    (student1: Student, student2: Student):number => {
-      if (sortBy === SortType.Name
-        || sortBy === SortType.Surname) {
-        return order === 'asc'
-          ? student1[sortBy].localeCompare(student2[sortBy])
-          : student2[sortBy].localeCompare(student1[sortBy]);
-      }
+  switch (sortBy) {
+    case SortType.Age:
+      return allStudents.sort(
+        (a: Student, b: Student) => {
+          return order === 'asc'
+            ? +a[sortBy] - +b[sortBy]
+            : +b[sortBy] - +a[sortBy];
+        },
+      );
 
-      if (sortBy === SortType.Married) {
-        return order === 'asc'
-          ? +student1[sortBy] - +student2[sortBy]
-          : +student2[sortBy] - +student1[sortBy];
-      }
+    case SortType.Name:
+    case SortType.Surname:
+      return allStudents.sort(
+        (a: Student, b: Student) => {
+          return order === 'asc'
+            ? String(a[sortBy]).localeCompare(String(b[sortBy]))
+            : String(b[sortBy]).localeCompare(String(a[sortBy]));
+        },
+      );
 
-      if (sortBy === SortType.Age) {
-        return order === 'asc'
-          ? student1[sortBy] - student2[sortBy]
-          : student2[sortBy] - student1[sortBy];
-      }
+    case SortType.AverageGrade:
+      return allStudents.sort(
+        (a: Student, b: Student) => {
+          function averageValue(arr: number[]): number {
+            return arr.reduce((prevNum, nextNum) => prevNum + nextNum)
+            / arr.length;
+          }
 
-      if (sortBy === SortType.AverageGrade) {
-        return order === 'asc'
-          ? calculateAverageGrade(student1[sortBy])
-          - calculateAverageGrade(student2[sortBy])
-          : calculateAverageGrade(student2[sortBy])
-          - calculateAverageGrade(student1[sortBy]);
-      }
+          return order === 'asc'
+            ? averageValue(a[sortBy]) - averageValue(b[sortBy])
+            : averageValue(b[sortBy]) - averageValue(a[sortBy]);
+        },
+      );
 
-      return 0;
-    },
-  );
+    case SortType.Married:
+      return allStudents
+        .filter((x) => x[sortBy] === true)
+        .concat(allStudents.filter((x) => x[sortBy] === false));
+
+    default:
+      return allStudents;
+  }
 }
