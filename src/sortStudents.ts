@@ -30,11 +30,13 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
     }
 
     if (sortBy === SortType.AverageGrade) {
+      const gradesA: Num[] = studentA.grades;
+      const gradesB: Num[] = studentB.grades;
+
       const getSum = (x: Num, y: Num): Num => x + y;
-      const sumA: Num = studentA.grades.reduce(getSum);
-      const sumB: Num = studentB.grades.reduce(getSum);
-      const averageA: Num = sumA / studentA.grades.length;
-      const averageB: Num = sumB / studentB.grades.length;
+
+      const averageA: Num = gradesA.reduce(getSum) / gradesA.length;
+      const averageB: Num = gradesB.reduce(getSum) / gradesB.length;
 
       return averageA - averageB;
     }
@@ -54,7 +56,8 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
           ? -1
           : 1;
 
-      default: return 0;
+      default:
+        return 0;
     }
   };
 
