@@ -16,53 +16,42 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function avgGrade(grades: number[]): number {
+  return grades.reduce((a, b) => a + b) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const allStudents = [...students];
+  const sortedStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Age:
-      return allStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? +a[sortBy] - +b[sortBy]
-            : +b[sortBy] - +a[sortBy];
-        },
-      );
+  sortedStudents.sort((firstStudent, secondStudent) => {
+    const a = order === 'asc'
+      ? firstStudent
+      : secondStudent;
 
-    case SortType.Name:
-    case SortType.Surname:
-      return allStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? String(a[sortBy]).localeCompare(String(b[sortBy]))
-            : String(b[sortBy]).localeCompare(String(a[sortBy]));
-        },
-      );
+    const b = order === 'asc'
+      ? secondStudent
+      : firstStudent;
 
-    case SortType.AverageGrade:
-      return allStudents.sort(
-        (a: Student, b: Student) => {
-          function averageValue(arr: number[]): number {
-            return arr.reduce((prevNum, nextNum) => prevNum + nextNum)
-            / arr.length;
-          }
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return a[sortBy].localeCompare(b[sortBy]);
 
-          return order === 'asc'
-            ? averageValue(a[sortBy]) - averageValue(b[sortBy])
-            : averageValue(b[sortBy]) - averageValue(a[sortBy]);
-        },
-      );
+      case SortType.Age:
+      case SortType.Married:
+        return +a[sortBy] - +b[sortBy];
 
-    case SortType.Married:
-      return allStudents
-        .filter((x) => x[sortBy] === true)
-        .concat(allStudents.filter((x) => x[sortBy] === false));
+      case SortType.AverageGrade:
+        return avgGrade(a[sortBy]) - avgGrade(b[sortBy]);
 
-    default:
-      return allStudents;
-  }
+      default:
+        return 0;
+    }
+  });
+
+  return sortedStudents;
 }
