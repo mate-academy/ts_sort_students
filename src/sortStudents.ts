@@ -33,12 +33,9 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
       ? 1
       : 0);
 
-    if (sortBy === SortType.AverageGrade) {
-      const getSum = (x: Num, y: Num): Num => x + y;
-      const getAverage = (arr: Num[]): Num => arr.reduce(getSum) / arr.length;
-
-      return getAverage(studentA.grades) - getAverage(studentB.grades);
-    }
+    const getAverage = (gradesAr: Num[]): Num => {
+      return gradesAr.reduce((x: Num, y: Num): Num => x + y) / gradesAr.length;
+    };
 
     switch (sortBy) {
       case SortType.Name:
@@ -52,6 +49,9 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
 
       case SortType.Married:
         return isMarried(studentA) - isMarried(studentB);
+
+      case SortType.AverageGrade:
+        return getAverage(studentA.grades) - getAverage(studentB.grades);
 
       default:
         return 0;
