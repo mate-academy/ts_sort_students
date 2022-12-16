@@ -21,24 +21,23 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
   type Num = number;
 
   const sortCallback = (a: Student, b: Student): Num => {
-    let studentA: Student = a;
-    let studentB: Student = b;
+    const studentA: Student = order === 'asc'
+      ? a
+      : b;
 
-    if (order === 'desc') {
-      studentA = b;
-      studentB = a;
-    }
+    const studentB: Student = order === 'asc'
+      ? b
+      : a;
+
+    const isMarried = (student: Student): Num => (student.married
+      ? 1
+      : 0);
 
     if (sortBy === SortType.AverageGrade) {
-      const gradesA: Num[] = studentA.grades;
-      const gradesB: Num[] = studentB.grades;
-
       const getSum = (x: Num, y: Num): Num => x + y;
+      const getAverage = (arr: Num[]): Num => arr.reduce(getSum) / arr.length;
 
-      const averageA: Num = gradesA.reduce(getSum) / gradesA.length;
-      const averageB: Num = gradesB.reduce(getSum) / gradesB.length;
-
-      return averageA - averageB;
+      return getAverage(studentA.grades) - getAverage(studentB.grades);
     }
 
     switch (sortBy) {
@@ -52,9 +51,7 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
         return studentA.age - studentB.age;
 
       case SortType.Married:
-        return !studentA.married && studentB.married
-          ? -1
-          : 1;
+        return isMarried(studentA) - isMarried(studentB);
 
       default:
         return 0;
