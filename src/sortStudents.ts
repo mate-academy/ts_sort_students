@@ -27,26 +27,26 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students]
-    .sort((a: Student, b: Student) => {
+    .sort((studentA: Student, studentB: Student) => {
       switch (sortBy) {
         case SortType.Married:
-          return Number(b[sortBy]) - Number(a[sortBy]);
+          return Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
         case SortType.Name:
         case SortType.Surname:
           return order === 'asc'
-            ? a[sortBy].localeCompare(b[sortBy])
-            : b[sortBy].localeCompare(a[sortBy]);
+            ? studentA[sortBy].localeCompare(studentB[sortBy])
+            : studentB[sortBy].localeCompare(studentA[sortBy]);
 
         case SortType.Age:
           return order === 'asc'
-            ? a[sortBy] - b[sortBy]
-            : b[sortBy] - a[sortBy];
+            ? studentA[sortBy] - studentB[sortBy]
+            : studentB[sortBy] - studentA[sortBy];
 
         case SortType.AverageGrade:
           return order === 'asc'
-            ? getAverage(a[sortBy]) - getAverage(b[sortBy])
-            : getAverage(b[sortBy]) - getAverage(a[sortBy]);
+            ? getAverage(studentA[sortBy]) - getAverage(studentB[sortBy])
+            : getAverage(studentB[sortBy]) - getAverage(studentA[sortBy]);
 
         default:
           return 0;
