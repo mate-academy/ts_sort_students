@@ -35,7 +35,7 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       copyStudents = copyStudents
-        .sort((firstPerson: Student, secondPerson: Student) => {
+        .sort((firstPerson, secondPerson) => {
           return order === 'asc'
             ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
             : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
@@ -45,7 +45,7 @@ export function sortStudents(
     case SortType.Age:
     case SortType.Married:
       copyStudents = copyStudents
-        .sort((firstPerson: Student, secondPerson: Student) => {
+        .sort((firstPerson, secondPerson) => {
           return order === 'asc'
             ? firstPerson[sortBy] - secondPerson[sortBy]
             : secondPerson[sortBy] - firstPerson[sortBy];
@@ -54,7 +54,7 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       copyStudents = copyStudents
-        .sort((firstPerson: Student, secondPerson: Student) => {
+        .sort((firstPerson, secondPerson) => {
           return order === 'asc'
             ? avgGrade(firstPerson[sortBy]) - avgGrade(secondPerson[sortBy])
             : avgGrade(secondPerson[sortBy]) - avgGrade(firstPerson[sortBy]);
