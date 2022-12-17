@@ -27,7 +27,7 @@ export function sortStudents(
   sortBy:SortType,
   order:SortOrder,
 ):Student[] {
-  const studentsCopy:Student[] = [...students];
+  const studentsCopy = [...students];
 
   studentsCopy.sort((a, b) => {
     switch (sortBy) {
@@ -40,8 +40,8 @@ export function sortStudents(
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
 
       case SortType.AverageGrade:
         return order === 'asc'
