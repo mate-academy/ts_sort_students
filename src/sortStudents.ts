@@ -16,7 +16,7 @@ export enum SortType {
 }
 
 // create SortOrder type
-type SortOrder = 'asc' | 'des';
+export type SortOrder = 'asc' | 'des';
 
 const getAverageGrade = (grades: number[]):number => {
   return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
