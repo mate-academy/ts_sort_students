@@ -5,7 +5,7 @@ export interface Student {
   age: number,
   married: boolean,
   grades: (number)[];
-};
+}
 
 export enum SortType {
   Name = 'name',
@@ -13,7 +13,7 @@ export enum SortType {
   Age = 'age',
   Married = 'married',
   AverageGrades = 'grades',
-};
+}
 
 export type SortOrder = 'desc' | 'asc';
 
@@ -23,23 +23,23 @@ function getAverageGrade(studentGrades: (number)[]): number {
   }, 0);
 
   return sumOfGrades / studentGrades.length;
-};
+}
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-
   let studentsCopy = [...students];
 
-  switch(sortBy) {
+  switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      studentsCopy = studentsCopy.sort((stud1, stud2) => { return order === 'asc'
-        ? stud1[sortBy].localeCompare(stud2[sortBy])
-        : stud2[sortBy].localeCompare(stud1[sortBy]);
-      });
+      studentsCopy = studentsCopy.sort((stud1, stud2) =>
+        { return order === 'asc'
+          ? stud1[sortBy].localeCompare(stud2[sortBy])
+          : stud2[sortBy].localeCompare(stud1[sortBy]);
+        });
 
       break;
 
@@ -58,13 +58,13 @@ export function sortStudents(
         return order === 'asc'
           ? getAverageGrade(stud1.grades) - getAverageGrade(stud2.grades)
           : getAverageGrade(stud2.grades) - getAverageGrade(stud1.grades);
-      })
+      });
 
       break;
 
     default:
       break;
-  }
+  };
 
   return studentsCopy;
-}
+};
