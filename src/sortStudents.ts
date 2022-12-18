@@ -33,7 +33,9 @@ export function sortStudents(
     switch (sortBy) {
       case 'name':
       case 'surname':
-        return st1[sortBy].localeCompare(st2[sortBy]);
+        return order === 'asc'
+          ? st1[sortBy].localeCompare(st2[sortBy])
+          : st2[sortBy].localeCompare(st1[sortBy]);
       case 'grades':
         return order === 'asc'
           ? averageGrade(st1.grades) - averageGrade(st2.grades)
