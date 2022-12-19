@@ -51,7 +51,7 @@ export function sortStudents(
           ? getAverageGrade(b.grades) - getAverageGrade(a.grades)
           : getAverageGrade(a.grades) - getAverageGrade(b.grades);
 
-      default: throw new Error('Sortype is not valid');
+      default: throw new Error('SortType is not valid');
     }
   });
 
