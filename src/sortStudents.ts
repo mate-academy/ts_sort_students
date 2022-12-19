@@ -26,12 +26,12 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ):Student[] {
-  let studentsCopy = [...students];
+  const studentsCopy = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      studentsCopy = studentsCopy.sort((firstPerson, secondPerson) => {
+      studentsCopy.sort((firstPerson, secondPerson) => {
         return order === 'asc'
           ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
           : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
@@ -41,7 +41,7 @@ export function sortStudents(
 
     case SortType.Age:
     case SortType.Married:
-      studentsCopy = studentsCopy.sort((firstPerson, secondPerson) => {
+      studentsCopy.sort((firstPerson, secondPerson) => {
         return order === 'asc'
           ? Number(firstPerson[sortBy]) - Number(secondPerson[sortBy])
           : Number(secondPerson[sortBy]) - Number(firstPerson[sortBy]);
@@ -50,7 +50,7 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      studentsCopy = studentsCopy.sort((firstPerson, secondPerson) => {
+      studentsCopy.sort((firstPerson, secondPerson) => {
         return order === 'asc'
           ? getAverageNumber(firstPerson.grades)
             - getAverageNumber(secondPerson.grades)
@@ -61,7 +61,7 @@ export function sortStudents(
       break;
 
     default:
-      throw Error('This type doesn\'t exist');
+      throw Error(`This type doesn't exist : ${sortBy} `);
   }
 
   return studentsCopy;
