@@ -27,7 +27,7 @@ export function sortStudents(
 ): Student[] {
   const copyOFStudents: Student[] = [...students];
 
-  copyOFStudents.sort((studentA: Student, studentB: Student) => {
+  return copyOFStudents.sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -41,14 +41,15 @@ export function sortStudents(
           ? Number(studentA[sortBy]) - Number(studentB[sortBy])
           : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
-      default:
+      case SortType.AverageGrade:
         return order === 'asc'
           ? getAverageGrade(studentA[sortBy])
             - getAverageGrade(studentB[sortBy])
           : getAverageGrade(studentB[sortBy])
             - getAverageGrade(studentA[sortBy]);
+
+      default:
+        throw new Error('Sorting is impossible');
     }
   });
-
-  return copyOFStudents;
 }
