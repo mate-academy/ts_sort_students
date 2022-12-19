@@ -51,7 +51,8 @@ export function sortStudents(
           - findAvarageGrade(studentA.grades);
 
       default:
-        throw new Error('You made a mistake in SortBy, please check it');
+        // eslint-disable-next-line max-len
+        throw new Error(`You pass a wrong sort type: ${sortBy}, please check it`);
     }
   });
 }
