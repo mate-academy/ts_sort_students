@@ -19,14 +19,10 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function findAverageGrade(studentGrades: number[]): number {
-  let averageGrade: number = 0;
-
   const sum: number = studentGrades
     .reduce((grade1: number, grade2: number) => grade1 + grade2);
 
-  averageGrade = sum / studentGrades.length;
-
-  return averageGrade;
+  return sum / studentGrades.length;
 }
 
 export function sortStudents(
