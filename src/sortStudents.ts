@@ -4,51 +4,43 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
+  averageGrade: number;
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
 export type SortFunc = (a: Student[], b: SortType, c: SortOrder) => Student[];
 
 export const sortStudents: SortFunc = (students, sortBy, order) => {
-  type Num = number;
+  const sortCallback = (a: Student, b: Student): number => {
+    const [studentA, studentB] = order === 'asc'
+      ? [a, b]
+      : [b, a];
 
-  const sortCallback = (a: Student, b: Student): Num => {
-    const studentA: Student = order === 'asc'
-      ? a
-      : b;
-
-    const studentB: Student = order === 'asc'
-      ? b
-      : a;
-
-    const getSum = (x: Num, y: Num): Num => x + y;
-    const getAverageGradeOf = (student: Student): Num => (
+    const getSum = (x: number, y: number): number => x + y;
+    const getAverageGradeOf = (student: Student): number => (
       student.grades.reduce(getSum) / student.grades.length
     );
 
+    studentA.averageGrade = getAverageGradeOf(studentA);
+    studentB.averageGrade = getAverageGradeOf(studentB);
+
     switch (sortBy) {
       case SortType.Name:
-        return studentA.name.localeCompare(studentB.name);
-
       case SortType.Surname:
-        return studentA.surname.localeCompare(studentB.surname);
+        return studentA[sortBy].localeCompare(studentB[sortBy]);
 
       case SortType.Age:
-        return studentA.age - studentB.age;
-
       case SortType.Married:
-        return Number(studentA.married) - Number(studentB.married);
-
       case SortType.AverageGrade:
-        return getAverageGradeOf(studentA) - getAverageGradeOf(studentB);
+        return Number(studentA[sortBy]) - Number(studentB[sortBy]);
 
       default:
         return 0;
