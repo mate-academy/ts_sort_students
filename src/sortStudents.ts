@@ -49,7 +49,7 @@ export function sortStudents(
           : calculateAvarageMark(student2[sortBy])
           - calculateAvarageMark(student1[sortBy]);
 
-      default: return copiedStudents;
+      default: throw Error('Cannot be sorted by this parameter');
     }
   });
 }
