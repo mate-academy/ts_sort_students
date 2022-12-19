@@ -4,7 +4,6 @@ export interface Student {
   age: number;
   married: boolean;
   grades: number[];
-  averageGrade: number;
 }
 
 export enum SortType {
@@ -29,9 +28,6 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
       student.grades.reduce(getSum) / student.grades.length
     );
 
-    studentA.averageGrade = getAverageGradeOf(studentA);
-    studentB.averageGrade = getAverageGradeOf(studentB);
-
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -39,8 +35,10 @@ export const sortStudents: SortFunc = (students, sortBy, order) => {
 
       case SortType.Age:
       case SortType.Married:
-      case SortType.AverageGrade:
         return Number(studentA[sortBy]) - Number(studentB[sortBy]);
+
+      case SortType.AverageGrade:
+        return getAverageGradeOf(studentA) - getAverageGradeOf(studentB);
 
       default:
         return 0;
