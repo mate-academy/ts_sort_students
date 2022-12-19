@@ -29,33 +29,29 @@ export function sortStudents(
 ): Student[] {
   const studentsForSort = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return studentsForSort.sort((studentA, studentB) => {
+  return studentsForSort.sort((studentA: Student, studentB: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
           ? studentA[sortBy].localeCompare(studentB[sortBy])
           : studentB[sortBy].localeCompare(studentA[sortBy]);
-      });
 
-    case SortType.Age:
-    case SortType.Married:
-      return studentsForSort.sort((studentA, studentB) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
           ? Number(studentA[sortBy]) - Number(studentB[sortBy])
           : Number(studentB[sortBy]) - Number(studentA[sortBy]);
-      });
 
-    case SortType.AverageGrade:
-      return studentsForSort.sort((studentA, studentB) => {
+      case SortType.AverageGrade:
         return order === 'asc'
           ? findAvarageGrade(studentA.grades)
           - findAvarageGrade(studentB.grades)
           : findAvarageGrade(studentB.grades)
           - findAvarageGrade(studentA.grades);
-      });
 
-    default:
-      return studentsForSort;
-  }
+      default:
+        throw new Error('You made a mistake in SortBy, please check it');
+    }
+  });
 }
