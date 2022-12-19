@@ -29,22 +29,30 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return (order === 'asc')
-        ? [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? [...students].sort((prevStud, currentStud) => prevStud[sortBy]
+          .localeCompare(currentStud[sortBy]))
+        : [...students].sort((prevStud, currentStud) => currentStud[sortBy]
+          .localeCompare(prevStud[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
       return (order === 'asc')
-        ? [...students].sort((a, b) => +a[sortBy] - +b[sortBy])
-        : [...students].sort((a, b) => +b[sortBy] - +a[sortBy]);
+        ? [...students].sort((prevStud, currentStud) => (
+          Number(prevStud[sortBy]) - Number(currentStud[sortBy])
+        ))
+        : [...students].sort((prevStud, currentStud) => (
+          Number(currentStud[sortBy]) - Number(prevStud[sortBy])
+        ));
 
     case SortType.AverageGrade:
       return (order === 'asc')
-        ? [...students].sort((a, b) => (
-          getAvarageGrade(a[sortBy]) - getAvarageGrade(b[sortBy])
+        ? [...students].sort((prevStud, currentStud) => (
+          getAvarageGrade(prevStud[sortBy])
+            - getAvarageGrade(currentStud[sortBy])
         ))
-        : [...students].sort((a, b) => (
-          getAvarageGrade(b[sortBy]) - getAvarageGrade(a[sortBy])
+        : [...students].sort((prevStud, currentStud) => (
+          getAvarageGrade(currentStud[sortBy])
+            - getAvarageGrade(prevStud[sortBy])
         ));
     default:
       return [...students];
