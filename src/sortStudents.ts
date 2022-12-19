@@ -26,33 +26,27 @@ export function sortStudents(
   sortBy:SortType,
   order:SortOrder,
 ) :Student[] {
-  const sortedStudents = [...students];
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'asc'
-        ? sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'asc'
-        ? sortedStudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : sortedStudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
 
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? sortedStudents.sort(
-          (a, b) => getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy]),
-        )
-        : sortedStudents.sort(
-          (a, b) => getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]),
-        );
-
-    default:
-      break;
-  }
-
-  return sortedStudents;
+      default:
+        return 0;
+    }
+  });
 }
