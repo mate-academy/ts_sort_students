@@ -18,7 +18,7 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function avgGrade(marks: number[]): number {
+function calculateAvgGrade(marks: number[]): number {
   return marks
     .reduce((accum: number, currMark: number) => accum + currMark, 0)
     / marks.length;
@@ -29,41 +29,31 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let copyStudents = [...students];
+  return [...students].sort((firstPerson, secondPerson) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
+          : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      copyStudents = copyStudents
-        .sort((firstPerson, secondPerson) => {
-          return order === 'asc'
-            ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
-            : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
-        });
-      break;
+      case SortType.Age:
+        return order === 'asc'
+          ? firstPerson[sortBy] - secondPerson[sortBy]
+          : secondPerson[sortBy] - firstPerson[sortBy];
 
-    case SortType.Age:
-    case SortType.Married:
-      copyStudents = copyStudents
-        .sort((firstPerson, secondPerson) => {
-          return order === 'asc'
-            ? firstPerson[sortBy] - secondPerson[sortBy]
-            : secondPerson[sortBy] - firstPerson[sortBy];
-        });
-      break;
+      case SortType.Married:
+        return Number(secondPerson.married) - Number(firstPerson.married);
 
-    case SortType.AverageGrade:
-      copyStudents = copyStudents
-        .sort((firstPerson, secondPerson) => {
-          return order === 'asc'
-            ? avgGrade(firstPerson[sortBy]) - avgGrade(secondPerson[sortBy])
-            : avgGrade(secondPerson[sortBy]) - avgGrade(firstPerson[sortBy]);
-        });
-      break;
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? calculateAvgGrade(firstPerson[sortBy])
+          - calculateAvgGrade(secondPerson[sortBy])
+          : calculateAvgGrade(secondPerson[sortBy])
+          - calculateAvgGrade(firstPerson[sortBy]);
 
-    default:
-      break;
-  }
-
-  return copyStudents;
+      default:
+        return 0;
+    }
+  });
 }
