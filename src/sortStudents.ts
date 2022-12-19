@@ -36,13 +36,13 @@ export function sortStudents(
 
         case SortType.Married:
           return order === 'asc'
-            ? Number(student1.married) - Number(student2.married)
-            : Number(student2.married) - Number(student1.married);
+            ? Number(student1[sortBy]) - Number(student2[sortBy])
+            : Number(student2[sortBy]) - Number(student1[sortBy]);
 
         case SortType.Age:
           return order === 'asc'
-            ? student1.age - student2.age
-            : student2.age - student1.age;
+            ? student1[sortBy] - student2[sortBy]
+            : student2[sortBy] - student1[sortBy];
 
         case SortType.AverageGrade:
           return order === 'asc'
