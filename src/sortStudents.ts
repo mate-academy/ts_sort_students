@@ -12,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc'| 'desc';
@@ -36,8 +36,8 @@ export function sortStudents(
           return firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
         case SortType.Age:
           return order === 'asc'
-            ? firstStudent.age - secondStudent.age
-            : secondStudent.age - firstStudent.age;
+            ? firstStudent[sortBy] - secondStudent[sortBy]
+            : secondStudent[sortBy] - firstStudent[sortBy];
 
         case SortType.Married:
           return order === 'asc'
