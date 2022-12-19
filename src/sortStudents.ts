@@ -32,25 +32,25 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return copyOfStudents.sort((a, b) => {
+      return copyOfStudents.sort((studentA, studentB) => {
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
       });
 
     case SortType.Age:
     case SortType.Married:
-      return copyOfStudents.sort((a, b) => {
+      return copyOfStudents.sort((studentA, studentB) => {
         return order === 'asc'
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
+          ? +studentA[sortBy] - +studentB[sortBy]
+          : +studentB[sortBy] - +studentA[sortBy];
       });
 
     case SortType.AverageGrade:
-      return copyOfStudents.sort((a, b) => {
+      return copyOfStudents.sort((studentA, studentB) => {
         return order === 'asc'
-          ? calcAvgGrade(a[sortBy]) - calcAvgGrade(b[sortBy])
-          : calcAvgGrade(b[sortBy]) - calcAvgGrade(a[sortBy]);
+          ? calcAvgGrade(studentA[sortBy]) - calcAvgGrade(studentB[sortBy])
+          : calcAvgGrade(studentB[sortBy]) - calcAvgGrade(studentA[sortBy]);
       });
 
     default:
