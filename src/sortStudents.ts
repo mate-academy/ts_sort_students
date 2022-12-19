@@ -27,31 +27,27 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let studentsForSort = [...students];
+  const studentsForSort = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      studentsForSort = studentsForSort.sort((studentA, studentB) => {
+      return studentsForSort.sort((studentA, studentB) => {
         return order === 'asc'
           ? studentA[sortBy].localeCompare(studentB[sortBy])
           : studentB[sortBy].localeCompare(studentA[sortBy]);
       });
 
-      break;
-
     case SortType.Age:
     case SortType.Married:
-      studentsForSort = studentsForSort.sort((studentA, studentB) => {
+      return studentsForSort.sort((studentA, studentB) => {
         return order === 'asc'
           ? Number(studentA[sortBy]) - Number(studentB[sortBy])
           : Number(studentB[sortBy]) - Number(studentA[sortBy]);
       });
 
-      break;
-
     case SortType.AverageGrade:
-      studentsForSort = studentsForSort.sort((studentA, studentB) => {
+      return studentsForSort.sort((studentA, studentB) => {
         return order === 'asc'
           ? findAvarageGrade(studentA.grades)
           - findAvarageGrade(studentB.grades)
@@ -59,11 +55,7 @@ export function sortStudents(
           - findAvarageGrade(studentA.grades);
       });
 
-      break;
-
     default:
-      break;
+      return studentsForSort;
   }
-
-  return studentsForSort;
 }
