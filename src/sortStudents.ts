@@ -30,28 +30,41 @@ export function sortStudents(
   order: SortOrder,
 ):Student[] {
   // write your function
-  return [...students].sort((firstPerson, secondPerson) => {
-    const a = order === 'asc'
-      ? firstPerson
-      : secondPerson;
-    const b = order === 'asc'
-      ? secondPerson
-      : firstPerson;
+  const studentsCopy = [...students];
 
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        return a[sortBy].localeCompare(b[sortBy]);
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsCopy.sort((firstStudent, secondStudent) => {
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+      });
 
-      case SortType.Age:
-      case SortType.Married:
-        return Number(a[sortBy]) - Number(b[sortBy]);
+      return studentsCopy;
 
-      case SortType.AverageGrade:
-        return getAverageNumber(a.grades) - getAverageNumber(b.grades);
+    case SortType.Age:
+    case SortType.Married:
+      studentsCopy.sort((firstStudent, secondStudent) => {
+        return order === 'asc'
+          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
+      });
 
-      default:
-        throw Error('This type doesn\'t exist');
-    }
-  });
+      return studentsCopy;
+
+    case SortType.AverageGrade:
+      studentsCopy.sort((firstStudent, secondStudent) => {
+        return order === 'asc'
+          ? getAverageNumber(firstStudent[sortBy])
+          - getAverageNumber(secondStudent[sortBy])
+          : getAverageNumber(secondStudent[sortBy])
+          - getAverageNumber(firstStudent[sortBy]);
+      });
+
+      return studentsCopy;
+
+    default:
+      throw Error('This type doesn\'t exist');
+  }
 }
