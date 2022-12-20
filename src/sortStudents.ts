@@ -29,45 +29,35 @@ export function sortStudents(
   const sortedStudents:Student[] = [...students];
 
   switch (sortBy) {
-    case
-      SortType.Name:
-      if (order === 'asc') {
-        return sortedStudents.sort((a, b) => (
-          a[sortBy].localeCompare(b[sortBy])));
-      }
-
-      return sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-
+    case SortType.Name:
     case SortType.Surname:
       if (order === 'asc') {
-        return sortedStudents.sort((a, b) => (
-          a[sortBy].localeCompare(b[sortBy])));
+        return sortedStudents.sort((firstStudent, secondStudent) => (
+          firstStudent[sortBy].localeCompare(secondStudent[sortBy])));
       }
 
-      return sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return sortedStudents.sort((firstStudent, secondStudent) => (
+        secondStudent[sortBy].localeCompare(firstStudent[sortBy])));
 
     case SortType.Age:
-      if (order === 'asc') {
-        return sortedStudents.sort((a, b) => a[sortBy] - b[sortBy]);
-      }
-
-      return sortedStudents.sort((a, b) => b[sortBy] - a[sortBy]);
-
     case SortType.Married:
       if (order === 'asc') {
-        return sortedStudents.sort((a, b) => a[sortBy] - b[sortBy]);
+        return sortedStudents.sort((firstStudent, secondStudent) => (
+          firstStudent[sortBy] - secondStudent[sortBy]));
       }
 
-      return sortedStudents.sort((a, b) => b[sortBy] - a[sortBy]);
+      return sortedStudents.sort((firstStudent, secondStudent) => (
+        secondStudent[sortBy] - firstStudent[sortBy]));
 
     case SortType.AverageGrade:
       if (order === 'asc') {
-        return sortedStudents.sort((a, b) => (
-          countMarks(a[sortBy]) - countMarks(b[sortBy])));
+        return sortedStudents.sort((firstStudent, secondStudent) => (
+          countMarks(firstStudent[sortBy])
+          - countMarks(secondStudent[sortBy])));
       }
 
-      return sortedStudents.sort((a, b) => (
-        countMarks(b[sortBy]) - countMarks(a[sortBy])));
+      return sortedStudents.sort((firstStudent, secondStudent) => (
+        countMarks(secondStudent[sortBy]) - countMarks(firstStudent[sortBy])));
 
     default:
       break;
