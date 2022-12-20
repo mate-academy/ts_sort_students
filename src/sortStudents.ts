@@ -51,10 +51,10 @@ export function sortStudents(
         case SortType.AverageGrade:
           return order === 'asc'
             ? getAverageGrade(currentStudent) - getAverageGrade(previousStudent)
-            // eslint-disable-next-line max-len
-            : getAverageGrade(previousStudent) - getAverageGrade(currentStudent);
+            : getAverageGrade(previousStudent)
+            - getAverageGrade(currentStudent);
         default:
-          return 0;
+          return studentsArray;
       }
     },
   );
