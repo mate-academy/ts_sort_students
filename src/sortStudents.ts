@@ -1,10 +1,10 @@
 
 export interface Student {
-  name:string;
-  surname:string;
+  name: string;
+  surname: string;
   age:number;
-  married:boolean;
-  grades:number[];
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -24,9 +24,9 @@ function getAverageGrade(grades:number[]):number {
 }
 
 export function sortStudents(
-  students:Student[],
-  sortBy:SortType,
-  order:SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ):Student[] {
   const sortedStudents = [...students];
 
@@ -34,29 +34,27 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        // eslint-disable-next-line max-len
-        ? sortedStudents.sort((first, second) => first[sortBy].localeCompare(second[sortBy]))
-        // eslint-disable-next-line max-len
-        : sortedStudents.sort((first, second) => second[sortBy].localeCompare(first[sortBy]));
+        ? sortedStudents.sort((first, second) => (
+          first[sortBy].localeCompare(second[sortBy])))
+        : sortedStudents.sort((first, second) => (
+          second[sortBy].localeCompare(first[sortBy])));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        // eslint-disable-next-line max-len
-        ? sortedStudents.sort((first, second) => Number(first[sortBy]) - Number((second[sortBy])))
-        // eslint-disable-next-line max-len
-        : sortedStudents.sort((first, second) => Number(second[sortBy]) - Number(first[sortBy]));
+        ? sortedStudents.sort((first, second) => (
+          Number(first[sortBy]) - Number((second[sortBy]))))
+        : sortedStudents.sort((first, second) => (
+          Number(second[sortBy]) - Number(first[sortBy])));
 
     case SortType.AverageGrade:
       return order === 'asc'
-        // eslint-disable-next-line max-len
-        ? sortedStudents.sort((first, second) => getAverageGrade(first[sortBy]) - getAverageGrade(second[sortBy]))
-        // eslint-disable-next-line max-len
-        : sortedStudents.sort((first, second) => getAverageGrade(second[sortBy]) - getAverageGrade(first[sortBy]));
+        ? sortedStudents.sort((first, second) => (
+          getAverageGrade(first[sortBy]) - getAverageGrade(second[sortBy])))
+        : sortedStudents.sort((first, second) => (
+          getAverageGrade(second[sortBy]) - getAverageGrade(first[sortBy])));
 
     default:
-      break;
+      return sortedStudents;
   }
-
-  return sortedStudents;
 }
