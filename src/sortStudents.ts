@@ -31,28 +31,22 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        copyStudents.sort((prevPerson, currentPerson) => (
+      return (order === 'asc')
+        ? copyStudents.sort((prevPerson, currentPerson) => (
           prevPerson[sortBy].localeCompare(currentPerson[sortBy])
-        ));
-      } else {
-        copyStudents.sort((prevPerson, currentPerson) => (
+        ))
+        : copyStudents.sort((prevPerson, currentPerson) => (
           currentPerson[sortBy].localeCompare(prevPerson[sortBy])
         ));
-      }
-      break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        copyStudents.sort((studentA, studentB) => {
+      return (order === 'asc')
+        ? copyStudents.sort((studentA, studentB) => {
           return averageAge(studentA.grades) - averageAge(studentB.grades);
-        });
-      } else {
-        copyStudents.sort((studentA, studentB) => {
+        })
+        : copyStudents.sort((studentA, studentB) => {
           return averageAge(studentB.grades) - averageAge(studentA.grades);
         });
-      }
-      break;
 
     case SortType.Age:
     case SortType.Married:
