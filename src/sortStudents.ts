@@ -15,7 +15,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-function Adding(addendums: number[]): number {
+function addingSortBy(addendums: number[]): number {
   return addendums.reduce((x, y) => x + y);
 }
 
@@ -50,15 +50,15 @@ export function sortStudents(
     case SortType.AverageGrade:
       return order === 'asc'
         ? unsorted.sort((firstStud, secondStud) => {
-          const sumA = Adding(firstStud[sortBy]);
-          const sumB = Adding(secondStud[sortBy]);
+          const sumA = addingSortBy(firstStud[sortBy]);
+          const sumB = addingSortBy(secondStud[sortBy]);
 
           return sumA
           / firstStud[sortBy].length - sumB / secondStud[sortBy].length;
         })
         : unsorted.sort((firstStud, secondStud) => {
-          const sumA = Adding(firstStud[sortBy]);
-          const sumB = Adding(secondStud[sortBy]);
+          const sumA = addingSortBy(firstStud[sortBy]);
+          const sumB = addingSortBy(secondStud[sortBy]);
 
           return sumB
           / secondStud[sortBy].length - sumA / firstStud[sortBy].length;
