@@ -20,7 +20,8 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 const averageGrade = (grades: number[]): number => {
-  return grades.reduce((acc, currVal) => acc + currVal, 0) / grades.length;
+  return grades.reduce((acc, currVal) => acc + currVal, 0)
+   / (grades.length || 1);
 };
 
 export function sortStudents(
@@ -41,25 +42,26 @@ export function sortStudents(
 
     case SortType.Married:
     case SortType.Age:
+
+      // eslint-disable-next-line no-case-declarations
+      const result = copyStudents
+        .sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+
+      return order === 'desc'
+        ? result
+        : result.reverse();
+
+    case SortType.AverageGrade:
       if (order === 'desc') {
-        return copyStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+        return copyStudents.sort(
+          (a, b) => averageGrade(b.grades) - averageGrade(a.grades),
+        );
       }
 
-      return copyStudents.sort((a, b) => +a[sortBy] - +b[sortBy]);
+      return copyStudents
+        .sort((a, b) => averageGrade(a.grades) - averageGrade(b.grades));
 
     default:
-      break;
+      throw new Error('Sort type not supported');
   }
-
-  if (SortType.AverageGrade && order === 'desc') {
-    copyStudents.sort(
-      (a, b) => averageGrade(b.grades) - averageGrade(a.grades),
-    );
-  } else if (SortType.AverageGrade) {
-    copyStudents.sort(
-      (a, b) => averageGrade(a.grades) - averageGrade(b.grades),
-    );
-  }
-
-  return copyStudents;
 }
