@@ -33,23 +33,39 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? StudentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : StudentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? StudentsCopy.sort(
+          (firstStud, secondStud) => firstStud[sortBy]
+            .localeCompare(secondStud[sortBy]),
+        )
+        : StudentsCopy.sort(
+          (firstStud, secondStud) => secondStud[sortBy]
+            .localeCompare(firstStud[sortBy]),
+        );
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? StudentsCopy.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : StudentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy]);
+        ? StudentsCopy.sort(
+          (firstStud, secondStud) => +firstStud[sortBy]
+          - +secondStud[sortBy],
+        )
+        : StudentsCopy.sort(
+          (firstStud, secondStud) => +secondStud[sortBy]
+          - +firstStud[sortBy],
+        );
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? StudentsCopy.sort((a, b) => findAvaragegrade(a.grades)
-        - findAvaragegrade(b.grades))
-        : StudentsCopy.sort((a, b) => findAvaragegrade(b.grades)
-        - findAvaragegrade(a.grades));
+        ? StudentsCopy.sort(
+          (firstStud, secondStud) => findAvaragegrade(firstStud.grades)
+          - findAvaragegrade(secondStud.grades),
+        )
+        : StudentsCopy.sort(
+          (firstStud, secondStud) => findAvaragegrade(secondStud.grades)
+        - findAvaragegrade(firstStud.grades),
+        );
 
     default:
-      return students;
+      return StudentsCopy;
   }
 }
