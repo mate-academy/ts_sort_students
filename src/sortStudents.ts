@@ -27,28 +27,29 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((firstStudent, secondStudent) => {
-    const a = order === 'asc'
-      ? firstStudent
-      : secondStudent;
-    const b = order === 'asc'
-      ? secondStudent
-      : firstStudent;
+  const sortedArray: Student[] = [...students];
 
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        return a[sortBy].localeCompare(b[sortBy]);
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? sortedArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : sortedArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
-      case SortType.Age:
-      case SortType.Married:
-        return Number(a[sortBy]) - Number(b[sortBy]);
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? sortedArray.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+        : sortedArray.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
 
-      case SortType.AverageGrade:
-        return getAverageGrade(a.grades) - getAverageGrade(b.grades);
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? sortedArray.sort((a, b) => getAverageGrade(a.grades)
+          - getAverageGrade(b.grades))
+        : sortedArray.sort((a, b) => getAverageGrade(b.grades)
+          - getAverageGrade(a.grades));
 
-      default:
-        throw new Error('Error: Unknown sort type');
-    }
-  });
+    default:
+      return students;
+  }
 }
