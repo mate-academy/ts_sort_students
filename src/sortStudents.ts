@@ -22,7 +22,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const StudentsCopy: Student[] = [...students];
+  const studentsCopy: Student[] = [...students];
 
   function findAvaragegrade(gradesArray: number[]): number {
     return gradesArray.reduce((acc, grade) => acc
@@ -32,40 +32,36 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? StudentsCopy.sort(
-          (firstStud, secondStud) => firstStud[sortBy]
-            .localeCompare(secondStud[sortBy]),
-        )
-        : StudentsCopy.sort(
-          (firstStud, secondStud) => secondStud[sortBy]
-            .localeCompare(firstStud[sortBy]),
-        );
+      return studentsCopy.sort((firstStud, secondStud) => {
+        if (order === 'asc') {
+          return firstStud[sortBy].localeCompare(secondStud[sortBy]);
+        }
+
+        return secondStud[sortBy].localeCompare(firstStud[sortBy]);
+      });
 
     case SortType.Age:
     case SortType.Married:
-      return order === 'asc'
-        ? StudentsCopy.sort(
-          (firstStud, secondStud) => +firstStud[sortBy]
-          - +secondStud[sortBy],
-        )
-        : StudentsCopy.sort(
-          (firstStud, secondStud) => +secondStud[sortBy]
-          - +firstStud[sortBy],
-        );
+      return studentsCopy.sort((firstStud, secondStud) => {
+        if (order === 'asc') {
+          return +firstStud[sortBy] - +secondStud[sortBy];
+        }
+
+        return +secondStud[sortBy] - +firstStud[sortBy];
+      });
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? StudentsCopy.sort(
-          (firstStud, secondStud) => findAvaragegrade(firstStud.grades)
-          - findAvaragegrade(secondStud.grades),
-        )
-        : StudentsCopy.sort(
-          (firstStud, secondStud) => findAvaragegrade(secondStud.grades)
-        - findAvaragegrade(firstStud.grades),
-        );
+      return studentsCopy.sort((firstStud, secondStud) => {
+        if (order === 'asc') {
+          return findAvaragegrade(firstStud.grades)
+        - findAvaragegrade(secondStud.grades);
+        }
+
+        return findAvaragegrade(secondStud.grades)
+        - findAvaragegrade(firstStud.grades);
+      });
 
     default:
-      return StudentsCopy;
+      return studentsCopy;
   }
 }
