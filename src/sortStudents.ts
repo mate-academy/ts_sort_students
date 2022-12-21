@@ -1,5 +1,3 @@
-// import { objectExpression } from "@babel/types";
-// import { SignatureDeclarationBase } from "typescript";
 
 export interface Student {
   name: string,
@@ -10,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -25,13 +23,11 @@ export function sortStudents(students: Student[],
 
   if (order === 'asc') {
     switch (sortBy) {
-      case 0:
-        copy.sort((a, b) => a.name.localeCompare(b.name));
+      case 'name':
+      case 'surname':
+        copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
         break;
-      case 1:
-        copy.sort((a, b) => a.surname.localeCompare(b.surname));
-        break;
-      case 4:
+      case 'averageGrade':
         copy.sort((a, b) => {
           const averageA: number
           = a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length;
@@ -50,10 +46,10 @@ export function sortStudents(students: Student[],
     const marriedPeople: Array<Student> = [];
 
     switch (sortBy) {
-      case 2:
+      case 'age':
         copy.sort((a, b) => b.age - a.age);
         break;
-      case 3:
+      case 'married':
 
         for (let i: number = 0; i < copy.length; i += 1) {
           if (copy[i].married) {
@@ -63,7 +59,7 @@ export function sortStudents(students: Student[],
         }
         copy = [...marriedPeople, ...copy];
         break;
-      case 4:
+      case 'averageGrade':
         copy.sort((a, b) => {
           const averageA: number
           = a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length;
