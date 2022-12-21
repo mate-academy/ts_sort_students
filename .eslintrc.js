@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     'arrow-body-style': 'off',
     'no-unused-vars': 'off',
+    "padding-line-between-statements": "off",
     '@typescript-eslint/no-unused-vars': ['error'],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
