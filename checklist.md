@@ -23,3 +23,20 @@ export enum Directions {
 ```
 
 3. [CODE STYLE] - DRY. Combine logic for sorting by fields with same data types.
+4. [CODE KNOWLEDGE] - Method `sort` mutates the array, so you don't need to reassign the result of the sorting;
+
+BAD EXAMPLE:
+```
+let copiedStudents = [...students];
+
+copiedStudents = copiedStudents.sort();
+```
+
+
+GOOD EXAMPLE:
+```
+const copiedStudents = [...students];
+
+copiedStudents.sort();
+```
+
