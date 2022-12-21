@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -32,46 +32,25 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        studentsCopy.sort((a, b) => a.name.localeCompare(b.name));
-      } else {
-        studentsCopy.sort((a, b) => b.name.localeCompare(a.name));
-      }
-      break;
-
     case SortType.Surname:
-      if (order === 'asc') {
-        studentsCopy.sort((a, b) => a.surname.localeCompare(b.surname));
-      } else {
-        studentsCopy.sort((a, b) => b.surname.localeCompare(a.surname));
-      }
-      break;
+      return (order === 'asc')
+        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
-      if (order === 'asc') {
-        studentsCopy.sort((a, b) => a.age - b.age);
-      } else {
-        studentsCopy.sort((a, b) => b.age - a.age);
-      }
-      break;
-
     case SortType.Married:
-      if (order === 'asc') {
-        studentsCopy.sort((a, b) => Number(a.married) - Number(b.married));
-      } else {
-        studentsCopy.sort((a, b) => Number(b.married) - Number(a.married));
-      }
-      break;
+      return (order === 'asc')
+        ? studentsCopy.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+        : studentsCopy.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+
+    case SortType.AverageGrade:
+      return (order === 'asc')
+        ? studentsCopy.sort((a, b) => calculateAverageMark(a[sortBy])
+        - calculateAverageMark(b[sortBy]))
+        : studentsCopy.sort((a, b) => calculateAverageMark(b[sortBy])
+        - calculateAverageMark(a[sortBy]));
 
     default:
-      if (order === 'asc') {
-        studentsCopy.sort((a, b) => calculateAverageMark(a.grades)
-        - calculateAverageMark(b.grades));
-      } else {
-        studentsCopy.sort((a, b) => calculateAverageMark(b.grades)
-        - calculateAverageMark(a.grades));
-      }
+      return studentsCopy;
   }
-
-  return studentsCopy;
 }
