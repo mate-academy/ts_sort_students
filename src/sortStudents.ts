@@ -26,31 +26,37 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((student1: Student, student2: Student) => {
-    switch (sortBy) {
-      case SortType.Married:
-        return Number(student2.married) - Number(student1.married);
+  const sortedStudents: Student[] = [...students];
 
-      case SortType.Name:
-      case SortType.Surname:
+  switch (sortBy) {
+    case SortType.Married:
+      return sortedStudents.sort((student1: Student, student2: Student) => (
+        Number(student2.married) - Number(student1.married)
+      ));
+
+    case SortType.Name:
+    case SortType.Surname:
+      return sortedStudents.sort((student1: Student, student2: Student) => {
         return order === 'asc'
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy]);
+      });
 
-      case SortType.Age:
+    case SortType.Age:
+      return sortedStudents.sort((student1: Student, student2: Student) => {
         return order === 'asc'
           ? student1.age - student2.age
           : student2.age - student1.age;
+      });
 
-      case SortType.AverageGrade:
+    case SortType.AverageGrade:
+      return sortedStudents.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? getAverageGrades(student1)
-            - getAverageGrades(student2)
-          : getAverageGrades(student2)
-            - getAverageGrades(student1);
+          ? getAverageGrades(student1) - getAverageGrades(student2)
+          : getAverageGrades(student2) - getAverageGrades(student1);
+      });
 
-      default:
-        throw new Error();
-    }
-  });
+    default:
+      throw new Error('All of three parameters need to be given');
+  }
 }
