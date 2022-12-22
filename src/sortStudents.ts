@@ -9,7 +9,6 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
@@ -18,7 +17,6 @@ export enum SortType {
 
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 const averageGrade = (grades: number[]): number => {
@@ -52,9 +50,6 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       // eslint-disable-next-line no-case-declarations
-      // const resultAve = copystudents
-      //   .sort((a, b) => averageGrade(b.grades) - averageGrade(a.grades));
-
       return order === 'desc'
         ? copystudents
           .sort((a, b) => averageGrade(b.grades) - averageGrade(a.grades))
