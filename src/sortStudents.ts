@@ -19,7 +19,7 @@ export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(students: Student[],
   sortBy: SortType, order: string): Object[] {
-  let copy: Array<Student> = [...students];
+  const copy: Array<Student> = [...students];
 
   if (order === 'asc') {
     switch (sortBy) {
@@ -43,21 +43,12 @@ export function sortStudents(students: Student[],
   }
 
   if (order === 'desc') {
-    const marriedPeople: Array<Student> = [];
-
     switch (sortBy) {
       case 'age':
         copy.sort((a, b) => b.age - a.age);
         break;
       case 'married':
-
-        for (let i: number = 0; i < copy.length; i += 1) {
-          if (copy[i].married) {
-            marriedPeople.push(copy[i]);
-            copy.splice(i, 1);
-          }
-        }
-        copy = [...marriedPeople, ...copy];
+        copy.sort((a, b) => +b.married - +a.married);
         break;
       case 'averageGrade':
         copy.sort((a, b) => {
