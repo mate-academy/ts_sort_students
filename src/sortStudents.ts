@@ -29,7 +29,7 @@ export function sortStudents(
   return [...students].sort((student1: Student, student2: Student) => {
     switch (sortBy) {
       case SortType.Married:
-        return Number(student2[sortBy]) - Number(student1[sortBy]);
+        return Number(student2.married) - Number(student1.married);
 
       case SortType.Name:
       case SortType.Surname:
@@ -39,8 +39,8 @@ export function sortStudents(
 
       case SortType.Age:
         return order === 'asc'
-          ? student1[sortBy] - student2[sortBy]
-          : student2[sortBy] - student1[sortBy];
+          ? student1.age - student2.age
+          : student2.age - student1.age;
 
       case SortType.AverageGrade:
         return order === 'asc'
@@ -50,7 +50,7 @@ export function sortStudents(
             - getAverageGrades(student1);
 
       default:
-        return 0;
+        throw new Error();
     }
   });
 }
