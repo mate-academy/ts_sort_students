@@ -26,24 +26,16 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? copy.sort((a, b) => a.name.localeCompare(b.name))
-        : copy.sort((a, b) => b.name.localeCompare(a.name));
-
     case SortType.Surname:
       return order === 'asc'
-        ? copy.sort((a, b) => a.surname.localeCompare(b.surname))
-        : copy.sort((a, b) => b.surname.localeCompare(a.surname));
+        ? copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
-      return order === 'asc'
-        ? copy.sort((x, y) => x.age - y.age)
-        : copy.sort((x, y) => y.age - x.age);
-
     case SortType.Married:
       return order === 'asc'
-        ? copy.sort((x, y) => Number(x.married) - Number(y.married))
-        : copy.sort((x, y) => Number(y.married) - Number(x.married));
+        ? copy.sort((x, y) => Number(x[sortBy]) - Number(y[sortBy]))
+        : copy.sort((x, y) => Number(y[sortBy]) - Number(x[sortBy]));
 
     case SortType.AverageGrade:
       return order === 'asc'
