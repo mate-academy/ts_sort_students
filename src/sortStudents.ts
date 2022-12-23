@@ -40,15 +40,15 @@ export function sortStudents(
         ? studentCopy.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]))
         : studentCopy.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
 
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? studentCopy.sort(
+            (a, b) => avarageGrade(a.grades) - avarageGrade(b.grades)
+          )
+        : studentCopy.sort(
+            (b, a) => avarageGrade(a.grades) - avarageGrade(b.grades)
+          );
     default:
-      break;
+      throw new Error('Invalid input');
   }
-
-  if (SortType.AverageGrade && order === 'desc') {
-    studentCopy.sort((a, b) => avarageGrade(b.grades) - avarageGrade(a.grades));
-  } else if (SortType.AverageGrade) {
-    studentCopy.sort((a, b) => avarageGrade(a.grades) - avarageGrade(b.grades));
-  }
-
-  return studentCopy;
 }
