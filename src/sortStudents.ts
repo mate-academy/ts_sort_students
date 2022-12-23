@@ -30,25 +30,21 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'name': case 'surname':
-      myListStudents.sort((firstStudent, nextStudent) => {
+      return myListStudents.sort((firstStudent, nextStudent) => {
         return order === 'asc'
           ? firstStudent[sortBy].localeCompare(nextStudent[sortBy])
           : nextStudent[sortBy].localeCompare(firstStudent[sortBy]);
       });
 
-      break;
-
     case 'age': case 'married':
-      myListStudents.sort((firstStudent, nextStudent) => {
+      return myListStudents.sort((firstStudent, nextStudent) => {
         return order === 'desc'
           ? nextStudent[sortBy] - firstStudent[sortBy]
           : firstStudent[sortBy] - nextStudent[sortBy];
       });
 
-      break;
-
     case 'grades':
-      myListStudents.sort((firstStudent, nextStudent) => {
+      return myListStudents.sort((firstStudent, nextStudent) => {
         return order === 'asc'
           ? getAverageGrades(firstStudent.grades)
             - getAverageGrades(nextStudent.grades)
@@ -56,11 +52,7 @@ export function sortStudents(
             - getAverageGrades(firstStudent.grades);
       });
 
-      break;
-
     default:
-      break;
+      return myListStudents;
   }
-
-  return myListStudents;
 }
