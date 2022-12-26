@@ -31,15 +31,15 @@ export function sortStudents(
       switch (sortBy) {
         case SortType.Name:
         case SortType.Surname:
-          return studentA[sortBy].localeCompare(studentB[sortBy]);
+          return order === 'asc'
+            ? studentA[sortBy].localeCompare(studentB[sortBy])
+            : studentB[sortBy].localeCompare(studentA[sortBy]);
 
         case SortType.Age:
-          return order === 'asc'
-            ? studentA.age - studentB.age
-            : studentB.age - studentA.age;
-
         case SortType.Married:
-          return +(studentB.married) - +(studentA.married);
+          return order === 'asc'
+            ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+            : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
         case SortType.AverageGrade:
           return order === 'asc'
