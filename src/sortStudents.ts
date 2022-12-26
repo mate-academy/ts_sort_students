@@ -39,14 +39,10 @@ export function sortStudents(
           : secondStudent.age - firstStudent.age;
 
       case SortType.Name:
-        return order === 'asc'
-          ? firstStudent.name.localeCompare(secondStudent.name)
-          : secondStudent.name.localeCompare(firstStudent.name);
-
       case SortType.Surname:
         return order === 'asc'
-          ? firstStudent.surname.localeCompare(secondStudent.surname)
-          : secondStudent.surname.localeCompare(firstStudent.surname);
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
       case SortType.AverageGrade:
         return order === 'asc'
