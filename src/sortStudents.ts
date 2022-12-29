@@ -43,11 +43,11 @@ export function sortStudents(
     case SortType.AverageGrade:
       return order === 'asc'
         ? studentCopy.sort(
-            (a, b) => avarageGrade(a.grades) - avarageGrade(b.grades)
-          )
+          (a, b) => avarageGrade(a.grades) - avarageGrade(b.grades),
+        )
         : studentCopy.sort(
-            (b, a) => avarageGrade(a.grades) - avarageGrade(b.grades)
-          );
+          (b, a) => avarageGrade(a.grades) - avarageGrade(b.grades),
+        );
     default:
       throw new Error('Invalid input');
   }
