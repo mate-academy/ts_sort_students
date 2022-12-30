@@ -8,14 +8,17 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade'
 }
 
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc'
+}
 
 const getAverage = (grades: number[]): number => (
   grades.reduce((sum, mark) => sum + mark) / grades.length
@@ -30,47 +33,31 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studCopy.sort((st1: Student, st2: Student) => {
-        return order === 'asc'
-          ? st1.name.localeCompare(st2.name)
-          : st2.name.localeCompare(st1.name);
-      });
-
-      break;
-
     case SortType.Surname:
-      studCopy.sort((st1: Student, st2: Student) => {
-        return order === 'asc'
 
-          ? st1.surname.localeCompare(st2.surname)
-          : st2.surname.localeCompare(st1.surname);
+      studCopy.sort((student1: Student, student2: Student) => {
+        return order === 'asc'
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
       });
 
       break;
 
     case SortType.Age:
-      studCopy.sort((st1: Student, st2: Student) => {
-        return order === 'asc'
-          ? st1.age - st2.age
-          : st2.age - st1.age;
-      });
-
-      break;
-
     case SortType.Married:
 
-      studCopy.sort((st1: Student, st2: Student) => {
+      studCopy.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? +st1.married - +st2.married
-          : +st2.married - +st1.married;
+          ? +student1[sortBy] - +student2[sortBy]
+          : +student2[sortBy] - +student1[sortBy];
       });
       break;
 
     case SortType.AverageGrade:
-      studCopy.sort((st1: Student, st2: Student) => {
+      studCopy.sort((student1: Student, student2: Student) => {
         return order === 'asc'
-          ? getAverage(st1.grades) - getAverage(st2.grades)
-          : getAverage(st2.grades) - getAverage(st1.grades);
+          ? getAverage(student1.grades) - getAverage(student2.grades)
+          : getAverage(student2.grades) - getAverage(student1.grades);
       });
 
       break;
