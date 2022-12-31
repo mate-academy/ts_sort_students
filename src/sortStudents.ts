@@ -15,11 +15,14 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+)
+  : Student[] {
   const copy = [...students];
 
   function averageGr(grades: number[]): number {
@@ -28,24 +31,21 @@ export function sortStudents(students: Student[],
 
   switch (sortBy) {
     case SortType.Name:
-      copy.sort((studA, studB) => studA.name.localeCompare(studB.name));
-
-      if (order === 'desc') {
-        copy.sort((studA, studB) => studB.name.localeCompare(studA.name));
-      }
-      break;
     case SortType.Surname:
-      copy.sort((studA, studB) => studA.surname.localeCompare(studB.surname));
+      copy.sort((studA, studB) => studA[sortBy].localeCompare(studB[sortBy]));
 
       if (order === 'desc') {
-        copy.sort((studA, studB) => studB.surname.localeCompare(studA.surname));
+        copy.sort((studA, studB) => studB[sortBy].localeCompare(studA[sortBy]));
       }
       break;
     case SortType.Age:
-      copy.sort((studA, studB) => studA.age - studB.age);
+    case SortType.Married:
+      copy.sort((studA, studB) => Number(studA[sortBy])
+      - Number(studB[sortBy]));
 
       if (order === 'desc') {
-        copy.sort((studA, studB) => studB.age - studA.age);
+        copy.sort((studA, studB) => Number(studB[sortBy])
+        - Number(studA[sortBy]));
       }
       break;
     case SortType.AverageGrade:
@@ -57,17 +57,8 @@ export function sortStudents(students: Student[],
           - averageGr(studA.grades));
       }
       break;
-    case SortType.Married:
-      copy.sort((studA, studB) => Number(studA.married)
-        - Number(studB.married));
 
-      if (order === 'desc') {
-        copy.sort((studA, studB) => Number(studB.married)
-          - Number(studA.married));
-      }
-      break;
-
-    default:
+    default: throw new Error('Sort type is not supported');
   }
 
   return copy;

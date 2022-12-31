@@ -21,8 +21,7 @@
     "@mate-academy/students-ts-config": "*",
     "@types/jest": "^26.0.7",
     "@types/node": "^12.20.18",
-    "babel-jest": "^26.1.0",
-    "typescript": "^4.3.5"
+    "babel-jest": "^26.1.0"
   },
   "devDependencies": {
     "@mate-academy/eslint-config": "*",
@@ -36,7 +35,8 @@
     "eslint-plugin-node": "^8.0.1",
     "husky": "^4.3.8",
     "jest": "^24.7.0",
-    "lint-staged": "^11.1.1"
+    "lint-staged": "^11.1.1",
+    "typescript": "^4.9.4"
   },
   "mateAcademy": {
     "projectType": "typescript"
