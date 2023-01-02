@@ -32,34 +32,25 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copy.sort((studA, studB) => studA[sortBy].localeCompare(studB[sortBy]));
-
-      if (order === 'desc') {
-        copy.sort((studA, studB) => studB[sortBy].localeCompare(studA[sortBy]));
-      }
-      break;
+      return order === 'asc'
+        ? copy.sort((studA, studB) => studA[sortBy]
+          .localeCompare(studB[sortBy]))
+        : copy.sort((studA, studB) => studB[sortBy]
+          .localeCompare(studA[sortBy]));
     case SortType.Age:
     case SortType.Married:
-      copy.sort((studA, studB) => Number(studA[sortBy])
-      - Number(studB[sortBy]));
-
-      if (order === 'desc') {
-        copy.sort((studA, studB) => Number(studB[sortBy])
-        - Number(studA[sortBy]));
-      }
-      break;
+      return order === 'asc'
+        ? copy.sort((studA, studB) => Number(studA[sortBy])
+          - Number(studB[sortBy]))
+        : copy.sort((studA, studB) => Number(studB[sortBy])
+          - Number(studA[sortBy]));
     case SortType.AverageGrade:
-      copy.sort((studA, studB) => averageGr(studA.grades)
-        - averageGr(studB.grades));
-
-      if (order === 'desc') {
-        copy.sort((studA, studB) => averageGr(studB.grades)
+      return order === 'asc'
+        ? copy.sort((studA, studB) => averageGr(studA.grades)
+          - averageGr(studB.grades))
+        : copy.sort((studA, studB) => averageGr(studB.grades)
           - averageGr(studA.grades));
-      }
-      break;
 
     default: throw new Error('Sort type is not supported');
   }
-
-  return copy;
 }
