@@ -48,7 +48,7 @@ export function sortStudents(
             ? getAverage(studentA[sortBy]) - getAverage(studentB[sortBy])
             : getAverage(studentB[sortBy]) - getAverage(studentA[sortBy]);
         default:
-          return 0;
+          throw new Error('Unknown sort type');
       }
     });
 }
