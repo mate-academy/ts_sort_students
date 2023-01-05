@@ -16,12 +16,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-type Sorter = 'name' | 'surname';
-
 function sortByAlphabet(
   arr: Student[],
   order: SortOrder,
-  sorter: Sorter,
+  sorter: SortType.Name | SortType.Surname,
 ): Student[] {
   return arr.sort((a, b) => {
     return order === 'asc'
@@ -39,21 +37,15 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'name':
-      return sortByAlphabet(studentsCopy, order, 'name');
-
     case 'surname':
-      return sortByAlphabet(studentsCopy, order, 'surname');
+      return sortByAlphabet(studentsCopy, order, sortBy);
 
     case 'age':
-      return studentsCopy.sort((a, b) => {
-        return order === 'asc' ? a.age - b.age : b.age - a.age;
-      });
-
     case 'married':
       return studentsCopy.sort((a, b) => {
         return order === 'asc'
-          ? Number(a.married) - Number(b.married)
-          : Number(b.married) - Number(a.married);
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
       });
 
     case 'grade':
