@@ -16,51 +16,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function isString(value: unknown): value is string {
-  return typeof value === 'string';
-}
-
-function isNumber(value: unknown): value is number {
-  return typeof value === 'number';
-}
-
-function isBoolean(value: unknown): value is boolean {
-  return typeof value === 'boolean';
-}
-
 function calculateAverageGrade(grades: readonly number[]): number {
   return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
-}
-
-function compareByPropertyValue(
-  studentA: Student,
-  studentB: Student,
-  propertyKey: SortType,
-): number {
-  const propertyValueA = studentA[propertyKey];
-  const propertyValueB = studentB[propertyKey];
-
-  if (isString(propertyValueA) && isString(propertyValueB)) {
-    return propertyValueA.localeCompare(propertyValueB);
-  }
-
-  if (
-    (isNumber(propertyValueA) && isNumber(propertyValueB))
-    || (isBoolean(propertyValueA) && isBoolean(propertyValueB))
-  ) {
-    return Number(propertyValueA) - Number(propertyValueB);
-  }
-
-  if (Array.isArray(propertyValueA) && Array.isArray(propertyValueB)) {
-    const averageGradeA = calculateAverageGrade(propertyValueA);
-    const averageGradeB = calculateAverageGrade(propertyValueB);
-
-    return averageGradeA - averageGradeB;
-  }
-
-  // If all the above type checks fail
-  // the type of values is unknown
-  return 0;
 }
 
 export function sortStudents(
@@ -70,15 +27,43 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  if (order === 'asc') {
-    return studentsCopy
-      .sort((studentA, studentB) => {
-        return compareByPropertyValue(studentA, studentB, sortBy);
-      });
-  }
+  switch (sortBy) {
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? studentsCopy.sort((studentA, studentB) => {
+          return Number(studentA[sortBy]) - Number(studentB[sortBy]);
+        })
+        : studentsCopy.sort((studentA, studentB) => {
+          return Number(studentB[sortBy]) - Number(studentA[sortBy]);
+        });
 
-  return studentsCopy
-    .sort((studentA, studentB) => {
-      return compareByPropertyValue(studentB, studentA, sortBy);
-    });
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? studentsCopy.sort((studentA, studentB) => {
+          const averageGradeA = calculateAverageGrade(studentA[sortBy]);
+          const averageGradeB = calculateAverageGrade(studentB[sortBy]);
+
+          return averageGradeA - averageGradeB;
+        })
+        : studentsCopy.sort((studentA, studentB) => {
+          const averageGradeA = calculateAverageGrade(studentA[sortBy]);
+          const averageGradeB = calculateAverageGrade(studentB[sortBy]);
+
+          return averageGradeB - averageGradeA;
+        });
+
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? studentsCopy.sort((studentA, studentB) => {
+          return studentA[sortBy].localeCompare(studentB[sortBy]);
+        })
+        : studentsCopy.sort((studentA, studentB) => {
+          return studentB[sortBy].localeCompare(studentA[sortBy]);
+        });
+
+    default:
+      throw new Error('Wrong property name');
+  }
 }
