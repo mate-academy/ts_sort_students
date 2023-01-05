@@ -24,30 +24,36 @@ const getAverageGrade = (grades: number[]):number => {
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: SortOrder) {
-  
+  order: SortOrder,
+): Student[] {
   const copyStudents = [...students];
+  let result;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
 
       return order === 'asc'
-        ?  copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        :  copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
 
-      const result = copyStudents.sort((a, b) => +(a[sortBy]) - +(b[sortBy]));
+      result = copyStudents.sort((a, b) => Number(b[sortBy])
+        - Number(a[sortBy]));
 
       return order === 'asc'
-        ? result
-        : result.reverse();
+        ? result.reverse()
+        : result;
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? copyStudents.sort((a, b) => getAverageGrade(a.grades) - getAverageGrade(b.grades))
-        : copyStudents.sort((a, b) => getAverageGrade(b.grades) - getAverageGrade(a.grades))
+        ? copyStudents.sort((a, b) => getAverageGrade(a.grades)
+          - getAverageGrade(b.grades))
+        : copyStudents.sort((a, b) => getAverageGrade(b.grades)
+          - getAverageGrade(a.grades));
+    default:
+      throw new Error('Sort type not supported');
   }
 }
