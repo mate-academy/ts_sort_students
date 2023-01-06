@@ -22,29 +22,25 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copy: Student[] = [...students];
+  const sortedStudents: Student[] = [...students];
 
   switch (sortBy) {
     case 'name':
     case 'surname':
-      copy.sort((person1, person2) => {
-        return (order === 'asc')
-          ? person1[sortBy].localeCompare(person2[sortBy])
-          : person2[sortBy].localeCompare(person1[sortBy]);
-      });
+      sortedStudents.sort((person1, person2) => (order === 'asc'
+        ? person1[sortBy].localeCompare(person2[sortBy])
+        : person2[sortBy].localeCompare(person1[sortBy])));
       break;
 
     case 'age':
     case 'married':
-      copy.sort((person1, person2) => {
-        return (order === 'asc')
-          ? (Number(person1[sortBy]) - Number(person2[sortBy]))
-          : (Number(person2[sortBy]) - Number(person1[sortBy]));
-      });
+      sortedStudents.sort((person1, person2) => (order === 'asc'
+        ? (Number(person1[sortBy]) - Number(person2[sortBy]))
+        : (Number(person2[sortBy]) - Number(person1[sortBy]))));
       break;
 
     default:
-      copy.sort((person1, person2) => {
+      sortedStudents.sort((person1, person2) => {
         const sum1 = person1.grades.reduce((a, b) => (a + b));
         const avr1 = sum1 / person1.grades.length;
 
@@ -55,8 +51,7 @@ export function sortStudents(
           ? (avr1 - avr2)
           : (avr2 - avr1);
       });
-      break;
   }
 
-  return copy;
+  return sortedStudents;
 }
