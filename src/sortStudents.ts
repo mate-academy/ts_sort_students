@@ -12,10 +12,18 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = '' // required an initializer by lint
+  AverageGrade = 'averageGrade' // required an initializer by lint
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+export function calculateAvgGrade(student: Student): number {
+  const sum = student.grades.reduce(
+    (prevGrade: number, nextGrade: number) => prevGrade + nextGrade, 0,
+  );
+
+  return sum / student.grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -31,36 +39,16 @@ export function sortStudents(
       };
       break;
 
-    case sortBy === SortType.Age:
+    case sortBy === SortType.Age || sortBy === SortType.Married:
       sortFunc = (a: Student, b: Student): number => {
-        return a[sortBy] - b[sortBy];
-      };
-      break;
-
-    case sortBy === SortType.Married:
-      sortFunc = (a: Student, b: Student): number => {
-        let res = -1;
-
-        if (a[sortBy] === b[sortBy]) {
-          res = 0;
-        } else if (a[sortBy]) {
-          res = 1;
-        }
-
-        return res;
+        return +a[sortBy] - +b[sortBy];
       };
       break;
 
     case sortBy === SortType.AverageGrade:
       sortFunc = (a: Student, b: Student): number => {
-        const sumPrev = a.grades.reduce(
-          (prevGrade, nextGrade) => prevGrade + nextGrade, 0,
-        );
-        const avgPrev = (sumPrev / a.grades.length);
-        const sumNext = b.grades.reduce(
-          (prevGrade, nextGrade) => prevGrade + nextGrade, 0,
-        );
-        const avgNext = (sumNext / b.grades.length);
+        const avgPrev = calculateAvgGrade(a);
+        const avgNext = calculateAvgGrade(b);
 
         return avgPrev - avgNext;
       };
