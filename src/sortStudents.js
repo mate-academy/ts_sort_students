@@ -1,14 +1,19 @@
 "use strict";
 exports.__esModule = true;
-exports.sortStudents = exports.SortType = void 0;
+exports.sortStudents = exports.calculateAvgGrade = exports.SortType = void 0;
 var SortType;
 (function (SortType) {
     SortType["Name"] = "name";
     SortType["Surname"] = "surname";
     SortType["Age"] = "age";
     SortType["Married"] = "married";
-    SortType["AverageGrade"] = ""; // required an initializer by lint
+    SortType["AverageGrade"] = "averageGrade"; // required an initializer by lint
 })(SortType = exports.SortType || (exports.SortType = {}));
+function calculateAvgGrade(student) {
+    var sum = student.grades.reduce(function (prevGrade, nextGrade) { return prevGrade + nextGrade; }, 0);
+    return sum / student.grades.length;
+}
+exports.calculateAvgGrade = calculateAvgGrade;
 function sortStudents(students, sortBy, order) {
     var sortFunc;
     switch (true) {
@@ -17,29 +22,15 @@ function sortStudents(students, sortBy, order) {
                 return a[sortBy].localeCompare(b[sortBy]);
             };
             break;
-        case sortBy === SortType.Age:
+        case sortBy === SortType.Age || sortBy === SortType.Married:
             sortFunc = function (a, b) {
-                return a[sortBy] - b[sortBy];
-            };
-            break;
-        case sortBy === SortType.Married:
-            sortFunc = function (a, b) {
-                var res = -1;
-                if (a[sortBy] === b[sortBy]) {
-                    res = 0;
-                }
-                else if (a[sortBy]) {
-                    res = 1;
-                }
-                return res;
+                return +a[sortBy] - +b[sortBy];
             };
             break;
         case sortBy === SortType.AverageGrade:
             sortFunc = function (a, b) {
-                var sumPrev = a.grades.reduce(function (prevGrade, nextGrade) { return prevGrade + nextGrade; }, 0);
-                var avgPrev = (sumPrev / a.grades.length);
-                var sumNext = b.grades.reduce(function (prevGrade, nextGrade) { return prevGrade + nextGrade; }, 0);
-                var avgNext = (sumNext / b.grades.length);
+                var avgPrev = calculateAvgGrade(a);
+                var avgNext = calculateAvgGrade(b);
                 return avgPrev - avgNext;
             };
             break;
