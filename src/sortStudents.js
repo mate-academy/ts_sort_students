@@ -15,28 +15,6 @@ function calculateAvgGrade(student) {
 }
 exports.calculateAvgGrade = calculateAvgGrade;
 function sortStudents(students, sortBy, order) {
-    var sortFunc;
-    switch (true) {
-        case sortBy === SortType.Name || sortBy === SortType.Surname:
-            sortFunc = function (a, b) {
-                return a[sortBy].localeCompare(b[sortBy]);
-            };
-            break;
-        case sortBy === SortType.Age || sortBy === SortType.Married:
-            sortFunc = function (a, b) {
-                return +a[sortBy] - +b[sortBy];
-            };
-            break;
-        case sortBy === SortType.AverageGrade:
-            sortFunc = function (a, b) {
-                var avgPrev = calculateAvgGrade(a);
-                var avgNext = calculateAvgGrade(b);
-                return avgPrev - avgNext;
-            };
-            break;
-        default: // default case required by linter
-            throw new Error('ERROR');
-    }
     return students.sort(function (prevStudent, nextStudent) {
         var _a;
         var studentA = prevStudent;
@@ -44,7 +22,18 @@ function sortStudents(students, sortBy, order) {
         if (order === 'desc') {
             _a = [studentB, studentA], studentA = _a[0], studentB = _a[1];
         }
-        return sortFunc(studentA, studentB);
+        var avgPrev = calculateAvgGrade(studentA);
+        var avgNext = calculateAvgGrade(studentB);
+        switch (sortBy) {
+            case SortType.Name || SortType.Surname:
+                return studentA[sortBy].localeCompare(studentB[sortBy]);
+            case SortType.Age || SortType.Married:
+                return +studentA[sortBy] - +studentB[sortBy];
+            case SortType.AverageGrade:
+                return avgPrev - avgNext;
+            default: // default case required by linter
+                throw new Error('ERROR');
+        }
     });
 }
 exports.sortStudents = sortStudents;

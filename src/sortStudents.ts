@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -30,34 +29,6 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let sortFunc: Function;
-
-  switch (true) {
-    case sortBy === SortType.Name || sortBy === SortType.Surname:
-      sortFunc = (a: Student, b: Student): number => {
-        return a[sortBy].localeCompare(b[sortBy]);
-      };
-      break;
-
-    case sortBy === SortType.Age || sortBy === SortType.Married:
-      sortFunc = (a: Student, b: Student): number => {
-        return +a[sortBy] - +b[sortBy];
-      };
-      break;
-
-    case sortBy === SortType.AverageGrade:
-      sortFunc = (a: Student, b: Student): number => {
-        const avgPrev = calculateAvgGrade(a);
-        const avgNext = calculateAvgGrade(b);
-
-        return avgPrev - avgNext;
-      };
-      break;
-
-    default: // default case required by linter
-      throw new Error('ERROR');
-  }
-
   return students.sort(
     (prevStudent: Student, nextStudent: Student): number => {
       let studentA: Student = prevStudent;
@@ -67,7 +38,22 @@ export function sortStudents(
         [studentA, studentB] = [studentB, studentA];
       }
 
-      return sortFunc(studentA, studentB);
+      const avgPrev = calculateAvgGrade(studentA);
+      const avgNext = calculateAvgGrade(studentB);
+
+      switch (sortBy) {
+        case SortType.Name || SortType.Surname:
+          return studentA[sortBy].localeCompare(studentB[sortBy]);
+
+        case SortType.Age || SortType.Married:
+          return +studentA[sortBy] - +studentB[sortBy];
+
+        case SortType.AverageGrade:
+          return avgPrev - avgNext;
+
+        default: // default case required by linter
+          throw new Error('ERROR');
+      }
     },
   );
 }
