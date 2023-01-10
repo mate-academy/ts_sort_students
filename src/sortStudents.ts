@@ -17,88 +17,90 @@ export enum SortType {
 }
 
 // create SortOrder type
-export type SortOrder = {
-  asc: 'asc';
-  desc: 'desc';
-};
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+function sortAvergeGrade(a: Student, b: Student, order: SortOrder): number {
+  const aCalc: number
+    = a.grades.reduce((prev, sum) => prev + sum, 0) / a.grades.length;
+  const bCalc: number
+    = b.grades.reduce((prev, sum) => prev + sum, 0) / b.grades.length;
+
+  if (order === SortOrder.ASC) {
+    return aCalc - bCalc;
+  }
+
+  return bCalc - aCalc;
+}
 
 export function sortStudents(
   initialStudents: Student[],
   sortBy: SortType,
-  order: keyof SortOrder,
+  order: SortOrder,
 ): Student[] {
   const students = [...initialStudents];
-
   // write your function
+
   switch (sortBy) {
     case SortType.Name:
-      students.sort((a, b) => {
-        if (order === 'asc') {
-          return a.name.localeCompare(b.name);
-        }
-
-        if (order === 'desc') {
-          return b.name.localeCompare(a.name);
-        }
-
-        return 0;
-      });
-      break;
-
     case SortType.Surname:
+
       students.sort((a, b) => {
-        if (order === 'asc') {
-          return a.surname.localeCompare(b.surname);
-        }
+        const key = SortType.Name === sortBy ? 'name' : 'surname';
 
-        if (order === 'desc') {
-          return b.surname.localeCompare(a.surname);
-        }
+        switch (order) {
+          case SortOrder.ASC:
+            return a[key].localeCompare(b[key]);
 
-        return 0;
+          case SortOrder.DESC:
+            return b[key].localeCompare(a[key]);
+
+          default:
+            return 0;
+        }
       });
       break;
 
     case SortType.Age:
       students.sort((a, b) => {
-        if (order === 'asc') {
-          return a.age - b.age;
-        }
+        switch (order) {
+          case SortOrder.ASC:
+            return a.age - b.age;
 
-        return b.age - a.age;
+          case SortOrder.DESC:
+            return b.age - a.age;
+
+          default:
+            return 0;
+        }
       });
       break;
 
     case SortType.Married:
       students.sort((a, b) => {
-        if (order === 'asc') {
-          return a.married && !b.married ? 1 : -1;
-        }
+        switch (order) {
+          case SortOrder.ASC:
+            return a.married && !b.married ? 1 : -1;
 
-        if (order === 'desc') {
-          return a.married && !b.married ? -1 : 1;
-        }
+          case SortOrder.DESC:
+            return a.married && !b.married ? -1 : 1;
 
-        return 0;
+          default:
+            return 0;
+        }
       });
       break;
 
     case SortType.AverageGrade:
       students.sort((a, b) => {
-        const aCalc: number = a.grades
-          .reduce((prev, sum) => prev + sum, 0) / a.grades.length;
-        const bCalc: number = b.grades
-          .reduce((prev, sum) => prev + sum, 0) / b.grades.length;
-
-        if (order === 'asc') {
-          return aCalc - bCalc;
-        }
-
-        return bCalc - aCalc;
+        return sortAvergeGrade(a, b, order);
       });
       break;
 
-    default: break;
+    default:
+      break;
   }
 
   return students;
