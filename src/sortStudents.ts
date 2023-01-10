@@ -18,31 +18,28 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrades({ grades }: Student): number {
+  return grades.reduce((sum, grade) => sum + grade)
+    / grades.length;
+}
+
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const resultArray: Student[] = [...students];
   const orderModifier: 1 | -1 = order === 'asc' ? 1 : -1;
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return resultArray.sort(
-        (a, b) => a[sortBy].localeCompare(b[sortBy]) * orderModifier,
-      );
-    case SortType.Age:
-    case SortType.Married:
-      return resultArray.sort(
-        (a, b) => (+a[sortBy] - +b[sortBy]) * orderModifier,
-      );
-    default:
-      return resultArray.sort((a, b) => {
-        const avarageA = a.grades.reduce((sum, grade) => sum + grade)
-          / a.grades.length;
-        const avarageB = b.grades.reduce((sum, grade) => sum + grade)
-          / b.grades.length;
-
-        return (avarageA - avarageB) * orderModifier;
-      });
-  }
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return a[sortBy].localeCompare(b[sortBy]) * orderModifier;
+      case SortType.Age:
+      case SortType.Married:
+        return (+a[sortBy] - +b[sortBy]) * orderModifier;
+      case SortType.AverageGrade:
+        return (getAverageGrades(a) - getAverageGrades(b)) * orderModifier;
+      default:
+        throw new Error('Incorrect parameter name');
+    }
+  });
 }
