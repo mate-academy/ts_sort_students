@@ -1,16 +1,52 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'dwsc';
 
+function avarage(arr: number[]): number {
+  return arr.reduce((acc: number, el: number) => acc + el) / arr.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const copy = [...students];
+
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? copy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? copy.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : copy.sort((a, b) => +b[sortBy] - +a[sortBy]);
+
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? copy.sort((a, b) => avarage(a[sortBy]) - avarage(b[sortBy]))
+        : copy.sort((a, b) => avarage(b[sortBy]) - avarage(a[sortBy]));
+
+    default:
+      throw new Error('Error');
+  }
 }
