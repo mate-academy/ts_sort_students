@@ -25,9 +25,11 @@ function sortStudents(students, sortBy, order) {
         var avgPrev = calculateAvgGrade(studentA);
         var avgNext = calculateAvgGrade(studentB);
         switch (sortBy) {
-            case SortType.Name || SortType.Surname:
+            case SortType.Name:
+            case SortType.Surname:
                 return studentA[sortBy].localeCompare(studentB[sortBy]);
-            case SortType.Age || SortType.Married:
+            case SortType.Age:
+            case SortType.Married:
                 return +studentA[sortBy] - +studentB[sortBy];
             case SortType.AverageGrade:
                 return avgPrev - avgNext;

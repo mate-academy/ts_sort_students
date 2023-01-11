@@ -42,10 +42,12 @@ export function sortStudents(
       const avgNext = calculateAvgGrade(studentB);
 
       switch (sortBy) {
-        case SortType.Name || SortType.Surname:
+        case SortType.Name:
+        case SortType.Surname:
           return studentA[sortBy].localeCompare(studentB[sortBy]);
 
-        case SortType.Age || SortType.Married:
+        case SortType.Age:
+        case SortType.Married:
           return +studentA[sortBy] - +studentB[sortBy];
 
         case SortType.AverageGrade:
