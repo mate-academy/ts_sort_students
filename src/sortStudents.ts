@@ -1,6 +1,3 @@
-import { Student } from './sortStudents';
-import { Key } from "readline";
-
 export interface Student {
   name: string;
   surname: string;
@@ -17,7 +14,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function averageGrade(numbers: number[]): number {
@@ -34,68 +30,39 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copiedStudents = [...students];
+  const ascending = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return copiedStudents.sort(
-          (a, b) => a[sortBy].localeCompare(b[sortBy]),
-        );
-      }
-
-      if (order === 'desc') {
-        return copiedStudents.sort(
-          (a, b) => b[sortBy].localeCompare(a[sortBy]),
-        );
-      }
-      break;
-
-    case SortType.Age:
-      if (order === 'asc') {
-        return copiedStudents.sort(
-          (a, b) => a[sortBy] - b[sortBy],
-        );
-      }
-
-      if (order === 'desc') {
-        return copiedStudents.sort(
-          (a, b) => b[sortBy] - a[sortBy],
-        );
-      }
-      break;
+      return copiedStudents.sort(
+        (a, b) => {
+          return ascending
+            ? a[sortBy].localeCompare(b[sortBy])
+            : b[sortBy].localeCompare(a[sortBy]);
+        },
+      );
 
     case SortType.Married:
-      if (order === 'asc') {
-        return copiedStudents.sort(
-          (a, b) => +a[sortBy] - +b[sortBy],
-        );
-      }
-
-      if (order === 'desc') {
-        return copiedStudents.sort(
-          (a, b) => +b[sortBy] - +a[sortBy],
-        );
-      }
-      break;
+    case SortType.Age:
+      return copiedStudents.sort(
+        (a, b) => {
+          return ascending
+            ? +a[sortBy] - +b[sortBy]
+            : +b[sortBy] - +a[sortBy];
+        },
+      );
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return copiedStudents.sort(
-          (a, b) => averageGrade(a[sortBy]) - averageGrade(b[sortBy]),
-        );
-      }
-
-      if (order === 'desc') {
-        return copiedStudents.sort(
-          (a, b) => averageGrade(b[sortBy]) - averageGrade(a[sortBy]),
-        );
-      }
-      break;
+      return copiedStudents.sort(
+        (a, b) => {
+          return ascending
+            ? averageGrade(a[sortBy]) - averageGrade(b[sortBy])
+            : averageGrade(b[sortBy]) - averageGrade(a[sortBy]);
+        },
+      );
 
     default:
       return copiedStudents;
   }
-
-  return copiedStudents;
 }
