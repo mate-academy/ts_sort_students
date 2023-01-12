@@ -32,32 +32,15 @@ export function sortStudents(students: Student[],
 
   switch (sortBy) {
     case SortType.Name:
-      sortedStudents.sort((current,
-        prev) => current[sortBy].localeCompare(prev[sortBy]) * sortOrder);
-      break;
-
     case SortType.Surname:
       sortedStudents.sort((current,
         prev) => current[sortBy].localeCompare(prev[sortBy]) * sortOrder);
       break;
 
     case SortType.Age:
-      sortedStudents.sort((current,
-        prev) => (current[sortBy] - prev[sortBy]) * sortOrder);
-      break;
-
     case SortType.Married:
-      sortedStudents.sort((current, prev) => {
-        if (current[sortBy] === prev[sortBy]) {
-          return 0;
-        }
-
-        if (current[sortBy] && !prev[sortBy]) {
-          return 1 * sortOrder;
-        }
-
-        return -1 * sortOrder;
-      });
+      sortedStudents.sort((current,
+        prev) => (+current[sortBy] - +prev[sortBy]) * sortOrder);
       break;
 
     case SortType.AverageGrade:
