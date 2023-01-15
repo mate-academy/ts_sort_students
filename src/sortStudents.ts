@@ -42,11 +42,6 @@ export function sortStudents(
           : b[sortBy].localeCompare(a[sortBy]);
       });
     case SortType.Age:
-      return copyStudents.sort((a, b) => {
-        return isASC
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
     case SortType.Married:
       return copyStudents.sort((a, b) => {
         if (isASC) {
