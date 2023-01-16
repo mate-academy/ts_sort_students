@@ -50,6 +50,6 @@ export function sortStudents(
           return calcAverage(a.grades) - calcAverage(b.grades);
         });
     default:
-      return 'No matches!!!';
+      throw new Error('You are passing incorrect parameters');
   }
 }
