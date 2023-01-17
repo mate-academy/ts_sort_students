@@ -26,7 +26,7 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-  ): Student[] {
+): Student[] {
   const sorted = [...students];
 
   switch (sortBy) {
