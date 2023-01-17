@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'AverageGrade',
 }
 
 // create SortOrder type
@@ -36,33 +36,37 @@ export function sortStudents(
   order: SortOrder,
 ): object[] {
   // write your function
-  let newArr: object[] = [];
+  let newArr: Student[] = [...students];
 
-  if (sortBy === 0) {
-    newArr = [...students].sort((a, b) => (a.name).localeCompare(b.name));
+  switch (sortBy) {
+    case SortType.Name:
+      newArr = newArr.sort((a, b) => (a.name).localeCompare(b.name));
+      break;
+
+    case SortType.Surname:
+      newArr = newArr.sort((a, b) => (a.surname).localeCompare(b.surname));
+      break;
+
+    case SortType.Age:
+      newArr = newArr.sort((a, b) => (a.age) - (b.age));
+      break;
+
+    case SortType.Married:
+      newArr = newArr.sort((a, b) => Number(a.married) - Number(b.married));
+      break;
+
+    case SortType.AverageGrade:
+      newArr = newArr.sort((a, b) => (
+        averageGradeFunc(a.grades)) - (averageGradeFunc(b.grades)));
+      break;
+
+    default:
+        // do nothing
   }
 
-  if (sortBy === 1) {
-    newArr = [...students].sort((a, b) => (a.surname).localeCompare(b.surname));
+  if (order === 'asc') {
+    return newArr;
   }
 
-  if (sortBy === 2) {
-    newArr = [...students].sort((a, b) => (a.age) - (b.age));
-  }
-
-  if (sortBy === 3) {
-    newArr = [...students].sort((a, b) => Number(b.married)
-    - Number(a.married));
-  }
-
-  if (sortBy === 4) {
-    newArr = [...students].sort((a, b) => (
-      averageGradeFunc(a.grades)) - (averageGradeFunc(b.grades)));
-  }
-
-  if (order === 'desc') {
-    return newArr.reverse();
-  }
-
-  return newArr;
+  return [...newArr].reverse();
 }
