@@ -45,14 +45,11 @@ export function sortStudents(
       ));
 
     case ('grades'):
-      return studentsCopy.sort((a: Student, b: Student): number => {
-        const averageA = getAverageGrade(a);
-        const averageB = getAverageGrade(b);
-
-        return (order === 'asc')
-          ? averageA - averageB
-          : averageB - averageA;
-      });
+      return studentsCopy.sort((a: Student, b: Student): number => (
+        (order === 'asc')
+          ? getAverageGrade(a) - getAverageGrade(b)
+          : getAverageGrade(b) - getAverageGrade(a)
+      ));
 
     default:
       return studentsCopy;
