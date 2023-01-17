@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -17,53 +16,39 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+const getAverage = (marks:number[]): number => {
+  const averageMark:number = marks
+    .reduce((prevNum: number, nextNum: number): number => prevNum + nextNum, 0)
+    / marks.length;
+
+  return averageMark;
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copiedStudents = [...students];
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-  switch (sortBy) {
-    case SortType.Age:
-      return copiedStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? +a[sortBy] - b[sortBy]
-            : +b[sortBy] - +a[sortBy];
-        },
-      );
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
-    case SortType.Name:
-    case SortType.Surname:
-      return copiedStudents.sort(
-        (a: Student, b: Student) => {
-          return order === 'asc'
-            ? String(a[sortBy]).localeCompare(String(b[sortBy]))
-            : String(b[sortBy]).localeCompare(String(a[sortBy]));
-        },
-      );
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
+          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
 
-    case SortType.AverageGrade:
-      return copiedStudents.sort(
-        (a: Student, b: Student) => {
-          function averageValue(arr: number[]): number {
-            return arr.reduce((prevNum, nextNum) => prevNum + nextNum)
-            / arr.length;
-          }
-
-          return order === 'asc'
-            ? averageValue(a[sortBy]) - averageValue(b[sortBy])
-            : averageValue(b[sortBy]) - averageValue(a[sortBy]);
-        },
-      );
-
-    case SortType.Married:
-      return copiedStudents
-        .filter((x) => x[sortBy] === true)
-        .concat(copiedStudents.filter((x) => x[sortBy] === false));
-
-    default:
-      return copiedStudents;
-  }
+      default: throw Error('Parameters are not correct');
+    }
+  });
 }
