@@ -19,7 +19,7 @@ export type SortOrder = 'asc' | 'desc';
 
 export function getAverage(data: number[]): number {
   const result = data.reduce(
-    (sum: number, current: number) => sum + current, 0,
+    (sum, current) => sum + current, 0,
   );
 
   return result / data.length;
@@ -28,27 +28,26 @@ export function getAverage(data: number[]): number {
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const copy = [...students];
+  const copyStudents = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copy.sort((a, b) => {
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
+      copyStudents.sort((a, b) => (order === 'asc'
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy])
+      ));
       break;
     case SortType.Married:
     case SortType.Age:
-      copy.sort((a, b) => {
+      copyStudents.sort((a, b) => {
         return order === 'asc'
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
       });
       break;
     case SortType.AverageGrade:
-      copy.sort((a, b) => {
+      copyStudents.sort((a, b) => {
         return order === 'asc'
           ? getAverage(a[sortBy]) - getAverage(b[sortBy])
           : getAverage(b[sortBy]) - getAverage(a[sortBy]);
@@ -58,5 +57,5 @@ export function sortStudents(
       break;
   }
 
-  return copy;
+  return copyStudents;
 }
