@@ -47,7 +47,7 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       studentsCopy.sort((a: Student, b: Student) => (
-        sortString(a[sortBy], b[sortBy], order, sortBy)
+        sortString(a[sortBy], b[sortBy], order)
       ));
       break;
 
