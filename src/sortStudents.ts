@@ -30,31 +30,24 @@ export function sortStudents(
 
   const orderBy = order === 'asc';
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return copyStudents.sort((studentA, studentB) => (
-        orderBy
-          ? studentA[sortBy].localeCompare(studentB[sortBy])
-          : studentB[sortBy].localeCompare(studentA[sortBy])
-      ));
-    case SortType.Age:
-      return copyStudents.sort((studentA, studentB) => (
-        orderBy
-          ? studentA[sortBy] - studentB[sortBy]
-          : studentB[sortBy] - studentA[sortBy]
-      ));
-    case SortType.Married:
-      return copyStudents
-        .filter((student) => student.married === true)
-        .concat(copyStudents.filter((student) => student.married === false));
-    case SortType.AverageGrade:
-      return copyStudents.sort((a, b) => (
-        orderBy
+  return copyStudents.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return orderBy
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return orderBy
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+      case SortType.AverageGrade:
+        return orderBy
           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
-          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy])
-      ));
-    default:
-      throw new Error('Arguments are incorrect!!!');
-  }
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
+      default:
+        throw new Error('Arguments are incorrect!!!');
+    }
+  });
 }
