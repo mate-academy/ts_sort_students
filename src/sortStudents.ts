@@ -25,6 +25,10 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
+  function sortGrade(grades: number[]): number {
+    return grades.reduce((a, b) => a + b) / grades.length;
+  }
+
   return [...students].sort((current, next) => {
     switch (sortBy) {
       case SortType.Name:
@@ -41,10 +45,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? current.grades.reduce((a, b) => a + b) / current.grades.length
-            - next.grades.reduce((a, b) => a + b) / next.grades.length
-          : next.grades.reduce((a, b) => a + b) / next.grades.length
-            - current.grades.reduce((a, b) => a + b) / current.grades.length;
+          ? sortGrade(current.grades) - sortGrade(next.grades)
+          : sortGrade(next.grades) - sortGrade(current.grades);
 
       default:
         throw new Error('verify parametrs');
