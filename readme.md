@@ -9,7 +9,7 @@ The parameters are:
 - `order` a sort order that can be `asc` or `desc`
 
 You also need to add correct types:
-- Create `Student` interface matching the next data:
++ Create `Student` interface matching the next data:
     ```
     {
       name: 'Jessica',
@@ -19,7 +19,7 @@ You also need to add correct types:
       grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],
     }
     ```
-- Create a `SortType` enum, having the next values:
++ Create a `SortType` enum, having the next values:
     ```
     Name
     Surname
@@ -28,7 +28,7 @@ You also need to add correct types:
     AverageGrade
     ```
     Hint: `AverageGrade` is sorting by an average value in `grades` array.
-- Create `SortOrder` type with only 2 values `'asc'` and `'desc'` 
++ Create `SortOrder` type with only 2 values `'asc'` and `'desc'` 
     Hint: If values are the same the students should go in the original order 
     (no matter we use `asc` or `desc` order)
 
