@@ -1,14 +1,14 @@
 // import { type } from "os";
 
-type Num = number;
-type Str = string;
+// type Num = number;
+// type Str = string;
 
 export interface Student {
-  name: Str,
-  surname: Str,
-  age: Num,
+  name: string,
+  surname: string,
+  age: number,
   married: boolean,
-  grades: Num[],
+  grades: number[],
 }
 
 export enum SortType {
@@ -21,8 +21,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(grades: Num[]) : Num {
-  return grades.reduce((a: Num, b: Num) => a + b, 0) / grades.length;
+function averageGrade(grades: number[]) : number {
+  return grades.reduce((a: number, b: number) => a + b, 0) / grades.length;
 }
 
 export function sortStudents(
