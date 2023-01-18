@@ -17,6 +17,7 @@ module.exports = {
     '@typescript-eslint', 'jest',
   ],
   rules: {
+    'no-console': 'off',
     'arrow-body-style': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
