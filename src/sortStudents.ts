@@ -23,7 +23,9 @@ export function getAverageGrade(person: Student): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const studentsCopy: Student[] = [...students];
 
