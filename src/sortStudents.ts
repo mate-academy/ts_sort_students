@@ -22,7 +22,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const myStudents = students.map((student: Student) => ({ ...student }));
+  const myStudents = [...students];
   const isOrderAscending: boolean = order === 'asc';
 
   switch (sortBy) {
@@ -34,17 +34,11 @@ export function sortStudents(
       });
 
     case SortType.Name:
-      return myStudents.sort((a: Student, b: Student) => {
-        return isOrderAscending
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-      });
-
     case SortType.Surname:
       return myStudents.sort((a: Student, b: Student) => {
         return isOrderAscending
-          ? a.surname.localeCompare(b.surname)
-          : b.surname.localeCompare(a.surname);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
       });
 
     case SortType.Married:
