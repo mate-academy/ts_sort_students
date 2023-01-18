@@ -54,6 +54,6 @@ export function sortStudents(
       ));
 
     default:
-      return studentsCopy;
+      throw Error('There is no such property. Lets try another :)');
   }
 }
