@@ -49,6 +49,6 @@ export function sortStudents(
       return copiedStudents.sort((a, b) => sortByOrder(averageGrade(a[sortBy]),
         averageGrade(b[sortBy]), order));
     default:
-      return students;
+      throw new Error('Sort type is not valid');
   }
 }
