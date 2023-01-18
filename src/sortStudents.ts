@@ -1,3 +1,5 @@
+// import { type } from "os";
+
 type Num = number;
 type Str = string;
 
