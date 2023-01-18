@@ -35,38 +35,44 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): object[] {
-  // write your function
   let newArr: Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      newArr = newArr.sort((a, b) => (a.name).localeCompare(b.name));
+      newArr = (order === 'asc')
+        ? newArr.sort((a, b) => (a.name).localeCompare(b.name))
+        : newArr.sort((a, b) => (a.name).localeCompare(b.name)).reverse();
       break;
 
     case SortType.Surname:
-      newArr = newArr.sort((a, b) => (a.surname).localeCompare(b.surname));
+      newArr = (order === 'asc')
+        ? newArr.sort((a, b) => (a.surname).localeCompare(b.surname))
+        : newArr.sort((a, b) => (a.surname).localeCompare(b.surname)).reverse();
       break;
 
     case SortType.Age:
-      newArr = newArr.sort((a, b) => (a.age) - (b.age));
+      newArr = (order === 'asc')
+        ? newArr.sort((a, b) => (a.age) - (b.age))
+        : newArr.sort((a, b) => (b.age) - (a.age));
       break;
 
     case SortType.Married:
-      newArr = newArr.sort((a, b) => Number(a.married) - Number(b.married));
+      newArr = (order === 'asc')
+        ? newArr.sort((a, b) => Number(a.married) - Number(b.married))
+        : newArr.sort((a, b) => Number(b.married) - Number(a.married));
       break;
 
     case SortType.AverageGrade:
-      newArr = newArr.sort((a, b) => (
-        averageGradeFunc(a.grades)) - (averageGradeFunc(b.grades)));
+      newArr = (order === 'asc')
+        ? newArr.sort((a, b) => (
+          averageGradeFunc(a.grades)) - (averageGradeFunc(b.grades)))
+        : newArr.sort((a, b) => (
+          averageGradeFunc(b.grades)) - (averageGradeFunc(a.grades)));
       break;
 
     default:
-        // do nothing
+      break;
   }
 
-  if (order === 'asc') {
-    return newArr;
-  }
-
-  return [...newArr].reverse();
+  return newArr;
 }
