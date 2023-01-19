@@ -17,12 +17,16 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType,
-  order: SortOrder):Student[] {
-  type CopyObjectCallack = (obj: Student) => Student;
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+):Student[] {
+  const copyStudents: Student[] = [...students];
 
-  const copyObjectCallack: CopyObjectCallack = (obj) => ({ ...obj });
-  const copyStudents: Student[] = students.map(copyObjectCallack);
+  function calculateAverageGrade(grade: number[]): number {
+    return grade.reduce((sum, element) => sum + element) / grade.length;
+  }
 
   switch (sortBy) {
     case SortType.Name:
@@ -52,13 +56,8 @@ export function sortStudents(students: Student[], sortBy: SortType,
 
     case SortType.AverageGrade:
       copyStudents.sort((a: Student, b: Student) => {
-        const aGradeAverage: number = a.grades
-          .reduce((sum:number, element: number) => sum + element, 0)
-          / a.grades.length;
-
-        const bGradeAverage: number = b.grades
-          .reduce((sum:number, element: number) => sum + element, 0)
-          / b.grades.length;
+        const aGradeAverage: number = calculateAverageGrade(a.grades);
+        const bGradeAverage: number = calculateAverageGrade(b.grades);
 
         return order === 'asc'
           ? aGradeAverage - bGradeAverage
@@ -67,7 +66,7 @@ export function sortStudents(students: Student[], sortBy: SortType,
       break;
 
     default:
-      break;
+      throw new Error('Invalid data');
   }
 
   return copyStudents;
