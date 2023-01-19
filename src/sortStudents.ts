@@ -18,8 +18,8 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-const findAverageGrade = (arr: number[]): number => {
-  return arr.reduce((acc, num) => acc + num, 0) / arr.length;
+const calculateAverageGrades = (grades: number[]): number => {
+  return grades.reduce((acc, num) => acc + num, 0) / grades.length;
 };
 
 export function sortStudents(
@@ -30,46 +30,34 @@ export function sortStudents(
   // write your function
   const studentsToSort = [...students];
 
-  switch (sortBy) {
-    case SortType.Married:
-    case SortType.Age:
-      return studentsToSort.sort((a, b) => {
-        let returnValue = +a[sortBy] - +b[sortBy];
-
+  return studentsToSort.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Married:
+      case SortType.Age:
         if (order === 'desc') {
-          returnValue *= -1;
+          return +b[sortBy] - +a[sortBy];
         }
 
-        return returnValue;
-      });
-    case SortType.AverageGrade:
-      return studentsToSort.sort((a, b) => {
-        let returnValue
-        = findAverageGrade(a[sortBy]) - findAverageGrade(b[sortBy]);
+        return +a[sortBy] - +b[sortBy];
 
+      case SortType.AverageGrade:
         if (order === 'desc') {
-          returnValue *= -1;
+          return calculateAverageGrades(b[sortBy])
+          - calculateAverageGrades(a[sortBy]);
         }
 
-        return returnValue;
-      });
-    default:
-      return studentsToSort.sort((a, b) => {
-        let returnValue = 0;
+        return calculateAverageGrades(a[sortBy])
+        - calculateAverageGrades(b[sortBy]);
 
-        if (a[sortBy] < b[sortBy]) {
-          returnValue = -1;
-        }
-
-        if (a[sortBy] > b[sortBy]) {
-          returnValue = 1;
-        }
-
+      case SortType.Name:
+      case SortType.Surname:
         if (order === 'desc') {
-          returnValue *= -1;
+          return b[sortBy] < a[sortBy] ? -1 : 1;
         }
 
-        return returnValue;
-      });
-  }
+        return a[sortBy] < b[sortBy] ? -1 : 1;
+
+      default: throw new Error('Sorting parameter does not exist');
+    }
+  });
 }
