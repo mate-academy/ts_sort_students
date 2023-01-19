@@ -16,13 +16,15 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(numbers: number[]): number {
+function getAverageGrade(numbers: number[]): number {
   return numbers.reduce((sum: number, grade: number) => sum + grade, 0)
   / numbers.length;
 }
 
-function sortByOrder(a: number | boolean, b: number | boolean,
-  order: SortOrder): number {
+function sortByOrder(
+  a: number | boolean, b: number | boolean,
+  order: SortOrder,
+): number {
   return order === 'asc'
     ? a - b
     : b - a;
@@ -46,8 +48,9 @@ export function sortStudents(
       return copiedStudents
         .sort((a, b) => sortByOrder(a[sortBy], b[sortBy], order));
     case SortType.AverageGrade:
-      return copiedStudents.sort((a, b) => sortByOrder(averageGrade(a[sortBy]),
-        averageGrade(b[sortBy]), order));
+      return copiedStudents.sort((a, b) => sortByOrder(
+        getAverageGrade(a[sortBy]), getAverageGrade(b[sortBy]), order,
+      ));
     default:
       throw new Error('Sort type is not valid');
   }
