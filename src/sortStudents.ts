@@ -22,7 +22,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] | string {
-  function calcAvarage(arr: number[]): number {
+  function calcAvarageGrades(arr: number[]): number {
     return arr.reduce((a, b) => a + b, 0) / arr.length;
   }
 
@@ -42,11 +42,11 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? calcAvarage(a.grades) - calcAvarage(b.grades)
-          : calcAvarage(b.grades) - calcAvarage(a.grades);
+          ? calcAvarageGrades(a.grades) - calcAvarageGrades(b.grades)
+          : calcAvarageGrades(b.grades) - calcAvarageGrades(a.grades);
 
       default:
-        throw new Error('');
+        throw new Error('incorrect values');
     }
   });
 }
