@@ -17,17 +17,21 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((a, b) => a + b) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const myStudents = [...students];
+  const StudentsCopy = [...students];
   const isOrderAscending: boolean = order === 'asc';
 
   switch (sortBy) {
     case SortType.Age:
-      return myStudents.sort((a: Student, b: Student) => {
+      return StudentsCopy.sort((a: Student, b: Student) => {
         return isOrderAscending
           ? a.age - b.age
           : b.age - a.age;
@@ -35,29 +39,29 @@ export function sortStudents(
 
     case SortType.Name:
     case SortType.Surname:
-      return myStudents.sort((a: Student, b: Student) => {
+      return StudentsCopy.sort((a: Student, b: Student) => {
         return isOrderAscending
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
       });
 
     case SortType.Married:
-      return myStudents.sort((a: Student, b: Student) => {
+      return StudentsCopy.sort((a: Student, b: Student) => {
         return isOrderAscending
           ? Number(a.married) - Number(b.married)
           : Number(b.married) - Number(a.married);
       });
 
-    default:
-      return myStudents.sort((a: Student, b: Student) => {
-        const avgA: number = a.grades
-          .reduce((acc: number, x: number) => acc + x, 0) / a.grades.length;
-        const avgB: number = b.grades
-          .reduce((acc: number, x: number) => acc + x, 0) / b.grades.length;
+    case SortType.AverageGrade:
+      return StudentsCopy.sort((a: Student, b: Student) => {
+        const avgA: number = getAverageGrade(a.grades);
+        const avgB: number = getAverageGrade(b.grades);
 
         return isOrderAscending
           ? avgA - avgB
           : avgB - avgA;
       });
+
+    default: throw Error('input is not correct');
   }
 }
