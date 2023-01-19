@@ -15,13 +15,9 @@ export enum SortType {
   AverageGrade = 'grades'
 }
 
-const getAvg = (marks:number[]): number => {
-  const avg: number = marks
-    .reduce((prev, curent) => prev + curent, 0);
-
-  return avg / marks.length;
+const getAverageGrades = (marks:number[]): number => {
+  return marks.reduce((prev, curent) => prev + curent, 0) / marks.length;
 };
-// create SortOrder type
 
 export type SortOrder = 'asc' | 'desc';
 
@@ -37,15 +33,18 @@ export function sortStudents(
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
+
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAvg(a[sortBy]) - getAvg(b[sortBy])
-          : getAvg(b[sortBy]) - getAvg(a[sortBy]);
+          ? getAverageGrades(a[sortBy]) - getAverageGrades(b[sortBy])
+          : getAverageGrades(b[sortBy]) - getAverageGrades(a[sortBy]);
+
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
+
       default:
         throw new Error('Something goes wrong, check your arguments');
     }
