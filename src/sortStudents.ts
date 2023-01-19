@@ -17,46 +17,35 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function getAverage(data: number[]): number {
+export function getAverageGrades(data: number[]): number {
   return data.reduce(
-    (sum: number, current: number) => sum + current, 0,
+    (acc: number, cur: number) => acc + cur, 0,
   ) / data.length;
 }
 
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
-  const copyStudents = [...students];
-
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      copyStudents.sort((a, b) => {
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
-      });
-      break;
 
-    case SortType.Married:
-    case SortType.Age:
-      copyStudents.sort((a, b) => {
+      case SortType.Married:
+      case SortType.Age:
         return order === 'asc'
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
-      });
-      break;
 
-    case SortType.AverageGrade:
-      copyStudents.sort((a, b) => {
+      case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
-          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
-      });
-      break;
+          ? getAverageGrades(a[sortBy]) - getAverageGrades(b[sortBy])
+          : getAverageGrades(b[sortBy]) - getAverageGrades(a[sortBy]);
 
-    default:
-      break;
-  }
-
-  return copyStudents;
+      default:
+        throw Error('Incorrect sort type');
+    }
+  });
 }
