@@ -27,33 +27,24 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = [...students];
-
-  switch (sortBy) {
-    case ('name'):
-    case ('surname'):
-      return studentsCopy.sort((a, b) => (
-        (order === 'asc')
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case ('name'):
+      case ('surname'):
+        return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy])
-      ));
-
-    case ('age'):
-    case ('married'):
-      return studentsCopy.sort((a, b) => (
-        (order === 'asc')
+          : b[sortBy].localeCompare(a[sortBy]);
+      case ('age'):
+      case ('married'):
+        return (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy])
-      ));
-
-    case ('grades'):
-      return studentsCopy.sort((a, b) => (
-        (order === 'asc')
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      case ('grades'):
+        return (order === 'asc')
           ? getAverageGrade(a) - getAverageGrade(b)
-          : getAverageGrade(b) - getAverageGrade(a)
-      ));
-
-    default:
-      throw Error('There is no such property. Lets try another :)');
-  }
+          : getAverageGrade(b) - getAverageGrade(a);
+      default:
+        throw Error('There is no such property. Lets try another :)');
+    }
+  });
 }
