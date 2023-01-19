@@ -1,7 +1,7 @@
 
 export interface Student {
   // describe Student interface
-  name: string;
+  name: string,
   surname: string,
   age: number,
   married: boolean,
@@ -14,7 +14,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'AverageGrade',
+  AverageGrade = 'averageGrade',
 }
 
 // create SortOrder type
@@ -25,7 +25,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function sortGrade(grades: number[]): number {
+  function calculateAverageGrades(grades: number[]): number {
     return grades.reduce((a, b) => a + b) / grades.length;
   }
 
@@ -45,8 +45,10 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? sortGrade(current.grades) - sortGrade(next.grades)
-          : sortGrade(next.grades) - sortGrade(current.grades);
+          ? calculateAverageGrades(current.grades)
+            - calculateAverageGrades(next.grades)
+          : calculateAverageGrades(next.grades)
+            - calculateAverageGrades(current.grades);
 
       default:
         throw new Error('verify parametrs');
