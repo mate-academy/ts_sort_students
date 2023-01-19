@@ -23,30 +23,30 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const resultStudents: Student[] = JSON.parse(JSON.stringify(students));
-
   const averageMarks = (grades: number[]): number => grades
     .reduce((a, b) => a + b, 0) / grades.length;
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'asc'
-        ? resultStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : resultStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'asc'
-        ? resultStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : resultStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? resultStudents
-          .sort((a, b) => averageMarks(a[sortBy]) - averageMarks(b[sortBy]))
-        : resultStudents
-          .sort((a, b) => averageMarks(b[sortBy]) - averageMarks(a[sortBy]));
-    default:
-      return resultStudents;
-  }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? averageMarks(a[sortBy]) - averageMarks(b[sortBy])
+          : averageMarks(b[sortBy]) - averageMarks(a[sortBy]);
+
+      default:
+        throw Error('Cannot be sorted by this parameter');
+    }
+  });
 }
