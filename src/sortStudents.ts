@@ -15,7 +15,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-export type SortOrder = 'desk' | 'asc';
+export type SortOrder = 'desc' | 'asc';
 
 function getAverageMark(marksArray: number[]): number {
   return marksArray.reduce((sum, el) => sum + el, 0) / marksArray.length;
@@ -26,14 +26,10 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] | string {
-  const studentsCopyArray: Student[] = [...students];
+  const studentsCopyArray = [...students];
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? studentsCopyArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : studentsCopyArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-
     case SortType.Surname:
       studentsCopyArray.sort((a, b) => {
         return order === 'asc'
