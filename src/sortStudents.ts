@@ -25,7 +25,7 @@ export function sortStudents(
   students: Array<Student>,
   sortBy: SortType,
   order: SortOrder,
-): Student[] {
+): Array<Student> {
   const studentsCopy: Array<Student> = [...students];
 
   return studentsCopy.sort((a, b) => {
@@ -48,7 +48,7 @@ export function sortStudents(
           : getAverageGrade(b.grades) - getAverageGrade(a.grades);
 
       default:
-        throw new Error('');
+        throw new Error(`Oppps... ${sortBy} is not valid SortType!`);
     }
   });
 }
