@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function getAverageGrade(person: Student): number {
+export function getAverageMark(person: Student): number {
   return person.grades.reduce((sum, mark) => (
     sum + mark), 0) / person.grades.length;
 }
@@ -29,20 +29,20 @@ export function sortStudents(
 ): Student[] {
   return [...students].sort((a, b) => {
     switch (sortBy) {
-      case ('name'):
-      case ('surname'):
+      case (SortType.Name):
+      case (SortType.Surname):
         return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
-      case ('age'):
-      case ('married'):
+      case (SortType.Age):
+      case (SortType.Married):
         return (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
           : Number(b[sortBy]) - Number(a[sortBy]);
-      case ('grades'):
+      case (SortType.AverageGrade):
         return (order === 'asc')
-          ? getAverageGrade(a) - getAverageGrade(b)
-          : getAverageGrade(b) - getAverageGrade(a);
+          ? getAverageMark(a) - getAverageMark(b)
+          : getAverageMark(b) - getAverageMark(a);
       default:
         throw Error('There is no such property. Lets try another :)');
     }
