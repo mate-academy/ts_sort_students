@@ -32,7 +32,7 @@ export function sortStudents(
   switch (sortBy) {
     case ('name'):
     case ('surname'):
-      return studentsCopy.sort((a: Student, b: Student): number => (
+      return studentsCopy.sort((a, b) => (
         (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy])
@@ -40,14 +40,14 @@ export function sortStudents(
 
     case ('age'):
     case ('married'):
-      return studentsCopy.sort((a:Student, b: Student):number => (
+      return studentsCopy.sort((a, b) => (
         (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
           : Number(b[sortBy]) - Number(a[sortBy])
       ));
 
     case ('grades'):
-      return studentsCopy.sort((a: Student, b: Student): number => (
+      return studentsCopy.sort((a, b) => (
         (order === 'asc')
           ? getAverageGrade(a) - getAverageGrade(b)
           : getAverageGrade(b) - getAverageGrade(a)
