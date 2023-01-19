@@ -17,8 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getMiddleValue(people: number[]): number {
-  return people.reduce((sum, item) => sum + item, 0) / people.length;
+function getAvarageGrades(marks: number[]): number {
+  return marks.reduce((sum, item) => sum + item, 0) / marks.length;
 }
 
 export function sortStudents(
@@ -33,15 +33,18 @@ export function sortStudents(
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
+
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
+
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getMiddleValue(a[sortBy]) - getMiddleValue(b[sortBy])
-          : getMiddleValue(b[sortBy]) - getMiddleValue(a[sortBy]);
+          ? getAvarageGrades(a[sortBy]) - getAvarageGrades(b[sortBy])
+          : getAvarageGrades(b[sortBy]) - getAvarageGrades(a[sortBy]);
+
       default:
         throw new Error('Invalid type data');
     }
