@@ -34,20 +34,16 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Married:
       case SortType.Age:
-        if (order === 'desc') {
-          return +b[sortBy] - +a[sortBy];
-        }
-
-        return +a[sortBy] - +b[sortBy];
+        return order === 'desc'
+          ? +b[sortBy] - +a[sortBy]
+          : +a[sortBy] - +b[sortBy];
 
       case SortType.AverageGrade:
-        if (order === 'desc') {
-          return calculateAverageGrades(b[sortBy])
-          - calculateAverageGrades(a[sortBy]);
-        }
-
-        return calculateAverageGrades(a[sortBy])
-        - calculateAverageGrades(b[sortBy]);
+        return order === 'desc'
+          ? calculateAverageGrades(b[sortBy])
+            - calculateAverageGrades(a[sortBy])
+          : calculateAverageGrades(a[sortBy])
+            - calculateAverageGrades(b[sortBy]);
 
       case SortType.Name:
       case SortType.Surname:
