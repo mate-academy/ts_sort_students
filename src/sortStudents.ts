@@ -17,12 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const getAver = (marks:number[]): number => {
-  const averageMark:number = marks
-    .reduce((prev: number, curr: number): number => prev + curr, 0)
-    / marks.length;
-
-  return averageMark;
+const getAvaregeGrades = (marks:number[]): number => {
+  return marks
+    .reduce((acc, curr): number => acc + curr, 0)
+  / marks.length;
 };
 
 export function sortStudents(
@@ -46,8 +44,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAver(a[sortBy]) - getAver(b[sortBy])
-          : getAver(b[sortBy]) - getAver(a[sortBy]);
+          ? getAvaregeGrades(a[sortBy]) - getAvaregeGrades(b[sortBy])
+          : getAvaregeGrades(b[sortBy]) - getAvaregeGrades(a[sortBy]);
 
       default: throw Error('Invalid input data');
     }
