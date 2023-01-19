@@ -36,13 +36,6 @@ export function sortStudents(students: Student[], sortBy: SortType,
       break;
 
     case SortType.Age:
-      copyStudents.sort((a, b) => {
-        return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
-      break;
-
     case SortType.Married:
       copyStudents.sort((a, b) => {
         return order === 'asc'
