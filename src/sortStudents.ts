@@ -47,7 +47,7 @@ export function sortStudents(
           : getAvarageGrade(student2.grades) - getAvarageGrade(student1.grades);
 
       default:
-        throw new Error('Unexpected sort type');
+        throw new Error('Something wrong with arguments');
     }
   });
 }
