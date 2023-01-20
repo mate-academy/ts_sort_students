@@ -18,35 +18,41 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function stringSort(a: string, b: string, order: SortOrder) :number {
+  return order === 'asc'
+    ? a.localeCompare(b)
+    : b.localeCompare(a);
+}
+
+function numberSort(a: number, b: number, order: SortOrder) :number {
+  return order === 'asc'
+    ? a - b
+    : b - a;
+}
+
+function gradeAverage(a: number[]): number {
+  return a.reduce((x, y) => x + y, 0) / a.length;
+}
+
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      }
-
-      return [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return [...students]
+        .sort((a, b) => stringSort(a[sortBy], b[sortBy], order));
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        return [...students]
-          .sort((a, b) => (a[sortBy].reduce((x, y) => x + y, 0)
-          / a[sortBy].length)
-          - (b[sortBy].reduce((x, y) => x + y, 0) / b[sortBy].length));
-      }
-
       return [...students]
-        .sort((a, b) => (b[sortBy].reduce((x, y) => x + y, 0)
-        / b[sortBy].length)
-        - (a[sortBy].reduce((x, y) => x + y, 0) / a[sortBy].length));
+        .sort((a, b) => numberSort(gradeAverage(a[sortBy]),
+          gradeAverage(b[sortBy]), order));
+
+    case SortType.Married:
+    case SortType.Age:
+      return [...students]
+        .sort((a, b) => numberSort(+a[sortBy], +b[sortBy], order));
 
     default:
-      if (order === 'asc') {
-        return [...students].sort((a, b) => +a[sortBy] - +b[sortBy]);
-      }
-
-      return [...students].sort((a, b) => +b[sortBy] - +a[sortBy]);
+      throw new Error('Error: invalid data');
   }
 }
