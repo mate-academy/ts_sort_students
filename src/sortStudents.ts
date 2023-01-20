@@ -30,13 +30,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case 'age':
-      res = [...students].sort((a: Student, b: Student): number => {
-        return order === 'desc'
-          ? b[sortBy] - a[sortBy]
-          : a[sortBy] - b[sortBy];
-      });
-      break;
-
     case 'married':
       res = [...students].sort((a: Student, b: Student): number => {
         return order === 'desc'
@@ -56,63 +49,18 @@ export function sortStudents(
 
     case 'grades':
       res = [...students].sort((a: Student, b: Student): number => {
+        function calc(arr: number[]): number {
+          return arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
+        }
+
         return order === 'desc'
-          ? b[sortBy].reduce((acc, cur) => acc + cur) / b[sortBy].length
-            - a[sortBy].reduce((acc, cur) => acc + cur) / a[sortBy].length
-          : a[sortBy].reduce((acc, cur) => acc + cur) / a[sortBy].length
-            - b[sortBy].reduce((acc, cur) => acc + cur) / b[sortBy].length;
+          ? calc(b[sortBy]) - calc(a[sortBy])
+          : calc(a[sortBy]) - calc(b[sortBy]);
       });
       break;
-
     default:
       throw new Error('There is an error!');
   }
 
-  /*
-
-  if (sortBy === 'age') {
-    res = [...students].sort((a: Student, b: Student): number => {
-      if (order === 'desc') {
-        return b[sortBy] - a[sortBy];
-      }
-
-      return a[sortBy] - b[sortBy];
-    });
-  }
-
-  if (sortBy === 'married') {
-    res = [...students].sort((a: Student, b: Student) => {
-      if (order === 'desc') {
-        return Number(b[sortBy]) - Number(a[sortBy]);
-      }
-
-      return Number(a[sortBy]) - Number(b[sortBy]);
-    });
-  }
-
-  if (sortBy === 'name' || sortBy === 'surname') {
-    res = [...students].sort((a: Student, b: Student): number => {
-      if (order === 'desc') {
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
-
-      return a[sortBy].localeCompare(b[sortBy]);
-    });
-  }
-
-  if (sortBy === 'grades') {
-    res = [...students].sort((a: Student, b: Student): number => {
-      if (order === 'desc') {
-        return b[sortBy]
-          .reduce((acc, cur) => acc + cur) / b[sortBy].length
-        - a[sortBy].reduce((acc, cur) => acc + cur) / a[sortBy].length;
-      }
-
-      return a[sortBy]
-        .reduce((acc, cur) => acc + cur) / a[sortBy].length
-      - b[sortBy].reduce((acc, cur) => acc + cur) / b[sortBy].length;
-    });
-  }
-*/
   return res;
 }
