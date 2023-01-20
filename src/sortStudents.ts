@@ -38,10 +38,6 @@ export function sortStudents(
         : studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
 
     case SortType.Age:
-      return order === 'desc'
-        ? studentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy])
-        : studentsCopy.sort((a, b) => +a[sortBy] - +b[sortBy]);
-
     case SortType.Married:
       return order === 'desc'
         ? studentsCopy.sort((a, b) => +b[sortBy] - +a[sortBy])
