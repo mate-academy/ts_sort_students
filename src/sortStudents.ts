@@ -28,27 +28,26 @@ export function sortStudents(
   sortBy:SortType,
   order:SortOrder,
 ):Student[] {
-  const copyStudents = [...students];
-
-  copyStudents.sort((a, b) => {
+  return [...students].sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
+
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
+
       case SortType.AverageGrade:
         return order === 'asc'
           ? countAvaregeGrade(a.grades) - countAvaregeGrade(b.grades)
           : countAvaregeGrade(b.grades) - countAvaregeGrade(a.grades);
-      default: throw Error();
+
+      default: throw Error('not valid input');
     }
   });
-
-  return copyStudents;
 }
