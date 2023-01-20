@@ -42,7 +42,7 @@ export function sortStudents(
     case SortType.Surname:
       newArr = (order === 'asc')
         ? newArr.sort((a, b) => (a[sortBy]).localeCompare(b[sortBy]))
-        : newArr.sort((a, b) => (a[sortBy]).localeCompare(b[sortBy])).reverse();
+        : newArr.sort((a, b) => (b[sortBy]).localeCompare(a[sortBy]));
       break;
 
     case SortType.Age:
