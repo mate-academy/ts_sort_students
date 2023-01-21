@@ -16,7 +16,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(grades: number[]) : number {
+function getAverageGrade(grades: number[]) : number {
   return grades.reduce((a: number, b: number) => a + b, 0) / grades.length;
 }
 
@@ -25,12 +25,12 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStudent: Student[] = [...students];
+  const copyOfStudents: Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copyStudent.sort((a, b) => {
+      copyOfStudents.sort((a, b) => {
         return (order === 'asc')
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
@@ -38,7 +38,7 @@ export function sortStudents(
       break;
 
     case SortType.Age:
-      copyStudent.sort((a, b) => {
+      copyOfStudents.sort((a, b) => {
         return (order === 'asc')
           ? a[sortBy] - b[sortBy]
           : b[sortBy] - a[sortBy];
@@ -46,7 +46,7 @@ export function sortStudents(
       break;
 
     case SortType.Married:
-      copyStudent.sort((a, b) => {
+      copyOfStudents.sort((a, b) => {
         return (order === 'asc')
           ? Number(a[sortBy]) - Number(b[sortBy])
           : Number(b[sortBy]) - Number(a[sortBy]);
@@ -54,16 +54,16 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-
-      copyStudent.sort((a, b) => {
+      copyOfStudents.sort((a, b) => {
         return (order === 'asc')
-          ? averageGrade(a[sortBy]) - averageGrade(b[sortBy])
-          : averageGrade(b[sortBy]) - averageGrade(a[sortBy]);
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
       });
       break;
 
     default:
+      break;
   }
 
-  return copyStudent;
+  return copyOfStudents;
 }
