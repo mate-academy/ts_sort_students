@@ -56,8 +56,6 @@ export function sortStudents(
       ));
 
     default:
-      break;
+      throw new Error('False parameters!');
   }
-
-  return newStudents;
 }
