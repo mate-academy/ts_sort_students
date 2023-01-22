@@ -22,7 +22,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  function getAverageGerage(student): number {
+  function getAverageGerage(student: Student): number {
     return student.grades.reduce(
       (previous: number, current: number) => previous + current, 0,
     )
@@ -32,29 +32,27 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-
-      return (order === 'asc')
-        ? [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return [...students].sort((a, b) => (
+        order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy])
+      ));
 
     case SortType.Age:
     case SortType.Married:
 
-      return (order === 'asc')
-        ? [...students].sort((a, b) => +a[sortBy] - +b[sortBy])
-        : [...students].sort((a, b) => +b[sortBy] - +a[sortBy]);
+      return [...students].sort((a, b) => (
+        order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy]
+      ));
 
     case SortType.AverageGrade:
-
-      return (order === 'asc')
-        ? [...students].sort(
-          (a, b) => getAverageGerage(a) - getAverageGerage(b),
-        )
-
-        : [...students].sort(
-          (a, b) => getAverageGerage(b) - getAverageGerage(a),
-        );
-
+      return [...students].sort((a, b) => (
+        order === 'asc'
+          ? getAverageGerage(a) - getAverageGerage(b)
+          : getAverageGerage(b) - getAverageGerage(a)
+      ));
     default:
       throw Error('Not valid data');
   }
