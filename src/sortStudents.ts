@@ -35,15 +35,19 @@ export function sortStudents(
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
 
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+
       case SortType.AverageGrade:
         return order === 'asc'
           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
 
       default:
-        return order === 'asc'
-          ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy]);
+        throw new Error('Incorrect arguments!');
     }
   });
 }
