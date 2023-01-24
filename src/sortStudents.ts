@@ -17,12 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const getAver = (marks:number[]): number => {
-  const averageMark:number = marks
+const getAverage = (marks:number[]): number => {
+  return marks
     .reduce((prev: number, curr: number): number => prev + curr, 0)
     / marks.length;
-
-  return averageMark;
 };
 
 export function sortStudents(
@@ -40,8 +38,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAver(a[sortBy]) - getAver(b[sortBy])
-          : getAver(b[sortBy]) - getAver(a[sortBy]);
+          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
+          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
 
       case SortType.Married:
       case SortType.Age:
