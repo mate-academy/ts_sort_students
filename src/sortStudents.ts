@@ -18,37 +18,52 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-const getAverage = (marks:number[]): number => {
-  const averageMark:number = marks
-    .reduce((prevNum: number, nextNum: number): number => prevNum + nextNum, 0)
+const getAverageGrades = (marks:number[]): number => {
+  return marks
+    .reduce((acc, curr) => acc + curr, 0)
     / marks.length;
-
-  return averageMark;
 };
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Student[] {
-  return [...students].sort((a, b) => {
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      case SortType.Age:
-      case SortType.Married:
-        return order === 'asc'
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
+):
+  Student[] {
+  const studentsCopy: Student[] = [...students];
 
-      case SortType.AverageGrade:
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsCopy.sort((prevStudent, currStudent) => {
         return order === 'asc'
-          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
-          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
-      default: throw Error('Parameters are not correct');
-    }
-  });
+          ? prevStudent[sortBy].localeCompare(currStudent[sortBy])
+          : currStudent[sortBy].localeCompare(prevStudent[sortBy]);
+      });
+      break;
+
+    case SortType.Age:
+    case SortType.Married:
+      studentsCopy.sort((prevStudent, currStudent) => {
+        return order === 'asc'
+          ? Number(prevStudent[sortBy]) - Number(currStudent[sortBy])
+          : Number(currStudent[sortBy]) - Number(prevStudent[sortBy]);
+      });
+      break;
+
+    case SortType.AverageGrade:
+      studentsCopy.sort((prevStudent, currStudent) => {
+        return order === 'asc'
+          ? getAverageGrades(prevStudent[sortBy])
+              - getAverageGrades(currStudent[sortBy])
+          : getAverageGrades(currStudent[sortBy])
+              - getAverageGrades(prevStudent[sortBy]);
+      });
+      break;
+
+    default:
+      throw new Error('Invalid sort type');
+  }
+
+  return studentsCopy;
 }
