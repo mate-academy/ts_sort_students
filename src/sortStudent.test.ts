@@ -146,12 +146,12 @@ describe('Function \'sortStudents\'', () => {
     expect(sortedData)
       .toEqual([
         'Jessica Buxton 26',
-        'Pamela Casillas 24',
         'Diana Dorsey 24',
+        'Pamela Casillas 24',
         'Christina Branscome 23',
-        'Dale Gandy 23',
-        'Richard Hall 23',
         'Douglas Paez 23',
+        'Richard Hall 23',
+        'Dale Gandy 23',
         'Lillian Quinn 23',
         'Willie Barrera 22',
         'Glenn Thompson 22',
@@ -164,15 +164,15 @@ describe('Function \'sortStudents\'', () => {
 
     expect(sortedData)
       .toEqual([
-        'Jessica Buxton 26 married',
         'Christina Branscome 23 married',
         'Douglas Paez 23 married',
-        'Pamela Casillas 24',
+        'Jessica Buxton 26 married',
         'Diana Dorsey 24',
-        'Dale Gandy 23',
-        'Richard Hall 23',
-        'Lillian Quinn 23',
         'Willie Barrera 22',
+        'Richard Hall 23',
+        'Dale Gandy 23',
+        'Lillian Quinn 23',
+        'Pamela Casillas 24',
         'Glenn Thompson 22',
       ]);
   });

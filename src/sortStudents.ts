@@ -27,8 +27,10 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
+  const copyArray = JSON.parse(JSON.stringify(students));
+
   if (sortBy === 'name' || sortBy === 'surname') {
-    return students.sort((a: Student, b: Student): number => {
+    return copyArray.sort((a: Student, b: Student): number => {
       if (order === 'asc') {
         return a[sortBy].localeCompare(b[sortBy]);
       }
@@ -38,7 +40,7 @@ export function sortStudents(
   }
 
   if (sortBy === 'age') {
-    return students.sort((a: Student, b: Student): number => {
+    return copyArray.sort((a: Student, b: Student): number => {
       if (order === 'asc') {
         return a[sortBy] - b[sortBy];
       }
@@ -48,7 +50,7 @@ export function sortStudents(
   }
 
   if (sortBy === 'married') {
-    return students.sort((a: Student, b: Student): number => {
+    return copyArray.sort((a: Student, b: Student): number => {
       if (order === 'asc') {
         return Number(a[sortBy]) - Number(b[sortBy]);
       }
@@ -58,7 +60,7 @@ export function sortStudents(
   }
 
   if (sortBy === 'grades') {
-    return students.sort((a: Student, b: Student): number => {
+    return copyArray.sort((a: Student, b: Student): number => {
       if (order === 'asc') {
         return returnAverageCount(a[sortBy]) - returnAverageCount(b[sortBy]);
       }
