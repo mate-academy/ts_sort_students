@@ -44,8 +44,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverageGrade(a.grades) - getAverageGrade(b.grades)
-          : getAverageGrade(b.grades) - getAverageGrade(a.grades);
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
 
       default:
         throw new Error(`Oppps... ${sortBy} is not valid SortType!`);
