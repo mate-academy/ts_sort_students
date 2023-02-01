@@ -8,73 +8,54 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((sum, x) => sum + x, 0) / grades.length;
+}
 
 export function sortStudents(students: Student[],
   sortBy: SortType,
   order: SortOrder): object[] {
   const copyOfPeople = [...students];
 
-  if (sortBy === SortType.Name && order === 'asc') {
-    copyOfPeople.sort((a, b) => a.name.localeCompare(b.name));
+  let result: object[];
+
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      result = order === 'asc'
+        ? copyOfPeople.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : copyOfPeople.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      break;
+    case SortType.Age:
+      result = order === 'asc'
+        ? copyOfPeople.sort((a, b) => a[sortBy] - b[sortBy])
+        : copyOfPeople.sort((a, b) => b[sortBy] - a[sortBy]);
+      break;
+    case SortType.AverageGrade:
+      result = order === 'asc'
+        ? copyOfPeople.sort((a, b) => getAverageGrade(a[sortBy])
+        - getAverageGrade(b[sortBy]))
+        : copyOfPeople.sort((a, b) => getAverageGrade(b[sortBy])
+        - getAverageGrade(a[sortBy]));
+      break;
+    case SortType.Married:
+      result = order === 'asc'
+        ? copyOfPeople.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+        : copyOfPeople.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+
+      break;
+    default:
+      return [];
   }
 
-  if (sortBy === SortType.Name && order === 'desc') {
-    copyOfPeople.sort((a, b) => b.name.localeCompare(a.name));
-  }
-
-  if (sortBy === SortType.Surname && order === 'asc') {
-    copyOfPeople.sort((a, b) => a.surname.localeCompare(b.surname));
-  }
-
-  if (sortBy === SortType.Surname && order === 'desc') {
-    copyOfPeople.sort((a, b) => b.surname.localeCompare(a.surname));
-  }
-
-  if (sortBy === SortType.Age && order === 'asc') {
-    copyOfPeople.sort((a, b) => a.age - b.age);
-  }
-
-  if (sortBy === SortType.Age && order === 'desc') {
-    copyOfPeople.sort((a, b) => b.age - a.age);
-  }
-
-  if (sortBy === SortType.Married && order === 'asc') {
-    copyOfPeople.sort((a, b) => Number(a.married) - Number(b.married));
-  }
-
-  if (sortBy === SortType.Married && order === 'desc') {
-    copyOfPeople.sort((a, b) => Number(b.married) - Number(a.married));
-  }
-
-  if (sortBy === SortType.AverageGrade && order === 'asc') {
-    copyOfPeople.sort((a, b) => {
-      const firstGrades
-      = a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length;
-      const secondGrades
-      = b.grades.reduce((sum, x) => sum + x, 0) / b.grades.length;
-
-      return firstGrades - secondGrades;
-    });
-  }
-
-  if (sortBy === SortType.AverageGrade && order === 'desc') {
-    copyOfPeople.sort((a, b) => {
-      const firstGrades
-        = a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length;
-      const secondGrades
-        = b.grades.reduce((sum, x) => sum + x, 0) / b.grades.length;
-
-      return secondGrades - firstGrades;
-    });
-  }
-
-  return copyOfPeople;
+  return result;
 }
