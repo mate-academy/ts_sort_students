@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -24,25 +24,21 @@ export function sortStudents(
   return [...students].sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? studentA.name.localeCompare(studentB.name)
-          : studentB.name.localeCompare(studentA.name);
-
       case SortType.Surname:
         return order === 'asc'
-          ? studentA.surname.localeCompare(studentB.surname)
-          : studentB.surname.localeCompare(studentA.surname);
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
+
       case SortType.Age:
         return order === 'asc'
-          ? studentA.age - studentB.age
-          : studentB.age - studentA.age;
+          ? studentA[sortBy] - studentB[sortBy]
+          : studentB[sortBy] - studentA[sortBy];
       case SortType.Married:
         return order === 'asc'
-          ? Number(studentA.married) - Number(studentB.married)
-          : Number(studentB.married) - Number(studentA.married);
+          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
-      case SortType.AverageGrade:
-      {
+      case SortType.AverageGrade: {
         const callback: (
           acc: number,
           grade: number,
@@ -53,10 +49,10 @@ export function sortStudents(
         };
 
         return order === 'asc'
-          ? studentA.grades.reduce(callback, 0)
-          - studentB.grades.reduce(callback, 0)
-          : studentB.grades.reduce(callback, 0)
-          - studentA.grades.reduce(callback, 0);
+          ? studentA[sortBy].reduce(callback, 0)
+          - studentB[sortBy].reduce(callback, 0)
+          : studentB[sortBy].reduce(callback, 0)
+          - studentA[sortBy].reduce(callback, 0);
       }
       default:
         return 0;
