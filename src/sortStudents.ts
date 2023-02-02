@@ -39,10 +39,10 @@ export function sortStudents(
           : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
       case SortType.AverageGrade: {
-        const averageGradeA: number = studentA.grades.reduce(
+        const averageGradeA: number = studentA[sortBy].reduce(
           (acc: number, grade: number) => acc + grade,
         ) / studentA.grades.length;
-        const averageGradeB: number = studentB.grades.reduce(
+        const averageGradeB: number = studentB[sortBy].reduce(
           (acc: number, grade: number) => acc + grade,
         ) / studentB.grades.length;
 
