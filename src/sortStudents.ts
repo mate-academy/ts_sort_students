@@ -35,11 +35,11 @@ export function sortStudents(students: Student[],
         ? copyOfPeople.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
         : copyOfPeople.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
       break;
-    case SortType.Age:
-      result = order === 'asc'
-        ? copyOfPeople.sort((a, b) => a[sortBy] - b[sortBy])
-        : copyOfPeople.sort((a, b) => b[sortBy] - a[sortBy]);
-      break;
+    // case SortType.Age:
+      // result = order === 'asc'
+      // ? copyOfPeople.sort((a, b) => a[sortBy] - b[sortBy])
+      // : copyOfPeople.sort((a, b) => b[sortBy] - a[sortBy]);
+    // break;
     case SortType.AverageGrade:
       result = order === 'asc'
         ? copyOfPeople.sort((a, b) => getAverageGrade(a[sortBy])
@@ -48,6 +48,7 @@ export function sortStudents(students: Student[],
         - getAverageGrade(a[sortBy]));
       break;
     case SortType.Married:
+    case SortType.Age:
       result = order === 'asc'
         ? copyOfPeople.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
         : copyOfPeople.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
