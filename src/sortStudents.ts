@@ -25,82 +25,50 @@ function findAverageGrade(grades: number[]): number {
   return average;
 }
 
+function compareNumbers(numA: number, numB: number, order: SortOrder): number {
+  return (order === 'asc' ? numA - numB : numB - numA);
+}
+
+function compareStrings(strA: string, strB: string, order: SortOrder): number {
+  let stringA: string;
+  let stringB: string;
+
+  if (order === 'asc') {
+    stringA = strA;
+    stringB = strB;
+  } else {
+    stringA = strB;
+    stringB = strA;
+  }
+
+  return stringA.localeCompare(stringB);
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  let resultSt: Student[] = [...students];
+  const resultSt: Student[] = [...students];
 
-  switch (sortBy) {
-    case SortType.Age:
-      resultSt = [...students].sort((a: Student, b: Student) => {
-        const numA: number = a.age;
-        const numB: number = b.age;
-
-        if (order === 'asc') {
-          return numA - numB;
-        }
-
-        return numB - numA;
-      });
-      break;
-
-    case SortType.Name:
-      resultSt.sort((a: Student, b: Student) => {
-        let stringA: string;
-        let stringB: string;
-
-        if (order === 'asc') {
-          stringA = a.name;
-          stringB = b.name;
-        } else {
-          stringA = b.name;
-          stringB = a.name;
-        }
-
-        return stringA.localeCompare(stringB);
-      });
-      break;
-
-    case SortType.Surname:
-      resultSt.sort((a: Student, b: Student) => {
-        let stringA: string;
-        let stringB: string;
-
-        if (order === 'asc') {
-          stringA = a.surname;
-          stringB = b.surname;
-        } else {
-          stringA = b.surname;
-          stringB = a.surname;
-        }
-
-        return stringA.localeCompare(stringB);
-      });
-      break;
-
-    case SortType.Married:
-      resultSt.sort((a: Student, b: Student) => {
-        const numA: number = +a.married;
-        const numB: number = +b.married;
-
-        return (order === 'asc' ? numA - numB : numB - numA);
-      });
-      break;
-
-    case SortType.AverageGrade:
-      resultSt.sort((a: Student, b: Student) => {
-        const numA: number = findAverageGrade(a.grades);
-        const numB: number = findAverageGrade(b.grades);
-
-        return (order === 'asc' ? numA - numB : numB - numA);
-      });
-      break;
-
-    default:
-      break;
-  }
+  resultSt.sort((a: Student, b: Student) => {
+    switch (sortBy) {
+      case SortType.Age:
+        return compareNumbers(a.age, b.age, order);
+      case SortType.Name:
+        return compareStrings(a.name, b.name, order);
+      case SortType.Surname:
+        return compareStrings(a.surname, b.surname, order);
+      case SortType.Married:
+        return compareNumbers(+a.married, +b.married, order);
+      case SortType.AverageGrade:
+        return compareNumbers(
+          findAverageGrade(a.grades), findAverageGrade(b.grades), order,
+        );
+      default:
+        return 0;
+    }
+  });
 
   return resultSt;
 }
