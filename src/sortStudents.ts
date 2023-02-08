@@ -33,19 +33,22 @@ export function sortStudents(
     case SortType.name:
     case SortType.surname:
       return newStudArr.sort((a, b) => {
-        return order === 'asc' ? a[sortBy].localeCompare(b[sortBy])
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
       });
 
     case SortType.age:
       return newStudArr.sort((a, b) => {
-        return order === 'asc' ? a[sortBy] - b[sortBy]
+        return order === 'asc'
+          ? a[sortBy] - b[sortBy]
           : b[sortBy] - a[sortBy];
       });
 
     case SortType.avarageGrade:
       return newStudArr.sort((a, b) => {
-        return order === 'asc' ? averGrades(a[sortBy]) - averGrades(b[sortBy])
+        return order === 'asc'
+          ? averGrades(a[sortBy]) - averGrades(b[sortBy])
           : averGrades(b[sortBy]) - averGrades(a[sortBy]);
       });
 
