@@ -22,36 +22,30 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const countAverage = (x: number[]): number => {
-    return x
-      .reduce((prev, curr) => prev + curr, 0) / x.length;
+  const countAverage = (numbers: number[]): number => {
+    return numbers
+      .reduce((prev, curr) => prev + curr, 0) / numbers.length;
   };
+  const orderAsc = order === 'asc';
 
-  return [...students].sort((x, y) => {
+  return [...students].sort((prev, curr) => {
     switch (sortBy) {
       case 'married':
       case 'age':
-        if (order === 'asc') {
-          return (+x[sortBy]) - (+y[sortBy]);
-        }
-
-        return (+y[sortBy]) - (+x[sortBy]);
+        return orderAsc
+          ? (+prev[sortBy]) - (+curr[sortBy])
+          : (+curr[sortBy]) - (+prev[sortBy]);
 
       case 'name':
       case 'surname':
-        if (order === 'asc') {
-          return x[sortBy].localeCompare(y[sortBy]);
-        }
+        return orderAsc
+          ? prev[sortBy].localeCompare(curr[sortBy])
+          : curr[sortBy].localeCompare(prev[sortBy]);
 
-        return y[sortBy].localeCompare(x[sortBy]);
-
-      case 'averageGrade':
       default:
-        if (order === 'asc') {
-          return countAverage(x.grades) - countAverage(y.grades);
-        }
-
-        return countAverage(y.grades) - countAverage(x.grades);
+        return orderAsc
+          ? countAverage(prev.grades) - countAverage(curr.grades)
+          : countAverage(curr.grades) - countAverage(prev.grades);
     }
   });
 }
