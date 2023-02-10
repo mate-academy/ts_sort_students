@@ -4,7 +4,7 @@ export interface Student {
   surname: string,
   age: number,
   married: boolean,
-  grades:number[]
+  grades: number[]
 }
 
 export enum SortType {
@@ -32,30 +32,26 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        copyArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      } else {
-        copyArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-      }
+      copyArray.sort((a, b) => {
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      });
       break;
-
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        copyArray.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
-      } else {
-        copyArray.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
-      }
+      copyArray.sort((a, b) => {
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      });
       break;
-
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        copyArray.sort((a, b) => averageGrade(a.grades)
-        - averageGrade(b.grades));
-      } else {
-        copyArray.sort((a, b) => averageGrade(b.grades)
-        - averageGrade(a.grades));
-      }
+      copyArray.sort((a, b) => {
+        return order === 'asc'
+          ? averageGrade(a.grades) - averageGrade(b.grades)
+          : averageGrade(b.grades) - averageGrade(a.grades);
+      });
       break;
     default:
       return copyArray;
