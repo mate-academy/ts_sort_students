@@ -40,7 +40,7 @@ export function sortStudents(
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
-          ? +(a[sortBy]) - +(b[sortBy])
+          ? +a[sortBy] - +b[sortBy]
           : +(b[sortBy]) - +(a[sortBy]);
 
       case SortType.AverageGrade:
