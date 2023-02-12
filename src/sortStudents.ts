@@ -49,7 +49,7 @@ export function sortStudents(
           : getAvarage(b.grades) - getAvarage(a.grades);
 
       default:
-        throw Error('Enter a valid sort value.');
+        return 0;
     }
   });
 }
