@@ -27,9 +27,9 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student [] {
-  const copy = [...students];
+  const copyOfStudents = [...students];
 
-  return copy.sort((a, b) => {
+  return copyOfStudents.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
