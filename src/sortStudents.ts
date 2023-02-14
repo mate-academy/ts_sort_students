@@ -17,37 +17,33 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function AverageNumber(array: number[]): number {
+  return array.reduce((sum, value) => sum + value, 0) / array.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((a, b) => {
-    let current = a;
-    let next = b;
-
-    if (order === 'desc') {
-      current = b;
-      next = a;
-    }
-
+  return [...students].sort((current, next) => {
     switch (sortBy) {
       case 'name':
       case 'surname':
         return current[sortBy].localeCompare(next[sortBy]);
 
       case 'age':
-        return current[sortBy] - next[sortBy];
+        return order === 'asc' ? current[sortBy] - next[sortBy]
+          : next[sortBy] - current[sortBy];
 
       case 'married':
-        return +current[sortBy] - +next[sortBy];
+        return order === 'asc' ? +current[sortBy] - +next[sortBy]
+          : +next[sortBy] - +current[sortBy];
 
       case 'grades':
-        return (current[sortBy].reduce((sum, value) => sum + value, 0)
-        / current[sortBy].length)
-
-        - (next[sortBy].reduce((sum, value) => sum + value, 0)
-        / next[sortBy].length);
+        return order === 'asc'
+          ? AverageNumber(current[sortBy]) - AverageNumber(next[sortBy])
+          : AverageNumber(next[sortBy]) - AverageNumber(current[sortBy]);
 
       default:
         throw Error('error');
