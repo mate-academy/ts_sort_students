@@ -22,8 +22,7 @@ const average: number = (grades: number[]) => grades.reduce((a, b) => a + b, 0)
 export const sortStudents = (
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] => [...students].sort((a, b) => {
-  const field = sortBy === SortType.AverageGrade
-    ? 'grades' : sortBy.toLowerCase();
+  const field = sortBy === SortType.AverageGrade ? 'grades' : sortBy;
   const valueA = field === 'grades' ? average(a.grades) : a[field];
   const valueB = field === 'grades' ? average(b.grades) : b[field];
 
