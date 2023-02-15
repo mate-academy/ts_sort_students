@@ -11,20 +11,19 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-const average: number = (grades: number[]) => grades.reduce((a, b) => a + b, 0)
-  / grades.length;
+const getAverage: number = (grades: number[]) => grades
+  .reduce((a, b) => a + b, 0) / grades.length;
 
 export const sortStudents = (
   students: Student[], sortBy: SortType, order: SortOrder,
-): Student[] => [...students].sort((a, b) => {
-  const field = sortBy === SortType.AverageGrade ? 'grades' : sortBy;
-  const valueA = field === 'grades' ? average(a.grades) : a[field];
-  const valueB = field === 'grades' ? average(b.grades) : b[field];
+): Student[] => [...students].sort((prev, next) => {
+  const valueA = sortBy === 'grades' ? getAverage(prev.grades) : prev[sortBy];
+  const valueB = sortBy === 'grades' ? getAverage(next.grades) : next[sortBy];
 
   if (valueA > valueB) {
     return order === 'asc' ? 1 : -1;
