@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -12,63 +11,41 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+export function average(arg: number[]): number {
+  return arg.reduce((acc, num) => (acc + num), 0) / arg.length;
+}
+
 export function sortStudents(
-  students: Student,
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStudents = JSON.parse(JSON.stringify(students));
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'desc'
+          ? b[sortBy].localeCompare(a[sortBy])
+          : a[sortBy].localeCompare(b[sortBy]);
 
-  switch (sortBy) {
-    case SortType.Name:
-      return order === 'asc'
-        ? copyStudents
-          .sort((a: Student, b: Student) => a.name.localeCompare(b.name))
-        : copyStudents
-          .sort((a: Student, b: Student) => b.name.localeCompare(a.name));
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'desc'
+          ? +b[sortBy] - +a[sortBy]
+          : +a[sortBy] - +b[sortBy];
 
-    case SortType.Age:
-      return order === 'asc'
-        ? copyStudents
-          .sort((a: Student, b: Student) => a[sortBy] - b[sortBy])
-        : copyStudents
-          .sort((a: Student, b: Student) => b[sortBy] - a[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'desc'
+          ? average(b[sortBy]) - average(a[sortBy])
+          : average(a[sortBy]) - average(b[sortBy]);
 
-    case SortType.Surname:
-      return order === 'asc'
-        ? copyStudents
-          .sort((a: Student, b: Student) => a.surname.localeCompare(b.surname))
-        : copyStudents
-          .sort((a: Student, b: Student) => b.surname.localeCompare(a.surname));
-
-    case SortType.Married:
-      return order === 'asc'
-        ? copyStudents
-          .sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy])
-        : copyStudents
-          .sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
-
-    case SortType.AverageGrade:
-      return copyStudents.sort((a: Student, b: Student) => {
-        const aUser = a.grades.reduce((acc: number, num: number) => {
-          return acc + num;
-        }, 0) / a.grades.length;
-        const bUser = b.grades.reduce((acc: number, num: number) => {
-          return acc + num;
-        }, 0) / b.grades.length;
-
-        return order === 'asc'
-          ? aUser - bUser
-          : bUser - aUser;
-      });
-
-    default:
-      return copyStudents;
-  }
+      default:
+        throw new Error('Error');
+    }
+  });
 }
