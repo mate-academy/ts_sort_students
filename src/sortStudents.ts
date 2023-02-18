@@ -41,6 +41,7 @@ export function sortStudents(
             ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
             : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
 
+        case SortType.AverageGrade:
         default:
           return order === 'asc'
             ? getAverageGrade(firstStudent) - getAverageGrade(secondStudent)
