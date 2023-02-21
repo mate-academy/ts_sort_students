@@ -43,10 +43,13 @@ export function sortStudents(
             ? Number(a[sortBy]) - Number(b[sortBy])
             : Number(b[sortBy]) - Number(a[sortBy]);
 
-        default:
+        case SortType.AverageGrade:
           return order === 'asc'
             ? getAverageGrade(a) - getAverageGrade(b)
             : getAverageGrade(b) - getAverageGrade(a);
+
+        default:
+          throw new Error(`Invalid sort type: ${sortBy}`);
       }
     });
 }
