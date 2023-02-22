@@ -22,7 +22,7 @@ export type SortOrder = 'desc' | 'asc';
 
 export function
 sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
-  : Student[] |void {
+  : Student[] {
   const newobj = JSON.parse(JSON.stringify(students));
 
   function Sum(array: number[]): number {
