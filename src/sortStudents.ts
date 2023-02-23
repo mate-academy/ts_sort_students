@@ -15,13 +15,13 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
+export type SortOrder = 'asc' | 'desc';
+
 function getAverage(grades: number[]): number {
   return grades.reduce((acc, item) => {
     return acc + item;
   }, 0) / grades.length;
 }
-
-export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
   students: Student[],
@@ -30,35 +30,40 @@ export function sortStudents(
 ): Student[] {
   const copyStudents: Student[] = [...students];
 
-  if (sortBy === 'name' || sortBy === 'surname') {
-    copyStudents.sort((a, b) => {
-      return order === 'asc'
-        ? a[sortBy].localeCompare(b[sortBy])
-        : b[sortBy].localeCompare(a[sortBy]);
-    });
-  }
+  switch (sortBy) {
+    case 'name':
+    case 'surname':
+      copyStudents.sort((a, b) => {
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      });
+      break;
 
-  if (sortBy === 'age') {
-    copyStudents.sort((a, b) => {
-      return order === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-    });
-  }
+    case 'age':
+      copyStudents.sort((a, b) => {
+        return order === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+      });
+      break;
 
-  if (sortBy === 'married') {
-    copyStudents.sort((a, b) => {
-      return order === 'asc'
-        ? +a[sortBy] - +b[sortBy]
-        : +b[sortBy] - +a[sortBy];
-    });
-  }
+    case 'married':
+      copyStudents.sort((a, b) => {
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+      });
+      break;
 
-  if (sortBy === 'grades') {
-    copyStudents.sort((a, b) => {
-      const averageA: number = getAverage(a[sortBy]);
-      const averageB: number = getAverage(b[sortBy]);
+    case 'grades':
+      copyStudents.sort((a, b) => {
+        const averageA: number = getAverage(a[sortBy]);
+        const averageB: number = getAverage(b[sortBy]);
 
-      return order === 'asc' ? averageA - averageB : averageB - averageA;
-    });
+        return order === 'asc' ? averageA - averageB : averageB - averageA;
+      });
+      break;
+    default:
+      throw new Error('Your sort type is not correct!');
   }
 
   return copyStudents;
