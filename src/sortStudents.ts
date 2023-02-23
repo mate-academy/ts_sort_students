@@ -23,7 +23,7 @@ export type SortOrder = 'desc' | 'asc';
 export function
 sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
   : Student[] {
-  const newobj = JSON.parse(JSON.stringify(students));
+  const newobj = Array.from(students);
 
   function Sum(array: number[]): number {
     return array.reduce((accumulator: number, value:number) => {
