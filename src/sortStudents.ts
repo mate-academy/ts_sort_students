@@ -1,16 +1,56 @@
-
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const calcAverageGrade = ({ grades }: Student): number => (
+    grades.reduce((total, grade) => total + grade, 0) / grades.length
+  );
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  const studentsCopy: Student[] = [...students];
+  const isAscendingOrder = order === 'asc';
+
+  studentsCopy.sort((firstStudent, secondStudent): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return isAscendingOrder
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+      case SortType.AverageGrade:
+        return isAscendingOrder
+          ? calcAverageGrade(firstStudent) - calcAverageGrade(secondStudent)
+          : calcAverageGrade(secondStudent) - calcAverageGrade(firstStudent);
+      case SortType.Age:
+        return isAscendingOrder
+          ? firstStudent[sortBy] - secondStudent[sortBy]
+          : secondStudent[sortBy] - firstStudent[sortBy];
+      case SortType.Married:
+        return isAscendingOrder
+          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
+      default:
+        return 0;
+    }
+  });
+
+  return studentsCopy;
 }
