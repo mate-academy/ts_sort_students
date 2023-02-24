@@ -44,7 +44,7 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
         - Sum(a.grades) / a.grades.length);
     }
 
-    if (sortBy === SortType.Married && order === 'desc') {
+    if (sortBy === SortType.Married) {
       return newobj.sort((
         a:Student,
         b:Student,
@@ -53,11 +53,11 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
   }
 
   if (order === 'asc') {
-    if (sortBy === SortType.Age && order === 'asc') {
+    if (sortBy === SortType.Age) {
       return newobj.sort((a: Student, b: Student) => a.age - b.age);
     }
 
-    if (sortBy === SortType.AverageGrade && order === 'asc') {
+    if (sortBy === SortType.AverageGrade) {
       return newobj.sort((
         a: Student,
         b: Student,
@@ -65,12 +65,12 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
         - Sum(b.grades) / b.grades.length);
     }
 
-    if (sortBy === SortType.Name && order === 'asc') {
+    if (sortBy === SortType.Name) {
       return newobj.sort((a:Student,
         b:Student) => a.name.localeCompare(b.name));
     }
 
-    if (sortBy === SortType.Surname && order === 'asc') {
+    if (sortBy === SortType.Surname) {
       return newobj.sort((
         a:Student,
         b:Student,
