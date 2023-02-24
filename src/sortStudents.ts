@@ -22,32 +22,41 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const arr: Student[] = [...students];
+  const cloneStudent: Student[] = [...students];
 
-  return arr.sort((a: Student, b: Student): number => {
+  return cloneStudent.sort((a: Student, b: Student): number => {
     let left: Element = a[sortBy];
     let right: Element = b[sortBy];
-    const o: Element = left;
+    const cloneLeft: Element = left;
 
     if (order === 'desc') {
       left = right;
-      right = o;
+      right = cloneLeft;
     }
 
-    switch (typeof left) {
-      case 'string':
+    switch (sortBy) {
+      case 'name':
         return left.localeCompare(right);
 
-      case 'number':
+      case 'surname':
+        return left.localeCompare(right);
+
+      case 'age':
         return left - right;
 
-      case 'boolean':
+      case 'married':
         return left - right;
 
-      case 'object':
-        return left.reduce((al: number, l: number): number => al + l)
+      case 'grades':
+        return left.reduce((
+          accLeft: number,
+          currLeft: number,
+        ): number => accLeft + currLeft)
         / left.length
-        - right.reduce((ar: number, r: number): number => ar + r)
+        - right.reduce((
+          accRight: number,
+          currRight: number,
+        ): number => accRight + currRight)
         / right.length;
 
       default:
