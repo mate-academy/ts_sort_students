@@ -25,39 +25,39 @@ export function sortStudents(
   const cloneStudent: Student[] = [...students];
 
   return cloneStudent.sort((a: Student, b: Student): number => {
-    let left: Element = a[sortBy];
-    let right: Element = b[sortBy];
-    const cloneLeft: Element = left;
+    let firstStudent: Element = a[sortBy];
+    let secondStudent: Element = b[sortBy];
+    const copyFirstStudent: Element = firstStudent;
 
     if (order === 'desc') {
-      left = right;
-      right = cloneLeft;
+      firstStudent = secondStudent;
+      secondStudent = copyFirstStudent;
     }
 
     switch (sortBy) {
-      case 'name':
-        return left.localeCompare(right);
+      case SortType.Name:
+        return firstStudent.localeCompare(secondStudent);
 
-      case 'surname':
-        return left.localeCompare(right);
+      case SortType.Surname:
+        return firstStudent.localeCompare(secondStudent);
 
-      case 'age':
-        return left - right;
+      case SortType.Age:
+        return firstStudent - secondStudent;
 
-      case 'married':
-        return left - right;
+      case SortType.Married:
+        return firstStudent - secondStudent;
 
-      case 'grades':
-        return left.reduce((
-          accLeft: number,
-          currLeft: number,
-        ): number => accLeft + currLeft)
-        / left.length
-        - right.reduce((
-          accRight: number,
-          currRight: number,
-        ): number => accRight + currRight)
-        / right.length;
+      case SortType.AverageGrade:
+        return firstStudent.reduce((
+          accFirst: number,
+          currFirst: number,
+        ): number => accFirst + currFirst)
+        / firstStudent.length
+        - secondStudent.reduce((
+          accSecond: number,
+          currSecond: number,
+        ): number => accSecond + currSecond)
+        / secondStudent.length;
 
       default:
         return 0;
