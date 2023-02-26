@@ -50,6 +50,18 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
         b:Student,
       ) => Number(b.married) - Number(a.married));
     }
+
+    if (sortBy === SortType.Name) {
+      return newobj.sort((a:Student,
+        b:Student) => b.name.localeCompare(a.name));
+    }
+
+    if (sortBy === SortType.Surname) {
+      return newobj.sort((
+        a:Student,
+        b:Student,
+      ) => a.surname.localeCompare(b.surname));
+    }
   }
 
   if (order === 'asc') {
@@ -75,6 +87,13 @@ sortStudents(students: Student[], sortBy: SortType, order: SortOrder)
         a:Student,
         b:Student,
       ) => a.surname.localeCompare(b.surname));
+    }
+
+    if (sortBy === SortType.Married) {
+      return newobj.sort((
+        a:Student,
+        b:Student,
+      ) => Number(b.married) - Number(a.married));
     }
   }
 
