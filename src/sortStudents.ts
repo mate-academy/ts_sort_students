@@ -30,14 +30,10 @@ export function sortStudents(
 
     switch (sortBy) {
       case ('name'):
-        comparator = a[sortBy].localeCompare(b[sortBy]);
-        break;
       case ('surname'):
         comparator = a[sortBy].localeCompare(b[sortBy]);
         break;
       case ('age'):
-        comparator = a[sortBy] - b[sortBy];
-        break;
       case ('married'):
         comparator = +a[sortBy] - +b[sortBy];
         break;
