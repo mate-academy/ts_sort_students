@@ -39,10 +39,13 @@ export function sortStudents(
           ? +a[sortBy] - +b[sortBy]
           : +b[sortBy] - +a[sortBy];
 
-      default:
+      case SortType.AverageGrade:
         return order === 'asc'
           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
+
+      default:
+        throw new Error('Please Enter Valid Sort Value');
     }
   });
 }
