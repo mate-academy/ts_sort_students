@@ -15,8 +15,8 @@ export enum SortType {
 }
 
 export enum SortOrder {
-  Ascending,
-  Descending,
+  Ascending = 'asc',
+  Descending = 'desc',
 }
 
 function calcAverageGrade({ grades }: Student): number {
