@@ -1,16 +1,56 @@
 
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const sortedStudents = JSON.parse(JSON.stringify(students));
+  const reducer = (acc: number, curt: number): number => acc + curt;
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  sortedStudents.sort((a: Student, b: Student): number => {
+    let comparator: number = 0;
+
+    switch (sortBy) {
+      case ('name'):
+        comparator = a[sortBy].localeCompare(b[sortBy]);
+        break;
+      case ('surname'):
+        comparator = a[sortBy].localeCompare(b[sortBy]);
+        break;
+      case ('age'):
+        comparator = a[sortBy] - b[sortBy];
+        break;
+      case ('married'):
+        comparator = +a[sortBy] - +b[sortBy];
+        break;
+      case ('grades'):
+        comparator = (a[sortBy].reduce(reducer) / a[sortBy].length)
+          - (b[sortBy].reduce(reducer) / b[sortBy].length);
+        break;
+      default:
+        break;
+    }
+
+    return (order === 'asc') ? comparator : comparator * -1;
+  });
+
+  return sortedStudents;
 }
