@@ -14,7 +14,10 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  Ascending,
+  Descending,
+}
 
 function calcAverageGrade({ grades }: Student): number {
   return grades.reduce((total, grade) => total + grade, 0) / grades.length;
@@ -31,23 +34,23 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
+        return order === SortOrder.Ascending
           ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
           : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
+        return order === SortOrder.Ascending
           ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
           : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
 
       case SortType.AverageGrade:
-        return order === 'asc'
+        return order === SortOrder.Ascending
           ? calcAverageGrade(firstStudent) - calcAverageGrade(secondStudent)
           : calcAverageGrade(secondStudent) - calcAverageGrade(firstStudent);
 
       default:
-        return 0;
+        throw new Error('Unknown SortType!');
     }
   });
 }
