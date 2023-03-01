@@ -25,27 +25,27 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  switch (sortBy) {
-    case SortType.Age:
-    case SortType.Married:
-      return order === 'desc'
-        ? [...students].sort((a, b) => +b[sortBy] - +a[sortBy])
-        : [...students].sort((a, b) => +a[sortBy] - +b[sortBy]);
-    case SortType.Name:
-    case SortType.Surname:
-      return order === 'desc'
-        ? [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]))
-        : [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-    case SortType.AverageGrade:
-      return order === 'desc'
-        ? [...students].sort((a, b) => (
-          averageGrade(b[sortBy]) - averageGrade(a[sortBy])
-        ))
-        : [...students].sort((a, b) => (
-          averageGrade(a[sortBy]) - averageGrade(b[sortBy])
-        ));
+  return [...students].sort((previous: Student, next: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'desc'
+          ? next[sortBy].localeCompare(previous[sortBy])
+          : previous[sortBy].localeCompare(next[sortBy]);
 
-    default:
-      return [...students];
-  }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'desc'
+          ? +(next[sortBy]) - +(previous[sortBy])
+          : +(previous[sortBy]) - +(next[sortBy]);
+
+      case SortType.AverageGrade:
+        return order === 'desc'
+          ? averageGrade(next[sortBy]) - averageGrade(previous[sortBy])
+          : averageGrade(previous[sortBy]) - averageGrade(next[sortBy]);
+
+      default:
+        throw new Error('SortType Error');
+    }
+  });
 }
