@@ -19,7 +19,7 @@ export type SortOrder = 'asc' | 'desc';
 
 const getAvarageGrade = ({ grades }: Student): number => {
   return grades.reduce(
-    (firstMark, secondMark) => firstMark + secondMark,
+    (firstMark, secondMark) => firstMark + secondMark, 0,
   ) / grades.length;
 };
 
@@ -30,7 +30,7 @@ export function sortStudents(
 ): Student[] {
   const copyStudents = [...students];
 
-  return copyStudents.sort((currentStudent, nextStudent): number => {
+  return copyStudents.sort((currentStudent, nextStudent) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -50,7 +50,7 @@ export function sortStudents(
           : getAvarageGrade(nextStudent) - getAvarageGrade(currentStudent);
 
       default:
-        return 0;
+        throw new Error();
     }
   });
 }
