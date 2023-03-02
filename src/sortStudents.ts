@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const getAvarageGrade = ({ grades }: Student): number => {
+const getAverageGrade = ({ grades }: Student): number => {
   return grades.reduce(
     (firstMark, secondMark) => firstMark + secondMark, 0,
   ) / grades.length;
@@ -46,8 +46,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAvarageGrade(currentStudent) - getAvarageGrade(nextStudent)
-          : getAvarageGrade(nextStudent) - getAvarageGrade(currentStudent);
+          ? getAverageGrade(currentStudent) - getAverageGrade(nextStudent)
+          : getAverageGrade(nextStudent) - getAverageGrade(currentStudent);
 
       default:
         throw new Error();
