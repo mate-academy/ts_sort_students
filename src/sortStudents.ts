@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function compareMarriedHelper(order: 'asc' | 'desc'):
+function compareMarriedHelper(order: SortOrder):
 (a: Student, b: Student) => number {
   function compareMarried(a: Student, b: Student): number {
     if (a.married === b.married) {
