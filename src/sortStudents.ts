@@ -28,7 +28,7 @@ function comparator(s1: Student, s2: Student,
       return order === 'asc'
         ? (s1[sortBy] as number) - (s2[sortBy] as number)
         : (s2[sortBy] as number) - (s1[sortBy] as number);
-        
+
     case 'boolean': {
       const s1Bool = s1[sortBy] as boolean;
       const s2Bool = s2[sortBy] as boolean;
