@@ -28,6 +28,21 @@ function comparator(s1: Student, s2: Student,
       return order === 'asc'
         ? (s1[sortBy] as number) - (s2[sortBy] as number)
         : (s2[sortBy] as number) - (s1[sortBy] as number);
+        
+    case 'boolean': {
+      const s1Bool = s1[sortBy] as boolean;
+      const s2Bool = s2[sortBy] as boolean;
+
+      if (s1Bool === s2Bool) {
+        return 0;
+      }
+
+      const ascRes = s1Bool ? 1 : -1;
+      const descRes = s2Bool ? 1 : -1;
+
+      return order === 'asc' ? ascRes : descRes;
+    }
+
     case 'object': {
       const s1Avg = (s1[sortBy] as number[])
         .reduce((acc, curr) => acc + curr, 0) / (s1[sortBy] as number[])
@@ -39,11 +54,11 @@ function comparator(s1: Student, s2: Student,
       return order === 'asc' ? s1Avg - s2Avg : s2Avg - s1Avg;
     }
     default: return 0;
-}
+  }
 }
 
 export function sortStudents(students: Student[], sortBy: SortType,
-order: SortOrder): Student[] {
-return [...students]
-.sort((s1: Student, s2: Student) => comparator(s1, s2, sortBy, order));
+  order: SortOrder): Student[] {
+  return [...students]
+    .sort((s1: Student, s2: Student) => comparator(s1, s2, sortBy, order));
 }
