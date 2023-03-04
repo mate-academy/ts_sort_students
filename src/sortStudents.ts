@@ -17,6 +17,25 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function compareMarriedHelper(order: 'asc' | 'desc'):
+(a: Student, b: Student) => number {
+  function compareMarried(a: Student, b: Student): number {
+    if (a.married === b.married) {
+      return 0;
+    }
+
+    if (a.married) {
+      return 1;
+    }
+
+    return -1;
+  }
+
+  return order === 'asc'
+    ? (a: Student, b: Student): number => compareMarried(a, b)
+    : (a: Student, b: Student): number => compareMarried(b, a);
+}
+
 export function sortStudents(students: Student[],
   sortBy: SortType,
   order: SortOrder): Student[] {
@@ -35,32 +54,11 @@ export function sortStudents(students: Student[],
         return order === 'asc' ? a.age - b.age : b.age - a.age;
 
       case SortType.Married:
-        switch (order) {
-          case 'asc':
-            if (a.married === b.married) {
-              return 0;
-            }
-
-            if (a.married) {
-              return 1;
-            }
-
-            return -1;
-
-          case 'desc':
-            if (b.married === a.married) {
-              return 0;
-            }
-
-            if (b.married) {
-              return 1;
-            }
-
-            return -1;
-
-          default:
-            return -1;
+        if (order === 'asc') {
+          return compareMarriedHelper('asc')(a, b);
         }
+
+        return compareMarriedHelper('desc')(a, b);
 
       case SortType.AverageGrade:
         aGrade = a.grades.reduce((x, y) => x + y, 0) / a.grades.length;
