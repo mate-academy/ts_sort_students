@@ -20,92 +20,73 @@ export type SortOrder = 'asc' |'desc';
 export function sortStudents(
   students: Student, sortBy: SortType, order: SortOrder,
 ): string[] {
-  const copy: string[] = [...students];
-  const copyObject = copy.map((el) => ({ ...el }));
+  const copyArray: string[] = [...students];
+  const copyObject = copyArray.map((person) => ({ ...person }));
 
   switch (sortBy) {
     case (SortType.Name):
-      if (order === 'asc') {
-        copyObject.sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      if (order === 'desc') {
-        copyObject.sort((a, b) => b.name.localeCompare(a.name));
-      }
+      copyObject.sort((prev, current) => {
+        return order === 'asc'
+          ? prev.name.localeCompare(current.name)
+          : current.name.localeCompare(prev.name);
+      });
       break;
 
     case (SortType.Surname):
-      if (order === 'asc') {
-        copyObject.sort((a, b) => a.surname.localeCompare(b.surname));
-      }
-
-      if (order === 'desc') {
-        copyObject.sort((a, b) => b.surname.localeCompare(a.surname));
-      }
+      copyObject.sort((prev, current) => {
+        return order === 'asc'
+          ? prev.surname.localeCompare(current.surname)
+          : current.surname.localeCompare(prev.surname);
+      });
       break;
 
     case (SortType.Age):
-      if (order === 'asc') {
-        copyObject.sort((a, b) => a.age - b.age);
-      }
-
-      if (order === 'desc') {
-        copyObject.sort((a, b) => b.age - a.age);
-      }
+      copyObject.sort((prev, current) => {
+        return order === 'asc'
+          ? prev.age - current.age
+          : current.age - prev.age;
+      });
       break;
 
     case (SortType.Married):
       if (order === 'desc') {
-        copyObject.sort((a, b) => {
-          if (a.married === b.married) {
+        copyObject.sort((prev, current) => {
+          if (prev.married === current.married) {
             return 0;
           }
 
-          return a.married ? -1 : 1;
+          return prev.married ? -1 : 1;
         });
       }
 
       if (order === 'asc') {
-        copyObject.sort((a, b) => {
-          if (b.married === a.married) {
+        copyObject.sort((prev, current) => {
+          if (current.married === prev.married) {
             return 0;
           }
 
-          return b.married ? -1 : 1;
+          return current.married ? -1 : 1;
         });
       }
       break;
 
     case (SortType.AverageGrade):
-      if (order === 'asc') {
-        copyObject.sort((a, b) => {
-          const aSum = a.grades.reduce((acc: number, num: number) => {
-            return acc + num;
-          }, 0);
-          const bSum = b.grades.reduce((acc: number, num: number) => {
-            return acc + num;
-          }, 0);
+      copyObject.sort((prev, current) => {
+        const aSum = prev.grades.reduce((acc: number, num: number) => {
+          return acc + num;
+        }, 0);
+        const bSum = current.grades.reduce((acc: number, num: number) => {
+          return acc + num;
+        }, 0);
 
-          return aSum / a.grades.length - bSum / b.grades.length;
-        });
-      }
-
-      if (order === 'desc') {
-        copyObject.sort((a, b) => {
-          const aSum = a.grades.reduce((acc: number, num: number) => {
-            return acc + num;
-          }, 0);
-          const bSum = b.grades.reduce((acc: number, num: number) => {
-            return acc + num;
-          }, 0);
-
-          return bSum / b.grades.length - aSum / a.grades.length;
-        });
-      }
+        return order === 'asc'
+          ? aSum / prev.grades.length - bSum / current.grades.length
+          : bSum / current.grades.length - aSum / prev.grades.length;
+      });
       break;
 
     default:
-      throw new Error('uncorrect parameters');
+      throw new Error('wrong parameters');
   }
 
   return copyObject;
