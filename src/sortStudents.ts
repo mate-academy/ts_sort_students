@@ -21,7 +21,6 @@ function averageGrade(grades: number[]): number {
   return grades.reduce((a, b) => a + b) / grades.length;
 }
 
-
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -45,6 +44,6 @@ export function sortStudents(
         return order === 'asc'
           ? averageGrade(a[sortBy]) - averageGrade(b[sortBy])
           : averageGrade(b[sortBy]) - averageGrade(a[sortBy]);
-      }
+    }
   });
 }
