@@ -1,4 +1,3 @@
-/* eslint-disable comma-dangle */
 
 export interface Student {
   name: string;
@@ -20,9 +19,8 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAvgGrade(student: Student): number {
-  const total: number = student.grades.reduce(
-    (sum: number, grade: number) => sum + grade, 0
-  );
+  const total: number = student.grades
+    .reduce((sum: number, grade: number) => sum + grade, 0);
 
   return total / student.grades.length;
 }
@@ -30,7 +28,7 @@ function getAvgGrade(student: Student): number {
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: SortOrder
+  order: SortOrder,
 ): Student[] {
   type Callback = (first: Student, second: Student) => number;
 
@@ -39,16 +37,12 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        difrence = first.name < second.name ? -1 : 1;
-        break;
       case SortType.Surname:
-        difrence = first.surname < second.surname ? -1 : 1;
+        difrence = first[sortBy].localeCompare(second[sortBy]);
         break;
       case SortType.Age:
-        difrence = first.age - second.age;
-        break;
       case SortType.Married:
-        difrence = Number(first.married) - Number(second.married);
+        difrence = Number(first[sortBy]) - Number(second[sortBy]);
         break;
       case SortType.AverageGrade:
         difrence = getAvgGrade(first) - getAvgGrade(second);
