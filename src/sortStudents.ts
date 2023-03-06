@@ -1,16 +1,58 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 // create SortOrder type
-export type SortOrder;
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
+function getAverage(grades: number[]): number {
+  return grades.reduce((total, grade) => total + grade, 0) / grades.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const copyStudents: Student[] = [...students];
+
+  return copyStudents.sort((firstPerson, secondPerson) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === SortOrder.asc
+          ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
+          : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
+
+      case SortType.Age:
+      case SortType.Married:
+        return order === SortOrder.asc
+          ? Number(firstPerson[sortBy]) - Number(secondPerson[sortBy])
+          : Number(secondPerson[sortBy]) - Number(firstPerson[sortBy]);
+
+      case SortType.AverageGrade:
+        return order === SortOrder.asc
+          ? getAverage(firstPerson.grades) - getAverage(secondPerson.grades)
+          : getAverage(secondPerson.grades) - getAverage(firstPerson.grades);
+
+      default:
+        throw new Error(`Unknown sort type: ${sortBy}`);
+    }
+  });
 }
