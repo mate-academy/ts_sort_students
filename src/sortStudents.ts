@@ -22,27 +22,28 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents = JSON.parse(JSON.stringify(students));
-  const reducer = (acc: number, curt: number): number => acc + curt;
+  const sortedStudents = [...students];
+  const callback = (acc: number, curt: number): number => acc + curt;
 
-  sortedStudents.sort((a: Student, b: Student): number => {
+  sortedStudents.sort((studentA: Student, studentB: Student): number => {
     let comparator: number = 0;
 
     switch (sortBy) {
-      case ('name'):
-      case ('surname'):
-        comparator = a[sortBy].localeCompare(b[sortBy]);
+      case (SortType.Name):
+      case (SortType.Surname):
+        comparator = studentA[sortBy].localeCompare(studentB[sortBy]);
         break;
-      case ('age'):
-      case ('married'):
-        comparator = +a[sortBy] - +b[sortBy];
+      case (SortType.Age):
+      case (SortType.Married):
+        comparator = +studentA[sortBy] - +studentB[sortBy];
         break;
-      case ('grades'):
-        comparator = (a[sortBy].reduce(reducer) / a[sortBy].length)
-          - (b[sortBy].reduce(reducer) / b[sortBy].length);
+      case (SortType.AverageGrade):
+        comparator
+          = (studentA[sortBy].reduce(callback) / studentA[sortBy].length)
+            - (studentB[sortBy].reduce(callback) / studentB[sortBy].length);
         break;
       default:
-        break;
+        throw new Error('Invalid data for this sort function!');
     }
 
     return (order === 'asc') ? comparator : comparator * -1;
