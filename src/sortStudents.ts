@@ -29,25 +29,24 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyStudents = [...students];
+  const checkOrder = (order === 'asc' ? 1 : -1);
 
   return copyStudents.sort((currentStudent, nextStudent) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? currentStudent[sortBy].localeCompare(nextStudent[sortBy])
-          : nextStudent[sortBy].localeCompare(currentStudent[sortBy]);
+        return currentStudent[sortBy].localeCompare(
+          nextStudent[sortBy],
+        ) * checkOrder;
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(currentStudent[sortBy]) - Number(nextStudent[sortBy])
-          : Number(nextStudent[sortBy]) - Number(currentStudent[sortBy]);
+        return (Number(currentStudent[sortBy]) - Number(nextStudent[sortBy])
+        ) * checkOrder;
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? getAverageGrade(currentStudent) - getAverageGrade(nextStudent)
-          : getAverageGrade(nextStudent) - getAverageGrade(currentStudent);
+        return (getAverageGrade(currentStudent) - getAverageGrade(nextStudent)
+        ) * checkOrder;
 
       default:
         throw new Error();
