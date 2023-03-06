@@ -17,8 +17,8 @@ export enum SortType {
 
 // create SortOrder type
 export enum SortOrder {
-  asc = 'asc',
-  desc = 'desc',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 function getAverage(grades: number[]): number {
@@ -36,18 +36,18 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === SortOrder.asc
+        return order === SortOrder.Asc
           ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
           : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === SortOrder.asc
+        return order === SortOrder.Asc
           ? Number(firstPerson[sortBy]) - Number(secondPerson[sortBy])
           : Number(secondPerson[sortBy]) - Number(firstPerson[sortBy]);
 
       case SortType.AverageGrade:
-        return order === SortOrder.asc
+        return order === SortOrder.Asc
           ? getAverage(firstPerson.grades) - getAverage(secondPerson.grades)
           : getAverage(secondPerson.grades) - getAverage(firstPerson.grades);
 
