@@ -48,11 +48,11 @@ export function sortStudents(
 
       case SortType.Married:
         if (a.married === b.married) {
-          compareValue = 0;
+          compareValue = Number(a.married !== b.married);
         } else if (a.married) {
-          compareValue = 1;
+          compareValue = Number(a.married !== b.married);
         } else {
-          compareValue = -1;
+          compareValue = Number(a.married === b.married);
         }
         break;
 
