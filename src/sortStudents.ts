@@ -29,7 +29,7 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyStudents = [...students];
-  const checkOrder = (order === 'asc' ? 1 : -1);
+  const checkOrder = order === 'asc' ? 1 : -1;
 
   return copyStudents.sort((currentStudent, nextStudent) => {
     switch (sortBy) {
@@ -41,15 +41,17 @@ export function sortStudents(
 
       case SortType.Age:
       case SortType.Married:
-        return (Number(currentStudent[sortBy]) - Number(nextStudent[sortBy])
+        return (
+          Number(currentStudent[sortBy]) - Number(nextStudent[sortBy])
         ) * checkOrder;
 
       case SortType.AverageGrade:
-        return (getAverageGrade(currentStudent) - getAverageGrade(nextStudent)
+        return (
+          getAverageGrade(currentStudent) - getAverageGrade(nextStudent)
         ) * checkOrder;
 
       default:
-        throw new Error();
+        throw new Error('This sort type is not valid');
     }
   });
 }
