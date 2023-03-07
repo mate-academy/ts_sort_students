@@ -17,11 +17,20 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrade(student: Student): number {
+  const sum: number = 
+    student.grades.reduce((accumulator: number, currentValue: number) => {
+    return accumulator + currentValue;
+  }, 0);
+
+  return sum / student.grades.length;
+}
+
 export function sortStudents(
-    students: Student[],
-    sortBy: SortType,
-    order: SortOrder
-  ): Student[] {
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder
+): Student[] {
   const arrayForSorting = [...students];
   const orderForSorting: number = order === 'asc' ? 1 : -1;
 
@@ -47,12 +56,4 @@ export function sortStudents(
           * orderForSorting;
     }
   });
-}
-
-function getAverageGrade(student: Student): number {
-  const sum: number = student.grades.reduce((accumulator: number, currentValue: number) => {
-    return accumulator + currentValue;
-  }, 0)
-
-  return sum / student.grades.length;
 }
