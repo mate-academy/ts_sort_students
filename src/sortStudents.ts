@@ -30,46 +30,33 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const studentCopy: Student[] = [...students];
+  const isAscending = order === SortOrder.Asc;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      studentCopy.sort((firstStudent, secondStudent): number => {
-        const isAscending = order === SortOrder.Asc;
-
+      return (studentCopy.sort((firstStudent, secondStudent): number => {
         return isAscending
           ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
-      });
-
-      break;
+          : firstStudent[sortBy].localeCompare(secondStudent[sortBy]) * -1;
+      }));
 
     case SortType.Age:
     case SortType.Married:
-      studentCopy.sort((firstStudent, secondStudent): number => {
-        const isAscending = order === SortOrder.Asc;
-
+      return (studentCopy.sort((firstStudent, secondStudent): number => {
         return isAscending
           ? +firstStudent[sortBy] - +secondStudent[sortBy]
           : +secondStudent[sortBy] - +firstStudent[sortBy];
-      });
-
-      break;
+      }));
 
     case SortType.AverageGrade:
-      studentCopy.sort((firstStudent, secondStudent): number => {
-        const isAscending = order === SortOrder.Asc;
-
+      return (studentCopy.sort((firstStudent, secondStudent): number => {
         return isAscending
           ? getAverageGrade(firstStudent) - getAverageGrade(secondStudent)
           : getAverageGrade(secondStudent) - getAverageGrade(firstStudent);
-      });
-
-      break;
+      }));
 
     default:
       throw new Error('Invalid SortBy value');
   }
-
-  return studentCopy;
 }
