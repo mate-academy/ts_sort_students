@@ -40,8 +40,8 @@ export function sortStudents(
     case SortType.Married:
       copyOfStudents.sort((prev, current) => {
         return order === 'asc'
-          ? +prev[sortBy] - +current[sortBy]
-          : +current[sortBy] - +prev[sortBy];
+          ? Number(prev[sortBy]) - Number(current[sortBy])
+          : Number(current[sortBy]) - Number(prev[sortBy]);
       });
       break;
 
