@@ -28,25 +28,24 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const studentList = [...students];
+  const signCoefficient = order === 'asc' ? 1 : -1;
 
   studentList.sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? studentA[sortBy].localeCompare(studentB[sortBy])
-          : studentB[sortBy].localeCompare(studentA[sortBy]);
+        return signCoefficient
+          * (studentA[sortBy].localeCompare(studentB[sortBy]));
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
+        return signCoefficient
+          * (Number(studentA[sortBy]) - Number(studentB[sortBy]));
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? getStudentAverageGrade(studentA) - getStudentAverageGrade(studentB)
-          : getStudentAverageGrade(studentB) - getStudentAverageGrade(studentA);
+        return signCoefficient
+          * (getStudentAverageGrade(studentA)
+            - getStudentAverageGrade(studentB));
 
       default:
         return 0;
