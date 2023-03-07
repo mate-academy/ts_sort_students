@@ -52,9 +52,6 @@ export function sortStudents(
 
     return order === 'asc' ? difference : -difference;
   };
-  const studentsCopy: Student[] = [...students];
 
-  studentsCopy.sort(sortCallback);
-
-  return studentsCopy;
+  return [...students].sort(sortCallback);
 }
