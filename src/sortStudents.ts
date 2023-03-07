@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function getAvgGrade(student: Student): number {
@@ -32,26 +31,26 @@ export function sortStudents(
 ): Student[] {
   type Callback = (first: Student, second: Student) => number;
 
-  const sortCallback : Callback = (first, second) => {
-    let difrence: number;
+  const sortCallback: Callback = (first, second) => {
+    let difference: number;
 
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        difrence = first[sortBy].localeCompare(second[sortBy]);
+        difference = first[sortBy].localeCompare(second[sortBy]);
         break;
       case SortType.Age:
       case SortType.Married:
-        difrence = Number(first[sortBy]) - Number(second[sortBy]);
+        difference = Number(first[sortBy]) - Number(second[sortBy]);
         break;
       case SortType.AverageGrade:
-        difrence = getAvgGrade(first) - getAvgGrade(second);
+        difference = getAvgGrade(first) - getAvgGrade(second);
         break;
       default:
-        difrence = 0;
+        difference = 0;
     }
 
-    return order === 'asc' ? difrence : -difrence;
+    return order === 'asc' ? difference : -difference;
   };
   const studentsCopy: Student[] = [...students];
 
