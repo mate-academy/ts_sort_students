@@ -47,7 +47,7 @@ export function sortStudents(
           ? average(current[sortBy]) - average(next[sortBy])
           : average(next[sortBy]) - average(current[sortBy]);
       default:
-        return 0;
+        throw new Error(`Inappropriate argument: ${sortBy}`);
     }
   });
 
