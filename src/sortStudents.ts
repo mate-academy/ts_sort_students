@@ -1,16 +1,60 @@
-
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
 
+function calculateAverageGrade({ grades }: Student): number {
+  return grades.reduce((accumulator, currentGrade) => (
+    accumulator + currentGrade)) / grades.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const studentsCopy = [...students];
+
+  return studentsCopy.sort((currentStudent, previousStudent): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === SortOrder.ASC
+          ? currentStudent[sortBy].localeCompare(previousStudent[sortBy])
+          : previousStudent[sortBy].localeCompare(currentStudent[sortBy]);
+
+      case SortType.Age:
+      case SortType.Married:
+        return order === SortOrder.ASC
+          ? +(currentStudent[sortBy]) - +(previousStudent[sortBy])
+          : +(previousStudent[sortBy]) - +(currentStudent[sortBy]);
+
+      case SortType.AverageGrade:
+        return order === SortOrder.ASC
+          ? calculateAverageGrade(currentStudent)
+            - calculateAverageGrade(previousStudent)
+
+          : calculateAverageGrade(previousStudent)
+            - calculateAverageGrade(currentStudent);
+
+      default:
+        throw new Error('Sort types are invalid');
+    }
+  });
 }
