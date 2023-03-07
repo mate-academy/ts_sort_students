@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function average(numbers: number[]): number {
+function getAverage(numbers: number[]): number {
   return numbers.reduce((acc, num) => (acc + num)) / numbers.length;
 }
 
@@ -26,31 +26,24 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = [...students];
-
-  studentsCopy.sort((current: Student, next: Student) => {
+  return [...students].sort((current: Student, next: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? current[sortBy].localeCompare(next[sortBy])
-          : next[sortBy].localeCompare(current[sortBy]);
+        return current[sortBy].localeCompare(next[sortBy])
+          * (order === 'asc' ? 1 : -1);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? +current[sortBy] - +next[sortBy]
-          : +next[sortBy] - +current[sortBy];
+        return (+current[sortBy] - +next[sortBy])
+          * (order === 'asc' ? 1 : -1);
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? average(current[sortBy]) - average(next[sortBy])
-          : average(next[sortBy]) - average(current[sortBy]);
+        return (getAverage(current[sortBy]) - getAverage(next[sortBy]))
+          * (order === 'asc' ? 1 : -1);
 
       default:
         throw new Error(`Inappropriate argument: ${sortBy}`);
     }
   });
-
-  return studentsCopy;
 }
