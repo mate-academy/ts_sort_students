@@ -17,28 +17,34 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+    students: Student[],
+    sortBy: SortType,
+    order: SortOrder
+  ): Student[] {
   const arrayForSorting = [...students];
   const orderForSorting: number = order === 'asc' ? 1 : -1;
 
   return arrayForSorting.sort((studentA: Student, studentB: Student) => {
-    switch(sortBy) {
+    switch (sortBy) {
       case SortType.Name:
-        return studentA.name.localeCompare(studentB.name) * orderForSorting;
+        return studentA.name.localeCompare(studentB.name)
+          * orderForSorting;
 
       case SortType.Surname:
-        return studentA.surname.localeCompare(studentB.surname) * orderForSorting;
+        return studentA.surname.localeCompare(studentB.surname)
+          * orderForSorting;
 
       case SortType.Age:
         return (studentA.age - studentB.age) * orderForSorting;
 
       case SortType.Married:
-        return (Number(studentA.married) - Number(studentB.married)) * orderForSorting;
+        return (Number(studentA.married) - Number(studentB.married))
+          * orderForSorting;
 
       case SortType.AverageGrade:
-        return (getAverageGrade(studentA) - getAverageGrade(studentB)) * orderForSorting;
-
+        return (getAverageGrade(studentA) - getAverageGrade(studentB))
+          * orderForSorting;
     }
   });
 }
