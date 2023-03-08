@@ -26,31 +26,35 @@ export function sortStudents(
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
-        ? students.map((el) => el)
-          .sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : students.map((el) => el)
-          .sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        ? [...students]
+          .sort((firstStudent, secondStudent) => firstStudent[sortBy]
+            .localeCompare(secondStudent[sortBy]))
+        : [...students]
+          .sort((firstStudent, secondStudent) => secondStudent[sortBy]
+            .localeCompare(firstStudent[sortBy]));
 
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? students.map((el) => el)
-          .sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : students.map((el) => el)
-          .sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+        ? [...students]
+          .sort((firstStudent, secondStudent) => Number(firstStudent[sortBy])
+            - Number(secondStudent[sortBy]))
+        : [...students]
+          .sort((firstStudent, secondStudent) => Number(secondStudent[sortBy])
+            - Number(firstStudent[sortBy]));
 
     case SortType.AverageGrade:
       return order === 'asc'
-        ? students.map((el) => el)
-          .sort((a, b) => (a.grades
-            .reduce((acc, num) => acc + num, 0) / a.grades.length)
-              - (b.grades
-                .reduce((acc, num) => acc + num, 0)) / b.grades.length)
-        : students.map((el) => el)
-          .sort((a, b) => (b.grades
-            .reduce((acc, num) => acc + num, 0) / b.grades.length)
-              - (a.grades
-                .reduce((acc, num) => acc + num, 0)) / a.grades.length);
+        ? [...students]
+          .sort((firstStudent, secondStudent) => (firstStudent.grades
+            .reduce((acc, num) => acc + num, 0) / firstStudent.grades.length)
+              - (secondStudent.grades
+                .reduce((acc, num) => acc + num)) / secondStudent.grades.length)
+        : [...students]
+          .sort((firstStudent, secondStudent) => (secondStudent.grades
+            .reduce((acc, num) => acc + num, 0) / secondStudent.grades.length)
+              - (firstStudent.grades
+                .reduce((acc, num) => acc + num)) / firstStudent.grades.length);
 
     default:
       throw new Error('unknown sort type');
