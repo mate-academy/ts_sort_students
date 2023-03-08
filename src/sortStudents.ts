@@ -27,26 +27,25 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((previous, current) => {
+    const orderType = (order === 'asc' ? 1 : -1);
+
     switch (sortBy) {
       case SortType.Surname:
       case SortType.Name:
-        return order === 'asc'
-          ? previous[sortBy].localeCompare(current[sortBy])
-          : current[sortBy].localeCompare(previous[sortBy]);
+        return previous[sortBy].localeCompare(current[sortBy])
+          * orderType;
 
       case SortType.Married:
       case SortType.Age:
-        return order === 'asc'
-          ? Number(previous[sortBy]) - Number(current[sortBy])
-          : Number(current[sortBy]) - Number(previous[sortBy]);
+        return (Number(previous[sortBy]) - Number(current[sortBy]))
+          * orderType;
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? calcAverage(previous) - calcAverage(current)
-          : calcAverage(current) - calcAverage(previous);
+        return (calcAverage(previous) - calcAverage(current))
+          * orderType;
 
       default:
-        throw new Error('Something going wrong...');
+        return 0;
     }
   });
 }
