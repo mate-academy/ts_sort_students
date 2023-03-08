@@ -12,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -21,7 +21,7 @@ export enum SortOrder {
   Desc = 'desc',
 }
 
-function getAverage(grades: number[]): number {
+function getAverage({ grades }: Student): number {
   return grades.reduce((total, grade) => total + grade, 0) / grades.length;
 }
 
@@ -33,23 +33,27 @@ export function sortStudents(
   const copyStudents: Student[] = [...students];
 
   return copyStudents.sort((firstPerson, secondPerson) => {
+    const direction = order === SortOrder.Asc
+      ? 1
+      : -1;
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === SortOrder.Asc
-          ? firstPerson[sortBy].localeCompare(secondPerson[sortBy])
-          : secondPerson[sortBy].localeCompare(firstPerson[sortBy]);
+        return (
+          firstPerson[sortBy].localeCompare(secondPerson[sortBy])
+        ) * direction;
 
       case SortType.Age:
       case SortType.Married:
-        return order === SortOrder.Asc
-          ? Number(firstPerson[sortBy]) - Number(secondPerson[sortBy])
-          : Number(secondPerson[sortBy]) - Number(firstPerson[sortBy]);
+        return (
+          Number(firstPerson[sortBy]) - Number(secondPerson[sortBy])
+        ) * direction;
 
       case SortType.AverageGrade:
-        return order === SortOrder.Asc
-          ? getAverage(firstPerson.grades) - getAverage(secondPerson.grades)
-          : getAverage(secondPerson.grades) - getAverage(firstPerson.grades);
+        return (
+          getAverage(firstPerson) - getAverage(secondPerson)
+        ) * direction;
 
       default:
         throw new Error(`Unknown sort type: ${sortBy}`);
