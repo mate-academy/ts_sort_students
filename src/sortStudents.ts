@@ -27,20 +27,22 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((current: Student, next: Student) => {
+    const orderMultiplier = (order === 'asc' ? 1 : -1);
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         return current[sortBy].localeCompare(next[sortBy])
-          * (order === 'asc' ? 1 : -1);
+          * orderMultiplier;
 
       case SortType.Age:
       case SortType.Married:
         return (+current[sortBy] - +next[sortBy])
-          * (order === 'asc' ? 1 : -1);
+          * orderMultiplier;
 
       case SortType.AverageGrade:
         return (getAverage(current[sortBy]) - getAverage(next[sortBy]))
-          * (order === 'asc' ? 1 : -1);
+          * orderMultiplier;
 
       default:
         throw new Error(`Inappropriate argument: ${sortBy}`);
