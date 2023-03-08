@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export enum SortOrder {
   Asc = 'asc',
   Desc = 'desc',
