@@ -16,7 +16,7 @@ export enum SortType {
 
 export enum SortOrder {
   ASC = 'asc',
-  DESC = 'desc',
+  DES = 'desc'
 }
 
 function calculateAverageGrade({ grades }: Student): number {
@@ -29,32 +29,25 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = [...students];
-
-  return studentsCopy.sort((currentStudent, previousStudent): number => {
+  return [...students].sort((currtStudent, prevStudent): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === SortOrder.ASC
-          ? currentStudent[sortBy].localeCompare(previousStudent[sortBy])
-          : previousStudent[sortBy].localeCompare(currentStudent[sortBy]);
+        return currtStudent[sortBy].localeCompare(prevStudent[sortBy])
+          * (order === SortOrder.ASC ? 1 : -1);
 
       case SortType.Age:
       case SortType.Married:
-        return order === SortOrder.ASC
-          ? +(currentStudent[sortBy]) - +(previousStudent[sortBy])
-          : +(previousStudent[sortBy]) - +(currentStudent[sortBy]);
+        return (+(currtStudent[sortBy]) - +(prevStudent[sortBy]))
+          * (order === SortOrder.ASC ? 1 : -1);
 
       case SortType.AverageGrade:
-        return order === SortOrder.ASC
-          ? calculateAverageGrade(currentStudent)
-            - calculateAverageGrade(previousStudent)
-
-          : calculateAverageGrade(previousStudent)
-            - calculateAverageGrade(currentStudent);
+        return (calculateAverageGrade(currtStudent)
+        - calculateAverageGrade(prevStudent))
+          * (order === SortOrder.ASC ? 1 : -1);
 
       default:
-        throw new Error('Sort types are invalid');
+        throw new Error(`Sort type ${sortBy} is invalid`);
     }
   });
 }
