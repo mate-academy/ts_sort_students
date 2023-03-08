@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'averageGrade'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function getStudentAverageGrade({ grades }: Student): number {
@@ -27,10 +26,9 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentList = [...students];
   const signCoefficient = order === 'asc' ? 1 : -1;
 
-  studentList.sort((studentA: Student, studentB: Student) => {
+  return [...students].sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -48,9 +46,7 @@ export function sortStudents(
             - getStudentAverageGrade(studentB));
 
       default:
-        return 0;
+        throw new Error('Wrong sort type!');
     }
   });
-
-  return studentList;
 }
