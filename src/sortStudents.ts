@@ -15,8 +15,8 @@ export enum SortType {
 }
 
 export enum SortOrder {
-  ASC = 'asc',
-  DESC = 'desc',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export function averageGrade(grades: number[]) :number {
@@ -28,7 +28,7 @@ export function sortStudents(
   sortBy: keyof Student,
   order: SortOrder,
 ): Student[] {
-  const orderCondition = (order === SortOrder.ASC ? 1 : -1);
+  const orderCondition = (order === SortOrder.Asc ? 1 : -1);
 
   return [...students].sort((aStudent, bStudent) => {
     switch (sortBy) {
@@ -45,7 +45,7 @@ export function sortStudents(
         return (averageGrade(aStudent[sortBy])
           - averageGrade(bStudent[sortBy])) * orderCondition;
       default:
-        throw new Error('the data is invalid!');
+        return 0;
     }
   });
 }
