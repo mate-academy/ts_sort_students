@@ -26,29 +26,27 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = JSON.parse(JSON.stringify(students));
+  const orderType: number = order === 'asc'
+    ? 1
+    : -1;
 
-  return studentsCopy.sort((student1, student2): number => {
+  return [...students].sort((student1, student2): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? student1[sortBy].localeCompare(student2[sortBy])
-          : student2[sortBy].localeCompare(student1[sortBy]);
+        return orderType * student1[sortBy].localeCompare(student2[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(student1[sortBy]) - Number(student2[sortBy])
-          : Number(student2[sortBy]) - Number(student1[sortBy]);
+        return orderType
+          * (Number(student1[sortBy]) - Number(student2[sortBy]));
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? calculateAverage(student1) - calculateAverage(student2)
-          : calculateAverage(student2) - calculateAverage(student1);
+        return orderType
+          * (calculateAverage(student1) - calculateAverage(student2));
 
       default:
-        throw new Error();
+        throw new Error('Invalid sort type.');
     }
   });
 }
