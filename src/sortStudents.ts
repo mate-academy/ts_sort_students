@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function getAvaregeGrade({ grades }: Student): number {
@@ -28,31 +27,31 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyStudents = [...students];
-
-  return copyStudents.sort((studentA, studentB) => {
-    const sortMethod = order === 'asc';
+  return [...students].sort((studentA, studentB) => {
+    const sortMethod = order === 'asc'
+      ? 1
+      : -1;
 
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return sortMethod
-          ? studentA[sortBy].localeCompare(studentB[sortBy])
-          : studentB[sortBy].localeCompare(studentA[sortBy]);
+        return (
+          studentA[sortBy].localeCompare(studentB[sortBy])
+        ) * sortMethod;
 
       case SortType.Age:
       case SortType.Married:
-        return sortMethod
-          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
+        return (
+          Number(studentA[sortBy]) - Number(studentB[sortBy])
+        ) * sortMethod;
 
       case SortType.AverageGrade:
-        return sortMethod
-          ? getAvaregeGrade(studentA) - getAvaregeGrade(studentB)
-          : getAvaregeGrade(studentB) - getAvaregeGrade(studentA);
+        return (
+          getAvaregeGrade(studentA) - getAvaregeGrade(studentB)
+        ) * sortMethod;
 
       default:
-        throw new Error('Insert correct information');
+        throw new Error(`Insert correct ${sortBy}`);
     }
   });
 }
