@@ -36,11 +36,8 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        comparison = studentA.name.localeCompare(studentB.name);
-        break;
-
       case SortType.Surname:
-        comparison = studentA.surname.localeCompare(studentB.surname);
+        comparison = studentA[sortBy].localeCompare(studentB[sortBy]);
         break;
 
       case SortType.Age:
@@ -48,20 +45,18 @@ export function sortStudents(
         break;
 
       case SortType.Married:
-        return order === SortOrder.Ascending
-          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
+        comparison = Number(studentA[sortBy]) - Number(studentB[sortBy]);
+        break;
 
       case SortType.AverageGrade:
-        return order === SortOrder.Ascending
-          ? findAvgGrade(studentA) - findAvgGrade(studentB)
-          : findAvgGrade(studentB) - findAvgGrade(studentA);
+        comparison = findAvgGrade(studentA) - findAvgGrade(studentB);
+        break;
 
       default:
         break;
     }
 
-    return order === 'asc' ? comparison : comparison * -1;
+    return comparison * (order === SortOrder.Ascending ? 1 : -1);
   });
 
   return sortedStudents;
