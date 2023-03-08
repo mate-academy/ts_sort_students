@@ -19,30 +19,33 @@ export type SortOrder = 'asc' | 'desc';
 
 type AverageGrade = (x : Student) => number;
 
-const callback = (
+const findSummOfGrades = (
   prev : number, grade: number,
 ): number => prev + grade;
 
 const getAverageGrade: AverageGrade
-= (object) => object.grades.reduce(callback, 0) / object.grades.length;
+= (object) => object.grades.reduce(findSummOfGrades, 0) / object.grades.length;
 
 export function sortStudents(
   students : Student[], sortBy : SortType, order : SortOrder,
 ) : Student[] {
   const arrayOfStudents = [...students];
+  const checkOrder = order === 'asc';
 
   arrayOfStudents.sort((prev : Student, curr: Student) => {
     switch (sortBy) {
-      case SortType.Name: case SortType.Surname:
-        return order === 'asc'
+      case SortType.Name:
+      case SortType.Surname:
+        return checkOrder
           ? prev[sortBy].localeCompare(curr[sortBy])
           : curr[sortBy].localeCompare(prev[sortBy]);
-      case SortType.Age: case SortType.Married:
-        return order === 'asc'
+      case SortType.Age:
+      case SortType.Married:
+        return checkOrder
           ? (+prev[sortBy]) - (+curr[sortBy])
           : (+curr[sortBy]) - (+prev[sortBy]);
       case SortType.AverageGrade:
-        return order === 'asc'
+        return checkOrder
           ? getAverageGrade(prev) - getAverageGrade(curr)
           : getAverageGrade(curr) - getAverageGrade(prev);
       default:
