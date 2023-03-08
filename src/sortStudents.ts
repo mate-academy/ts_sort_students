@@ -29,22 +29,24 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
+  const orderCondition = (order === SortOrder.ASC ? 1 : -1);
+
   return [...students].sort((currtStudent, prevStudent): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         return currtStudent[sortBy].localeCompare(prevStudent[sortBy])
-          * (order === SortOrder.ASC ? 1 : -1);
+          * orderCondition;
 
       case SortType.Age:
       case SortType.Married:
         return (+(currtStudent[sortBy]) - +(prevStudent[sortBy]))
-          * (order === SortOrder.ASC ? 1 : -1);
+          * orderCondition;
 
       case SortType.AverageGrade:
         return (calculateAverageGrade(currtStudent)
         - calculateAverageGrade(prevStudent))
-          * (order === SortOrder.ASC ? 1 : -1);
+          * orderCondition;
 
       default:
         throw new Error(`Sort type ${sortBy} is invalid`);
