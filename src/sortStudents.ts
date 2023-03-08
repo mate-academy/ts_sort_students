@@ -19,7 +19,8 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function AverageCallback({ grades }: Student): number {
-  return grades.reduce((grade, current) => grade + current, 0) / grades.length;
+  return grades.reduce((grade, current) => grade + current, 0)
+  / grades.length;
 }
 
 export function sortStudents(
@@ -28,16 +29,20 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((prevStudent, currStudent): number => {
-    const orderType = (order === 'asc' ? 1 : -1);
+    const orderType = (
+      order === 'asc'
+        ? 1
+        : -1
+    );
 
     switch (sortBy) {
-      case SortType.Surname:
       case SortType.Name:
+      case SortType.Surname:
         return prevStudent[sortBy].localeCompare(currStudent[sortBy])
           * orderType;
 
-      case SortType.Married:
       case SortType.Age:
+      case SortType.Married:
         return (Number(prevStudent[sortBy]) - Number(currStudent[sortBy]))
           * orderType;
 
