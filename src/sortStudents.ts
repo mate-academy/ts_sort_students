@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -19,7 +18,6 @@ const getAverage = (grades: number[]): number => {
   return grades.reduce((acc, cur) => acc + cur) / grades.length;
 };
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -28,26 +26,26 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((prevStudent: Student, nextStudent: Student) => {
+    const orderType = (order === 'asc' ? 1 : -1);
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? prevStudent[sortBy].localeCompare(nextStudent[sortBy])
-          : nextStudent[sortBy].localeCompare(prevStudent[sortBy]);
+        return prevStudent[sortBy].localeCompare(nextStudent[sortBy])
+        * orderType;
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(prevStudent[sortBy]) - Number(nextStudent[sortBy])
-          : Number(nextStudent[sortBy]) - Number(prevStudent[sortBy]);
+        return (Number(prevStudent[sortBy]) - Number(nextStudent[sortBy]))
+        * orderType;
 
       case SortType.AverageGrade:
-        return order === 'desc'
-          ? getAverage(nextStudent[sortBy]) - getAverage(prevStudent[sortBy])
-          : getAverage(prevStudent[sortBy]) - getAverage(nextStudent[sortBy]);
+        return (getAverage(prevStudent[sortBy])
+        - getAverage(nextStudent[sortBy]))
+        * orderType;
 
       default:
-        throw new Error();
+        throw new Error('Incorrect sort parameters!');
     }
   });
 }
