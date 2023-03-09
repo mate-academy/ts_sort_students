@@ -32,58 +32,26 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? activeStudent[SortType.Name]
-            .localeCompare(nextStudent[SortType.Name])
-          : nextStudent[SortType.Name]
-            .localeCompare(activeStudent[SortType.Name]);
-
       case SortType.Surname:
         return order === 'asc'
-          ? activeStudent[SortType.Surname]
-            .localeCompare(nextStudent[SortType.Surname])
-          : nextStudent[SortType.Surname]
-            .localeCompare(activeStudent[SortType.Surname]);
+          ? activeStudent[sortBy]
+            .localeCompare(nextStudent[sortBy])
+          : activeStudent[sortBy]
+            .localeCompare(nextStudent[sortBy]) * (-1);
 
       case SortType.Age:
-        return order === 'asc'
-          ? activeStudent[SortType.Age] - nextStudent[SortType.Age]
-          : nextStudent[SortType.Age] - activeStudent[SortType.Age];
-
       case SortType.Married:
-        if (activeStudent[SortType.Married]
-          === nextStudent[SortType.Married]
-          && order === 'asc') {
-          return 0;
-        }
-
-        if (nextStudent[SortType.Married]
-          === activeStudent[SortType.Married]
-          && order === 'desc') {
-          return 0;
-        }
-
-        if (activeStudent[SortType.Married]
-          && !nextStudent[SortType.Married]
-          && order === 'asc') {
-          return 1;
-        }
-
-        if (nextStudent[SortType.Married]
-          && !activeStudent[SortType.Married]
-          && order === 'desc') {
-          return 1;
-        }
-
-        return -1;
+        return order === 'asc'
+          ? +activeStudent[sortBy] - +nextStudent[sortBy]
+          : (+activeStudent[sortBy] - +nextStudent[sortBy]) * (-1);
 
       case SortType.AverageGrade:
         return order === 'asc'
           ? activeAverageGrade - nextAverageGrade
-          : nextAverageGrade - activeAverageGrade;
+          : (activeAverageGrade - nextAverageGrade) * (-1);
 
       default:
-        return 0;
+        throw new Error(`Invalid SortType: ${sortBy}.`);
     }
   });
 }
