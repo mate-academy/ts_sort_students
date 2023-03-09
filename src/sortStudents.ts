@@ -31,29 +31,25 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const arrayForSorting = [...students];
-  const orderForSorting: number = order === 'asc' ? 1 : -1;
 
-  return arrayForSorting.sort((studentA: Student, studentB: Student) => {
+  return [...students].sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
-        return studentA.name.localeCompare(studentB.name)
-          * orderForSorting;
-
       case SortType.Surname:
-        return studentA.surname.localeCompare(studentB.surname)
-          * orderForSorting;
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
-        return (studentA.age - studentB.age) * orderForSorting;
-
       case SortType.Married:
-        return (Number(studentA.married) - Number(studentB.married))
-          * orderForSorting;
+        return order === 'asc'
+          ? (Number(a[sortBy]) - Number(b[sortBy]))
+          : (Number(b[sortBy]) - Number(a[sortBy]));
 
       case SortType.AverageGrade:
-        return (getAverageGrade(studentA) - getAverageGrade(studentB))
-          * orderForSorting;
+        return order === 'asc'
+          ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+          : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
 
       default:
         return new Error('Something wrong with values');
