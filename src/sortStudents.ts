@@ -15,53 +15,56 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-export type SortOrder = 'asc' |'desc';
+export type SortOrder = 'asc' | 'desc';
 
-function countSum(numbers: number[]): number {
-  return numbers.reduce((acc: number, num: number) => {
+function countAverageSum(numbers: number[]): number {
+  const sum = numbers.reduce((acc: number, num: number) => {
     return acc + num;
   }, 0);
+
+  return sum / numbers.length;
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
-  const copyArray = [...students];
-  const copyObject = copyArray.map((person) => ({ ...person }));
+  const sortCopyArray = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copyObject.sort((prev, current) => {
+      return sortCopyArray.sort((prev, current) => {
+        const compare = prev[sortBy].localeCompare(current[sortBy]);
+
         return order === 'asc'
-          ? prev[sortBy].localeCompare(current[sortBy])
-          : current[sortBy].localeCompare(prev[sortBy]);
+          ? compare
+          : compare * -1;
       });
-      break;
 
     case (SortType.Age):
     case (SortType.Married):
-      copyObject.sort((prev, current) => {
+      return sortCopyArray.sort((prev, current) => {
+        const compare = +prev[sortBy] - +current[sortBy];
+
         return order === 'asc'
-          ? +prev[sortBy] - +current[sortBy]
-          : +current[sortBy] - +prev[sortBy];
+          ? compare
+          : compare * -1;
       });
-      break;
 
     case (SortType.AverageGrade):
-      copyObject.sort((prev, current) => {
-        const aSum = countSum(prev.grades);
-        const bSum = countSum(current.grades);
+      return sortCopyArray.sort((prev, current) => {
+        const aSum = countAverageSum(prev.grades);
+        const bSum = countAverageSum(current.grades);
+        const compare = aSum - bSum;
 
         return order === 'asc'
-          ? aSum / prev.grades.length - bSum / current.grades.length
-          : bSum / current.grades.length - aSum / prev.grades.length;
+          ? compare
+          : compare * -1;
       });
-      break;
 
     default:
-      throw new Error('wrong parameters');
+      throw new Error('Wrong sort type parameters');
   }
-
-  return copyObject;
 }
