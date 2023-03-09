@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -21,60 +20,55 @@ export enum SortType {
 }
 
 export type SortOrder = 'asc' | 'desc';
+type CountAvarageGradeCallback = (grades: number[]) => number;
+type SortRuleCallback = (
+  a: StudentForSort,
+  b: StudentForSort
+) => number;
 
 export function sortStudents(students: Student[],
   sortBy: SortType,
   order: SortOrder): Student[] {
-    type CountAvarageGradeCallback = (grades: number[]) => number;
-    type SortRuleCallback = (
-      a: StudentForSort,
-      b: StudentForSort
-    ) => number;
+  const countAvarageGrade: CountAvarageGradeCallback
+  = (grades) => (
+    grades.reduce((sum, grade) => sum + grade, 0)
+    / grades.length
+  );
 
-    const countAvarageGrade: CountAvarageGradeCallback
-    = (grades) => (
-      grades.reduce((sum, grade) => sum + grade, 0)
-      / grades.length
-    );
+  const studentsToSort: StudentForSort[] = students
+    .map((student) => (
+      {
+        ...student,
+        avarageGrade: countAvarageGrade(student.grades),
+        marriedNumber: Number(student.married),
+      }
+    ));
 
-    const studentsToSort: StudentForSort[] = students
-      .map((student) => (
-        {
-          ...student,
-          avarageGrade: countAvarageGrade(student.grades),
-          marriedNumber: Number(student.married),
-        }
-      ));
+  let studentsSortRule: SortRuleCallback | undefined;
 
-    // sort callback
-    let studentsSortRule: SortRuleCallback | undefined;
+  const orderCoefficient = order === 'asc' ? 1 : -1;
 
-    // to provide 'asc' or 'desc' for sorting callback
-    const k = order === 'asc' ? 1 : -1;
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsSortRule = (a, b): number => (
+        orderCoefficient * a[sortBy].localeCompare(b[sortBy])
+      );
+      break;
+    case SortType.Age:
+    case SortType.Married:
+    case SortType.AverageGrade:
+      studentsSortRule = (a, b): number => (
+        orderCoefficient * a[sortBy] - orderCoefficient * b[sortBy]
+      );
+      break;
+    default:
+      break;
+  }
 
-    // choose callback for sort
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        studentsSortRule = (a, b): number => (
-          k * a[sortBy].localeCompare(b[sortBy])
-        );
-        break;
-      case SortType.Age:
-      case SortType.Married:
-      case SortType.AverageGrade:
-        studentsSortRule = (a, b): number => (
-          k * a[sortBy] - k * b[sortBy]
-        );
-        break;
-      default:
-        break;
-    }
-
-    // sort and then get rid of auxiliary fields
-    return studentsToSort
-      .sort(studentsSortRule)
-      .map((
-        { marriedNumber, avarageGrade, ...student },
-      ) => (student));
+  return studentsToSort
+    .sort(studentsSortRule)
+    .map((
+      { marriedNumber, avarageGrade, ...student },
+    ) => (student));
 }
