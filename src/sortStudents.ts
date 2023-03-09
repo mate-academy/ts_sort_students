@@ -31,7 +31,6 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-
   return [...students].sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
