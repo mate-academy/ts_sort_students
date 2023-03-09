@@ -27,26 +27,25 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((prevStudent, nextStudent) => {
+    const sortOrder = order === 'asc' ? 1 : -1;
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? prevStudent[sortBy].localeCompare(nextStudent[sortBy])
-          : nextStudent[sortBy].localeCompare(prevStudent[sortBy]);
+        return sortOrder * prevStudent[sortBy]
+          .localeCompare(nextStudent[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(prevStudent[sortBy]) - Number(nextStudent[sortBy])
-          : Number(nextStudent[sortBy]) - Number(prevStudent[sortBy]);
+        return sortOrder * (Number(prevStudent[sortBy])
+        - Number(nextStudent[sortBy]));
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? averageGrade(prevStudent) - averageGrade(nextStudent)
-          : averageGrade(nextStudent) - averageGrade(prevStudent);
+        return sortOrder * (averageGrade(prevStudent)
+        - averageGrade(nextStudent));
 
       default:
-        throw new Error('Unknown Sort type');
+        throw new Error(`Unknown Sort type: ${sortBy}`);
     }
   });
 }
