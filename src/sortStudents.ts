@@ -24,38 +24,29 @@ function getAverageGrade(grades: number[]): number {
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const copyOfStudents: Student[] = students.map((person) => ({ ...person }));
+  const copyOfStudents: Student[] = [...students];
+  const orderMultiply = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copyOfStudents.sort((prev, current) => {
-        return order === 'asc'
-          ? prev[sortBy].localeCompare(current[sortBy])
-          : current[sortBy].localeCompare(prev[sortBy]);
+      return copyOfStudents.sort((prev, current) => {
+        return prev[sortBy].localeCompare(current[sortBy]) * orderMultiply;
       });
-      break;
 
     case SortType.Age:
     case SortType.Married:
-      copyOfStudents.sort((prev, current) => {
-        return order === 'asc'
-          ? Number(prev[sortBy]) - Number(current[sortBy])
-          : Number(current[sortBy]) - Number(prev[sortBy]);
+      return copyOfStudents.sort((prev, current) => {
+        return (+prev[sortBy] - +current[sortBy]) * orderMultiply;
       });
-      break;
 
     case SortType.AverageGrade:
-      copyOfStudents.sort((prev, current) => {
-        return order === 'asc'
-          ? getAverageGrade(prev.grades) - getAverageGrade(current.grades)
-          : getAverageGrade(current.grades) - getAverageGrade(prev.grades);
+      return copyOfStudents.sort((prev, current) => {
+        return (getAverageGrade(prev.grades) - getAverageGrade(current.grades))
+          * orderMultiply;
       });
-      break;
 
     default:
-      throw new Error('Something went wrong...');
+      throw new Error('Please, input correct value for sorting!');
   }
-
-  return copyOfStudents;
 }
