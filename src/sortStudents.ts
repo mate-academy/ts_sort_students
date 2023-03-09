@@ -31,6 +31,7 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const sortCopyArray = [...students];
+  const adscCompare = -1;
 
   switch (sortBy) {
     case SortType.Name:
@@ -40,7 +41,7 @@ export function sortStudents(
 
         return order === 'asc'
           ? compare
-          : compare * -1;
+          : compare * adscCompare;
       });
 
     case (SortType.Age):
@@ -50,7 +51,7 @@ export function sortStudents(
 
         return order === 'asc'
           ? compare
-          : compare * -1;
+          : compare * adscCompare;
       });
 
     case (SortType.AverageGrade):
@@ -61,7 +62,7 @@ export function sortStudents(
 
         return order === 'asc'
           ? compare
-          : compare * -1;
+          : compare * adscCompare;
       });
 
     default:
