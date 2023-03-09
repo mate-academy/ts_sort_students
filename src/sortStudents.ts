@@ -11,7 +11,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  Grades = 'grades',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -28,7 +28,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return students.sort((currentStudent, nextStudent) => {
+  return [...students].sort((currentStudent, nextStudent) => {
     const orderCoefficient = order === 'asc' ? 1 : -1;
 
     switch (sortBy) {
@@ -40,7 +40,7 @@ export function sortStudents(
       case SortType.Married:
         return orderCoefficient * Number(currentStudent[sortBy])
           - orderCoefficient * Number(nextStudent[sortBy]);
-      case SortType.Grades:
+      case SortType.AverageGrade:
         return orderCoefficient * countAvarageGrade(currentStudent[sortBy])
           - orderCoefficient * countAvarageGrade(nextStudent[sortBy]);
       default:
