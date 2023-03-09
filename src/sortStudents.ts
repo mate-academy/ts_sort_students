@@ -50,7 +50,7 @@ export function sortStudents(
         * sort;
 
       default:
-        throw new Error();
+        throw new Error('Wrong SortType');
     }
   });
 }
