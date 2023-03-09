@@ -24,9 +24,9 @@ export function sortStudents(
   const getAverageGrade = (student: Student): number => student.grades.reduce(
     (prevGrade, currGrade) => prevGrade + currGrade,
   ) / student.grades.length;
+  const orderDirection = order === 'asc' ? 1 : -1;
 
   return [...students].sort((aStudent: Student, bStudent: Student): number => {
-    const orderDirection = order === 'asc' ? 1 : -1;
 
     switch (sortBy) {
       case SortType.Name:
