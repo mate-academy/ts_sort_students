@@ -17,59 +17,59 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(arr: number[]): number {
-  let sum: number = 0;
+function averageGrade(totalGrades: number[]): number {
+  const sum = totalGrades.reduce((prev, item) => prev + item, 0);
 
-  sum = arr.reduce((prev, item) => prev + item, 0);
-
-  return sum / arr.length;
+  return sum / totalGrades.length;
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const copyOfStudents = [...students];
   const typeOfOrder = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
-      return typeOfOrder ? copyOfStudents.sort(
-        (a: Student, b: Student) => a.name.localeCompare(b.name),
-      ) : copyOfStudents.sort(
-        (a: Student, b: Student) => b.name.localeCompare(a.name),
-      );
+      return copyOfStudents.sort((firstStudent, secondStudent) => (
+        typeOfOrder
+          ? firstStudent.name.localeCompare(secondStudent.name)
+          : secondStudent.name.localeCompare(firstStudent.name)
+      ));
 
     case SortType.Surname:
-      return typeOfOrder ? copyOfStudents.sort(
-        (a: Student, b: Student) => a.surname.localeCompare(b.surname),
-      ) : copyOfStudents.sort(
-        (a: Student, b: Student) => b.surname.localeCompare(a.surname),
-      );
+      return copyOfStudents.sort((firstStudent, secondStudent) => (
+        typeOfOrder
+          ? firstStudent.surname.localeCompare(secondStudent.surname)
+          : secondStudent.surname.localeCompare(firstStudent.surname)
+      ));
 
     case SortType.Age:
-      return typeOfOrder ? copyOfStudents.sort(
-        (a: Student, b: Student) => a.age - b.age,
-      ) : copyOfStudents.sort(
-        (a: Student, b: Student) => b.age - a.age,
-      );
+      return copyOfStudents.sort((firstStudent, secondStudent) => (
+        typeOfOrder
+          ? firstStudent.age - secondStudent.age
+          : secondStudent.age - firstStudent.age
+      ));
 
     case SortType.Married:
-      return typeOfOrder ? copyOfStudents.sort(
-        (a: Student, b: Student) => +a.married - +b.married,
-      ) : copyOfStudents.sort(
-        (a: Student, b: Student) => +b.married - +a.married,
-      );
+      return copyOfStudents.sort((firstStudent, secondStudent) => (
+        typeOfOrder
+          ? +firstStudent.married - +secondStudent.married
+          : +secondStudent.married - +firstStudent.married
+      ));
 
     case SortType.AverageGrade:
-      return typeOfOrder ? copyOfStudents.sort(
-        (a: Student, b: Student) => averageGrade(
-          a.grades,
-        ) - averageGrade(b.grades),
-      ) : copyOfStudents.sort(
-        (a: Student, b: Student) => averageGrade(
-          b.grades,
-        ) - averageGrade(a.grades),
-      );
+      return copyOfStudents.sort((firstStudent, secondStudent) => (
+        typeOfOrder
+          ? averageGrade(
+            firstStudent.grades,
+          ) - averageGrade(secondStudent.grades)
+          : averageGrade(
+            secondStudent.grades,
+          ) - averageGrade(firstStudent.grades)
+      ));
 
     default:
       return students;
