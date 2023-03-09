@@ -26,29 +26,28 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents = [...students];
+  return [...students].sort((firstStudent, secondStudent) : number => {
+    let comparison = 0;
 
-  return sortedStudents.sort((firstStudent, secondStudent) : number => {
     switch (sortBy) {
       case (SortType.Name):
       case (SortType.Surname):
-        return order === 'asc'
-          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
+        comparison = firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
+        break;
 
       case (SortType.AverageGrade):
-        return order === 'asc'
-          ? averageGrade(firstStudent) - averageGrade(secondStudent)
-          : averageGrade(secondStudent) - averageGrade(firstStudent);
+        comparison = averageGrade(firstStudent) - averageGrade(secondStudent);
+        break;
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
-          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
+        comparison = +(firstStudent[sortBy]) - +(secondStudent[sortBy]);
+        break;
 
       default:
-        return 0;
+        throw new Error('Unknown type');
     }
+
+    return order === 'asc' ? comparison : -comparison;
   });
 }
