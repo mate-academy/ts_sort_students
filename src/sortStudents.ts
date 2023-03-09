@@ -26,26 +26,25 @@ export function sortStudents(
   ) / student.grades.length;
 
   return [...students].sort((aStudent: Student, bStudent: Student): number => {
+    const orderDirection = order === 'asc' ? 1 : -1;
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'desc'
-          ? bStudent[sortBy].localeCompare(aStudent[sortBy])
-          : aStudent[sortBy].localeCompare(bStudent[sortBy]);
+        return (aStudent[sortBy].localeCompare(bStudent[sortBy]))
+          * orderDirection;
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'desc'
-          ? +bStudent[sortBy] - +aStudent[sortBy]
-          : +aStudent[sortBy] - +bStudent[sortBy];
+        return (+aStudent[sortBy] - +bStudent[sortBy])
+          * orderDirection;
 
       case SortType.AverageGrade:
-        return order === 'desc'
-          ? getAverageGrade(bStudent) - getAverageGrade(aStudent)
-          : getAverageGrade(aStudent) - getAverageGrade(bStudent);
+        return (getAverageGrade(aStudent) - getAverageGrade(bStudent))
+          * orderDirection;
 
       default:
-        return 0;
+        throw new Error(`Invalid sort criteria: "${sortBy}"`);
     }
   });
 }
