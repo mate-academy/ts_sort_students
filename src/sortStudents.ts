@@ -31,7 +31,7 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const sortCopyArray = [...students];
-  const adscCompare = -1;
+  const direction = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
     case SortType.Name:
@@ -39,9 +39,7 @@ export function sortStudents(
       return sortCopyArray.sort((prev, current) => {
         const compare = prev[sortBy].localeCompare(current[sortBy]);
 
-        return order === 'asc'
-          ? compare
-          : compare * adscCompare;
+        return direction * compare;
       });
 
     case (SortType.Age):
@@ -49,9 +47,7 @@ export function sortStudents(
       return sortCopyArray.sort((prev, current) => {
         const compare = +prev[sortBy] - +current[sortBy];
 
-        return order === 'asc'
-          ? compare
-          : compare * adscCompare;
+        return direction * compare;
       });
 
     case (SortType.AverageGrade):
@@ -60,12 +56,10 @@ export function sortStudents(
         const bSum = countAverageSum(current.grades);
         const compare = aSum - bSum;
 
-        return order === 'asc'
-          ? compare
-          : compare * adscCompare;
+        return direction * compare;
       });
 
     default:
-      throw new Error('Wrong sort type parameters');
+      throw new Error(`Wrong ${sortBy} parameters`);
   }
 }
