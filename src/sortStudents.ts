@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -35,40 +35,40 @@ export function sortStudents(
     case SortType.Name:
       return copyOfStudents.sort((firstStudent, secondStudent) => (
         typeOfOrder
-          ? firstStudent.name.localeCompare(secondStudent.name)
-          : secondStudent.name.localeCompare(firstStudent.name)
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy])
       ));
 
     case SortType.Surname:
       return copyOfStudents.sort((firstStudent, secondStudent) => (
         typeOfOrder
-          ? firstStudent.surname.localeCompare(secondStudent.surname)
-          : secondStudent.surname.localeCompare(firstStudent.surname)
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy])
       ));
 
     case SortType.Age:
       return copyOfStudents.sort((firstStudent, secondStudent) => (
         typeOfOrder
-          ? firstStudent.age - secondStudent.age
-          : secondStudent.age - firstStudent.age
+          ? firstStudent[sortBy] - secondStudent[sortBy]
+          : secondStudent[sortBy] - firstStudent[sortBy]
       ));
 
     case SortType.Married:
       return copyOfStudents.sort((firstStudent, secondStudent) => (
         typeOfOrder
-          ? +firstStudent.married - +secondStudent.married
-          : +secondStudent.married - +firstStudent.married
+          ? +firstStudent[sortBy] - +secondStudent[sortBy]
+          : +secondStudent[sortBy] - +firstStudent[sortBy]
       ));
 
     case SortType.AverageGrade:
       return copyOfStudents.sort((firstStudent, secondStudent) => (
         typeOfOrder
           ? averageGrade(
-            firstStudent.grades,
-          ) - averageGrade(secondStudent.grades)
+            firstStudent[sortBy],
+          ) - averageGrade(secondStudent[sortBy])
           : averageGrade(
             secondStudent.grades,
-          ) - averageGrade(firstStudent.grades)
+          ) - averageGrade(firstStudent[sortBy])
       ));
 
     default:
