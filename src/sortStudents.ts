@@ -33,12 +33,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return copyOfStudents.sort((firstStudent, secondStudent) => (
-        typeOfOrder
-          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-          : secondStudent[sortBy].localeCompare(firstStudent[sortBy])
-      ));
-
     case SortType.Surname:
       return copyOfStudents.sort((firstStudent, secondStudent) => (
         typeOfOrder
