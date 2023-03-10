@@ -1,10 +1,10 @@
 
 export interface Student {
-  name: string;
-  surname: string;
-  age: number;
-  married: boolean;
-  grades: number[];
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
@@ -12,42 +12,41 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'grades',
+  AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(grades: number[]): number {
-  return grades.reduce((acc, curr) => acc + curr) / grades.length;
+function calculateAverageGrade({ grades }: Student): number {
+  return grades.reduce((aver, grade) => aver + grade, 0) / grades.length;
 }
 
 export function sortStudents(
-  students: Student[],
-  sortBy: SortType,
-  order: SortOrder,
+  students:Student[],
+  sortBy:SortType,
+  order:SortOrder,
 ): Student[] {
-  return [...students].sort((previous: Student, next: Student) => {
+  return [...students].sort((studentA, studentB) => {
+    const direct = order === 'asc'
+      ? 1
+      : -1;
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'desc'
-          ? next[sortBy].localeCompare(previous[sortBy])
-          : previous[sortBy].localeCompare(next[sortBy]);
+        return (studentA[sortBy]
+          .localeCompare(studentB[sortBy])) * direct;
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'desc'
-          ? +(next[sortBy]) - +(previous[sortBy])
-          : +(previous[sortBy]) - +(next[sortBy]);
+        return (Number(studentA[sortBy])
+          - Number(studentB[sortBy])) * direct;
 
       case SortType.AverageGrade:
-        return order === 'desc'
-          ? averageGrade(next[sortBy]) - averageGrade(previous[sortBy])
-          : averageGrade(previous[sortBy]) - averageGrade(next[sortBy]);
-
+        return (calculateAverageGrade(studentA)
+            - calculateAverageGrade(studentB)) * direct;
       default:
-        throw new Error('SortType Error');
+        return 0;
     }
   });
 }
