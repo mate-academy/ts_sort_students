@@ -17,38 +17,31 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageAge({ grades }: Student): number {
+  return grades.reduce((a, b) => a + b) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): object[] {
-  return students.sort((activeStudent: Student, nextStudent: Student) => {
-    const activeAverageGrade = activeStudent[SortType.AverageGrade]
-      .reduce((a, b) => a + b)
-    / activeStudent[SortType.AverageGrade].length;
-    const nextAverageGrade = nextStudent[SortType.AverageGrade]
-      .reduce((a, b) => a + b)
-    / nextStudent[SortType.AverageGrade].length;
+  return [...students].sort((activeStudent: Student, nextStudent: Student) => {
+    const sortMethod = (order === 'asc') ? 1 : -1;
 
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? activeStudent[sortBy]
-            .localeCompare(nextStudent[sortBy])
-          : activeStudent[sortBy]
-            .localeCompare(nextStudent[sortBy]) * (-1);
+        return activeStudent[sortBy]
+          .localeCompare(nextStudent[sortBy]) * sortMethod;
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? +activeStudent[sortBy] - +nextStudent[sortBy]
-          : (+activeStudent[sortBy] - +nextStudent[sortBy]) * (-1);
+        return (+activeStudent[sortBy] - +nextStudent[sortBy]) * sortMethod;
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? activeAverageGrade - nextAverageGrade
-          : (activeAverageGrade - nextAverageGrade) * (-1);
+        return (getAverageAge(activeStudent)
+         - getAverageAge(nextStudent)) * sortMethod;
 
       default:
         throw new Error(`Invalid SortType: ${sortBy}.`);
