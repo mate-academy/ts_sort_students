@@ -27,23 +27,20 @@ export function sortStudents(students: Student[],
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'desc'
-          ? next[sortBy].localeCompare(prev[sortBy])
-          : prev[sortBy].localeCompare(next[sortBy]);
+        return (order === 'desc' ? -1 : 1)
+        * prev[sortBy].localeCompare(next[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'desc'
-          ? +next[sortBy] - +(prev[sortBy])
-          : +prev[sortBy] - +(next[sortBy]);
+        return (order === 'desc' ? -1 : 1)
+        * (+prev[sortBy] - +(next[sortBy]));
 
       case SortType.AverageGrade:
-        return order === 'desc'
-          ? averageGrade(next[sortBy]) - averageGrade(prev[sortBy])
-          : averageGrade(prev[sortBy]) - averageGrade(next[sortBy]);
+        return (order === 'desc' ? -1 : 1)
+        * (averageGrade(prev[sortBy]) - averageGrade(next[sortBy]));
 
       default:
-        throw new Error('Invalid SortType.');
+        throw new Error(`Invalid SortType: ${sortBy}`);
     }
   });
 }
