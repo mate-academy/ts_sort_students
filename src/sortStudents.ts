@@ -21,7 +21,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((student1, student2) => {
+  return [...students].sort((student1: Student, student2: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -32,21 +32,21 @@ export function sortStudents(
       case SortType.Age:
       case SortType.Married:
         return order === 'desc'
-          ? student2[sortBy] - student1[sortBy]
-          : student1[sortBy] - student2[sortBy];
+          ? +student2[sortBy] - +student1[sortBy]
+          : +student1[sortBy] - +student2[sortBy];
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? student1[sortBy].reduce((a, b) => {
+          ? student1[sortBy].reduce((a: number, b: number) => {
             return (a + b);
           }) / student1[sortBy].length
-          - student2[sortBy].reduce((a, b) => {
+          - student2[sortBy].reduce((a: number, b: number) => {
             return (a + b);
           }) / student2[sortBy].length
-          : student2[sortBy].reduce((a, b) => {
+          : student2[sortBy].reduce((a: number, b: number) => {
             return (a + b);
           }) / student2[sortBy].length
-          - student1[sortBy].reduce((a, b) => {
+          - student1[sortBy].reduce((a: number, b: number) => {
             return (a + b);
           }) / student1[sortBy].length;
 
