@@ -17,15 +17,15 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function AverageGrade({ grades }: Student): number {
+function AverageGradeCalc({ grades }: Student): number {
   return grades.reduce((a, b) => a + b / grades.length);
 }
 
 export function sortStudents(
-    students: Student[],
-    sortBy: SortType,
-    order: SortOrder
-  ): Student[] {
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const studentCopy = [...students];
   const orderName = order === 'asc'
     ? 1
@@ -45,7 +45,7 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return orderName
-          * (AverageGrade(prevStudent) - AverageGrade(currentStudent));
+          * (AverageGradeCalc(prevStudent) - AverageGradeCalc(currentStudent));
 
       default:
         throw new Error('OrderName is wrong');
