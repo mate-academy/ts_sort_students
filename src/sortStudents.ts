@@ -44,5 +44,5 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
       default: 
         throw new Error('OrderName is wrong');
     }
-  })
+  });
 }
