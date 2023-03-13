@@ -20,8 +20,10 @@ export enum SortOrder {
 }
 
 function getAverageGrade(student: Student): number {
-  return student.grades.reduce((total, grade) => total + grade)
-    / student.grades.length;
+  return student.grades.reduce((total, grade) => {
+    return total + grade
+      / student.grades.length;
+  }, 0);
 }
 
 export function sortStudents(
@@ -30,30 +32,32 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const studentCopy: Student[] = [...students];
-  const isAscending = order === SortOrder.Asc ? 1 : -1;
+  const isAscending = order === SortOrder.Asc
+    ? 1
+    : -1;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return (studentCopy.sort((firstStudent, secondStudent): number => {
+      return studentCopy.sort((firstStudent, secondStudent): number => {
         return isAscending
           * firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
-      }));
+      });
 
     case SortType.Age:
     case SortType.Married:
-      return (studentCopy.sort((firstStudent, secondStudent): number => {
+      return studentCopy.sort((firstStudent, secondStudent): number => {
         return isAscending
           * (+firstStudent[sortBy] - +secondStudent[sortBy]);
-      }));
+      });
 
     case SortType.AverageGrade:
-      return (studentCopy.sort((firstStudent, secondStudent): number => {
+      return studentCopy.sort((firstStudent, secondStudent): number => {
         return isAscending
           * (getAverageGrade(firstStudent) - getAverageGrade(secondStudent));
-      }));
+      });
 
     default:
-      throw new Error('Invalid SortBy value');
+      throw new Error(`Invalid SortBy value: ${sortBy}`);
   }
 }
