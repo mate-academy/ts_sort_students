@@ -28,10 +28,10 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newStudents = [...students];
-
-  return newStudents.sort((aStudent, bStudent) => {
-    const orderValue = order === 'asc' ? 1 : -1;
+  return [...students].sort((aStudent, bStudent) => {
+    const orderValue = order === 'asc'
+      ? 1
+      : -1;
 
     switch (sortBy) {
       case (SortType.Name):
@@ -42,7 +42,8 @@ export function sortStudents(
         return (aStudent.age - bStudent.age) * orderValue;
 
       case (SortType.Married):
-        return (+aStudent.married - (+bStudent.married)) * orderValue;
+        return (
+          Number(aStudent.married) - Number(bStudent.married)) * orderValue;
 
       case (SortType.AverageGrade):
         return (
@@ -50,7 +51,7 @@ export function sortStudents(
         ) * orderValue;
 
       default:
-        throw new Error('invalid sort value');
+        throw new Error(`invalid sort ${sortBy}`);
     }
   });
 }
