@@ -18,7 +18,9 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageAge({ grades }: Student): number {
-  return grades.reduce((a, b) => a + b) / grades.length;
+  return grades
+    ? grades.reduce((a, b) => a + b) / grades.length
+    : 0;
 }
 
 export function sortStudents(
@@ -27,7 +29,9 @@ export function sortStudents(
   order: SortOrder,
 ): object[] {
   return [...students].sort((activeStudent: Student, nextStudent: Student) => {
-    const sortMethod = (order === 'asc') ? 1 : -1;
+    const sortMethod = (order === 'asc')
+      ? 1
+      : -1;
 
     switch (sortBy) {
       case SortType.Name:
