@@ -44,4 +44,3 @@ export function sortStudents(students: Student[],
     }
   });
 }
-co
