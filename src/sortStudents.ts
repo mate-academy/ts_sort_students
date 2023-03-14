@@ -20,7 +20,6 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: SortOrder,
 ): Student[] {
   const sortedStudents = JSON.parse(JSON.stringify(students));
 
@@ -34,9 +33,9 @@ export function sortStudents(
     }
 
     if (sortBy === 'married') {
-      return a[sortBy]- b[sortBy];
+      return a[sortBy] - b[sortBy];
     }
-  })
+  });
 
   return sortedStudents;
 }
