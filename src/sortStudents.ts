@@ -19,11 +19,8 @@ export enum SortOrder {
   Desc = 'desc',
 }
 
-function getAverageGrade(student: Student): number {
-  return student.grades.reduce((total, grade) => {
-    return total + grade;
-  }, 0)
-  / student.grades.length;
+function getAverageGrade({ grades }: Student): number {
+  return grades.reduce((total, grade) => total + grade, 0) / grades.length;
 }
 
 export function sortStudents(
