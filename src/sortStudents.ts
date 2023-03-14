@@ -23,7 +23,7 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = JSON.parse(JSON.stringify(students));
 
-  sortedStudents.sort((a: Student, b: Student): number => {
+  return sortedStudents.sort((a: Student, b: Student): number => {
     if (sortBy === 'name' || sortBy === 'surname') {
       return a[sortBy].localeCompare(b[sortBy]);
     }
@@ -32,6 +32,4 @@ export function sortStudents(
       return a[sortBy] - b[sortBy];
     }
   });
-
-  return sortedStudents;
 }
