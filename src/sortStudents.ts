@@ -33,23 +33,16 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Age:
+    case SortType.Married:
       if (order === 'asc') {
-        resultArray.sort((a, b) => +a.age - +b.age);
+        resultArray.sort((a, b) => +a[sortBy] - +b[sortBy]);
       } else {
-        resultArray.sort((b, a) => +a.age - +b.age);
+        resultArray.sort((b, a) => +a[sortBy] - +b[sortBy]);
       }
       break;
 
-    case 'married':
-      if (order === 'asc') {
-        resultArray.sort((a, b) => +a.married - +b.married);
-      } else {
-        resultArray.sort((b, a) => +a.married - +b.married);
-      }
-      break;
-
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       if (order === 'asc') {
         resultArray.sort(
           (a, b) => a[sortBy].localeCompare(b[sortBy]),
@@ -61,7 +54,7 @@ export function sortStudents(
       }
       break;
 
-    case 'grades':
+    case SortType.AverageGrade:
       if (order === 'asc') {
         resultArray.sort((a, b) => (
           a.grades.reduce(callbackGrades) / a.grades.length
