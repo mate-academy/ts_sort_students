@@ -1,4 +1,3 @@
-
 export interface Student {
   // describe Student interface
   name: string;
@@ -24,7 +23,7 @@ export function sortStudents(
   students : Student[], sortBy: SortType, order: SortOrder,
 ) : Student[] {
   // write your function
-  let resultArray : Student[] = [...students];
+  const resultArray : Student[] = [...students];
 
   function callbackGrades(
     previousValue: number, currentValue: number,
@@ -33,29 +32,50 @@ export function sortStudents(
   }
 
   switch (sortBy) {
-    case 'age':
-      resultArray = resultArray.sort((a, b) => +a.age - +b.age);
+    case SortType.Age:
+      if (order === 'asc') {
+        resultArray.sort((a, b) => +a.age - +b.age);
+      } else {
+        resultArray.sort((b, a) => +a.age - +b.age);
+      }
       break;
 
     case 'married':
+      if (order === 'asc') {
+        resultArray.sort((a, b) => +a.married - +b.married);
+      } else {
+        resultArray.sort((b, a) => +a.married - +b.married);
+      }
       break;
 
     case 'name':
     case 'surname':
-      resultArray = resultArray.sort(
-        (a, b) => a[sortBy].localeCompare(b[sortBy]),
-      );
+      if (order === 'asc') {
+        resultArray.sort(
+          (a, b) => a[sortBy].localeCompare(b[sortBy]),
+        );
+      } else {
+        resultArray.sort(
+          (a, b) => b[sortBy].localeCompare(a[sortBy]),
+        );
+      }
       break;
 
     case 'grades':
-      resultArray = [...resultArray].sort((a, b) => (
-        a.grades.reduce(callbackGrades) / a.grades.length
-      ) - (b.grades.reduce(callbackGrades) / b.grades.length));
+      if (order === 'asc') {
+        resultArray.sort((a, b) => (
+          a.grades.reduce(callbackGrades) / a.grades.length
+        ) - (b.grades.reduce(callbackGrades) / b.grades.length));
+      } else {
+        resultArray.sort((b, a) => (
+          a.grades.reduce(callbackGrades) / a.grades.length
+        ) - (b.grades.reduce(callbackGrades) / b.grades.length));
+      }
       break;
 
     default:
       break;
   }
 
-  return order === 'desc' ? resultArray.reverse() : resultArray;
+  return resultArray;
 }
