@@ -16,6 +16,14 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+export const averegeGrades = (grades: number[]): number => {
+  const aver = grades.reduce((a: number, b: number) => {
+    return (a + b);
+  }) / grades.length;
+
+  return aver;
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -37,18 +45,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? student1[sortBy].reduce((a: number, b: number) => {
-            return (a + b);
-          }) / student1[sortBy].length
-          - student2[sortBy].reduce((a: number, b: number) => {
-            return (a + b);
-          }) / student2[sortBy].length
-          : student2[sortBy].reduce((a: number, b: number) => {
-            return (a + b);
-          }) / student2[sortBy].length
-          - student1[sortBy].reduce((a: number, b: number) => {
-            return (a + b);
-          }) / student1[sortBy].length;
+          ? averegeGrades(student1[sortBy]) - averegeGrades(student2[sortBy])
+          : averegeGrades(student2[sortBy]) - averegeGrades(student1[sortBy]);
 
       default:
         return 1;
