@@ -32,23 +32,23 @@ export function sortStudents(
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
-        ? copyStudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : copyStudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+        ? copyStudents.sort((a, b) => +(a[sortBy]) - +(b[sortBy]))
+        : copyStudents.sort((a, b) => +(b[sortBy]) - +(a[sortBy]));
 
     case SortType.Name:
     case SortType.Surname:
       return order === 'asc'
         // eslint-disable-next-line max-len
-        ? copyStudents.sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]))
+        ? copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
         // eslint-disable-next-line max-len
-        : copyStudents.sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
+        : copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
     case SortType.AverageGrade:
       return order === 'asc'
         // eslint-disable-next-line max-len
-        ? copyStudents.sort((a: Student, b: Student) => averageGrade(a[sortBy]) - averageGrade(b[sortBy]))
+        ? copyStudents.sort((a, b) => averageGrade(a[sortBy]) - averageGrade(b[sortBy]))
         // eslint-disable-next-line max-len
-        : copyStudents.sort((a: Student, b: Student) => averageGrade(b[sortBy]) - averageGrade(a[sortBy]));
+        : copyStudents.sort((a, b) => averageGrade(b[sortBy]) - averageGrade(a[sortBy]));
 
     default:
       throw new Error('Sort is impossible');
