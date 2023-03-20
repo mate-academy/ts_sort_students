@@ -18,51 +18,46 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverageGrade(item: number[]): number {
+  return item.reduce((sum: number, el: number) => sum + el, 0)
+  / item.length;
+}
+
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const copiedStudents = [...students];
+  const flag: number = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      copiedStudents.sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
+      copiedStudents.sort(
+        (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]) * flag,
+      );
       break;
     case SortType.Age:
-      copiedStudents.sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
+      copiedStudents.sort(
+        (a: Student, b: Student) => (a[sortBy] - b[sortBy]) * flag,
+      );
       break;
     case SortType.AverageGrade:
       copiedStudents.sort((a: Student, b: Student) => {
         const curr: number
-          = a.grades.reduce((sum: number, el: number) => sum + el, 0)
-          / a.grades.length;
+          = getAverageGrade(a.grades);
         const next: number
-          = b.grades.reduce((sum: number, el: number) => sum + el, 0)
-          / b.grades.length;
+          = getAverageGrade(b.grades);
 
-        return order === 'asc'
-          ? curr - next
-          : next - curr;
+        return (curr - next) * flag;
       });
       break;
 
     case SortType.Married:
-      copiedStudents.sort((a: Student, b: Student) => {
-        const curr: number = a.married === true ? 1 : 0;
-        const next: number = b.married === true ? 1 : 0;
-
-        return order === 'asc'
-          ? curr - next
-          : next - curr;
-      });
+      copiedStudents.sort(
+        (a: Student, b: Student) => (+a.married - +b.married) * flag,
+      );
       break;
 
     default:
