@@ -17,31 +17,14 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function isValuesEqual(arr: Student[], sortType: SortType): boolean {
-  for (let i = 0; i < arr.length - 1; i += 1) {
-    let currenValue = arr[i][sortType];
-    let nextValue = arr[i + 1][sortType];
+function getAverageGrade(grades: number[]):number {
+  const value = grades.reduce(
+    (sum: number, current: number): number => {
+      return sum + current;
+    }, 0,
+  ) / grades.length;
 
-    if (Array.isArray(currenValue) && Array.isArray(nextValue)) {
-      currenValue = currenValue.reduce(
-        (sum: number, current: number): number => {
-          return sum + current;
-        }, 0,
-      );
-
-      nextValue = nextValue.reduce(
-        (sum: number, current: number): number => {
-          return sum + current;
-        }, 0,
-      );
-    }
-
-    if (currenValue !== nextValue) {
-      return false;
-    }
-  }
-
-  return true;
+  return value;
 }
 
 export function sortStudents(
@@ -53,127 +36,46 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Age: {
-      const isEqual = isValuesEqual(students, sortBy);
-
-      if (isEqual) {
-        return copyStudets;
-      }
-
-      if (order === 'asc') {
-        return copyStudets.sort(
-          (a: Student, b: Student) => {
-            return a[SortType.Age] - b[SortType.Age];
-          },
-        );
-      }
-
-      if (order === 'desc') {
-        return copyStudets.sort(
-          (a: Student, b: Student) => {
-            return b[SortType.Age] - a[SortType.Age];
-          },
-        );
-      }
-
-      break;
+      return copyStudets.sort(
+        (a: Student, b: Student) => ({
+          asc: a[SortType.Age] - b[SortType.Age],
+          desc: b[SortType.Age] - a[SortType.Age],
+        })[order],
+      );
     }
 
     case SortType.Married: {
-      const isEqual = isValuesEqual(students, sortBy);
-
-      if (isEqual) {
-        return copyStudets;
-      }
-
-      if (order === 'asc') {
-        return copyStudets.sort(
-          (a: Student, b: Student) => {
-            return Number(a[SortType.Married]) - Number(b[SortType.Married]);
-          },
-        );
-      }
-
-      if (order === 'desc') {
-        return copyStudets.sort(
-          (a: Student, b: Student) => {
-            return Number(b[SortType.Married]) - Number(a[SortType.Married]);
-          },
-        );
-      }
-
-      break;
+      return copyStudets.sort(
+        (a: Student, b: Student) => ({
+          asc: Number(a[SortType.Married]) - Number(b[SortType.Married]),
+          desc: Number(b[SortType.Married]) - Number(a[SortType.Married]),
+        })[order],
+      );
     }
 
     case SortType.AverageGrade: {
-      const isEqual = isValuesEqual(students, sortBy);
+      return copyStudets.sort(
+        (a: Student, b: Student) => {
+          const currenValue = getAverageGrade(a[sortBy]);
 
-      if (isEqual) {
-        return copyStudets;
-      }
+          const nextValue = getAverageGrade(b[sortBy]);
 
-      if (order === 'asc') {
-        return copyStudets.sort(
-          (a: Student, b: Student): number => {
-            const currenValue = a[sortBy].reduce(
-              (sum: number, current: number): number => {
-                return sum + current;
-              }, 0,
-            ) / a[sortBy].length;
-
-            const nextValue = b[sortBy].reduce(
-              (sum: number, current: number): number => {
-                return sum + current;
-              }, 0,
-            ) / b[sortBy].length;
-
-            return currenValue - nextValue;
-          },
-        );
-      }
-
-      if (order === 'desc') {
-        return copyStudets.sort(
-          (a: Student, b: Student): number => {
-            const currenValue = a[sortBy].reduce(
-              (sum: number, current: number): number => {
-                return sum + current;
-              }, 0,
-            ) / a[sortBy].length;
-
-            const nextValue = b[sortBy].reduce(
-              (sum: number, current: number): number => {
-                return sum + current;
-              }, 0,
-            ) / b[sortBy].length;
-
-            return nextValue - currenValue;
-          },
-        );
-      }
-
-      break;
+          return {
+            asc: currenValue - nextValue,
+            desc: nextValue - currenValue,
+          }[order];
+        },
+      );
     }
 
     default: {
-      const isEqual = isValuesEqual(students, sortBy);
-
-      if (isEqual) {
-        return copyStudets;
-      }
-
       copyStudets.sort(
-        (a: Student, b: Student) => {
-          return a[sortBy].localeCompare(b[sortBy]);
-        },
+        (a: Student, b: Student) => ({
+          asc: a[sortBy].localeCompare(b[sortBy]),
+          desc: b[sortBy].localeCompare(a[sortBy]),
+        })[order],
       );
-
-      if (order === 'asc') {
-        return copyStudets;
-      }
-
-      if (order === 'desc') {
-        return copyStudets.reverse();
-      } }
+    }
   }
 
   return copyStudets;
