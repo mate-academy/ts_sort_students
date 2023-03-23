@@ -21,7 +21,7 @@ export enum SortOrder {
 }
 
 function averageGrades({ grades }: Student): number {
-  return grades.reduce((grade, sum) => grade + sum, 0) / grades.length;
+  return (grades.reduce((grade, sum) => grade + sum, 0) / grades.length) || 0;
 }
 
 export function sortStudents(
@@ -38,16 +38,16 @@ export function sortStudents(
       case SortType.Name:
       case SortType.Surname:
         return student1[sortBy].localeCompare(student2[sortBy])
-        * direction;
+          * direction;
 
       case SortType.Age:
       case SortType.Married:
         return (Number(student1[sortBy]) - Number(student2[sortBy]))
-        * direction;
+          * direction;
 
       case SortType.AverageGrade:
         return (averageGrades(student1) - averageGrades(student2))
-        * direction;
+          * direction;
       default:
         throw new Error(`${sortBy} isn't a valid sorting type`);
     }
