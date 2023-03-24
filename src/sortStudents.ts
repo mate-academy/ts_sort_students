@@ -26,9 +26,7 @@ export function sortStudents(
   const copyArr = [...students];
 
   function averageGrade(arr: number[]): number {
-    const sumOfGrades = arr.reduce((prev: number, curr: number): number => {
-      return prev + curr;
-    }, 0);
+    const sumOfGrades = arr.reduce((prev, curr): number => prev + curr);
 
     return sumOfGrades / arr.length;
   }
@@ -45,7 +43,7 @@ export function sortStudents(
     return 0;
   }
 
-  copyArr.sort((studentA: Student, studentB: Student): number => {
+  copyArr.sort((studentA, studentB): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -65,13 +63,9 @@ export function sortStudents(
         return compareNumberType(aveGradeStudA, aveGradeStudB);
 
       case SortType.Age:
-        return compareNumberType(studentA.age, studentB.age);
-
       case SortType.Married:
-        const marriedStatusA: number = studentA[sortBy] === true ? 1 : 0;
-        const marriedStatusB: number = studentB[sortBy] === true ? 1 : 0;
 
-        return compareNumberType(marriedStatusA, marriedStatusB);
+        return compareNumberType(+studentA[sortBy], +studentB[sortBy]);
 
       default:
         break;
