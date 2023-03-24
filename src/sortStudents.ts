@@ -21,7 +21,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents<T extends Student>(
-  students: T[],
+  students: readonly T[],
   sortBy: SortType,
   order: SortOrder,
 ): T[] {
