@@ -1,6 +1,5 @@
 
 export interface Student {
-  // describe Student interface
   name: string,
   surname: string
   age: number,
@@ -9,7 +8,6 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
   Name = 'name',
   Surname = 'surname',
   Age = 'age',
@@ -17,7 +15,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents<T extends Student>(
@@ -43,13 +40,13 @@ export function sortStudents<T extends Student>(
 
   return [...students].sort((a, b) => {
     switch (sortBy) {
-      case 'age':
-      case 'married':
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc' ? numberSort(a, b) : numberSort(b, a);
-      case 'name':
-      case 'surname':
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc' ? stringSort(a, b) : stringSort(b, a);
-      case 'grades':
+      case SortType.AverageGrade:
         return order === 'asc' ? arraySort(a, b) : arraySort(b, a);
       default:
         return 0;
