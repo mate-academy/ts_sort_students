@@ -17,6 +17,13 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(grades: number[]): number {
+  return (
+    grades.reduce((sum: number, num: number) => sum + num, 0)
+    / grades.length
+  );
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -24,59 +31,24 @@ export function sortStudents(
 ): Student[] {
   const studCopy: Student[] = [...students];
 
-  function getAverage(array: number[]): number {
-    return array.reduce((sum: number, num: number) => sum + num, 0)
-      / array.length;
-  }
-
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return studCopy.sort(
-        (firstStud: Student, secondStud: Student): number => {
-          switch (order) {
-            case 'asc':
-              return firstStud[sortBy].localeCompare(secondStud[sortBy]);
-            case 'desc':
-              return secondStud[sortBy].localeCompare(firstStud[sortBy]);
-            default:
-              throw new Error('Alphabetic sort failed');
-          }
-        },
-      );
-
-    case SortType.Age:
-    case SortType.Married:
-      return studCopy.sort(
-        (firstStud: Student, secondStud: Student): number => {
-          switch (order) {
-            case 'asc':
-              return +firstStud[sortBy] - +secondStud[sortBy];
-            case 'desc':
-              return +secondStud[sortBy] - +firstStud[sortBy];
-            default:
-              throw new Error('Numeric sort failed');
-          }
-        },
-      );
-
-    case SortType.AverageGrade:
-      return studCopy.sort(
-        (firstStud: Student, secondStud: Student): number => {
-          switch (order) {
-            case 'asc':
-              return getAverage(firstStud[sortBy])
-              - getAverage(secondStud[sortBy]);
-            case 'desc':
-              return getAverage(secondStud[sortBy])
-              - getAverage(firstStud[sortBy]);
-            default:
-              throw new Error('Numeric average sort failed');
-          }
-        },
-      );
-
-    default:
-      throw new Error('Sorting failed. Not a valid sort type');
-  }
+  return studCopy.sort((a, b): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverage(a[sortBy]) - getAverage(b[sortBy])
+          : getAverage(b[sortBy]) - getAverage(a[sortBy]);
+      default:
+        throw new Error('Sorting failed. Not a valid sort type');
+    }
+  });
 }
