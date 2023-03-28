@@ -18,9 +18,12 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder) {
-  const compareFunction = (firstStudent: Student, secondStudent: Student) => {
+export function sortStudents(
+    students: Student[], 
+    sortBy: SortType, 
+    order: SortOrder
+  ) {
+  const compareFunction = (firstStudent: Student, secondStudent: Student): number => {
     let result = 0;
 
     switch (sortBy) {
@@ -34,7 +37,7 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
         result = firstStudent.age - secondStudent.age;
         break;
       case SortType.Married:
-        result = firstStudent.married === secondStudent.married ? 0 : firstStudent.married ? -1 : 1;
+        result = +firstStudent.married - +secondStudent.married;
         break;
       case SortType.AverageGrade:
         const aAvg = firstStudent.grades.reduce((sum, grade) => sum + grade, 0) / firstStudent.grades.length;
