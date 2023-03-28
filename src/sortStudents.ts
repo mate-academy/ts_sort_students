@@ -19,12 +19,20 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-    students: Student[], 
-    sortBy: SortType, 
-    order: SortOrder
-  ) {
-  const compareFunction = (firstStudent: Student, secondStudent: Student): number => {
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): number {
+  const compareFunction = (
+    firstStudent: Student,
+    secondStudent: Student,
+  ): number => {
     let result = 0;
+
+    function calcFunc(student): number {
+      return student.grades
+        .reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+    }
 
     switch (sortBy) {
       case SortType.Name:
@@ -40,16 +48,13 @@ export function sortStudents(
         result = +firstStudent.married - +secondStudent.married;
         break;
       case SortType.AverageGrade:
-        const aAvg = firstStudent.grades.reduce((sum, grade) => sum + grade, 0) / firstStudent.grades.length;
-        const bAvg = secondStudent.grades.reduce((sum, grade) => sum + grade, 0) / secondStudent.grades.length;
-        result = aAvg - bAvg;
+        result = calcFunc(firstStudent) - calcFunc(secondStudent);
         break;
       default:
         break;
     }
 
     return order === 'asc' ? result : -result;
-
   };
 
   return [...students].sort(compareFunction);
