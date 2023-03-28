@@ -50,6 +50,11 @@ export function sortStudents(
               getAverageGrade(student1[sortBy]);
       });
       break;
+
+    default:
+      throw new Error(
+        "Sorting is impossible, because you haven't selected a sort type or it doesn't exist"
+      );
   }
 
   return sortedStudents;
