@@ -1,16 +1,58 @@
+// import { sortAndDeduplicateDiagnostics } from "typescript";
 
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function findAverage(arr: number[]): number {
+  return arr.reduce((acc, curr) => acc + curr, 0) / arr.length;
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+export function sortStudents(students: Student[],
+  sortBy: SortType, order: SortOrder): Student[] {
+  const copiedStudents = [...students];
+
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      copiedStudents.sort((a, b) => (order === 'asc'
+        ? a[sortBy].localeCompare(b[sortBy])
+        : b[sortBy].localeCompare(a[sortBy])
+      ));
+      break;
+    case SortType.Married:
+    case SortType.Age:
+      copiedStudents.sort((a, b) => {
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+      });
+      break;
+    case SortType.AverageGrade:
+      copiedStudents.sort((a, b) => {
+        return order === 'asc'
+          ? findAverage(a[sortBy]) - findAverage(b[sortBy])
+          : findAverage(b[sortBy]) - findAverage(a[sortBy]);
+      });
+      break;
+    default:
+      break;
+  }
+
+  return copiedStudents;
 }
