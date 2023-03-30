@@ -31,15 +31,14 @@ export function sortStudents(
 
     function calcFunc(student): number {
       return student.grades
-        .reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+        .reduce((sum: number, grade: number) => sum + grade, 0)
+        / student.grades.length;
     }
 
     switch (sortBy) {
       case SortType.Name:
-        result = firstStudent.name.localeCompare(secondStudent.name);
-        break;
       case SortType.Surname:
-        result = firstStudent.surname.localeCompare(secondStudent.surname);
+        result = firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
         break;
       case SortType.Age:
         result = firstStudent.age - secondStudent.age;
