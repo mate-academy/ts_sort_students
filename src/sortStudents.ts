@@ -35,43 +35,29 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (isAscending) {
-        studentArray.sort(
-          (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]),
-        );
-      } else {
-        studentArray.sort(
-          (a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]),
-        );
-      }
+      studentArray.sort(
+        (a: Student, b: Student): number => (isAscending
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy])),
+      );
       break;
 
     case SortType.Age:
-      if (isAscending) {
-        studentArray.sort((a: Student, b: Student) => a.age - b.age);
-      } else {
-        studentArray.sort((a: Student, b: Student) => b.age - a.age);
-      }
-      break;
-
     case SortType.Married:
-      if (isAscending) {
-        studentArray.sort((a: Student, b: Student) => +a.married - +b.married);
-      } else {
-        studentArray.sort((a: Student, b: Student) => +b.married - +a.married);
-      }
+      studentArray.sort((a: Student, b: Student): number => (isAscending
+        ? a[sortBy] - b[sortBy]
+        : b[sortBy] - a[sortBy]
+      ));
       break;
 
     case SortType.AverageGrade:
-      if (isAscending) {
-        studentArray.sort(
-          (a: Student, b: Student) => getAverageGrades(a) - getAverageGrades(b),
-        );
-      } else {
-        studentArray.sort(
-          (a: Student, b: Student) => getAverageGrades(b) - getAverageGrades(a),
-        );
-      }
+      studentArray.sort(
+        (isAscending
+          ? (a: Student, b: Student): number => getAverageGrades(a)
+            - getAverageGrades(b)
+          : (a: Student, b: Student): number => getAverageGrades(b)
+            - getAverageGrades(a)),
+      );
       break;
 
     default:
