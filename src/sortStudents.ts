@@ -57,27 +57,20 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort(compareStudentsByKey('name', order));
-      break;
+      return studentsCopy.sort(compareStudentsByKey('name', order));
 
     case SortType.Surname:
-      studentsCopy.sort(compareStudentsByKey('surname', order));
-      break;
+      return studentsCopy.sort(compareStudentsByKey('surname', order));
 
     case SortType.Age:
-      studentsCopy.sort(compareStudentsByKey('age', order));
-      break;
+      return studentsCopy.sort(compareStudentsByKey('age', order));
 
     case SortType.Married:
-      studentsCopy.sort(compareStudentsByKey('married', order));
-      break;
+      return studentsCopy.sort(compareStudentsByKey('married', order));
 
     case SortType.AverageGrade:
-      studentsCopy.sort(compareStudentsByKey('grades', order));
-      break;
+      return studentsCopy.sort(compareStudentsByKey('grades', order));
 
     default: throw new Error('Wrong sort type!');
   }
-
-  return studentsCopy;
 }
