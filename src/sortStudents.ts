@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -16,7 +15,9 @@ export enum SortType {
 }
 
 function getAverageGrades({ grades }: Student): number {
-  const gradesSum = grades.reduce((prev, grade) => prev + grade, 0);
+  const gradesSum: number = grades.reduce(
+    (prev: number, grade: number) => prev + grade, 0,
+  );
 
   return gradesSum / grades.length;
 }
@@ -28,44 +29,53 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentArray = [...students];
+  const studentArray: Student[] = [...students];
   const isAscending: boolean = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       if (isAscending) {
-        studentArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+        studentArray.sort(
+          (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]),
+        );
       } else {
-        studentArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+        studentArray.sort(
+          (a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]),
+        );
       }
       break;
 
     case SortType.Age:
       if (isAscending) {
-        studentArray.sort((a, b) => a.age - b.age);
+        studentArray.sort((a: Student, b: Student) => a.age - b.age);
       } else {
-        studentArray.sort((a, b) => b.age - a.age);
+        studentArray.sort((a: Student, b: Student) => b.age - a.age);
       }
       break;
 
     case SortType.Married:
       if (isAscending) {
-        studentArray.sort((a, b) => +a.married - +b.married);
+        studentArray.sort((a: Student, b: Student) => +a.married - +b.married);
       } else {
-        studentArray.sort((a, b) => +b.married - +a.married);
+        studentArray.sort((a: Student, b: Student) => +b.married - +a.married);
       }
       break;
 
     case SortType.AverageGrade:
       if (isAscending) {
-        studentArray.sort((a, b) => getAverageGrades(a) - getAverageGrades(b));
+        studentArray.sort(
+          (a: Student, b: Student) => getAverageGrades(a) - getAverageGrades(b),
+        );
       } else {
-        studentArray.sort((a, b) => getAverageGrades(b) - getAverageGrades(a));
+        studentArray.sort(
+          (a: Student, b: Student) => getAverageGrades(b) - getAverageGrades(a),
+        );
       }
       break;
 
-    default: break;
+    default:
+      break;
   }
 
   return studentArray;
