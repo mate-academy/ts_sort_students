@@ -21,16 +21,16 @@ export function getAverage(data: number[]): number {
   const result = data.reduce(
     (sum, current) => sum + current, 0,
   );
-    return result / data.length;
+
+  return result / data.length;
 }
 
-
 export function sortStudents(
-  students: Student[], 
-  sortBy: SortType, 
+  students: Student[],
+  sortBy: SortType,
   order: SortOrder,
-  ): Student[] {
-    const studentsCop = [...students];
+): Student[] {
+  const studentsCop = [...students];
 
   switch (sortBy) {
     case SortType.Name:
