@@ -24,21 +24,22 @@ function GetAverageValue(array: []): number {
   return array.reduce((sum, value) => sum + value, 0) / array.length;
 }
 
-function compareStudentsByKey( // im gonna lose my sanity
+function defineValue(value: StudentKey): StudentKey | number {
+  return Array.isArray(value)
+    ? GetAverageValue(value)
+    : value;
+}
+
+function compareStudentsByKey(
   key: StudentKey,
   order: SortOrder,
 ): (currentStudent: Student, nextStudent: Student) => number {
-  return function( // eslint-disable-line
+  return function callback(
     currentStudent: Student,
     nextStudent: Student,
   ): number {
-    const currentValue = Array.isArray(currentStudent[key])
-      ? GetAverageValue(currentStudent[key])
-      : currentStudent[key];
-
-    const nextValue = Array.isArray(nextStudent[key])
-      ? GetAverageValue(nextStudent[key])
-      : nextStudent[key];
+    const currentValue = defineValue(currentStudent[key]);
+    const nextValue = defineValue(nextStudent[key]);
 
     const comparison = typeof currentValue === 'string'
       ? currentValue.toString().localeCompare(nextValue.toString())
