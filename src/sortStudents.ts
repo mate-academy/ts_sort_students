@@ -17,54 +17,48 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(numbers: number[]): number {
+  return numbers.reduce((sum: number, num: number) => sum + num, 0)
+  / numbers.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
   return [...students].sort((a: Student, b: Student): number => {
-    const firstAverage = a[SortType.AverageGrade]
-      .reduce((acc, value) => acc + value, 0)
-    / a[SortType.AverageGrade].length;
-    const secondAverage = b[SortType.AverageGrade]
-      .reduce((acc, value) => acc + value, 0)
-    / b[SortType.AverageGrade].length;
+    const firstAverage = getAverage(a[SortType.AverageGrade]);
+    const secondAverage = getAverage(b[SortType.AverageGrade]);
 
     switch (sortBy) {
       case SortType.Married:
-        if (order === 'asc') {
-          return Number(a[SortType.Married]) - Number(b[SortType.Married]);
-        }
-
-        return Number(b[SortType.Married]) - Number(a[SortType.Married]);
+        return order === 'asc'
+          ? Number(a[SortType.Married]) - Number(b[SortType.Married])
+          : Number(b[SortType.Married]) - Number(a[SortType.Married]);
 
       case SortType.Name:
-        if (order === 'asc') {
-          return a[SortType.Name].localeCompare(b[SortType.Name]);
-        }
-
-        return b[SortType.Name].localeCompare(a[SortType.Name]);
+        return order === 'asc'
+          ? a[SortType.Name].localeCompare(b[SortType.Name])
+          : b[SortType.Name].localeCompare(a[SortType.Name]);
 
       case SortType.Surname:
-        if (order === 'asc') {
-          return a[SortType.Surname].localeCompare(b[SortType.Surname]);
-        }
-
-        return b[SortType.Surname].localeCompare(a[SortType.Surname]);
+        return order === 'asc'
+          ? a[SortType.Surname].localeCompare(b[SortType.Surname])
+          : b[SortType.Surname].localeCompare(a[SortType.Surname]);
 
       case SortType.Age:
-        if (order === 'asc') {
-          return a[SortType.Age] - b[SortType.Age];
-        }
+        return order === 'asc'
+          ? a[SortType.Age] - b[SortType.Age]
+          : b[SortType.Age] - a[SortType.Age];
 
-        return b[SortType.Age] - a[SortType.Age];
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? firstAverage - secondAverage
+          : secondAverage - firstAverage;
 
       default:
-        if (order === 'asc') {
-          return firstAverage - secondAverage;
-        }
-
-        return secondAverage - firstAverage;
+        throw new Error('Not a valid SortType');
     }
   });
 }
