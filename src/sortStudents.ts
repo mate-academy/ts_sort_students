@@ -8,16 +8,16 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverage(
+function getAverageGrade(
   firstStudent:number[],
   secondStudent:number[],
   order?:string,
@@ -32,11 +32,9 @@ function getAverage(
       accumulator + studentGrade
     ), 0) / secondStudent.length;
 
-  if (order === 'asc') {
-    return first - second;
-  }
-
-  return second - first;
+  return order === 'asc'
+    ? first - second
+    : second - first;
 }
 
 function compareByString(
@@ -44,11 +42,9 @@ function compareByString(
   secondStudent:string,
   order?:string,
 ):number {
-  if (order === 'asc') {
-    return firstStudent.localeCompare(secondStudent);
-  }
-
-  return secondStudent.localeCompare(firstStudent);
+  return order === 'asc'
+    ? firstStudent.localeCompare(secondStudent)
+    : secondStudent.localeCompare(firstStudent);
 }
 
 function compareByNumber(
@@ -56,11 +52,9 @@ function compareByNumber(
   secondStudent:number,
   order?:string,
 ):number {
-  if (order === 'asc') {
-    return firstStudent - secondStudent;
-  }
-
-  return secondStudent - firstStudent;
+  return order === 'asc'
+    ? firstStudent - secondStudent
+    : secondStudent - firstStudent;
 }
 
 export function sortStudents(
@@ -72,15 +66,9 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort((studentA:Student, studentB:Student) => (
-        compareByString(studentA.name, studentB.name, order)
-      ));
-
-      break;
-
     case SortType.Surname:
       studentsCopy.sort((studentA:Student, studentB:Student) => (
-        compareByString(studentA.surname, studentB.surname, order)
+        compareByString(studentA[sortBy], studentB[sortBy], order)
       ));
 
       break;
@@ -94,7 +82,11 @@ export function sortStudents(
 
     case SortType.Married:
       studentsCopy.sort((studentA:Student, studentB:Student) => (
-        compareByNumber(+studentA.married, +studentB.married, order)
+        compareByNumber(
+          Number(studentA.married),
+          Number(studentB.married),
+          order,
+        )
       ));
 
       break;
@@ -102,7 +94,7 @@ export function sortStudents(
     case SortType.AverageGrade:
 
       studentsCopy.sort((studentA:Student, studentB:Student) => (
-        getAverage(studentA.grades, studentB.grades, order)
+        getAverageGrade(studentA.grades, studentB.grades, order)
       ));
 
       break;
