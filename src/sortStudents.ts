@@ -76,17 +76,17 @@ export function sortStudents(students: Student[],
     }
   ));
 
-  if (sortBy === SortType.Age) {
-    return studentsCopy.sort(createFilterCallbackAge(order));
-  }
+  switch (sortBy) {
+    case SortType.Age:
+      return studentsCopy.sort(createFilterCallbackAge(order));
 
-  if (sortBy === SortType.AverageGrade) {
-    return studentsCopy.sort(createFilterCallbackAvgGrades(order));
-  }
+    case SortType.AverageGrade:
+      return studentsCopy.sort(createFilterCallbackAvgGrades(order));
 
-  if (sortBy === SortType.Married) {
-    return studentsCopy.sort(createFilterCallbackMarried(order));
-  }
+    case SortType.Married:
+      return studentsCopy.sort(createFilterCallbackMarried(order));
 
-  return studentsCopy.sort(createFilterCallback(order, sortBy));
+    default:
+      return studentsCopy.sort(createFilterCallback(order, sortBy));
+  }
 }
