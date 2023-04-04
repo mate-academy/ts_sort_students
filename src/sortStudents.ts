@@ -12,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'avarage',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -28,34 +28,28 @@ export function sortStudents(
 ): Student[] {
   const studs: Student[] = [...students];
 
-  studs.sort((stud1: Student, stud2: Student) => {
-    if (typeof stud1[sortBy] === 'string') {
-      const stud1Str = stud1[sortBy].toString();
-      const stud2Str = stud2[sortBy].toString();
+  studs.sort((firstStudent: Student, secondStudent: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
 
-      if (order === 'desc') {
-        return stud2Str.localeCompare(stud1Str);
-      }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+          : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
 
-      return stud1Str.localeCompare(stud2Str);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? findAvg(firstStudent[sortBy])
+            - findAvg(secondStudent[sortBy])
+          : findAvg(secondStudent[sortBy])
+            - findAvg(firstStudent[sortBy]);
+      default: throw Error('Something went wrong!');
     }
-
-    if (sortBy === 'avarage') {
-      const stud1Avg = findAvg(stud1.grades);
-      const stud2Avg = findAvg(stud2.grades);
-
-      if (order === 'desc') {
-        return Number(stud2Avg) - Number(stud1Avg);
-      }
-
-      return Number(stud1Avg) - Number(stud2Avg);
-    }
-
-    if (order === 'desc') {
-      return Number(stud2[sortBy]) - Number(stud1[sortBy]);
-    }
-
-    return Number(stud1[sortBy]) - Number(stud2[sortBy]);
   });
 
   return studs;
