@@ -17,36 +17,42 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] { // eslint-disable-line
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const copyStudents: Student[] = [...students];
 
-  return copyStudents.sort((pref: Student, now: Student) => {
+  return copyStudents.sort((prevStudent: Student, currentStudent: Student) => {
     let one: number;
     let two: number;
 
     switch (sortBy) {
-      case 'grades':
-        one = pref[sortBy]
+      case SortType.AverageGrade:
+        one = prevStudent[sortBy]
           .reduce((acum: number, mark: number) => acum + mark);
 
-        two = now[sortBy]
+        two = currentStudent[sortBy]
           .reduce((acum: number, mark: number) => acum + mark);
 
         return (order === 'asc')
-          ? (one / pref[sortBy].length) - (two / now[sortBy].length)
-          : (two / now[sortBy].length) - (one / pref[sortBy].length);
+          ? (one / prevStudent[sortBy].length)
+            - (two / currentStudent[sortBy].length)
+          : (two / currentStudent[sortBy].length)
+            - (one / prevStudent[sortBy].length);
 
-      case 'age':
+      case SortType.Age:
         return (order === 'asc')
-          ? pref[sortBy] - now[sortBy]
-          : now[sortBy] - pref[sortBy];
+          ? prevStudent[sortBy] - currentStudent[sortBy]
+          : currentStudent[sortBy] - prevStudent[sortBy];
 
-      case 'married':
-        one = (pref[sortBy])
+      case SortType.Married:
+        one = (prevStudent[sortBy])
           ? 1
           : 0;
 
-        two = (now[sortBy])
+        two = (currentStudent[sortBy])
           ? 1
           : 0;
 
@@ -54,15 +60,15 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
           ? one - two
           : two - one;
 
-      case 'name':
+      case SortType.Name:
         return (order === 'asc')
-          ? pref[sortBy].localeCompare(now[sortBy])
-          : now[sortBy].localeCompare(pref[sortBy]);
+          ? prevStudent[sortBy].localeCompare(currentStudent[sortBy])
+          : currentStudent[sortBy].localeCompare(prevStudent[sortBy]);
 
-      case 'surname':
+      case SortType.Surname:
         return (order === 'asc')
-          ? pref[sortBy].localeCompare(now[sortBy])
-          : now[sortBy].localeCompare(pref[sortBy]);
+          ? prevStudent[sortBy].localeCompare(currentStudent[sortBy])
+          : currentStudent[sortBy].localeCompare(prevStudent[sortBy]);
 
       default:
         throw new Error(`Fix mistake in ${sortBy}`);
