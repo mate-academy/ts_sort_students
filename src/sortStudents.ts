@@ -7,14 +7,13 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'Name',
-  Surname = 'Surname',
+  Name = 'name',
+  Surname = 'surname',
   Age = 'Age',
   Married = 'Married',
   AverageGrade = 'AverageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -26,81 +25,50 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return currentStudent.name.localeCompare(nextStudent.name);
-          })
-        : copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return nextStudent.name.localeCompare(currentStudent.name);
-          });
-
     case SortType.Surname:
-      return order === 'asc'
-        ? copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return currentStudent.surname.localeCompare(nextStudent.surname);
-          })
-        : copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return nextStudent.surname.localeCompare(currentStudent.surname);
-          });
+      return copyOfStudents
+        .sort((currentStudent: Student, nextStudent: Student) => (
+          order === 'asc'
+            ? currentStudent[sortBy].localeCompare(nextStudent[sortBy])
+            : nextStudent[sortBy].localeCompare(currentStudent[sortBy])
+        ));
 
     case SortType.Age:
-      return order === 'asc'
-        ? copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return currentStudent.age - nextStudent.age;
-          })
-        : copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return nextStudent.age - currentStudent.age;
-          });
+      return copyOfStudents
+        .sort((currentStudent: Student, nextStudent: Student) => (
+          order === 'asc'
+            ? currentStudent.age - nextStudent.age
+            : nextStudent.age - currentStudent.age
+        ));
 
     case SortType.Married:
-      return order === 'asc'
-        ? copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return +currentStudent.married - +nextStudent.married;
-          })
-        : copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            return +nextStudent.married - +currentStudent.married;
-          });
+      return copyOfStudents
+        .sort((currentStudent: Student, nextStudent: Student) => (
+          order === 'asc'
+            ? Number(currentStudent.married) - Number(nextStudent.married)
+            : Number(nextStudent.married) - Number(currentStudent.married)
+        ));
 
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            const firstStudentAvg = currentStudent.grades
-              .reduce((acc, mark) => {
-                return acc + mark;
-              }) / currentStudent.grades.length;
+      return copyOfStudents
+        .sort((currentStudent: Student, nextStudent: Student) => {
+          // eslint-disable-next-line
+            const firstStudentAvg: number = calculateAverageOfMarks(currentStudent.grades);
+          // eslint-disable-next-line
+            const secondStudentAvg = calculateAverageOfMarks(nextStudent.grades);
 
-            const secondStudentAvg = nextStudent.grades
-              .reduce((acc, mark) => {
-                return acc + mark;
-              }) / nextStudent.grades.length;
-
-            return firstStudentAvg - secondStudentAvg;
-          })
-        : copyOfStudents
-          .sort((currentStudent: Student, nextStudent: Student) => {
-            const firstStudentAvg = currentStudent.grades
-              .reduce((acc, mark) => {
-                return acc + mark;
-              }) / currentStudent.grades.length;
-
-            const secondStudentAvg = nextStudent.grades
-              .reduce((acc: number, mark: number) => {
-                return acc + mark;
-              }) / nextStudent.grades.length;
-
-            return secondStudentAvg - firstStudentAvg;
-          });
+          return order === 'asc'
+            ? firstStudentAvg - secondStudentAvg
+            : secondStudentAvg - firstStudentAvg;
+        });
 
     default:
       throw new Error('Invalid sort type');
   }
+}
+
+function calculateAverageOfMarks(marksArray: number[]): number {
+  return marksArray.reduce((acc: number, mark: number) => {
+    return acc + mark;
+  }) / marksArray.length;
 }
