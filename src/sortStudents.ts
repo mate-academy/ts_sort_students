@@ -22,13 +22,14 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyOfStudents: Student[] = JSON.parse(JSON.stringify(students));
+  const isItAsc = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
       return copyOfStudents
         .sort((currentStudent: Student, nextStudent: Student) => (
-          order === 'asc'
+          isItAsc
             ? currentStudent[sortBy].localeCompare(nextStudent[sortBy])
             : nextStudent[sortBy].localeCompare(currentStudent[sortBy])
         ));
@@ -36,7 +37,7 @@ export function sortStudents(
     case SortType.Age:
       return copyOfStudents
         .sort((currentStudent: Student, nextStudent: Student) => (
-          order === 'asc'
+          isItAsc
             ? currentStudent.age - nextStudent.age
             : nextStudent.age - currentStudent.age
         ));
@@ -44,7 +45,7 @@ export function sortStudents(
     case SortType.Married:
       return copyOfStudents
         .sort((currentStudent: Student, nextStudent: Student) => (
-          order === 'asc'
+          isItAsc
             ? Number(currentStudent.married) - Number(nextStudent.married)
             : Number(nextStudent.married) - Number(currentStudent.married)
         ));
@@ -57,7 +58,7 @@ export function sortStudents(
           // eslint-disable-next-line
             const secondStudentAvg = calculateAverageOfMarks(nextStudent.grades);
 
-          return order === 'asc'
+          return isItAsc
             ? firstStudentAvg - secondStudentAvg
             : secondStudentAvg - firstStudentAvg;
         });
