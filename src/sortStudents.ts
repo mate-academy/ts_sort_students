@@ -24,83 +24,53 @@ export function sortStudents(
 ): Student[] {
   const newStudentsArray: Student[] = [...students];
 
-  switch (order) {
-    case 'asc':
-      switch (sortBy) {
-        case (SortType.Name):
-        case (SortType.Surname):
-          newStudentsArray.sort((
-            student1: Student,
-            student2: Student,
-          ) => student1[sortBy].localeCompare(student2[sortBy]));
-          break;
+  switch (sortBy) {
+    case (SortType.Name):
+    case (SortType.Surname):
+      newStudentsArray.sort((
+        student1: Student,
+        student2: Student,
+      ) => {
+        if (order === 'asc') {
+          return student1[sortBy].localeCompare(student2[sortBy]);
+        }
 
-        case (SortType.Married):
-        case (SortType.Age):
-          newStudentsArray.sort((
-            student1: Student,
-            student2: Student,
-          ) => Number(student1[sortBy]) - Number(student2[sortBy]));
-          break;
-
-        case (SortType.AverageGrade):
-          newStudentsArray.sort((student1: Student, student2: Student) => {
-            const student1AverageGrade: number = student1.grades.reduce((
-              acc: number,
-              val: number,
-            ) => acc + val, 0) / student1.grades.length;
-
-            const student2AverageGrade: number = student2.grades.reduce((
-              acc: number,
-              val: number,
-            ) => acc + val, 0) / student2.grades.length;
-
-            return student1AverageGrade - student2AverageGrade;
-          });
-          break;
-
-        default:
-          throw new Error();
-      }
+        return student2[sortBy].localeCompare(student1[sortBy]);
+      });
       break;
 
-    case 'desc':
-      switch (sortBy) {
-        case (SortType.Name):
-        case (SortType.Surname):
-          newStudentsArray.sort((
-            student1: Student,
-            student2: Student,
-          ) => student2[sortBy].localeCompare(student1[sortBy]));
-          break;
+    case (SortType.Married):
+    case (SortType.Age):
+      newStudentsArray.sort((
+        student1: Student,
+        student2: Student,
+      ) => {
+        if (order === 'asc') {
+          return Number(student1[sortBy]) - Number(student2[sortBy]);
+        }
 
-        case (SortType.Married):
-        case (SortType.Age):
-          newStudentsArray.sort((
-            student1: Student,
-            student2: Student,
-          ) => Number(student2[sortBy]) - Number(student1[sortBy]));
-          break;
+        return Number(student2[sortBy]) - Number(student1[sortBy]);
+      });
+      break;
 
-        case (SortType.AverageGrade):
-          newStudentsArray.sort((student1: Student, student2: Student) => {
-            const student1AverageGrade: number = student1.grades.reduce((
-              acc: number,
-              val: number,
-            ) => acc + val, 0) / student1.grades.length;
+    case (SortType.AverageGrade):
+      newStudentsArray.sort((student1: Student, student2: Student) => {
+        const student1AverageGrade: number = student1.grades.reduce((
+          acc: number,
+          val: number,
+        ) => acc + val, 0) / student1.grades.length;
 
-            const student2AverageGrade: number = student2.grades.reduce((
-              acc: number,
-              val: number,
-            ) => acc + val, 0) / student2.grades.length;
+        const student2AverageGrade: number = student2.grades.reduce((
+          acc: number,
+          val: number,
+        ) => acc + val, 0) / student2.grades.length;
 
-            return student2AverageGrade - student1AverageGrade;
-          });
-          break;
+        if (order === 'asc') {
+          return student1AverageGrade - student2AverageGrade;
+        }
 
-        default:
-          throw new Error();
-      }
+        return student2AverageGrade - student1AverageGrade;
+      });
       break;
 
     default:
