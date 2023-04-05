@@ -29,7 +29,6 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-
       sortedStudents.sort(
         (a: Student, b: Student) => a.name.localeCompare(b.name),
       );
