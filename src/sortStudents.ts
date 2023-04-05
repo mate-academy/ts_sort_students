@@ -38,14 +38,10 @@ export function sortStudents(
           : Number(b[SortType.Married]) - Number(a[SortType.Married]);
 
       case SortType.Name:
-        return order === 'asc'
-          ? a[SortType.Name].localeCompare(b[SortType.Name])
-          : b[SortType.Name].localeCompare(a[SortType.Name]);
-
       case SortType.Surname:
         return order === 'asc'
-          ? a[SortType.Surname].localeCompare(b[SortType.Surname])
-          : b[SortType.Surname].localeCompare(a[SortType.Surname]);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
         return order === 'asc'
