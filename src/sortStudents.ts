@@ -7,15 +7,21 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
 type Values = string | number | boolean;
+
+function calculateAverageGrade(student: Student): number {
+  return student
+    .grades
+    .reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -28,39 +34,19 @@ export function sortStudents(
   ): number => {
     let firstValue: Values;
     let secondValue: Values;
-    let firstAverage: Values;
-    let secondAverage: Values;
 
     switch (sortBy) {
       case SortType.Name:
-        firstValue = firstPerson.name;
-        secondValue = secondPerson.name;
-        break;
-
       case SortType.Surname:
-        firstValue = firstPerson.surname;
-        secondValue = secondPerson.surname;
-        break;
-
       case SortType.Age:
-        firstValue = firstPerson.age;
-        secondValue = secondPerson.age;
-        break;
-
       case SortType.Married:
-        firstValue = firstPerson.married;
-        secondValue = secondPerson.married;
+        firstValue = firstPerson[sortBy];
+        secondValue = secondPerson[sortBy];
         break;
 
       case SortType.AverageGrade:
-        firstAverage = firstPerson.grades
-          .reduce((sum, grade) => sum + grade, 0) / firstPerson.grades.length;
-
-        secondAverage = secondPerson.grades
-          .reduce((sum, grade) => sum + grade, 0) / secondPerson.grades.length;
-
-        firstValue = firstAverage;
-        secondValue = secondAverage;
+        firstValue = calculateAverageGrade(firstPerson);
+        secondValue = calculateAverageGrade(secondPerson);
         break;
 
       default:
