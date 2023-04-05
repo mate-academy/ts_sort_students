@@ -16,6 +16,12 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverageOfMarks(marksArray: number[]): number {
+  return marksArray.reduce((acc: number, mark: number) => {
+    return acc + mark;
+  }) / marksArray.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -53,10 +59,12 @@ export function sortStudents(
     case SortType.AverageGrade:
       return copyOfStudents
         .sort((currentStudent: Student, nextStudent: Student) => {
-          // eslint-disable-next-line
-            const firstStudentAvg: number = calculateAverageOfMarks(currentStudent.grades);
-          // eslint-disable-next-line
-            const secondStudentAvg = calculateAverageOfMarks(nextStudent.grades);
+          const firstStudentAvg: number = calculateAverageOfMarks(
+            currentStudent.grades,
+          );
+          const secondStudentAvg = calculateAverageOfMarks(
+            nextStudent.grades,
+          );
 
           return isItAsc
             ? firstStudentAvg - secondStudentAvg
@@ -66,10 +74,4 @@ export function sortStudents(
     default:
       throw new Error('Invalid sort type');
   }
-}
-
-function calculateAverageOfMarks(marksArray: number[]): number {
-  return marksArray.reduce((acc: number, mark: number) => {
-    return acc + mark;
-  }) / marksArray.length;
 }
