@@ -28,7 +28,7 @@ export function sortStudents(
   function avgMark(student: Student): number {
     return student.grades.reduce((accum: number, mark: number) => {
       return accum + mark;
-    }, 0);
+    }, 0) / student.grades.length;
   }
 
   return copyStudents.sort((firstSudent: Student, secondStudent: Student) => {
