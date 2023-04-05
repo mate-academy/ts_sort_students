@@ -57,13 +57,11 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       studentstArray.sort(
-        order === 'asc'
-          ? (firstStudent: Student, secondStudents: Student): number => (
-            getAverage(firstStudent) - getAverage(secondStudents)
-          )
-          : (firstStudent: Student, secondStudents: Student): number => (
-            getAverage(secondStudents) - getAverage(firstStudent)
-          ),
+        (firstStudent: Student, secondStudents: Student): number => (
+          order === 'asc'
+            ? getAverage(firstStudent) - getAverage(secondStudents)
+            : getAverage(secondStudents) - getAverage(firstStudent)
+        ),
       );
       break;
 
