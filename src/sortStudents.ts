@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 
 export interface Student {
   name: string;
@@ -18,18 +19,24 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverage(student:Student):number {
+  const studentGradesSum = student.grades.reduce((acc, curr) => acc + curr, 0);
+
+  return studentGradesSum / student.grades.length;
+}
+
 export function sortStudents(
   students:Student[],
   sortBy:SortType,
   order:SortOrder,
 ):Student[] {
   const sortedStudents = [...students];
-  let callback: (studentA:Student, studentB:Student) => number;
+  let sortingFunction: (studentA:Student, studentB:Student) => number;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      callback = (studentA, studentB):number => {
+      sortingFunction = (studentA, studentB) => {
         if (order === 'desc') {
           return studentB[sortBy].localeCompare(studentA[sortBy]);
         }
@@ -39,7 +46,7 @@ export function sortStudents(
       break;
     case SortType.Age:
     case SortType.Married:
-      callback = (studentA, studentB):number => {
+      sortingFunction = (studentA, studentB) => {
         if (order === 'desc') {
           return +studentB[sortBy] - +studentA[sortBy];
         }
@@ -49,21 +56,17 @@ export function sortStudents(
       break;
 
     default:
-      callback = (studentA, studentB):number => {
-        const studentASum
-          = studentA.grades.reduce((acc, curr) => acc + curr, 0);
-        const studentBSum
-          = studentB.grades.reduce((acc, curr) => acc + curr, 0);
+      sortingFunction = (studentA, studentB) => {
+        const studentAAverage = calculateAverage(studentA);
+        const studentBAverage = calculateAverage(studentB);
 
         if (order === 'desc') {
-          return (studentBSum / studentB.grades.length)
-          - (studentASum / studentA.grades.length);
+          return studentBAverage - studentAAverage;
         }
 
-        return (studentASum / studentA.grades.length)
-          - (studentBSum / studentB.grades.length);
+        return studentAAverage - studentBAverage;
       };
   }
 
-  return sortedStudents.sort(callback);
+  return sortedStudents.sort(sortingFunction);
 }
