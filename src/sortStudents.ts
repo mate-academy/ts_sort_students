@@ -33,20 +33,16 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Married:
+      case SortType.Age:
         return order === 'asc'
-          ? Number(a[SortType.Married]) - Number(b[SortType.Married])
-          : Number(b[SortType.Married]) - Number(a[SortType.Married]);
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
 
       case SortType.Name:
       case SortType.Surname:
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
-
-      case SortType.Age:
-        return order === 'asc'
-          ? a[SortType.Age] - b[SortType.Age]
-          : b[SortType.Age] - a[SortType.Age];
 
       case SortType.AverageGrade:
         return order === 'asc'
