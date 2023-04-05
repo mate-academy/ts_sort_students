@@ -18,10 +18,10 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: object,
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): object[] {
+): Student[] {
   const studentsArray = JSON.parse(JSON.stringify(students));
   const rightOrder = order === 'asc' ? 1 : -1;
 
@@ -58,15 +58,15 @@ export function sortStudents(
         prevStud: Student,
         nextStud: Student,
       ) => {
-        const prevAverageGrde = prevStud.grades.reduce((
-          a:number,
-          b:number,
-        ) => a + b, 0) / prevStud.grades.length;
+        function getAverageGrade(student: Student): number {
+          return student.grades.reduce((
+            a:number,
+            b:number,
+          ) => a + b, 0) / student.grades.length;
+        }
 
-        const nextAverageGrde = nextStud.grades.reduce((
-          a:number,
-          b:number,
-        ) => a + b, 0) / nextStud.grades.length;
+        const prevAverageGrde = getAverageGrade(prevStud);
+        const nextAverageGrde = getAverageGrade(nextStud);
 
         return rightOrder * (prevAverageGrde - nextAverageGrde);
       });
