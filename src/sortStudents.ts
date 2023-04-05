@@ -26,36 +26,27 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copiedStudents = [...students];
+  return [...students].sort((studentA, studentB) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return copiedStudents
-        .sort((studentA, studentB) => (
-          order === 'asc'
-            ? studentA[sortBy].localeCompare(studentB[sortBy])
-            : studentB[sortBy].localeCompare(studentA[sortBy])
-        ));
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
-    case SortType.Age:
-    case SortType.Married:
-      return copiedStudents
-        .sort((studentA, studentB) => (
-          order === 'asc'
-            ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-            : Number(studentB[sortBy]) - Number(studentA[sortBy])
-        ));
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? countAverage(studentA[sortBy]) - countAverage(studentB[sortBy])
+          : countAverage(studentB[sortBy]) - countAverage(studentA[sortBy]);
 
-    case SortType.AverageGrade:
-      return copiedStudents
-        .sort((studentA, studentB) => (
-          order === 'asc'
-            ? countAverage(studentA[sortBy]) - countAverage(studentB[sortBy])
-            : countAverage(studentB[sortBy]) - countAverage(studentA[sortBy])
-        ));
-
-    default:
-      throw new Error('Error. Check your input data types.');
-  }
+      default:
+        throw new Error('Error. Check your input data types.');
+    }
+  });
 }
