@@ -26,24 +26,21 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  return [...students].sort((studentA, studentB) => {
+  return [...students].sort((firstStudent, secondStudent) => {
+    const studentA = order === 'asc' ? firstStudent : secondStudent;
+    const studentB = order === 'asc' ? secondStudent : firstStudent;
+
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? studentA[sortBy].localeCompare(studentB[sortBy])
-          : studentB[sortBy].localeCompare(studentA[sortBy]);
+        return studentA[sortBy].localeCompare(studentB[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return order === 'asc'
-          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
+        return Number(studentA[sortBy]) - Number(studentB[sortBy]);
 
       case SortType.AverageGrade:
-        return order === 'asc'
-          ? countAverage(studentA[sortBy]) - countAverage(studentB[sortBy])
-          : countAverage(studentB[sortBy]) - countAverage(studentA[sortBy]);
+        return countAverage(studentA[sortBy]) - countAverage(studentB[sortBy]);
 
       default:
         throw new Error('Error. Check your input data types.');
