@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -21,60 +21,39 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  order: string,
+  order: SortOrder,
 ): Student[] {
   const copyStudents: Student[] = [...students];
-  const sortByOrder = order === 'asc'
-    ? 1
-    : -1;
 
-  type Sum = (sum: number, mark: number) => number;
-  type Average = (grades: number[]) => number;
-
-  const sumMarks: Sum = (sum, mark) => sum + mark;
-  const avgMark: Average = (grades) => (
-    grades.reduce(sumMarks, 0) / grades.length
-  );
-
-  switch (sortBy) {
-    case SortType.Name:
-      copyStudents.sort((
-        { name: personA },
-        { name: personB },
-      ) => personA.localeCompare(personB) * sortByOrder);
-      break;
-
-    case SortType.Surname:
-      copyStudents.sort((
-        { surname: personA },
-        { surname: personB },
-      ) => personA.localeCompare(personB) * sortByOrder);
-      break;
-
-    case SortType.Age:
-      copyStudents.sort((
-        { age: personA },
-        { age: personB },
-      ) => (personA - personB) * sortByOrder);
-      break;
-
-    case SortType.Married:
-      copyStudents.sort((
-        { married: personA },
-        { married: personB },
-      ) => (Number(personA) - Number(personB)) * sortByOrder);
-      break;
-
-    case SortType.AverageGrade:
-      copyStudents.sort((
-        { grades: personA },
-        { grades: personB },
-      ) => (avgMark(personA) - avgMark(personB)) * sortByOrder);
-      break;
-
-    default:
-      throw new Error('Some value is wrong');
+  function avgMark(student: Student): number {
+    return student.grades.reduce((accum: number, mark: number) => {
+      return accum + mark;
+    }, 0);
   }
 
-  return copyStudents;
+  return copyStudents.sort((firstSudent: Student, secondStudent: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+      case SortType.Married:
+        return order === 'asc'
+          ? firstSudent[sortBy].toString()
+            .localeCompare(secondStudent[sortBy].toString())
+          : secondStudent[sortBy].toString()
+            .localeCompare(firstSudent[sortBy].toString());
+
+      case SortType.Age:
+        return order === 'asc'
+          ? Number(firstSudent[sortBy]) - Number(secondStudent[sortBy])
+          : Number(secondStudent[sortBy]) - Number(firstSudent[sortBy]);
+
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? avgMark(firstSudent) - avgMark(secondStudent)
+          : avgMark(secondStudent) - avgMark(firstSudent);
+
+      default:
+        throw new Error('Some value is wrong');
+    }
+  });
 }
