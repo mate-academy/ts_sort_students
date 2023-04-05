@@ -8,68 +8,50 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'name',
-  Surname = 'surname',
-  Age = 'age',
-  Married = 'married',
-  AverageGrade = 'averageGrade',
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverage(student: Student): number {
-  return student.grades
-    .reduce((prev: number, grade: number) => prev + grade, 0)
-   / student.grades.length;
-}
 
-export function sortStudents(
-  students: Student[],
-  sortBy: SortType,
-  order: SortOrder,
-): Student[] {
+export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
   const studentstArray: Student[] = [...students];
 
-  switch (sortBy) {
+  switch(sortBy) {
     case SortType.Name:
     case SortType.Surname:
-
-      studentstArray.sort(
-        (firstStudent: Student, secondStudents: Student): number => (
-          order === 'asc'
-            ? firstStudent[sortBy].localeCompare(secondStudents[sortBy])
-            : secondStudents[sortBy].localeCompare(firstStudent[sortBy])
-        ),
+      return studentstArray.sort((firstStudent: Student, secondStudents: Student): number => (
+        order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudents[sortBy])
+          : secondStudents[sortBy].localeCompare(firstStudent[sortBy])
+        )
       );
-      break;
 
     case SortType.Age:
-    case SortType.Married:
-
-      studentstArray.sort(
-        (firstStudent: Student, secondStudents: Student): number => (
-          order === 'asc'
-            ? +firstStudent[sortBy] - +secondStudents[sortBy]
-            : +secondStudents[sortBy] - +firstStudent[sortBy]
-        ),
-      );
-      break;
-
     case SortType.AverageGrade:
-      studentstArray.sort(
+      return studentstArray.sort((firstStudent: Student, secondStudents: Student): number => (
         order === 'asc'
-          ? (firstStudent: Student, secondStudents: Student): number => (
-            getAverage(firstStudent) - getAverage(secondStudents)
-          )
-          : (firstStudent: Student, secondStudents: Student): number => (
-            getAverage(secondStudents) - getAverage(firstStudent)
-          ),
+          ? +firstStudent[sortBy] - secondStudents[sortBy]
+          : +secondStudents[sortBy] - firstStudent[sortBy]
+        )
       );
-      break;
 
-    default:
-      break;
+      case SortType.AverageGrade:
+        studentstArray.sort(
+          (order === 'asc'
+            ? (firstStudent: Student, secondStudents: Student): number => getAverage(firstStudent[sortBy]) - getAverage(secondStudents[sortBy])
+            : (firstStudent: Student, secondStudents: Student): number => getAverage(secondStudents[sortBy]) - getAverage(firstStudent[sortBy]))
+          );
+
+      default:
+        break;
   }
+}
 
-  return studentstArray;
+function getAverage(grades: number[]): number {
+  return grades.reduce((prev: number, cur: number) => prev + cur, 0) / grades.length;
 }
