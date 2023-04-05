@@ -62,9 +62,5 @@ export function sortStudents(
       break;
   }
 
-  /* if (order === 'desc') {
-    studentsCopy.reverse();
-  } */
-
   return studentsCopy;
 }
