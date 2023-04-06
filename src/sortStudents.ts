@@ -9,13 +9,20 @@ export interface Student {
 
 export enum SortType {
   Name = 'name',
-  Surname = 'surName',
+  Surname = 'surname',
   Age = 'age',
   Married = 'married',
   AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
+
+function calculateAverageGrade(grades: number[]): number {
+  const totalGrade = grades.reduce((sum, grade) => sum + grade, 0);
+  const averageStudentsGrade = totalGrade / grades.length;
+
+  return averageStudentsGrade;
+}
 
 export function sortStudents(
   students: Student[],
@@ -26,14 +33,9 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort((firstStudent: Student, secondStudent: Student) => (
-        firstStudent.name.localeCompare(secondStudent.name)
-      ));
-      break;
-
     case SortType.Surname:
       studentsCopy.sort((firstStudent: Student, secondStudent: Student) => (
-        firstStudent.surname.localeCompare(secondStudent.surname)
+        firstStudent[sortBy].localeCompare(secondStudent[sortBy])
       ));
       break;
 
@@ -55,10 +57,12 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       studentsCopy.sort((firstStudent: Student, secondStudent: Student) => {
-        const averageFirstStudentGrade = firstStudent.grades
-          .reduce((sum, grade) => sum + grade, 0) / firstStudent.grades.length;
-        const averageSecondStudentGrade = secondStudent.grades
-          .reduce((sum, grade) => sum + grade, 0) / secondStudent.grades.length;
+        const averageFirstStudentGrade = calculateAverageGrade(
+          firstStudent.grades,
+        );
+        const averageSecondStudentGrade = calculateAverageGrade(
+          secondStudent.grades,
+        );
 
         return sortOrder === 'asc'
           ? averageFirstStudentGrade - averageSecondStudentGrade
