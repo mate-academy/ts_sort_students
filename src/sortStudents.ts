@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -15,8 +14,13 @@ export enum SortType {
   AverageGrade,
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+export function calculateAverageMark(person: Student): number {
+  return person.grades
+    .reduce((acc: number, grade: number) => acc + grade, 0)
+    / person.grades.length;
+}
 
 export function sortStudents(
   students: object[],
@@ -49,13 +53,8 @@ export function sortStudents(
 
     case SortType.AverageGrade:
       return sortedStudents.sort((a: Student, b: Student) => {
-        const averageGradesA: number = a.grades
-          .reduce((acc: number, grade: number) => acc + grade, 0)
-          / a.grades.length;
-
-        const averageGradesB: number = b.grades
-          .reduce((acc: number, grade: number) => acc + grade, 0)
-          / b.grades.length;
+        const averageGradesA = calculateAverageMark(a);
+        const averageGradesB = calculateAverageMark(b);
 
         return orderDirection * (averageGradesA - averageGradesB);
       });
