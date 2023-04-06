@@ -34,19 +34,11 @@ export function sortStudents(
       ) => (rightOrder * prevStud[sortBy].localeCompare(nextStud[sortBy])));
 
     case SortType.Age:
-      return studentsArray.sort((
-        prevStud: Student,
-        nextStud: Student,
-      ) => rightOrder * (prevStud.age - nextStud.age));
-
     case SortType.Married:
       return studentsArray.sort((
         prevStud: Student,
         nextStud: Student,
-      ) => rightOrder * prevStud
-        .married
-        .toString()
-        .localeCompare(nextStud.married.toString()));
+      ) => rightOrder * (Number(prevStud[sortBy]) - Number(nextStud[sortBy])));
 
     case SortType.AverageGrade:
       return studentsArray.sort((
