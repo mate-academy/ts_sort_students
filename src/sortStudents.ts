@@ -16,38 +16,39 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] { // eslint-disable-line
-  const studentsRes = JSON.parse(JSON.stringify(students));
+function getAvarage(student: Student, sortBy: 'grades'): number {
+  return student[sortBy]
+    .reduce((elem1, elem2) => elem1 + elem2) / student[sortBy].length;
+}
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const studentsRes = [...students];
 
   switch (sortBy) {
     case 'name' || 'surname':
-      return studentsRes.sort((student1: Student, student2: Student) => {
-        if (order === 'asc') {
-          return student1[sortBy].localeCompare(student2[sortBy]);
-        }
-
-        return student2[sortBy].localeCompare(student1[sortBy]);
-      });
+      return studentsRes
+        .sort((student1: Student, student2: Student) => (order === 'asc'
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy])));
 
     case 'age' || 'married':
-      return studentsRes.sort((student1: Student, student2: Student) => {
-        if (order === 'asc') {
-          return student1[sortBy] - student2[sortBy];
-        }
-
-        return student2[sortBy] - student1[sortBy];
-      });
+      return studentsRes
+        .sort((student1: Student, student2: Student) => (order === 'asc'
+          ? student1[sortBy] - student2[sortBy]
+          : student2[sortBy] - student1[sortBy]));
 
     case 'grades':
       return studentsRes.sort((student1: Student, student2: Student) => {
-        const firstAvarage = student1[sortBy].reduce((elem1, elem2) => elem1 + elem2) / student1[sortBy].length; // eslint-disable-line
-        const secondAvarage = student2[sortBy].reduce((elem1, elem2) => elem1 + elem2) / student2[sortBy].length; // eslint-disable-line
+        const firstAvarage = getAvarage(student1, sortBy);
+        const secondAvarage = getAvarage(student2, sortBy);
 
-        if (order === 'asc') {
-          return firstAvarage - secondAvarage;
-        }
-
-        return secondAvarage - firstAvarage;
+        return order === 'asc'
+          ? firstAvarage - secondAvarage
+          : secondAvarage - firstAvarage;
       });
 
     default:
