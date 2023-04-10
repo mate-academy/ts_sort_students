@@ -23,16 +23,16 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copystydent = [...students];
+  const copyStydent = [...students];
 
-  const AvgGrades = (grade: Student): number => {
+  const avgGrades = (grade: Student): number => {
     return grade.grades.reduce(
       (sum: number, num: number) => sum + num, 0,
     )
       / grade.grades.length;
   };
 
-  return copystydent.sort((a: Student, b: Student) => {
+  return copyStydent.sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -48,8 +48,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? AvgGrades(a) - AvgGrades(b)
-          : AvgGrades(b) - AvgGrades(a);
+          ? avgGrades(a) - avgGrades(b)
+          : avgGrades(b) - avgGrades(a);
 
       default:
         throw new Error('Error');
