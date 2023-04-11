@@ -29,19 +29,21 @@ export function sortStudents(
   const studentsRes = [...students];
 
   switch (sortBy) {
-    case 'name' || 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return studentsRes
         .sort((student1: Student, student2: Student) => (order === 'asc'
           ? student1[sortBy].localeCompare(student2[sortBy])
           : student2[sortBy].localeCompare(student1[sortBy])));
 
-    case 'age' || 'married':
+    case SortType.Age:
+    case SortType.Married:
       return studentsRes
         .sort((student1: Student, student2: Student) => (order === 'asc'
-          ? student1[sortBy] - student2[sortBy]
-          : student2[sortBy] - student1[sortBy]));
+          ? Number(student1[sortBy]) - Number(student2[sortBy])
+          : Number(student2[sortBy]) - Number(student1[sortBy])));
 
-    case 'grades':
+    case SortType.AverageGrade:
       return studentsRes.sort((student1: Student, student2: Student) => {
         const firstAvarage = getAvarage(student1, sortBy);
         const secondAvarage = getAvarage(student2, sortBy);
