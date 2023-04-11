@@ -59,12 +59,16 @@ export function sortStudents(
           break;
         }
 
-        default:
+        default: {
+          throw new Error('Wrong order');
+        }
       }
       break;
     }
 
-    default:
+    default: {
+      throw new Error('Wrong sort');
+    }
   }
 
   return cloneStudens;
