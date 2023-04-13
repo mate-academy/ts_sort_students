@@ -66,7 +66,7 @@ export function sortStudents(
           return getAverageGrade(b) - getAverageGrade(a);
         }
 
-        return getAverageGrade(a) - getAverageGrade(b);
+        return getAveragesGrade(a) - getAverageGrade(b);
       });
       break;
 
