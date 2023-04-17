@@ -10,11 +10,11 @@ export interface Student {
 
 export enum SortType {
   // describe SortType enum
-  Name='name',
-  Surname='surname',
-  Age='age',
-  Married='married',
-  AverageGrade='grades'
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade
 }
 
 // create SortOrder type
@@ -29,28 +29,42 @@ function getAverage(grades:number[]):number {
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   // write your function
+  const copyStudents: Student[] = [...students];
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
-      return order === 'asc' ? [...students].sort((a, b) => a[sortBy]
-        .localeCompare(b[sortBy]))
-        : [...students].sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+    case SortType.Name:
+      return order === 'asc' ? copyStudents
+        .sort((firstStud, secondStud) => firstStud.name
+          .localeCompare(secondStud.name)) : copyStudents
+        .sort((firstStud, secondStud) => secondStud.name
+          .localeCompare(firstStud.name));
 
-    case 'age':
-      return order === 'asc' ? [...students].sort((a, b) => a[sortBy]
-      - b[sortBy])
-        : [...students].sort((a, b) => b[sortBy] - a[sortBy]);
+    case SortType.Surname:
+      return order === 'asc' ? copyStudents
+        .sort((firstStud, secondStud) => firstStud.surname
+          .localeCompare(secondStud.surname))
+        : copyStudents.sort((firstStud, secondStud) => secondStud.surname
+          .localeCompare(firstStud.surname));
 
-    case 'married':
-      return order === 'asc' ? [...students].sort((a, b) => (+a[sortBy])
-      - (+b[sortBy])) : [...students].sort((a, b) => +b.married - +a.married);
+    case SortType.Age:
+      return order === 'asc' ? copyStudents
+        .sort((firstStud, secondStud) => firstStud.age - secondStud.age)
+        : copyStudents.sort((firstStud, secondStud) => secondStud.age
+         - firstStud.age);
 
-    case 'grades':
-      return order === 'asc' ? [...students].sort((a, b) => (
-        getAverage(a[sortBy])) - (getAverage(b[sortBy])))
-        : [...students].sort((a, b) => getAverage(b[sortBy])
-        - getAverage(a[sortBy]));
+    case SortType.Married:
+      return order === 'asc' ? copyStudents
+        .sort((firstStud, secondStud) => (+firstStud.married)
+      - (+secondStud.married)) : copyStudents
+        .sort((firstStud, secondStud) => +secondStud.married
+        - +firstStud.married);
+
+    case SortType.AverageGrade:
+      return order === 'asc' ? copyStudents.sort((firstStud, secondStud) => (
+        getAverage(firstStud.grades)) - (getAverage(secondStud.grades)))
+        : copyStudents
+          .sort((firstStud, secondStud) => getAverage(secondStud.grades)
+        - getAverage(firstStud.grades));
 
     default:
       return students;
