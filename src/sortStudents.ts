@@ -46,7 +46,6 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      // eslint-disable-next-line max-len
       newArrOfStudents.sort((a, b) => (order === 'asc'
         ? average(a[sortBy]) - average(b[sortBy])
         : average(b[sortBy]) - average(a[sortBy])
