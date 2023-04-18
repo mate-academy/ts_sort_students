@@ -29,7 +29,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsArr: Student[] = [...students];
+  const studentsArr = [...students];
   const isAsc: boolean = order === 'asc';
 
   switch (sortBy) {
