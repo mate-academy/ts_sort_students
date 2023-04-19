@@ -1,16 +1,40 @@
+const averageGrade = (grades:number[]):number => (
+  grades.reduce((sum: number, grade: number) => (
+    sum + grade), 0) / grades.length);
 
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students:object[], sortBy: SortType, order: SortOrder,
+): object[] {
+  const byAverageGrade = sortBy === 'grades';
+  const sortingOrder = order === 'asc' ? 1 : -1;
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  return [...students].sort((firstStudent, secondStudent) => {
+    const firstSortingValue = byAverageGrade
+      ? averageGrade(firstStudent[sortBy]) : firstStudent[sortBy];
+
+    const secondSortingValue = byAverageGrade
+      ? averageGrade(secondStudent[sortBy]) : secondStudent[sortBy];
+
+    return (sortBy === 'name' || sortBy === 'surname'
+      ? firstSortingValue.localeCompare(secondSortingValue)
+      : firstSortingValue - secondSortingValue) * sortingOrder;
+  });
 }
