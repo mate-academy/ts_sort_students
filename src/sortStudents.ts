@@ -20,9 +20,9 @@ function getAvarageGrade(grades: number[]): number {
   return grades.reduce((sum, n) => sum + n) / grades.length;
 }
 
-export function sortStudents(students: object[],
-  sortBy: SortType, order: SortOrder): object[] {
-  const copyStudents: object[] = [...students];
+export function sortStudents(students: Student[],
+  sortBy: SortType, order: SortOrder): Student[] {
+  const copyStudents = [...students];
 
   switch (sortBy) {
     case 'name':
@@ -44,9 +44,9 @@ export function sortStudents(students: object[],
 
     default:
       return (order === 'asc')
-        ? copyStudents.sort((student1, student2) => student1[sortBy]
-        - student2[sortBy])
-        : copyStudents.sort((student1, student2) => student2[sortBy]
-        - student1[sortBy]);
+        ? copyStudents.sort((student1, student2) => +student1[sortBy]
+        - +student2[sortBy])
+        : copyStudents.sort((student1, student2) => +student2[sortBy]
+        - +student1[sortBy]);
   }
 }
