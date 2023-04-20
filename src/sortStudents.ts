@@ -17,6 +17,11 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
+function averageGrade(grades: number[]): number {
+  return grades
+    .reduce((prev, curr) => prev + curr, 0)
+              / grades.length;
+}
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
@@ -26,39 +31,35 @@ export function sortStudents(students: Student[],
   const copyOfStudents = [...students];
 
   return copyOfStudents
-    .sort((studentA: Student, studentB: Student) => {
-      const studentAavg = studentA.grades
-        .reduce((prev, curr) => prev + curr, 0)
-              / studentA.grades.length;
+    .sort((firstStudent: Student, secondStudent: Student) => {
+      const firstStudentavg = averageGrade(firstStudent.grades);
 
-      const studentBavg = studentB.grades
-        .reduce((prev, curr) => prev + curr, 0)
-          / studentB.grades.length;
+      const secondStudentavg = averageGrade(secondStudent.grades);
 
       switch (sortBy) {
         case 'name':
           return order === 'asc'
-            ? studentA.name.localeCompare(studentB.name)
-            : studentB.name.localeCompare(studentA.name);
+            ? firstStudent.name.localeCompare(secondStudent.name)
+            : secondStudent.name.localeCompare(firstStudent.name);
         case 'surname':
           return order === 'asc'
-            ? studentA.surname.localeCompare(studentB.surname)
-            : studentB.surname.localeCompare(studentA.surname);
+            ? firstStudent.surname.localeCompare(secondStudent.surname)
+            : secondStudent.surname.localeCompare(firstStudent.surname);
         case 'age':
           return order === 'asc'
-            ? studentA.age - studentB.age
-            : studentB.age - studentA.age;
+            ? firstStudent.age - secondStudent.age
+            : secondStudent.age - firstStudent.age;
         case 'married':
           return order === 'asc'
-            ? Number(studentA.married) - Number(studentB.married)
-            : Number(studentB.married) - Number(studentA.married);
+            ? Number(firstStudent.married) - Number(secondStudent.married)
+            : Number(secondStudent.married) - Number(firstStudent.married);
         case 'grades':
 
           return order === 'asc'
-            ? studentAavg - studentBavg
-            : studentBavg - studentAavg;
+            ? firstStudentavg - secondStudentavg
+            : secondStudentavg - firstStudentavg;
         default:
-          return 0;
+          throw new Error('Incorrect sort type!');
       }
     });
 }
