@@ -18,6 +18,10 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverage(param: number[]): number {
+  return param.reduce((prev, curr) => prev + curr) / param.length;
+}
+
 export function sortStudents(students: Student[], sortBy: SortType,
   order: SortOrder): Student[] {
   const studentsForSorting: Student[] = [...students];
@@ -43,12 +47,10 @@ export function sortStudents(students: Student[], sortBy: SortType,
           .localeCompare(a.married.toString()));
     case SortType.AverageGrade:
       return order === 'asc'
-        ? studentsForSorting.sort((a, b) => (a.grades
-          .reduce((prev, curr) => prev + curr) / a.grades.length)
-        - (b.grades.reduce((prev, curr) => prev + curr) / b.grades.length))
-        : studentsForSorting.sort((a, b) => (b.grades
-          .reduce((prev, curr) => prev + curr) / b.grades.length)
-        - (a.grades.reduce((prev, curr) => prev + curr) / a.grades.length));
+        ? studentsForSorting.sort((a, b) => (calculateAverage(a.grades)
+          - calculateAverage(b.grades)))
+        : studentsForSorting.sort((a, b) => (calculateAverage(b.grades)
+        - calculateAverage(a.grades)));
     default: return studentsForSorting;
   }
 }
