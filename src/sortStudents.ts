@@ -31,16 +31,52 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      copiedStudents.sort((a, b) => a.name.localeCompare(b.name));
+      switch (order) {
+        case 'asc':
+          copiedStudents.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case 'desc':
+          copiedStudents.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        default:
+          throw new Error(`Type 'asc' or 'desc' not ${order}`);
+      }
       break;
     case SortType.Surname:
-      copiedStudents.sort((a, b) => a.surname.localeCompare(b.surname));
+      switch (order) {
+        case 'asc':
+          copiedStudents.sort((a, b) => a.surname.localeCompare(b.surname));
+          break;
+        case 'desc':
+          copiedStudents.sort((a, b) => b.surname.localeCompare(a.surname));
+          break;
+        default:
+          throw new Error(`Type 'asc' or 'desc' not ${order}`);
+      }
       break;
     case SortType.Age:
-      copiedStudents.sort((a, b) => b.age - a.age);
+      switch (order) {
+        case 'asc':
+          copiedStudents.sort((a, b) => a.age - b.age);
+          break;
+        case 'desc':
+          copiedStudents.sort((a, b) => b.age - a.age);
+          break;
+        default:
+          throw new Error(`Type 'asc' or 'desc' not ${order}`);
+      }
       break;
     case SortType.Married:
-      copiedStudents.sort((a, b) => +b.married - +a.married);
+      switch (order) {
+        case 'asc':
+          copiedStudents.sort((a, b) => +a.married - +b.married);
+          break;
+        case 'desc':
+          copiedStudents.sort((a, b) => +b.married - +a.married);
+          break;
+        default:
+          throw new Error(`Type 'asc' or 'desc' not ${order}`);
+      }
       break;
     case SortType.AverageGrade:
       switch (order) {
