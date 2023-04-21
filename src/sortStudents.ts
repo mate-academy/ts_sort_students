@@ -43,21 +43,24 @@ export function sortStudents(
       }
 
       case SortType.Age: {
-        result = ((a.age - b.age) * (order === 'asc' ? 1 : -1));
+        result = (
+          (a.age - b.age) * (order === 'asc' ? 1 : -1)
+        );
         break;
       }
 
       case SortType.Married: {
-        result = (a.married > b.married && (order === 'desc')) ? -1 : 1;
+        result = (
+          (a.married > b.married && (order === 'desc')) ? -1 : 1
+        );
         break;
       }
 
       case SortType.AverageGrade: {
         result = (
-          (a.grades.reduce((sum, grade) => sum + grade, 0)
-            / a.grades.length - b.grades
-            .reduce((sum, grade) => sum + grade, 0) / b.grades.length)
-            * (order === 'asc' ? 1 : -1)
+          (a.grades.reduce((sum, grade) => sum + grade, 0) / a.grades.length
+          - b.grades.reduce((sum, grade) => sum + grade, 0) / b.grades.length)
+          * (order === 'asc' ? 1 : -1)
         );
         break;
       }
