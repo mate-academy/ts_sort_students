@@ -33,38 +33,29 @@ export function sortStudents(students: Student[],
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc' ? copyStudents
-        .sort((firstStud, secondStud) => firstStud.name
-          .localeCompare(secondStud.name)) : copyStudents
-        .sort((firstStud, secondStud) => secondStud.name
-          .localeCompare(firstStud.name));
+      return copyStudents.sort((firstStud, secondStud) => (
+        order === 'asc' ? firstStud.name.localeCompare(secondStud.name)
+          : secondStud.name.localeCompare(firstStud.name)));
 
     case SortType.Surname:
-      return order === 'asc' ? copyStudents
-        .sort((firstStud, secondStud) => firstStud.surname
-          .localeCompare(secondStud.surname))
-        : copyStudents.sort((firstStud, secondStud) => secondStud.surname
-          .localeCompare(firstStud.surname));
+      return copyStudents.sort((firstStud, secondStud) => (
+        order === 'asc' ? firstStud.surname.localeCompare(secondStud.surname)
+          : secondStud.surname.localeCompare(firstStud.surname)));
 
     case SortType.Age:
-      return order === 'asc' ? copyStudents
-        .sort((firstStud, secondStud) => firstStud.age - secondStud.age)
-        : copyStudents.sort((firstStud, secondStud) => secondStud.age
-         - firstStud.age);
+      return copyStudents.sort((firstStud, secondStud) => (
+        order === 'asc' ? firstStud.age - secondStud.age
+          : secondStud.age - firstStud.age));
 
     case SortType.Married:
-      return order === 'asc' ? copyStudents
-        .sort((firstStud, secondStud) => (+firstStud.married)
-      - (+secondStud.married)) : copyStudents
-        .sort((firstStud, secondStud) => +secondStud.married
-        - +firstStud.married);
+      return copyStudents.sort((firstStud, secondStud) => (
+        order === 'asc' ? (+firstStud.married) - (+secondStud.married)
+          : +secondStud.married - +firstStud.married));
 
     case SortType.AverageGrade:
-      return order === 'asc' ? copyStudents.sort((firstStud, secondStud) => (
-        getAverage(firstStud.grades)) - (getAverage(secondStud.grades)))
-        : copyStudents
-          .sort((firstStud, secondStud) => getAverage(secondStud.grades)
-        - getAverage(firstStud.grades));
+      return copyStudents.sort((firstStud, secondStud) => (order === 'asc'
+        ? getAverage(firstStud.grades) - getAverage(secondStud.grades)
+        : getAverage(secondStud.grades) - getAverage(firstStud.grades)));
 
     default:
       return students;
