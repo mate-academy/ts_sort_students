@@ -1,10 +1,10 @@
 
 export interface Student {
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
-  grades: number[],
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -12,70 +12,52 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averageGrade',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType,
-  order: SortOrder): Student[] {
+export const sortStudents = (
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] => {
   const newArray = [...students];
+  const calculatedOrder = (order === 'asc' ? 1 : -1);
 
   switch (sortBy) {
-    case SortType.Name:
-      newArray.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-
-    case SortType.Surname:
-      newArray.sort((a, b) => a.surname.localeCompare(b.surname));
-      break;
-
     case SortType.Age:
-      if (order === 'asc') {
-        newArray.sort((a, b) => a.age - b.age);
-      } else {
-        newArray.sort((a, b) => b.age - a.age);
-      }
-      break;
+      newArray.sort((a, b) => (a.age - b.age) * calculatedOrder);
 
+      return newArray;
+    case SortType.Name:
+    case SortType.Surname:
+      newArray.sort((a, b) => {
+        return (a[sortBy as keyof typeof a]
+          .toString()
+          .localeCompare(b[sortBy as keyof typeof b].toString())
+          * calculatedOrder);
+      });
+
+      return newArray;
     case SortType.Married:
-      if (order === 'asc') {
-        newArray.sort((a, b) => Number(a.married) - Number(b.married));
-      } else {
-        newArray.sort((a, b) => Number(b.married) - Number(a.married));
-      }
-      break;
+      newArray.sort((a, b) => Number((a.married > b.married))
+      * calculatedOrder);
 
+      return newArray;
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        newArray.sort((a, b) => {
-          const averegePrev = a.grades.reduce((sum, x) => sum + x, 0)
-            / a.grades.length;
-          const averegeNext = b.grades.reduce((sum, x) => sum + x, 0)
-            / b.grades.length;
+      newArray.sort((a, b) => {
+        const averageA = a.grades
+          .reduce((sum, x) => sum + x, 0) / a.grades.length;
+        const averageB = b.grades
+          .reduce((sum, x) => sum + x, 0) / b.grades.length;
 
-          return averegePrev - averegeNext;
-        });
-      } else {
-        newArray.sort((a, b) => {
-          const averegePrev = a.grades.reduce((sum, x) => sum + x, 0)
-            / a.grades.length;
-          const averegeNext = b.grades.reduce((sum, x) => sum + x, 0)
-            / b.grades.length;
+        return (averageA - averageB) * calculatedOrder;
+      });
 
-          return averegeNext - averegePrev;
-        });
-      }
-      break;
-    default:
+      return newArray;
+    default: break;
   }
 
-  // if (order === 'desc') {
-  //   newArray.reverse();
-  // }
-
-  // eslint-disable-next-line no-console
-  console.log(newArray);
-
   return newArray;
-}
+};
