@@ -16,19 +16,15 @@ export enum SortType {
   AverageGrade,
 }
 
-// create SortOrder type
-export type SortOrder = {
-  asc : string,
-  desc: string,
-};
+export type SortOrder = 'asc' | 'desc';
 
-function culGrage(arrGrage: number []): number {
+function calculateAverageGrade(arrGrage: number []): number {
   return arrGrage.reduce((sum, grage) => sum + grage, 0) / arrGrage.length;
 }
 
 export function sortStudents(students: Student [], sortBy: SortType,
-  order: string) : Student [] {
-  const newStudents: Student [] = [...students];
+  order: SortOrder) : Student [] {
+  const newStudents = [...students];
 
   newStudents.sort((firstStudent: Student, secondStudent: Student) => {
     switch (sortBy) {
@@ -54,8 +50,10 @@ export function sortStudents(students: Student [], sortBy: SortType,
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? culGrage(firstStudent.grades) - culGrage(secondStudent.grades)
-          : culGrage(secondStudent.grades) - culGrage(firstStudent.grades);
+          ? calculateAverageGrade(firstStudent.grades)
+           - calculateAverageGrade(secondStudent.grades)
+          : calculateAverageGrade(secondStudent.grades)
+           - calculateAverageGrade(firstStudent.grades);
 
       default:
         return 0;
