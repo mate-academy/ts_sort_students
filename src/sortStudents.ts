@@ -1,3 +1,14 @@
+function compareString(str1: string, str2: string): number {
+  if (str1 > str2) {
+    return 1;
+  }
+
+  if (str1 < str2) {
+    return -1;
+  }
+
+  return 0;
+}
 
 export interface Student {
   name: string,
@@ -28,7 +39,7 @@ export function sortStudents(
     return temp;
   });
 
-  const result = copy.sort((a: Student, b: Student): number => {
+  copy.sort((a: Student, b: Student): number => {
     let x = { ...a };
     let y = { ...b };
 
@@ -37,18 +48,6 @@ export function sortStudents(
 
       x = { ...b };
       y = { ...temp };
-    }
-
-    function compareString(str1: string, str2: string): number {
-      if (str1 > str2) {
-        return 1;
-      }
-
-      if (str1 < str2) {
-        return -1;
-      }
-
-      return 0;
     }
 
     switch (sortBy) {
@@ -68,5 +67,5 @@ export function sortStudents(
     }
   });
 
-  return result;
+  return copy;
 }
