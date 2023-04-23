@@ -23,27 +23,31 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = [...students];
 
-  sortedStudents.sort((a, b) => {
+  function compareAverage(a: number[]): number {
+    return a
+      .reduce((sum: number, grade: number) => sum + grade, 0) / a.length;
+  }
+
+  sortedStudents.sort((firstStudent, secondStudent) => {
     let comparison = 0;
 
     switch (sortBy) {
       case SortType.Name:
-        comparison = a.name.localeCompare(b.name);
+        comparison = firstStudent.name.localeCompare(secondStudent.name);
         break;
       case SortType.Surname:
-        comparison = a.surname.localeCompare(b.surname);
+        comparison = firstStudent.surname.localeCompare(secondStudent.surname);
         break;
       case SortType.Age:
-        comparison = a.age - b.age;
+        comparison = firstStudent.age - secondStudent.age;
         break;
       case SortType.Married:
-        comparison = Number(a.married) - Number(b.married);
+        comparison = Number(firstStudent.married)
+          - Number(secondStudent.married);
         break;
       case SortType.AverageGrade: {
-        const averageA = a.grades
-          .reduce((sum, grade) => sum + grade, 0) / a.grades.length;
-        const averageB = b.grades
-          .reduce((sum, grade) => sum + grade, 0) / b.grades.length;
+        const averageA = compareAverage(firstStudent.grades);
+        const averageB = compareAverage(secondStudent.grades);
 
         comparison = averageA - averageB;
       }
