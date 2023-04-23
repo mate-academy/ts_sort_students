@@ -1,9 +1,11 @@
-function compareString(str1: string, str2: string): number {
-  if (str1 > str2) {
+type Values = string | number | boolean | number[];
+
+function compareValue(val1: Values, val2: Values): number {
+  if (val1 > val2) {
     return 1;
   }
 
-  if (str1 < str2) {
+  if (val1 < val2) {
     return -1;
   }
 
@@ -19,11 +21,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -33,35 +35,30 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copy = students.map((item) => {
-    const temp = { ...item };
-
-    return temp;
-  });
+  const copy = students.map((item) => ({ ...item }));
 
   copy.sort((a: Student, b: Student): number => {
-    let x = { ...a };
-    let y = { ...b };
+    let valueA = a[sortBy];
+    let valueB = b[sortBy];
 
     if (order === 'desc') {
-      const temp = { ...a };
-
-      x = { ...b };
-      y = { ...temp };
+      valueA = b[sortBy];
+      valueB = a[sortBy];
     }
 
     switch (sortBy) {
       case SortType.Name:
-        return compareString(x.name, y.name);
       case SortType.Surname:
-        return compareString(x.surname, y.surname);
       case SortType.Age:
-        return x.age - y.age;
-      case SortType.AverageGrade:
-        return x.grades.reduce((acc, item) => acc + item, 0) / x.grades.length
-            - y.grades.reduce((acc, item) => acc + item, 0) / y.grades.length;
       case SortType.Married:
-        return +(+x.married - +y.married);
+        return compareValue(valueA, valueB);
+      case SortType.AverageGrade:
+        if (typeof valueA === 'object' && typeof valueB === 'object') {
+          return valueA.reduce((acc, item) => acc + item, 0) / valueA.length
+            - valueB.reduce((acc, item) => acc + item, 0) / valueB.length;
+        }
+
+        return 0;
       default:
         return 0;
     }
