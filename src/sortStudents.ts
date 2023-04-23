@@ -1,5 +1,4 @@
 export interface Student {
-  // describe Student interface'
   name: string,
   surname: string,
   age: number,
@@ -15,7 +14,6 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function sorted(
@@ -33,23 +31,24 @@ function sorted(
     });
 }
 
+function averageGrade(students: Student[], order: string): object[] {
+  const average = (array: number[]): number => {
+    return array.reduce((a: number, b: number) => a + b, 0) / array.length;
+  };
+
+  return students.sort((student1: Student, student2: Student) => {
+    const output = average(student1.grades) - average(student2.grades);
+
+    return order === 'asc' ? output : -output;
+  });
+}
+
 export function sortStudents(
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): object[] {
-  if (sortBy === 'grades') {
-    const average = (array: number[]): number => {
-      return array.reduce((a: number, b: number) => a + b, 0) / array.length;
-    };
-
-    return students.sort((student1: Student, student2: Student) => {
-      const output = average(student1.grades) - average(student2.grades);
-
-      return order === 'asc' ? output : -output;
-    });
-  }
-
-  return sorted(students, sortBy, order);
+  return sortBy === 'grades'
+    ? averageGrade(students, order)
+    : sorted(students, sortBy, order);
 }
