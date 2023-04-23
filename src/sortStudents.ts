@@ -1,6 +1,5 @@
 
 export interface Student {
-  // describe Student interface
   name: string,
   surname: string,
   age: number,
@@ -9,15 +8,12 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
   Name,
   Surname,
   Age,
   Married,
   AverageGrade
 }
-
-// create SortOrder type
 export type SortOrder = 'asc'|'desc';
 
 function getAverage(grades:number[]):number {
@@ -28,7 +24,6 @@ function getAverage(grades:number[]):number {
 
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
-  // write your function
   const copyStudents: Student[] = [...students];
 
   switch (sortBy) {
