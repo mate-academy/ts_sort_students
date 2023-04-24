@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -21,48 +21,46 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copyArray: Student[] = [...students];
+  const studentsCopy: Student[] = [...students];
+
+  const calculateAverageGrade = (grades: number[]): number => {
+    return grades.reduce((acc, grade) => acc + grade, 0) / grades.length;
+  };
+
+  const sortByAverageGrade = (first: Student, second: Student): number => {
+    const avgA = calculateAverageGrade(first.grades);
+    const avgB = calculateAverageGrade(second.grades);
+
+    return order === 'asc' ? avgA - avgB : avgB - avgA;
+  };
 
   switch (sortBy) {
-    case SortType.Name: {
-      copyArray.sort((a, b) => a.name.localeCompare(b.name));
+    case SortType.Name:
+    case SortType.Surname:
+      studentsCopy.sort((first, second) => (
+        first[sortBy].localeCompare(second[sortBy])
+      ));
       break;
-    }
 
-    case SortType.Surname: {
-      copyArray.sort((a, b) => a.surname.localeCompare(b.surname));
+    case SortType.Age:
+      studentsCopy.sort((first, second) => (
+        second.age - first.age
+      ));
       break;
-    }
 
-    case SortType.Age: {
-      copyArray.sort((a, b) => b.age - a.age);
+    case SortType.Married:
+      studentsCopy.sort((first, second) => (
+        Number(second.married) - Number(first.married)
+      ));
       break;
-    }
 
-    case SortType.Married: {
-      copyArray.sort((a, b) => Number(b.married) - Number(a.married));
+    case SortType.AverageGrade:
+      studentsCopy.sort(sortByAverageGrade);
       break;
-    }
 
-    case SortType.AverageGrade: {
-      const avgSort = (a: Student, b: Student):Student[] => {
-        const avgA = a.grades
-          .reduce((acc, grade) => acc + grade, 0) / a.grades.length;
-
-        const avgB = b.grades
-          .reduce((acc, grade) => acc + grade, 0) / b.grades.length;
-
-        return order === 'asc' ? avgA - avgB : avgB - avgA;
-      };
-
-      copyArray.sort(avgSort);
-      break;
-    }
-
-    default: {
+    default:
       throw new Error(`Unexpected sortBy value: ${sortBy}`);
-    }
   }
 
-  return copyArray;
+  return studentsCopy;
 }
