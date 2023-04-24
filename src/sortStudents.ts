@@ -17,6 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calculAverage(grades: number[]): number {
+  return grades.reduce((sum: number, x: number) => sum + x, 0) / grades.length;
+}
+
 export const sortStudents = (
   students: Student[],
   sortBy: SortType,
@@ -27,30 +31,23 @@ export const sortStudents = (
 
   switch (sortBy) {
     case SortType.Age:
-      newArray.sort((a, b) => (a.age - b.age) * calculatedOrder);
+    case SortType.Married:
+      newArray.sort((a, b) => (Number((a[sortBy] > b[sortBy]))
+      * calculatedOrder));
 
       return newArray;
     case SortType.Name:
     case SortType.Surname:
       newArray.sort((a, b) => {
-        return (a[sortBy as keyof typeof a]
-          .toString()
-          .localeCompare(b[sortBy as keyof typeof b].toString())
-          * calculatedOrder);
+        return (a[sortBy].localeCompare(b[sortBy])
+        * calculatedOrder);
       });
-
-      return newArray;
-    case SortType.Married:
-      newArray.sort((a, b) => Number((a.married > b.married))
-      * calculatedOrder);
 
       return newArray;
     case SortType.AverageGrade:
       newArray.sort((a, b) => {
-        const averageA = a.grades
-          .reduce((sum, x) => sum + x, 0) / a.grades.length;
-        const averageB = b.grades
-          .reduce((sum, x) => sum + x, 0) / b.grades.length;
+        const averageA = calculAverage(a.grades);
+        const averageB = calculAverage(b.grades);
 
         return (averageA - averageB) * calculatedOrder;
       });
