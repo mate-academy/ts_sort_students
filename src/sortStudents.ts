@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 // create SortOrder type
@@ -31,69 +31,66 @@ export function sortStudents(
 ): Array<object> | undefined {
   const newStudentArray = [...students];
 
-  if (sortBy === SortType.Name) {
-    return order === 'asc'
-      ? newStudentArray.sort(
-        (student, nextStudent) => student.name.localeCompare(nextStudent.name),
-      )
-      : newStudentArray.sort(
-        (student, nextStudent) => nextStudent.name.localeCompare(student.name),
-      );
-  }
-
-  if (sortBy === SortType.Surname) {
-    return order === 'asc'
-      ? newStudentArray.sort((
-        student,
-        nextStudent,
-      ) => student.surname.localeCompare(nextStudent.surname))
-      : newStudentArray.sort((
-        student,
-        nextStudent,
-      ) => nextStudent.surname.localeCompare(student.surname));
-  }
-
-  if (sortBy === SortType.Age) {
-    return order === 'asc'
-      ? newStudentArray.sort(
-        (student, nextStudent) => student.age - nextStudent.age,
-      )
-      : newStudentArray.sort(
-        (student, nextStudent) => nextStudent.age - student.age,
-      );
-  }
-
-  if (sortBy === SortType.Married) {
-    return order === 'asc'
-      ? newStudentArray.sort(
-        (
+  switch (sortBy) {
+    case SortType.Name:
+      return order === 'asc'
+        ? newStudentArray.sort(
+          (student, nextStudent) => (
+            student.name.localeCompare(nextStudent.name)
+          ),
+        )
+        : newStudentArray.sort(
+          (student, nextStudent) => (
+            nextStudent.name.localeCompare(student.name)
+          ),
+        );
+    case SortType.Surname:
+      return order === 'asc'
+        ? newStudentArray.sort((
           student,
           nextStudent,
-        ) => Number(student.married) - Number(nextStudent.married),
-      )
-      : newStudentArray.sort(
-        (
+        ) => student.surname.localeCompare(nextStudent.surname))
+        : newStudentArray.sort((
           student,
           nextStudent,
-        ) => Number(nextStudent.married) - Number(student.married),
-      );
+        ) => nextStudent.surname.localeCompare(student.surname));
+    case SortType.Age:
+      return order === 'asc'
+        ? newStudentArray.sort(
+          (student, nextStudent) => student.age - nextStudent.age,
+        )
+        : newStudentArray.sort(
+          (student, nextStudent) => nextStudent.age - student.age,
+        );
+    case SortType.Married:
+      return order === 'asc'
+        ? newStudentArray.sort(
+          (
+            student,
+            nextStudent,
+          ) => Number(student.married) - Number(nextStudent.married),
+        )
+        : newStudentArray.sort(
+          (
+            student,
+            nextStudent,
+          ) => Number(nextStudent.married) - Number(student.married),
+        );
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? newStudentArray.sort(
+          (
+            student,
+            nextStudent,
+          ) => getAverageGrade(student) - getAverageGrade(nextStudent),
+        )
+        : newStudentArray.sort(
+          (
+            student,
+            nextStudent,
+          ) => getAverageGrade(nextStudent) - getAverageGrade(student),
+        );
+    default:
+      return undefined;
   }
-
-  if (sortBy === SortType.AverageGrade) {
-    return order === 'asc'
-      ? newStudentArray.sort(
-        (
-          student,
-          nextStudent,
-        ) => getAverageGrade(student) - getAverageGrade(nextStudent),
-      )
-      : newStudentArray.sort(
-        (
-          student,
-          nextStudent,
-        ) => getAverageGrade(nextStudent) - getAverageGrade(student),
-      );
-  }
-
-  return undefined;
 }
