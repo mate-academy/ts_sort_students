@@ -33,48 +33,40 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? newStudentArray.sort(
-          (student, nextStudent) => (
-            student.name.localeCompare(nextStudent.name)
-          ),
-        )
-        : newStudentArray.sort(
-          (student, nextStudent) => (
-            nextStudent.name.localeCompare(student.name)
-          ),
-        );
     case SortType.Surname:
       return order === 'asc'
-        ? newStudentArray.sort((
-          student,
-          nextStudent,
-        ) => student.surname.localeCompare(nextStudent.surname))
-        : newStudentArray.sort((
-          student,
-          nextStudent,
-        ) => nextStudent.surname.localeCompare(student.surname));
-    case SortType.Age:
-      return order === 'asc'
         ? newStudentArray.sort(
-          (student, nextStudent) => student.age - nextStudent.age,
+          (student, nextStudent) => (
+            student[sortBy].localeCompare(nextStudent[sortBy])
+          ),
         )
         : newStudentArray.sort(
-          (student, nextStudent) => nextStudent.age - student.age,
+          (student, nextStudent) => (
+            nextStudent[sortBy].localeCompare(student[sortBy])
+          ),
         );
+    // case SortType.Age:
+    //   return order === 'asc'
+    //     ? newStudentArray.sort(
+    //       (student, nextStudent) => student.age - nextStudent.age,
+    //     )
+    //     : newStudentArray.sort(
+    //       (student, nextStudent) => nextStudent.age - student.age,
+    //     );
+    case SortType.Age:
     case SortType.Married:
       return order === 'asc'
         ? newStudentArray.sort(
           (
             student,
             nextStudent,
-          ) => Number(student.married) - Number(nextStudent.married),
+          ) => Number(student[sortBy]) - Number(nextStudent[sortBy]),
         )
         : newStudentArray.sort(
           (
             student,
             nextStudent,
-          ) => Number(nextStudent.married) - Number(student.married),
+          ) => Number(nextStudent[sortBy]) - Number(student[sortBy]),
         );
     case SortType.AverageGrade:
       return order === 'asc'
@@ -91,6 +83,6 @@ export function sortStudents(
           ) => getAverageGrade(nextStudent) - getAverageGrade(student),
         );
     default:
-      return undefined;
+      throw new Error('Wrong order type!');
   }
 }
