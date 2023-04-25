@@ -33,50 +33,41 @@ export function sortStudents(
     case SortType.Surname:
       if (order === 'asc') {
         clonedStudents.sort(
-          (student, studen2) => student[sortBy].localeCompare(studen2[sortBy]),
+          (student, student2) => student[sortBy]
+            .localeCompare(student2[sortBy]),
         );
-        /* Please excuse the variable name studen2, had issues with
-        max length and typescript seems to not like line breaks in
-        arrow functions (the linter kept yelling at me) */
         break;
       }
 
       clonedStudents.sort(
-        (student, studen2) => studen2[sortBy].localeCompare(student[sortBy]),
+        (student, student2) => student2[sortBy]
+          .localeCompare(student[sortBy]),
       );
       break;
 
     case SortType.Age:
-      if (order === 'asc') {
-        clonedStudents.sort((student, student2) => student.age - student2.age);
-        break;
-      }
-
-      clonedStudents.sort((student, student2) => student2.age - student.age);
-      break;
-
     case SortType.Married:
       if (order === 'asc') {
         clonedStudents.sort(
-          (a, b) => String(a.married).localeCompare(String(b.married)),
+          (student, student2) => +student[sortBy] - +student2[sortBy],
         );
-        // Here the line is already too long to change variable names
         break;
       }
 
       clonedStudents.sort(
-        (a, b) => String(b.married).localeCompare(String(a.married)),
+        (student, student2) => +student2[sortBy] - +student[sortBy],
       );
       break;
 
     case SortType.AverageGrade:
       if (order === 'asc') {
-        clonedStudents.sort((stdnt, stdnt2) => {
-          let avg1: number = stdnt.grades.reduce((prv, cur) => prv + cur, 0);
-          let avg2: number = stdnt2.grades.reduce((prv, cur) => prv + cur, 0);
-
-          avg1 /= stdnt.grades.length;
-          avg2 /= stdnt2.grades.length;
+        clonedStudents.sort((student, student2) => {
+          const avg1: number = student.grades
+            .reduce((previous, current) => previous + current, 0)
+              / student.grades.length;
+          const avg2: number = student2.grades
+            .reduce((previous, current) => previous + current, 0)
+              / student2.grades.length;
 
           return avg1 - avg2;
         });
