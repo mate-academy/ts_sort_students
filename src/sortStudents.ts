@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(student: Student): number {
@@ -28,7 +27,7 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Array<object> | undefined {
+): Array<object> {
   const newStudentArray = [...students];
 
   switch (sortBy) {
@@ -45,14 +44,6 @@ export function sortStudents(
             nextStudent[sortBy].localeCompare(student[sortBy])
           ),
         );
-    // case SortType.Age:
-    //   return order === 'asc'
-    //     ? newStudentArray.sort(
-    //       (student, nextStudent) => student.age - nextStudent.age,
-    //     )
-    //     : newStudentArray.sort(
-    //       (student, nextStudent) => nextStudent.age - student.age,
-    //     );
     case SortType.Age:
     case SortType.Married:
       return order === 'asc'
