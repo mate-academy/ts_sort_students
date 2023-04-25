@@ -29,41 +29,38 @@ export function sortStudents(
   const clonedStudents = [...students];
 
   switch (sortBy) {
-    case SortType.Name: {
+    case SortType.Name:
+    case SortType.Surname:
       if (order === 'asc') {
-        clonedStudents.sort((a, b) => a.name.localeCompare(b.name));
+        clonedStudents.sort(
+          (student, studen2) => student[sortBy].localeCompare(studen2[sortBy]),
+        );
+        /* Please excuse the variable name studen2, had issues with
+        max length and typescript seems to not like line breaks in
+        arrow functions (the linter kept yelling at me) */
         break;
       }
 
-      clonedStudents.sort((a, b) => b.name.localeCompare(a.name));
+      clonedStudents.sort(
+        (student, studen2) => studen2[sortBy].localeCompare(student[sortBy]),
+      );
       break;
-    }
 
-    case SortType.Surname: {
+    case SortType.Age:
       if (order === 'asc') {
-        clonedStudents.sort((a, b) => a.surname.localeCompare(b.surname));
+        clonedStudents.sort((student, student2) => student.age - student2.age);
         break;
       }
 
-      clonedStudents.sort((a, b) => b.surname.localeCompare(a.surname));
+      clonedStudents.sort((student, student2) => student2.age - student.age);
       break;
-    }
 
-    case SortType.Age: {
-      if (order === 'asc') {
-        clonedStudents.sort((a, b) => a.age - b.age);
-        break;
-      }
-
-      clonedStudents.sort((a, b) => b.age - a.age);
-      break;
-    }
-
-    case SortType.Married: {
+    case SortType.Married:
       if (order === 'asc') {
         clonedStudents.sort(
           (a, b) => String(a.married).localeCompare(String(b.married)),
         );
+        // Here the line is already too long to change variable names
         break;
       }
 
@@ -71,48 +68,34 @@ export function sortStudents(
         (a, b) => String(b.married).localeCompare(String(a.married)),
       );
       break;
-    }
 
-    case SortType.AverageGrade: {
-      clonedStudents.sort((a, b) => {
-        let avgA: number = 0;
-        let avgB: number = 0;
+    case SortType.AverageGrade:
+      if (order === 'asc') {
+        clonedStudents.sort((stdnt, stdnt2) => {
+          let avg1: number = stdnt.grades.reduce((prv, cur) => prv + cur, 0);
+          let avg2: number = stdnt2.grades.reduce((prv, cur) => prv + cur, 0);
 
-        for (let i: number = 0; i < a.grades.length; i += 1) {
-          avgA += a.grades[i];
-        }
+          avg1 /= stdnt.grades.length;
+          avg2 /= stdnt2.grades.length;
 
-        for (let i: number = 0; i < b.grades.length; i += 1) {
-          avgB += b.grades[i];
-        }
+          return avg1 - avg2;
+        });
+        break;
+      }
 
-        avgA /= a.grades.length;
-        avgB /= b.grades.length;
+      clonedStudents.sort((stdnt, stdnt2) => {
+        let avg1: number = stdnt.grades.reduce((prv, cur) => prv + cur, 0);
+        let avg2: number = stdnt2.grades.reduce((prv, cur) => prv + cur, 0);
 
-        if (avgA > avgB && order === 'asc') {
-          return 1;
-        }
+        avg1 /= stdnt.grades.length;
+        avg2 /= stdnt2.grades.length;
 
-        if (avgA > avgB && order === 'desc') {
-          return -1;
-        }
-
-        if (avgB > avgA && order === 'asc') {
-          return -1;
-        }
-
-        if (avgB > avgA && order === 'desc') {
-          return 1;
-        }
-
-        return 0;
+        return avg2 - avg1;
       });
       break;
-    }
 
-    default: {
+    default:
       throw new Error('Invalid Sorting Parameter.');
-    }
   }
 
   return clonedStudents;
