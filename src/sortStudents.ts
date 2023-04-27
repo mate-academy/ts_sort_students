@@ -21,67 +21,49 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   const studentsCopy = [...students];
-  let result: Student[] = [];
 
   switch (sortBy) {
     case SortType.Name:
-      result = (order === 'asc')
-        ? studentsCopy.sort(
-          (a: Student, b: Student) => a.name.localeCompare(b.name),
-        )
-        : studentsCopy.sort(
-          (a: Student, b: Student) => b.name.localeCompare(a.name),
-        );
-
-      return result;
     case SortType.Surname:
-      result = (order === 'asc')
+      return (order === 'asc')
         ? studentsCopy.sort(
-          (a: Student, b: Student) => a.surname.localeCompare(b.surname),
+          (personA: Student, personB: Student) => personA[sortBy].localeCompare(
+            personB[sortBy],
+          ),
         )
         : studentsCopy.sort(
-          (a: Student, b: Student) => a.surname.localeCompare(b.surname),
+          (personA: Student, personB: Student) => personB[sortBy].localeCompare(
+            personA[sortBy],
+          ),
         );
-
-      return result;
     case SortType.Age:
-      result = (order === 'asc')
-        ? studentsCopy.sort(
-          (a: Student, b: Student) => a.age - b.age,
-        )
-        : studentsCopy.sort(
-          (a: Student, b: Student) => b.age - a.age,
-        );
-
-      return result;
     case SortType.Married:
-      result = (order === 'asc')
+      return (order === 'asc')
         ? studentsCopy.sort(
-          (a: Student, b: Student) => a.married - b.married,
+          (personA: Student, personB: Student) => personA[sortBy]
+           - personB[sortBy],
         )
         : studentsCopy.sort(
-          (a: Student, b: Student) => b.married - a.married,
+          (personA: Student, personB: Student) => personB[sortBy]
+           - personA[sortBy],
         );
 
-      return result;
     case SortType.AverageGrade:
-      result = (order === 'asc')
+      return (order === 'asc')
         ? studentsCopy.sort(
-          (a: Student, b: Student) => (a.grades.reduce(
+          (personA: Student, personB: Student) => (personA.grades.reduce(
             (acc: number, value: number) => acc + value, 0,
-          ) / a.grades.length) - (b.grades.reduce(
+          ) / personA.grades.length) - (personB.grades.reduce(
             (acc: number, value: number) => acc + value, 0,
-          ) / b.grades.length),
+          ) / personB.grades.length),
         )
         : studentsCopy.sort(
-          (a: Student, b: Student) => (b.grades.reduce(
+          (personA: Student, personB: Student) => (personB.grades.reduce(
             (acc: number, value: number) => acc + value, 0,
-          ) / b.grades.length) - (a.grades.reduce(
+          ) / personB.grades.length) - (personA.grades.reduce(
             (acc: number, value: number) => acc + value, 0,
-          ) / a.grades.length),
+          ) / personA.grades.length),
         );
-
-      return result;
 
     default:
       return students;
