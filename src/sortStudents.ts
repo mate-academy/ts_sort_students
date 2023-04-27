@@ -31,63 +31,35 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        clonedStudents.sort(
-          (student, student2) => student[sortBy]
-            .localeCompare(student2[sortBy]),
-        );
-        break;
-      }
-
-      clonedStudents.sort(
-        (student, student2) => student2[sortBy]
-          .localeCompare(student[sortBy]),
-      );
-      break;
+      return clonedStudents.sort((student, student2) => {
+        return order === 'asc'
+          ? student[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student[sortBy]);
+      });
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        clonedStudents.sort(
-          (student, student2) => +student[sortBy] - +student2[sortBy],
-        );
-        break;
-      }
-
-      clonedStudents.sort(
-        (student, student2) => +student2[sortBy] - +student[sortBy],
-      );
-      break;
+      return clonedStudents.sort((student, student2) => {
+        return order === 'asc'
+          ? +student[sortBy] - +student2[sortBy]
+          : +student2[sortBy] - +student[sortBy];
+      });
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        clonedStudents.sort((student, student2) => {
-          const avg1: number = student.grades
-            .reduce((previous, current) => previous + current, 0)
-              / student.grades.length;
-          const avg2: number = student2.grades
-            .reduce((previous, current) => previous + current, 0)
-              / student2.grades.length;
+      return clonedStudents.sort((student, student2) => {
+        const avg1: number = student.grades
+          .reduce((previous, current) => previous + current, 0)
+            / student.grades.length;
+        const avg2: number = student2.grades
+          .reduce((previous, current) => previous + current, 0)
+            / student2.grades.length;
 
-          return avg1 - avg2;
-        });
-        break;
-      }
-
-      clonedStudents.sort((stdnt, stdnt2) => {
-        let avg1: number = stdnt.grades.reduce((prv, cur) => prv + cur, 0);
-        let avg2: number = stdnt2.grades.reduce((prv, cur) => prv + cur, 0);
-
-        avg1 /= stdnt.grades.length;
-        avg2 /= stdnt2.grades.length;
-
-        return avg2 - avg1;
+        return order === 'asc'
+          ? avg1 - avg2
+          : avg2 - avg1;
       });
-      break;
 
     default:
       throw new Error('Invalid Sorting Parameter.');
   }
-
-  return clonedStudents;
 }
