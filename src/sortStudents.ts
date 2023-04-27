@@ -23,49 +23,23 @@ export function sortStudents(
 ): Student[] {
   const copyStudents = [...students];
 
-  const field = sortBy;
-
   switch (sortBy) {
     case SortType.Name:
-      return (copyStudents
-        .sort((
-          firstStudent: Student,
-          secondStudent: Student,
-        ) => {
-          return order === 'asc'
-            ? firstStudent.name.localeCompare(secondStudent.name)
-            : Number(!firstStudent.name.localeCompare(secondStudent.name));
-        }));
-
     case SortType.Surname:
       return (copyStudents
         .sort((
           firstStudent,
           secondStudent,
         ) => {
-          const aValue = firstStudent[field];
-          const bValue = secondStudent[field];
+          const aValue = firstStudent[sortBy];
+          const bValue = secondStudent[sortBy];
 
-          if (typeof aValue === 'string' && typeof bValue === 'string') {
-            return order === 'asc'
-              ? aValue.localeCompare(bValue)
-              : Number(!aValue.localeCompare(bValue));
-          }
-
-          return 0;
+          return order === 'asc'
+            ? aValue.localeCompare(bValue)
+            : Number(!aValue.localeCompare(bValue));
         }));
 
     case SortType.Age:
-      return (copyStudents
-        .sort((
-          firstStudent: Student,
-          secondStudent: Student,
-        ) => {
-          return order === 'asc'
-            ? firstStudent.age - secondStudent.age
-            : secondStudent.age - firstStudent.age;
-        }));
-
     case SortType.Married:
       return (copyStudents
         .sort((
@@ -73,8 +47,8 @@ export function sortStudents(
           secondStudent: Student,
         ) => {
           return order === 'asc'
-            ? Number(firstStudent.married) - Number(secondStudent.married)
-            : Number(secondStudent.married) - Number(firstStudent.married);
+            ? Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+            : Number(secondStudent[sortBy]) - Number(firstStudent[sortBy]);
         }));
 
     case SortType.AverageGrade:
