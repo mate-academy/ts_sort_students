@@ -1,16 +1,77 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[]
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function sortNumberValues(
+  order: string,
+  value1: number,
+  value2: number,
+): number {
+  if (order === 'asc') {
+    return value1 - value2;
+  }
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  return value2 - value1;
+}
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const copiedStudents: Student[] = [...students];
+
+  switch (sortBy) {
+    case 'name':
+    case 'surname':
+      copiedStudents
+        .sort((a: Student, b: Student) => {
+          if (order === 'asc') {
+            return a[sortBy].localeCompare(b[sortBy]);
+          }
+
+          return b[sortBy].localeCompare(a[sortBy]);
+        });
+      break;
+
+    case 'age':
+    case 'married':
+      copiedStudents
+        .sort((a: Student, b: Student) => {
+          return sortNumberValues(order, Number(a[sortBy]), Number(b[sortBy]));
+        });
+      break;
+
+    case 'grades':
+      copiedStudents
+        .sort((a: Student, b: Student) => {
+          const avarageGrade1: number = a.grades
+            .reduce((sum, x) => sum + x, 0) / a.grades.length;
+          const avarageGrade2: number = b.grades
+            .reduce((sum, x) => sum + x, 0) / b.grades.length;
+
+          return sortNumberValues(order, avarageGrade1, avarageGrade2);
+        });
+      break;
+
+    default:
+      break;
+  }
+
+  return copiedStudents;
 }
