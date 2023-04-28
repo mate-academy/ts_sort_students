@@ -16,24 +16,24 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType,
-  order: SortOrder): Student[] {
-  function compareAvgGrades(firstStudent: Student,
-    secondStudent: Student): number {
-    const avgGradeA
+function compareAvgGrades(firstStudent: Student,
+  secondStudent: Student): number {
+  const avgGradeA
     = firstStudent.grades.reduce((acc: number, val: number) => acc + val)
     / firstStudent.grades.length;
-    const avgGradeB
+  const avgGradeB
     = secondStudent.grades.reduce((acc: number, val: number) => acc + val)
     / secondStudent.grades.length;
 
-    return avgGradeA - avgGradeB;
-  }
+  return avgGradeA - avgGradeB;
+}
 
-  const sortedStudents = [...students];
+export function sortStudents(students: Student[],
+  sortBy: SortType,
+  order: SortOrder): Student[] {
+  const copiedStudents = [...students];
 
-  sortedStudents.sort((firstStudent, secondStudent) => {
+  copiedStudents.sort((firstStudent, secondStudent) => {
     let comparison = 0;
 
     switch (sortBy) {
@@ -61,5 +61,5 @@ export function sortStudents(students: Student[],
     return order === 'asc' ? comparison : -comparison;
   });
 
-  return sortedStudents;
+  return copiedStudents;
 }
