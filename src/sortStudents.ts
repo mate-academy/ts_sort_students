@@ -29,6 +29,10 @@ function sortNumberValues(
   return value2 - value1;
 }
 
+function getAvarege(arr: number[]): number {
+  return arr.reduce((sum, x) => sum + x, 0) / arr.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -60,10 +64,8 @@ export function sortStudents(
     case 'grades':
       copiedStudents
         .sort((a: Student, b: Student) => {
-          const avarageGrade1: number = a.grades
-            .reduce((sum, x) => sum + x, 0) / a.grades.length;
-          const avarageGrade2: number = b.grades
-            .reduce((sum, x) => sum + x, 0) / b.grades.length;
+          const avarageGrade1: number = getAvarege(a.grades);
+          const avarageGrade2: number = getAvarege(b.grades);
 
           return sortNumberValues(order, avarageGrade1, avarageGrade2);
         });
