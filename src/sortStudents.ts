@@ -20,50 +20,56 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+export function calculateAverage(student: Student): number {
+  return student.grades
+    .reduce((total, grade) => total + grade) / student.grades.length;
+}
+
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): object[] {
   // write your function
   const sortedStudents: Student[] = [...students];
 
-  sortedStudents.sort((student1, student2) => {
+  sortedStudents.sort((firstStudent, secondStudent) => {
     const isDesc: boolean = order === 'desc';
 
     switch (sortBy) {
-      case 'age':
+      case SortType.Age:
         if (isDesc) {
-          return student2[sortBy] - student1[sortBy];
+          return secondStudent[sortBy] - firstStudent[sortBy];
         }
 
-        return student1[sortBy] - student2[sortBy];
-      case 'married':
-        if (student1[sortBy] === student2[sortBy]) {
+        return firstStudent[sortBy] - secondStudent[sortBy];
+      case SortType.Married:
+        if (firstStudent[sortBy] === secondStudent[sortBy]) {
           return 0;
         }
 
         if (isDesc) {
-          return student1[sortBy] ? -1 : 1;
+          return firstStudent[sortBy] ? -1 : 1;
         }
 
-        return student1[sortBy] ? 1 : -1;
-      case 'grades':
+        return firstStudent[sortBy] ? 1 : -1;
+      case SortType.AverageGrade:
         if (isDesc) {
-          return (student2[sortBy]
-            .reduce((total, num) => total + num) / student2[sortBy].length)
-          - (student1[sortBy]
-            .reduce((total, num) => total + num) / student1[sortBy].length);
+          return (
+            calculateAverage(secondStudent) - calculateAverage(firstStudent)
+          );
         }
 
-        return (student1[sortBy]
-          .reduce((total, num) => total + num) / student1[sortBy].length)
-        - (student2[sortBy]
-          .reduce((total, num) => total + num) / student2[sortBy].length);
+        return (
+          calculateAverage(firstStudent) - calculateAverage(secondStudent)
+        );
+      case SortType.Surname:
+      case SortType.Name:
+        if (isDesc) {
+          return firstStudent[sortBy] > secondStudent[sortBy] ? -1 : 1;
+        }
+
+        return firstStudent[sortBy] > secondStudent[sortBy] ? 1 : -1;
       default:
-        if (isDesc) {
-          return student1[sortBy] > student2[sortBy] ? -1 : 1;
-        }
-
-        return student1[sortBy] > student2[sortBy] ? 1 : -1;
+        throw new Error('wrong sortBy type');
     }
   });
 
