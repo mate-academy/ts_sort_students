@@ -15,10 +15,13 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students, sortBy, order): Student {
+export function sortStudents(
+  students: Student,
+  sortBy: SortType,
+  order: SortOrder,
+): Student {
   const sortedStudents = [...students];
 
   switch (sortBy) {
