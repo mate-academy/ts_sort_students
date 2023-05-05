@@ -16,6 +16,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function countAverage(grades: number[]): number {
+  return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -43,14 +47,21 @@ export function sortStudents(
       ));
       break;
     default:
-      copyStudents.sort((a, b) => {
-        const firstEl = a.grades
-          .reduce((sum, item) => sum + item, 0) / a.grades.length;
-        const secondEl = b.grades
-          .reduce((sum, item) => sum + item, 0) / b.grades.length;
+      return order === 'asc'
+        ? students.sort(
+          (st1, st2) => countAverage(st1[sortBy]) - countAverage(st2[sortBy]),
+        )
+        : students.sort(
+          (st1, st2) => countAverage(st2[sortBy]) - countAverage(st1[sortBy]),
+        );
+      // copyStudents.sort((a, b) => {
+      //   const firstEl = a.grades
+      //     .reduce((sum, item) => sum + item, 0) / a.grades.length;
+      //   const secondEl = b.grades
+      //     .reduce((sum, item) => sum + item, 0) / b.grades.length;
 
-        return order === 'asc' ? firstEl - secondEl : secondEl - firstEl;
-      });
+      //   return order === 'asc' ? firstEl - secondEl : secondEl - firstEl;
+      // });
   }
 
   return copyStudents;
