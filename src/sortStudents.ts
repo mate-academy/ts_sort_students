@@ -54,14 +54,6 @@ export function sortStudents(
         : students.sort(
           (st1, st2) => countAverage(st2[sortBy]) - countAverage(st1[sortBy]),
         );
-      // copyStudents.sort((a, b) => {
-      //   const firstEl = a.grades
-      //     .reduce((sum, item) => sum + item, 0) / a.grades.length;
-      //   const secondEl = b.grades
-      //     .reduce((sum, item) => sum + item, 0) / b.grades.length;
-
-      //   return order === 'asc' ? firstEl - secondEl : secondEl - firstEl;
-      // });
   }
 
   return copyStudents;
