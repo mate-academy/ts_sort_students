@@ -36,43 +36,33 @@ export function sortStudents(
         .reduce((sum, num) => sum + num, 0) / studentTwo.grades.length;
 
       switch (sortBy) {
-        case 'name':
-          if (order === 'asc') {
-            return studentOne.name.localeCompare(studentTwo.name);
-          }
+        case SortType.Name:
+          return order === 'asc'
+            ? studentOne.name.localeCompare(studentTwo.name)
+            : studentTwo.name.localeCompare(studentOne.name);
 
-          return studentTwo.name.localeCompare(studentOne.name);
+        case SortType.Surname:
+          return order === 'asc'
+            ? studentOne.surname.localeCompare(studentTwo.surname)
+            : studentTwo.surname.localeCompare(studentOne.surname);
 
-        case 'surname':
-          if (order === 'asc') {
-            return studentOne.surname.localeCompare(studentTwo.surname);
-          }
+        case SortType.Age:
+          return order === 'asc'
+            ? studentOne.age - studentTwo.age
+            : studentTwo.age - studentOne.age;
 
-          return studentTwo.surname.localeCompare(studentOne.surname);
+        case SortType.Married:
+          return order === 'asc'
+            ? Number(studentOne.married) - Number(studentTwo.married)
+            : Number(studentTwo.married) - Number(studentOne.married);
 
-        case 'age':
-          if (order === 'asc') {
-            return studentOne.age - studentTwo.age;
-          }
-
-          return studentTwo.age - studentOne.age;
-
-        case 'married':
-          if (order === 'asc') {
-            return Number(studentOne.married) - Number(studentTwo.married);
-          }
-
-          return Number(studentTwo.married) - Number(studentOne.married);
-
-        case 'grades':
-          if (order === 'asc') {
-            return studentOneAverage - studentTwoAverage;
-          }
-
-          return studentTwoAverage - studentOneAverage;
+        case SortType.AverageGrade:
+          return order === 'asc'
+            ? studentOneAverage - studentTwoAverage
+            : studentTwoAverage - studentOneAverage;
 
         default:
-          throw new Error('Dej tu err msg');
+          throw new Error('This order is not suported!');
       }
     });
 }
