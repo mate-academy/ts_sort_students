@@ -32,68 +32,39 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      switch (order) {
-        case 'asc':
-          copiedStudents.sort(
-            (prevStudent, currStudent) => prevStudent[sortBy]
-              .localeCompare(currStudent[sortBy]),
-          );
-          break;
-        case 'desc':
-          copiedStudents.sort(
-            (prevStudent, currStudent) => currStudent[sortBy]
-              .localeCompare(prevStudent[sortBy]),
-          );
-          break;
-        default:
-          throw new Error(`Type 'asc' or 'desc' not ${order}`);
-      }
-      break;
+      return (order === 'asc')
+        ? copiedStudents.sort(
+          (prevStudent, currStudent) => prevStudent[sortBy]
+            .localeCompare(currStudent[sortBy]),
+        )
+        : copiedStudents.sort(
+          (prevStudent, currStudent) => currStudent[sortBy]
+            .localeCompare(prevStudent[sortBy]),
+        );
     case SortType.Age:
     case SortType.Married:
-      switch (order) {
-        case 'asc':
-          copiedStudents.sort(
-            (prevStudent, currStudent) => +prevStudent[sortBy]
-            - +currStudent[sortBy],
-          );
-          break;
-        case 'desc':
-          copiedStudents.sort(
-            (prevStudent, currStudent) => +currStudent[sortBy]
-            - +prevStudent[sortBy],
-          );
-          break;
-        default:
-          throw new Error(`Type 'asc' or 'desc' not ${order}`);
-      }
-      break;
+      return (order === 'asc')
+        ? copiedStudents.sort(
+          (prevStudent, currStudent) => +prevStudent[sortBy]
+          - +currStudent[sortBy],
+        )
+        : copiedStudents.sort(
+          (prevStudent, currStudent) => +currStudent[sortBy]
+          - +prevStudent[sortBy],
+        );
     case SortType.AverageGrade:
-      switch (order) {
-        case 'asc': {
-          copiedStudents.sort((prevStudent, currStudent) => (prevStudent.grades
-            .reduce((sum, num) => sum + num, 0)
-            / prevStudent.grades.length) - (currStudent.grades
-            .reduce((sum, num) => sum + num, 0)
-            / currStudent.grades.length));
-          break;
-        }
-
-        case 'desc': {
-          copiedStudents.sort((prevStudent, currStudent) => (currStudent.grades
-            .reduce((sum, num) => sum + num, 0)
-            / currStudent.grades.length) - (prevStudent.grades
-            .reduce((sum, num) => sum + num, 0)
-            / prevStudent.grades.length));
-          break;
-        }
-        default:
-          throw new Error(`Type 'asc' or 'desc' not ${order}`);
-      }
-      break;
+      return (order === 'asc')
+        ? copiedStudents.sort((prevStudent, currStudent) => (prevStudent.grades
+          .reduce((sum, num) => sum + num, 0)
+          / prevStudent.grades.length) - (currStudent.grades
+          .reduce((sum, num) => sum + num, 0)
+          / currStudent.grades.length))
+        : copiedStudents.sort((prevStudent, currStudent) => (currStudent.grades
+          .reduce((sum, num) => sum + num, 0)
+          / currStudent.grades.length) - (prevStudent.grades
+          .reduce((sum, num) => sum + num, 0)
+          / prevStudent.grades.length));
     default:
-      throw new Error('Unsupported sort type');
+      return students;
   }
-
-  return copiedStudents;
 }
