@@ -30,26 +30,27 @@ export function sortStudents(
 
   function compare(x: Student): Compare {
     switch (sortBy) {
-      case 'name':
-      case 'surname':
+      case SortType.Name:
+      case SortType.Surname:
         return x[sortBy].toUpperCase();
-      case 'age':
-      case 'married':
+      case SortType.Age:
+      case SortType.Married:
         return x[sortBy];
-      case 'averageGrade':
+      case SortType.AverageGrade:
       default:
         return x.grades.reduce((a, b) => a + b, 0) / x.grades.length;
     }
   }
 
-  return students.slice().sort((a, b) => {
-    switch (true) {
-      case (compare(a) > compare(b)):
-        return setOrder();
-      case (compare(a) < compare(b)):
-        return -setOrder();
-      default:
-        return 0;
+  return [...students].sort((a, b) => {
+    if (compare(a) > compare(b)) {
+      return setOrder();
     }
+
+    if (compare(a) < compare(b)) {
+      return -setOrder();
+    }
+
+    return 0;
   });
 }
