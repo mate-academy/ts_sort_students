@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 
 export interface Student {
   name: string;
@@ -8,11 +9,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -31,51 +32,31 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      if (order === 'asc') {
-        return copy.sort(
-          (a: Student, b: Student) => a.name.localeCompare(b.name),
-        );
-      }
-      break;
     case SortType.Surname:
-      if (order === 'asc') {
-        return copy.sort(
-          (a: Student, b: Student) => a.surname.localeCompare(b.surname),
-        );
-      }
-      break;
-    case SortType.Age:
-      if (order === 'desc') {
-        return copy.sort(
-          (a: Student, b: Student) => b.age - a.age,
-        );
-      }
-      break;
-    case SortType.Married:
-      if (order === 'desc') {
-        return copy.sort(
-          (a: Student, b: Student) => Number(b.married) - Number(a.married),
-        );
-      }
-      break;
-    case SortType.AverageGrade:
-      if (order === 'desc') {
-        return copy.sort(
-          (a: Student, b: Student) => getAverageGrade(b.grades)
-            - getAverageGrade(a.grades),
-        );
-      }
+      return order === 'asc'
+        ? copy.sort(
+          (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]),
+        )
+        : copy;
 
-      if (order === 'asc') {
-        return copy.sort(
-          (a: Student, b: Student) => getAverageGrade(a.grades)
-            - getAverageGrade(b.grades),
-        );
-      }
-      break;
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'desc'
+        ? copy.sort(
+          (a: Student, b: Student) => Number(b[sortBy]) - Number(a[sortBy]),
+        )
+        : copy;
+
+    case SortType.AverageGrade:
+      return SortType.AverageGrade
+        ? order === 'desc'
+          ? copy.sort((a: Student, b: Student) => getAverageGrade(b.grades)
+            - getAverageGrade(a.grades))
+          : copy.sort((a: Student, b: Student) => getAverageGrade(a.grades)
+            - getAverageGrade(b.grades))
+        : copy;
+
     default:
       return copy;
   }
-
-  return copy;
 }
