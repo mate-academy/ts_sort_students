@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -29,44 +29,27 @@ export function sortStudents(
     let aValue;
     let bValue;
 
-    switch (sortBy) {
-      case SortType.Name:
-        aValue = a.name;
-        bValue = b.name;
-        break;
+    if (sortBy === SortType.AverageGrade) {
+      const aGradeSum = a[sortBy].reduce((sum, grade) => sum + grade, 0);
+      const bGradeSum = b[sortBy].reduce((sum, grade) => sum + grade, 0);
+      const aGradeAvg = aGradeSum / a[sortBy].length;
+      const bGradeAvg = bGradeSum / b[sortBy].length;
 
-      case SortType.Surname:
-        aValue = a.surname;
-        bValue = b.surname;
-        break;
-
-      case SortType.Age:
-        aValue = a.age;
-        bValue = b.age;
-        break;
-
-      case SortType.Married:
-        aValue = a.married;
-        bValue = b.married;
-        break;
-
-      case SortType.AverageGrade: {
-        const aGradeSum = a.grades.reduce((sum, grade) => sum + grade, 0);
-        const bGradeSum = b.grades.reduce((sum, grade) => sum + grade, 0);
-        const aGradeAvg = aGradeSum / a.grades.length;
-        const bGradeAvg = bGradeSum / b.grades.length;
-
-        aValue = aGradeAvg;
-        bValue = bGradeAvg;
-        break;
-      }
-
-      default:
-        throw new Error('Invalid SortType');
+      aValue = aGradeAvg;
+      bValue = bGradeAvg;
+    } else {
+      aValue = a[sortBy];
+      bValue = b[sortBy];
     }
 
     if (aValue === bValue) {
       return 0;
+    }
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return order === 'asc'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
     }
 
     if (order === 'asc') {
