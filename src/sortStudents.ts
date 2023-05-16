@@ -37,7 +37,9 @@ export function sortStudents(
         ? copy.sort(
           (a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]),
         )
-        : copy;
+        : copy.sort(
+          (a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]),
+        );
 
     case SortType.Age:
     case SortType.Married:
@@ -45,7 +47,9 @@ export function sortStudents(
         ? copy.sort(
           (a: Student, b: Student) => Number(b[sortBy]) - Number(a[sortBy]),
         )
-        : copy;
+        : copy.sort(
+          (a: Student, b: Student) => Number(a[sortBy]) - Number(b[sortBy]),
+        );
 
     case SortType.AverageGrade:
       return SortType.AverageGrade
