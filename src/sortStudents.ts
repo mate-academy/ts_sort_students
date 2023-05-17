@@ -1,11 +1,19 @@
 
 export interface Student {
-  name: 'Jessica',
-  surname: 'Buxton',
-  age: 26,
-  married: true,
-  grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
+
+// export interface Student {
+//   name: 'Jessica',
+//   surname: 'Buxton',
+//   age: 26,
+//   married: true,
+//   grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],
+// }
 
 export enum SortType {
   Name = 'name',
