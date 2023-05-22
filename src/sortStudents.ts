@@ -23,7 +23,7 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = [...students];
 
-  function sortArray(array: number[]): number {
+  function calculateAverage(array: number[]): number {
     return array.reduce((sum, el) => sum + el) / array.length;
   }
 
@@ -41,10 +41,10 @@ export function sortStudents(
     case SortType.AverageGrade:
       return order === 'asc'
         ? sortedStudents.sort(
-          (a, b) => sortArray(a[sortBy]) - sortArray(b[sortBy]),
+          (a, b) => calculateAverage(a[sortBy]) - calculateAverage(b[sortBy]),
         )
         : sortedStudents.sort(
-          (a, b) => sortArray(b[sortBy]) - sortArray(a[sortBy]),
+          (a, b) => calculateAverage(b[sortBy]) - calculateAverage(a[sortBy]),
         );
     default:
       throw new Error('Error...');
