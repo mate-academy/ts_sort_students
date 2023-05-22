@@ -27,63 +27,26 @@ export function sortStudents(
     return array.reduce((sum, el) => sum + el) / array.length;
   }
 
-  if (order === 'asc') {
-    switch (sortBy) {
-      case SortType.Name:
-        sortedStudents.sort(
-          (a: Student, b: Student) => a.name.localeCompare(b.name),
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : sortedStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? sortedStudents.sort(
+          (a, b) => sortArray(a[sortBy]) - sortArray(b[sortBy]),
+        )
+        : sortedStudents.sort(
+          (a, b) => sortArray(b[sortBy]) - sortArray(a[sortBy]),
         );
-        break;
-      case SortType.Surname:
-        sortedStudents.sort(
-          (a: Student, b: Student) => a.surname.localeCompare(b.surname),
-        );
-        break;
-      case SortType.Age:
-        sortedStudents.sort((a: Student, b: Student) => a.age - b.age);
-        break;
-      case SortType.Married:
-        sortedStudents.sort(
-          (a: Student, b: Student) => Number(a.married) - Number(b.married),
-        );
-        break;
-      case SortType.AverageGrade:
-        sortedStudents.sort(
-          (a: Student, b: Student) => sortArray(a.grades) - sortArray(b.grades),
-        );
-        break;
-      default:
-        throw new Error('Error...');
-    }
-  } else {
-    switch (sortBy) {
-      case SortType.Name:
-        sortedStudents.sort(
-          (a: Student, b: Student) => b.name.localeCompare(a.name),
-        );
-        break;
-      case SortType.Surname:
-        sortedStudents.sort(
-          (a: Student, b: Student) => b.surname.localeCompare(a.surname),
-        );
-        break;
-      case SortType.Age:
-        sortedStudents.sort((a: Student, b: Student) => b.age - a.age);
-        break;
-      case SortType.Married:
-        sortedStudents.sort(
-          (a: Student, b: Student) => Number(b.married) - Number(a.married),
-        );
-        break;
-      case SortType.AverageGrade:
-        sortedStudents.sort(
-          (a: Student, b: Student) => sortArray(b.grades) - sortArray(a.grades),
-        );
-        break;
-      default:
-        throw new Error('Error...');
-    }
+    default:
+      throw new Error('Error...');
   }
-
-  return sortedStudents;
 }
