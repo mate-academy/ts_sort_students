@@ -20,48 +20,36 @@ export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): object[] {
-  const sortedStudents = [...students];
+): Student[] {
+  const sortedStudents: Student[] = [...students];
 
-  switch (order) {
-    case 'asc':
-      if (sortBy === SortType.AverageGrade) {
-        sortedStudents
-          .sort((a, b) => a.grades
+  return sortedStudents.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? a.grades
             .reduce((sum, cur) => sum + cur, 0) / a.grades.length
-            - b.grades.reduce((sum, cur) => sum + cur, 0) / b.grades.length);
-      }
-
-      if (sortBy === SortType.Age || sortBy === SortType.Married) {
-        sortedStudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
-      }
-
-      if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-        sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      }
-      break;
-
-    case 'desc':
-      if (sortBy === SortType.AverageGrade) {
-        sortedStudents
-          .sort((a, b) => b.grades
+            - b.grades.reduce((sum, cur) => sum + cur, 0) / b.grades.length
+          : b.grades
             .reduce((sum, cur) => sum + cur, 0) / b.grades.length
-            - a.grades.reduce((sum, cur) => sum + cur, 0) / a.grades.length);
-      }
+            - a.grades.reduce((sum, cur) => sum + cur, 0) / a.grades.length;
 
-      if (sortBy === SortType.Age || sortBy === SortType.Married) {
-        sortedStudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
-      }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
 
-      if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-        sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-      }
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-      break;
+      default:
+        break;
+    }
 
-    default:
-      break;
-  }
-
-  return sortedStudents;
+    return 0;
+  });
 }
