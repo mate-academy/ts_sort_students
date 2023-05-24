@@ -16,6 +16,11 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function averageGrade(grades: number[]): number {
+  return grades
+    .reduce((sum, cur) => sum + cur, 0) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -27,12 +32,8 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.AverageGrade:
         return order === 'asc'
-          ? a.grades
-            .reduce((sum, cur) => sum + cur, 0) / a.grades.length
-            - b.grades.reduce((sum, cur) => sum + cur, 0) / b.grades.length
-          : b.grades
-            .reduce((sum, cur) => sum + cur, 0) / b.grades.length
-            - a.grades.reduce((sum, cur) => sum + cur, 0) / a.grades.length;
+          ? averageGrade(a.grades) - averageGrade(b.grades)
+          : averageGrade(b.grades) - averageGrade(a.grades);
 
       case SortType.Age:
       case SortType.Married:
@@ -47,9 +48,7 @@ export function sortStudents(
           : b[sortBy].localeCompare(a[sortBy]);
 
       default:
-        break;
+        throw new Error(`${sortBy} is unexpected for sorting`);
     }
-
-    return 0;
   });
 }
