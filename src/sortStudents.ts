@@ -30,32 +30,27 @@ export function sortStudents(
 ): Student[] {
   const copyOfArray: Student[] = students.map((item) => ({ ...item }));
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    copyOfArray.sort((studentA, studentB) => {
-      return order === 'asc'
-        ? studentA[sortBy].localeCompare(studentB[sortBy])
-        : studentB[sortBy].localeCompare(studentA[sortBy]);
-    });
-  }
+  return copyOfArray.sort((studentA, studentB) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
-  if (sortBy === SortType.Age || sortBy === SortType.Married) {
-    copyOfArray.sort((studentA, studentB) => {
-      return order === 'asc'
-        ? Number(studentA[sortBy]) - Number(studentB[sortBy])
-        : Number(studentB[sortBy]) - Number(studentA[sortBy]);
-    });
-  }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
 
-  if (sortBy === SortType.AverageGrade) {
-    copyOfArray.sort((studentA, studentB) => {
-      const avgOfStudentA: number = getAvgGrade(studentA[sortBy]);
-      const avgOfStudentB: number = getAvgGrade(studentB[sortBy]);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAvgGrade(studentA[sortBy]) - getAvgGrade(studentB[sortBy])
+          : getAvgGrade(studentB[sortBy]) - getAvgGrade(studentA[sortBy]);
 
-      return order === 'asc'
-        ? avgOfStudentA - avgOfStudentB
-        : avgOfStudentB - avgOfStudentA;
-    });
-  }
-
-  return copyOfArray;
+      default:
+        return 0;
+    }
+  });
 }
