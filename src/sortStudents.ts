@@ -27,56 +27,30 @@ export function sortStudents(
 
   const localStudents = [...students];
 
-  let sortFunction: SortFunctionType = (a, b) => {
-    return a.age - b.age;
-  };
-
-  switch (sortBy) {
-    default:
-    case SortType.Age:
-      if (order === 'desc') {
-        sortFunction = (a, b): number => {
-          return b.age - a.age;
-        };
-      }
-      break;
-    case SortType.Name:
-    case SortType.Surname:
-      if (order === 'asc') {
-        sortFunction = (a, b): number => {
-          return a[sortBy].localeCompare(b[sortBy]);
-        };
-      } else {
-        sortFunction = (a, b): number => {
-          return b[sortBy].localeCompare(a[sortBy]);
-        };
-      }
-      break;
-    case SortType.Married:
-      if (order === 'asc') {
-        sortFunction = (a, b): number => {
-          return +a.married - +b.married;
-        };
-      } else {
-        sortFunction = (a, b): number => {
-          return +b.married - +a.married;
-        };
-      }
-      break;
-    case SortType.AverageGrade:
-      if (order === 'asc') {
-        sortFunction = (a, b): number => {
-          return (a.grades.reduce((p, c) => p + c, 0) / a.grades.length)
-            - (b.grades.reduce((p, c) => p + c, 0) / b.grades.length);
-        };
-      } else {
-        sortFunction = (a, b): number => {
-          return (b.grades.reduce((p, c) => p + c, 0) / b.grades.length)
+  const sortFunction: SortFunctionType = (a, b) => {
+    switch (sortBy) {
+      default:
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Married:
+        return order === 'asc'
+          ? +a.married - +b.married
+          : +b.married - +a.married;
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? (a.grades.reduce((p, c) => p + c, 0) / a.grades.length)
+            - (b.grades.reduce((p, c) => p + c, 0) / b.grades.length)
+          : (b.grades.reduce((p, c) => p + c, 0) / b.grades.length)
             - (a.grades.reduce((p, c) => p + c, 0) / a.grades.length);
-        };
-      }
-      break;
-  }
+    }
+  };
 
   return localStudents.sort(sortFunction);
 }
