@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -23,31 +23,31 @@ export function sortStudents(
 ): Student[] {
   const sortedStudents = [...students];
 
-  function compareAverage(a: number[]): number {
-    return a
-      .reduce((sum: number, grade: number) => sum + grade, 0) / a.length;
+  function calculateAverage(nums: number[]): number {
+    const sum = nums.reduce((accum, num) => accum + num, 0);
+
+    return sum / nums.length;
   }
 
   sortedStudents.sort((firstStudent, secondStudent) => {
-    let comparison = 0;
+    let comparison;
 
     switch (sortBy) {
       case SortType.Name:
-        comparison = firstStudent.name.localeCompare(secondStudent.name);
-        break;
       case SortType.Surname:
-        comparison = firstStudent.surname.localeCompare(secondStudent.surname);
+        comparison = firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
         break;
+
       case SortType.Age:
-        comparison = firstStudent.age - secondStudent.age;
-        break;
       case SortType.Married:
-        comparison = Number(firstStudent.married)
-          - Number(secondStudent.married);
+        comparison = (
+          Number(firstStudent[sortBy]) - Number(secondStudent[sortBy])
+        );
         break;
+
       case SortType.AverageGrade: {
-        const averageA = compareAverage(firstStudent.grades);
-        const averageB = compareAverage(secondStudent.grades);
+        const averageA = calculateAverage(firstStudent.grades);
+        const averageB = calculateAverage(secondStudent.grades);
 
         comparison = averageA - averageB;
       }
