@@ -1,16 +1,81 @@
 
 export interface Student {
-  // describe Student interface
+  [key: string]: string | number | boolean | number[],
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number []
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function getSearchKey(key: SortType): string {
+  switch (key) {
+    case SortType.Name:
+      return 'name';
+    case SortType.Surname:
+      return 'surname';
+    case SortType.Age:
+      return 'age';
+    case SortType.Married:
+      return 'married';
+    case SortType.AverageGrade:
+      return 'grades';
+    default:
+      return 'name';
+  }
+}
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+function calculateAverage(array: number[]):number {
+  const sum = array.reduce((acc:number, curr:number) => acc + curr, 0);
+
+  return (sum / array.length) || 0;
+}
+
+export function sortStudents(
+  students: Student [],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const searchKey:string = getSearchKey(sortBy);
+
+  return [...students]
+    .sort((a: Student, b: Student) => {
+      const firstStudent = a[searchKey];
+      const secondStudent = b[searchKey];
+      const sortDirection = order === 'asc' ? 1 : -1;
+
+      if (typeof firstStudent === 'string'
+      && typeof secondStudent === 'string') {
+        return sortDirection * firstStudent.localeCompare(secondStudent);
+      }
+
+      if (typeof firstStudent === 'number'
+      && typeof secondStudent === 'number') {
+        return sortDirection * (firstStudent - secondStudent);
+      }
+
+      if (typeof firstStudent === 'boolean'
+      && typeof secondStudent === 'boolean') {
+        return sortDirection * (+firstStudent - +secondStudent);
+      }
+
+      if (Array.isArray(firstStudent) && Array.isArray(secondStudent)) {
+        const averageFirst = calculateAverage(firstStudent);
+        const averageSecond = calculateAverage(secondStudent);
+
+        return sortDirection * (averageFirst - averageSecond);
+      }
+
+      return 1;
+    });
 }
