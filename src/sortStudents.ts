@@ -18,6 +18,10 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 const getAvgGrade = (marks: number[]): number => {
+  if (marks.length === 0) {
+    return 0;
+  }
+
   return (
     marks.reduce((acc: number, item: number) => acc + item, 0) / marks.length
   );
