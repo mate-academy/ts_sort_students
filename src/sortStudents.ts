@@ -49,7 +49,7 @@ export function sortStudents(
           : getAverage(b[sortBy]) - getAverage(a[sortBy]);
 
       default:
-        return 'Error';
+        throw new Error('Unknown error');
     }
   });
 
