@@ -18,7 +18,7 @@ export type SortOrder = 'asc' | 'desc';
 
 function getAverage(grades: number[]): number {
   return grades.length
-    ? grades.reduce((sum, x) => sum + x, 0)
+    ? grades.reduce((sum, x) => sum + x, 0) / grades.length
     : 0;
 }
 
