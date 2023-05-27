@@ -1,18 +1,20 @@
 
 export interface Student {
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
-  grades: number[],
+  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -20,57 +22,39 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
-  sortOrder: SortOrder,
+  order: SortOrder,
 ): Student[] {
-  const sortedStudents: Student[] = [...students];
-  const sortDirection = (sortOrder === 'asc') ? 1 : -1;
+  const masResult = [...students].sort((a: Student, b: Student): number => {
+    let res: number = 0;
 
-  switch (sortBy) {
-    case SortType.Name:
+    switch (true) {
+      case (sortBy === SortType.Age || sortBy === SortType.Married): {
+        res = order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+        break;
+      }
 
-      sortedStudents.sort(
-        (firstStudent: Student, secondStudent: Student) => (
-          firstStudent.name.localeCompare(secondStudent.name)
-        ),
-      );
-      break;
+      case sortBy === SortType.AverageGrade: {
+        const everA = a.grades.reduce((sum, x) => sum + x, 0) / a.grades.length;
+        const everB = b.grades.reduce((sum, x) => sum + x, 0) / b.grades.length;
 
-    case SortType.Surname:
-      return sortedStudents.sort(
-        (firstStudent: Student, secondStudent: Student) => (
-          firstStudent.surname.localeCompare(secondStudent.surname)
-        ),
-      );
+        res = order === 'asc' ? everA - everB : everB - everA;
+        break;
+      }
 
-    case SortType.Age:
-      return sortedStudents.sort(
-        (firstStudent: Student, secondStudent: Student) => sortDirection * (
-          firstStudent.age - secondStudent.age),
-      );
+      case (sortBy === SortType.Name || sortBy === SortType.Surname): {
+        res = order === 'asc'
+          ? a[sortBy].toString().localeCompare(b[sortBy].toString())
+          : b[sortBy].toString().localeCompare(a[sortBy].toString());
+        break;
+      }
 
-    case SortType.Married:
-      sortedStudents.sort((firstStudent: Student, secondStudent: Student) => (
-        firstStudent.married > secondStudent.married
-          ? sortDirection : sortDirection * -1
-      ));
-      break;
+      default: return 0;
+    }
 
-    case SortType.AverageGrade:
-      sortedStudents.sort((firstStudent: Student, secondStudent: Student) => {
-        const avgFirstStudent = firstStudent.grades.reduce(
-          (acc, curr) => acc + curr, 0,
-        ) / firstStudent.grades.length;
-        const avgSecondStudent = secondStudent.grades.reduce(
-          (acc, curr) => acc + curr, 0,
-        ) / secondStudent.grades.length;
+    return res;
+  });
 
-        return sortDirection * (avgFirstStudent - avgSecondStudent);
-      });
-      break;
-
-    default:
-      throw new Error('Error');
-  }
-
-  return sortedStudents;
+  return masResult;
 }
