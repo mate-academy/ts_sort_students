@@ -8,21 +8,20 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averagegrade',
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: string,
+  students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
   let result: Student[];
-  const sort = SortType[sortBy].toLowerCase();
   const studentCopy = [...students];
 
   function averageGrade(student: Student):number {
@@ -30,27 +29,27 @@ export function sortStudents(
     + b)) / student.grades.length;
   }
 
-  switch (sort) {
-    case 'name':
-    case 'surname':
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
       result = order === 'asc'
-        ? studentCopy.sort((a, b) => a[sort].localeCompare(b[sort]))
-        : studentCopy.sort((a, b) => b[sort].localeCompare(a[sort]));
+        ? studentCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : studentCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
       break;
-    case 'averagegrade':
+    case SortType.AverageGrade:
       result = order === 'asc'
         ? studentCopy.sort((a, b) => averageGrade(a) - averageGrade(b))
         : studentCopy.sort((a, b) => averageGrade(b) - averageGrade(a));
       break;
-    case 'age':
+    case SortType.Age:
       result = order === 'asc'
-        ? studentCopy.sort((a, b) => a[sort] - b[sort])
-        : studentCopy.sort((a, b) => b[sort] - a[sort]);
+        ? studentCopy.sort((a, b) => a[sortBy] - b[sortBy])
+        : studentCopy.sort((a, b) => b[sortBy] - a[sortBy]);
       break;
-    case 'married':
+    case SortType.Married:
       result = order === 'asc'
-        ? studentCopy.sort((a, b) => +a[sort] - +b[sort])
-        : studentCopy.sort((a, b) => +b[sort] - +a[sort]);
+        ? studentCopy.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : studentCopy.sort((a, b) => +b[sortBy] - +a[sortBy]);
       break;
     default:
       result = students;
