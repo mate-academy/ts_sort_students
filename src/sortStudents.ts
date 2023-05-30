@@ -12,7 +12,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'averagegrade',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
