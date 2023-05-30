@@ -30,32 +30,23 @@ export function sortStudents(
   const copyStudents: Student[] = [...students];
 
   copyStudents.sort((a, b) => {
-    const averageGradeA = calculateAverageGrade(a.grades);
-    const averageGradeB = calculateAverageGrade(b.grades);
-
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        if (order === 'asc') {
-          return a[sortBy].localeCompare(b[sortBy]);
-        }
-
-        return b[sortBy].localeCompare(a[sortBy]);
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Married:
       case SortType.Age:
-        if (order === 'asc') {
-          return +a[sortBy] - +b[sortBy];
-        }
-
-        return +b[sortBy] - +a[sortBy];
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
       default:
-        if (order === 'asc') {
-          return averageGradeA - averageGradeB;
-        }
-
-        return averageGradeB - averageGradeA;
+        return order === 'asc'
+          ? calculateAverageGrade(a.grades) - calculateAverageGrade(b.grades)
+          : calculateAverageGrade(b.grades) - calculateAverageGrade(a.grades);
     }
   });
 
