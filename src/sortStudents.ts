@@ -22,43 +22,42 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newStudentsArr: Student[] = [...students];
+  const newStudentsArr = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      newStudentsArr.sort((a, b) => {
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
-      break;
-
-    case SortType.Age:
-    case SortType.Married:
-      newStudentsArr.sort((a, b) => {
-        return order === 'asc'
-          ? +a[sortBy] - +b[sortBy]
-          : +b[sortBy] - +a[sortBy];
-      });
-      break;
-
-    case SortType.AverageGrade:
-      newStudentsArr.sort((a, b) => {
-        const averageStudentA: number = a.grades
-          .reduce((sum, grade) => sum + grade) / a.grades.length;
-        const averageStudentB: number = b.grades
-          .reduce((sum, grade) => sum + grade) / b.grades.length;
-
-        return order === 'asc'
-          ? averageStudentA - averageStudentB
-          : averageStudentB - averageStudentA;
-      });
-      break;
-
-    default:
-      return newStudentsArr;
+  function calculateAverageGrade(student: Student): number {
+    return student.grades.reduce((sum, grade) => sum + grade, 0)
+    / student.grades.length;
   }
+
+  newStudentsArr.sort((a, b) => {
+    let compareResult: number;
+
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        compareResult = a[sortBy].localeCompare(b[sortBy]);
+        break;
+
+      case SortType.Age:
+      case SortType.Married:
+        compareResult = Number(a[sortBy]) - Number(b[sortBy]);
+        break;
+
+      case SortType.AverageGrade:
+        compareResult = calculateAverageGrade(a) - calculateAverageGrade(b);
+        break;
+
+      default:
+        compareResult = 0;
+        break;
+    }
+
+    if (order === 'desc') {
+      compareResult = -compareResult;
+    }
+
+    return compareResult;
+  });
 
   return newStudentsArr;
 }
