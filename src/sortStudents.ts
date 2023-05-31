@@ -8,14 +8,13 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 0,
-  Surname = 1,
-  Age = 2,
-  Married = 3,
-  AverageGrade = 4,
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function calculateAverage(grades: number[]): number {
