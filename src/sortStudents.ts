@@ -28,33 +28,31 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    return order === 'asc'
-      ? studentsCopy.sort(
-        (current, next) => current[sortBy].localeCompare(next[sortBy]),
-      )
-      : studentsCopy.sort(
-        (current, next) => next[sortBy].localeCompare(current[sortBy]),
-      );
-  }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return studentsCopy.sort((current, next) => (
+        order === 'asc'
+          ? current[sortBy].localeCompare(next[sortBy])
+          : next[sortBy].localeCompare(current[sortBy])
+      ));
 
-  if (sortBy === SortType.Age || sortBy === SortType.Married) {
-    return order === 'asc'
-      ? studentsCopy.sort(
-        (current, next) => +current[sortBy] - +next[sortBy],
-      )
-      : studentsCopy.sort(
-        (current, next) => +next[sortBy] - +current[sortBy],
-      );
-  }
+    case SortType.Age:
+    case SortType.Married:
+      return studentsCopy.sort((current, next) => (
+        order === 'asc'
+          ? Number(current[sortBy]) - Number(next[sortBy])
+          : Number(next[sortBy]) - Number(current[sortBy])
+      ));
 
-  if (sortBy === SortType.AverageGrade) {
-    return studentsCopy.sort((current, next) => (
-      order === 'asc'
-        ? getAverageGrade(current.grades) - getAverageGrade(next.grades)
-        : getAverageGrade(next.grades) - getAverageGrade(current.grades)
-    ));
-  }
+    case SortType.AverageGrade:
+      return studentsCopy.sort((current, next) => (
+        order === 'asc'
+          ? getAverageGrade(current.grades) - getAverageGrade(next.grades)
+          : getAverageGrade(next.grades) - getAverageGrade(current.grades)
+      ));
 
-  return studentsCopy;
+    default:
+      throw new Error('Unknown sort type');
+  }
 }
