@@ -17,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averageGrade(grades: number[]): number {
+function getAverageGrade(grades: number[]): number {
   return grades.reduce((acc, value) => acc + value) / grades.length;
 }
 
@@ -28,38 +28,31 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    return studentsCopy.sort((
-      firstStudent: Student,
-      secondStudent: Student,
-    ) => (
-      order === 'asc'
-        ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-        : secondStudent[sortBy].localeCompare(secondStudent[sortBy])
-    ));
-  }
+  studentsCopy.sort((firstStudent: Student, secondStudent: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
+          : secondStudent[sortBy].localeCompare(secondStudent[sortBy]);
 
-  if (sortBy === SortType.Age || sortBy === SortType.Married) {
-    return studentsCopy.sort((
-      firstStudent: Student,
-      secondStudent: Student,
-    ) => (
-      order === 'asc'
-        ? +firstStudent[sortBy] - +secondStudent[sortBy]
-        : +secondStudent[sortBy] - +firstStudent[sortBy]
-    ));
-  }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +firstStudent[sortBy] - +secondStudent[sortBy]
+          : +secondStudent[sortBy] - +firstStudent[sortBy];
 
-  if (sortBy === SortType.AverageGrade) {
-    return studentsCopy.sort((
-      firstStudent: Student,
-      secondStudent: Student,
-    ) => (
-      order === 'asc'
-        ? averageGrade(firstStudent.grades) - averageGrade(secondStudent.grades)
-        : averageGrade(secondStudent.grades) - averageGrade(firstStudent.grades)
-    ));
-  }
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverageGrade(firstStudent.grades)
+            - getAverageGrade(secondStudent.grades)
+          : getAverageGrade(secondStudent.grades)
+            - getAverageGrade(firstStudent.grades);
 
-  return students;
+      default:
+        throw new Error('Incorrect sorting type');
+    }
+  });
+
+  return studentsCopy;
 }
