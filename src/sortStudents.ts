@@ -20,12 +20,9 @@ type SortOrder = 'asc' | 'desc';
 
 export type { SortOrder };
 
-function getAverageGrade(student: Student): number {
-  const averageGrade: number = student.grades.reduce(
-    (a: number, b:number) => a + b, 0,
-  ) / student.grades.length;
-
-  return averageGrade;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((acc, value) => (
+    acc + value), 0) / grades.length;
 }
 
 export function sortStudents(
@@ -33,41 +30,32 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedObject: Student[] = [...students];
+  const sortedObject = [...students];
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      sortedObject.sort((a: Student, b: Student): number => {
-        if (order === 'desc') {
-          return b[sortBy].localeCompare(a[sortBy]);
-        }
-
-        return a[sortBy].localeCompare(b[sortBy]);
-      });
-      break;
+      return sortedObject.sort((current, next): number => (
+        order === 'asc'
+          ? current[sortBy].localeCompare(next[sortBy])
+          : next[sortBy].localeCompare(current[sortBy])
+      ));
 
     case SortType.Married:
     case SortType.Age:
-      sortedObject.sort((a: Student, b: Student): number => {
-        if (order === 'desc') {
-          return +b[sortBy] - +a[sortBy];
-        }
+      return sortedObject.sort((current, next) => (
+        order === 'asc'
+          ? Number(current[sortBy]) - Number(next[sortBy])
+          : Number(next[sortBy]) - Number(current[sortBy])
+      ));
 
-        return +a[sortBy] - +b[sortBy];
-      });
-      break;
     case SortType.AverageGrade:
-      sortedObject.sort((a: Student, b: Student): number => {
-        if (order === 'desc') {
-          return getAverageGrade(b) - getAverageGrade(a);
-        }
-
-        return getAverageGrade(a) - getAverageGrade(b);
-      });
-      break;
+      return sortedObject.sort((current, next) => (
+        order === 'asc'
+          ? getAverageGrade(current.grades) - getAverageGrade(next.grades)
+          : getAverageGrade(next.grades) - getAverageGrade(current.grades)
+      ));
     default:
+      throw new Error('Unknown sort type');
   }
-
-  return sortedObject;
 }
