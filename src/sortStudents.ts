@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -8,20 +7,16 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
 function calculateAverageGrade(grades: number[]): number {
-  if (grades.length === 0) {
-    return 0;
-  }
-
   const sum = grades
     .reduce((acc: number, grade: number): number => acc + grade, 0);
 
@@ -38,11 +33,8 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        result = student1.name.localeCompare(student2.name);
-        break;
-
       case SortType.Surname:
-        result = student1.surname.localeCompare(student2.surname);
+        result = student1[sortBy].localeCompare(student2[sortBy]);
         break;
 
       case SortType.Age:
@@ -50,17 +42,7 @@ export function sortStudents(
         break;
 
       case SortType.Married:
-        if (student1.married === student2.married) {
-          result = 0;
-        }
-
-        if (student1.married) {
-          result = 1;
-        }
-
-        if (student2.married) {
-          result = -1;
-        }
+        result = Number(student1[sortBy]) - Number(student2[sortBy]);
         break;
 
       case SortType.AverageGrade:
@@ -73,10 +55,8 @@ export function sortStudents(
         throw new Error('Cannot sort that data type');
     }
 
-    if (order === 'desc') {
-      result *= -1;
-    }
-
-    return result;
+    return order === 'desc'
+      ? -result
+      : result;
   });
 }
