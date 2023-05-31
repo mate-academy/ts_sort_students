@@ -24,46 +24,41 @@ export function sortStudents(
 ): Student[] {
   const copyStudents = [...students];
   const sortedStudents = copyStudents.sort((student, nextStudent) => {
-    let studentData: string | number | boolean | number[] = student[sortBy];
-    let nextStudentData
-    : string
-    | number
-    | boolean
-    | number[]
-    = nextStudent[sortBy];
+    switch (sortBy) {
+      case SortType.AverageGrade: {
+        const studentAverageGrade = student[sortBy]
+          .reduce((total, mark) => total + mark) / student[sortBy].length;
 
-    if (sortBy === SortType.AverageGrade) {
-      studentData = student[sortBy]
-        .reduce((total, mark) => total + mark) / student[sortBy].length;
+        const nextStudentAverageGrade = nextStudent[sortBy]
+          .reduce((total, mark) => total + mark) / nextStudent[sortBy].length;
 
-      nextStudentData = nextStudent[sortBy]
-        .reduce((total, mark) => total + mark) / nextStudent[sortBy].length;
+        return order === 'asc'
+          ? studentAverageGrade - nextStudentAverageGrade
+          : nextStudentAverageGrade - studentAverageGrade;
+      }
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? student[sortBy].localeCompare(nextStudent[sortBy])
+          : nextStudent[sortBy].localeCompare(student[sortBy]);
 
-      return order === 'asc'
-        ? studentData - nextStudentData
-        : nextStudentData - studentData;
+      case SortType.Age: {
+        return order === 'asc'
+          ? student[sortBy] - (nextStudent[sortBy])
+          : nextStudent[sortBy] - (student[sortBy]);
+      }
+
+      case SortType.Married: {
+        const studentDataBooleanToNum = student[sortBy] ? 1 : 0;
+        const nextStudentDataBooleanToNum = nextStudent[sortBy] ? 1 : 0;
+
+        return order === 'asc'
+          ? studentDataBooleanToNum - nextStudentDataBooleanToNum
+          : nextStudentDataBooleanToNum - studentDataBooleanToNum;
+      }
+      default:
+        return undefined;
     }
-
-    if (typeof studentData === 'number'
-    && typeof nextStudentData === 'number') {
-      return order === 'asc'
-        ? studentData - nextStudentData
-        : nextStudentData - studentData;
-    }
-
-    if (typeof studentData === 'string'
-    && typeof nextStudentData === 'string') {
-      return order === 'asc'
-        ? studentData.localeCompare(nextStudentData)
-        : nextStudentData.localeCompare(studentData);
-    }
-
-    const studentDataBooleanToNum = studentData ? 1 : 0;
-    const nextStudentDataBooleanToNum = nextStudentData ? 1 : 0;
-
-    return order === 'asc'
-      ? studentDataBooleanToNum - nextStudentDataBooleanToNum
-      : nextStudentDataBooleanToNum - studentDataBooleanToNum;
   });
 
   return sortedStudents;
