@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -29,20 +28,26 @@ export function sortStudents(
   const sortedStudents = [...students];
 
   return sortedStudents.sort((studentA: Student, studentB: Student): number => {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      return order === 'asc'
-        ? studentA[sortBy].localeCompare(studentB[sortBy])
-        : studentB[sortBy].localeCompare(studentA[sortBy]);
-    }
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentB[sortBy].localeCompare(studentA[sortBy]);
 
-    if (sortBy === SortType.Age || sortBy === SortType.Married) {
-      return order === 'asc'
-        ? studentA[sortBy] - studentB[sortBy]
-        : studentB[sortBy] - studentA[sortBy];
-    }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? studentA[sortBy] - studentB[sortBy]
+          : studentB[sortBy] - studentA[sortBy];
 
-    return order === 'asc'
-      ? averageGrade(studentA.grades) - averageGrade(studentB.grades)
-      : averageGrade(studentB.grades) - averageGrade(studentA.grades);
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? averageGrade(studentA.grades) - averageGrade(studentB.grades)
+          : averageGrade(studentB.grades) - averageGrade(studentA.grades);
+
+      default:
+        throw new Error('somting went wrong');
+    }
   });
 }
