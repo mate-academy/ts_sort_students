@@ -8,23 +8,17 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'NAME',
+  Surname = 'SURNAME',
+  Age = 'AGE',
+  Married = 'MARRIED',
+  AverageGrade = 'AVERAGE_GRADE',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverage(grades: number[]): number {
-  if (grades.length === 0) {
-    return 0;
-  }
-
-  const sum = grades.reduce((total, grade) => total + grade, 0);
-
-  return sum / grades.length;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((total, grade) => total + grade, 0) / grades.length;
 }
 
 export function sortStudents(
@@ -33,6 +27,7 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copiedStudents = [...students];
+
   const callback = function getCallback(a: Student, b: Student): number {
     switch (sortBy) {
       case SortType.Name:
@@ -47,8 +42,8 @@ export function sortStudents(
           : b.age - a.age;
 
       case SortType.AverageGrade: {
-        const avgGradeA = calculateAverage(a.grades);
-        const avgGradeB = calculateAverage(b.grades);
+        const avgGradeA = getAverageGrade(a.grades);
+        const avgGradeB = getAverageGrade(b.grades);
 
         return order === 'asc'
           ? avgGradeA - avgGradeB
