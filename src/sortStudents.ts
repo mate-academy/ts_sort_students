@@ -33,27 +33,25 @@ export function sortStudents(
     return grades.reduce((acc, curr) => acc + curr, 0) / grades.length;
   }
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      studentsCopy.sort((a, b) => {
+  const sortingCallBack: SortCallBack = (a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return sortInOrder(a[sortBy].localeCompare(b[sortBy]));
-      });
-      break;
-    case SortType.Age:
-    case SortType.Married:
-      studentsCopy.sort((a, b) => {
+
+      case SortType.Age:
+      case SortType.Married:
         return sortInOrder(Number(a[sortBy]) - Number(b[sortBy]));
-      });
-      break;
-    case SortType.AverageGrade:
-      studentsCopy.sort((a, b) => {
+
+      case SortType.AverageGrade:
         return sortInOrder(averageGrade(a[sortBy]) - averageGrade(b[sortBy]));
-      });
-      break;
-    default:
-      throw new Error('Something wrong, I can feel it');
-  }
+
+      default:
+        throw new Error('Something wrong, I can feel it');
+    }
+  };
+
+  studentsCopy.sort(sortingCallBack);
 
   return studentsCopy;
 }
