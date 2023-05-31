@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -17,57 +16,41 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrade(student: Student): number {
-  const averageGrade: number = student.grades.reduce(
-    (a: number, b: number) => a + b, 0,
-  )
-    / student.grades.length;
-
-  return averageGrade;
-}
-
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedObject: Student[] = [...students];
+  const copiedStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      sortedObject.sort((a: Student, b: Student): number => {
-        if (order === 'desc') {
-          return b[sortBy].localeCompare(a[sortBy]);
-        }
+  return copiedStudents
+    .sort((studentOne: Student, studentTwo: Student) => {
+      const studentOneAverage = (studentOne.grades)
+        .reduce((sum, num) => sum + num, 0) / studentOne.grades.length;
 
-        return a[sortBy].localeCompare(b[sortBy]);
-      });
-      break;
+      const studentTwoAverage = (studentTwo.grades)
+        .reduce((sum, num) => sum + num, 0) / studentTwo.grades.length;
 
-    case SortType.Married:
-    case SortType.Age:
-      sortedObject.sort((a: Student, b: Student): number => {
-        if (order === 'desc') {
-          return +b[sortBy] - +a[sortBy];
-        }
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return order === 'asc'
+            ? studentOne[sortBy].localeCompare(studentTwo[sortBy])
+            : studentTwo[sortBy].localeCompare(studentOne[sortBy]);
 
-        return +a[sortBy] - +b[sortBy];
-      });
-      break;
+        case SortType.Age:
+        case SortType.Married:
+          return order === 'asc'
+            ? Number(studentOne[sortBy]) - Number(studentTwo[sortBy])
+            : Number(studentTwo[sortBy]) - Number(studentOne[sortBy]);
 
-    case SortType.AverageGrade:
-      sortedObject.sort((a: Student, b: Student): number => {
-        if (order === 'desc') {
-          return getAverageGrade(b) - getAverageGrade(a);
-        }
+        case SortType.AverageGrade:
+          return order === 'asc'
+            ? studentOneAverage - studentTwoAverage
+            : studentTwoAverage - studentOneAverage;
 
-        return getAverageGrade(a) - getAverageGrade(b);
-      });
-      break;
-
-    default:
-  }
-
-  return sortedObject;
+        default:
+          throw new Error('This order is not suported!');
+      }
+    });
 }
