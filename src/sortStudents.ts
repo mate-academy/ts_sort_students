@@ -32,12 +32,6 @@ export function sortStudents(
       : string2.localeCompare(string1);
   };
 
-  const sortBoolean = (value1: boolean, value2: boolean): number => {
-    return order === 'asc'
-      ? Number(value1) - Number(value2)
-      : Number(value2) - Number(value1);
-  };
-
   const sortNumber = (number1: number, number2: number): number => {
     return order === 'asc'
       ? number1 - number2
@@ -71,8 +65,9 @@ export function sortStudents(
     case SortType.Married:
       sortedStudents = sortedStudents.sort(
         (student1: Student, student2: Student) => {
-          return sortBoolean(
-            student1[SortType.Married], student2[SortType.Married],
+          return sortNumber(
+            Number(student1[SortType.Married]),
+            Number(student2[SortType.Married]),
           );
         },
       );
