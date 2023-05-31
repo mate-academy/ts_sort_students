@@ -44,16 +44,12 @@ export function sortStudents(
           : b[sortBy] - a[sortBy];
       });
 
-    case SortType.Married: {
-      const married
-        = sortedStudents.filter((student) => student[sortBy]);
-      const unmarried
-        = sortedStudents.filter((student) => !student[sortBy]);
-
-      return order === 'asc'
-        ? [...unmarried, ...married]
-        : [...married, ...unmarried];
-    }
+    case SortType.Married:
+      return sortedStudents.sort((a, b) => (
+        order === 'asc'
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy])
+      ));
 
     case SortType.AverageGrade:
       return sortedStudents.sort((a: Student, b: Student) => {

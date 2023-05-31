@@ -33,12 +33,10 @@ function sortStudents(students, sortBy, order) {
                     ? a[sortBy] - b[sortBy]
                     : b[sortBy] - a[sortBy];
             });
-        case SortType.Married: {
-            var married = sortedStudents.filter(function (student) { return student[sortBy]; });
-            var unmarried = sortedStudents.filter(function (student) { return !student[sortBy]; });
-            return order === 'asc'
-                ? __spreadArray(__spreadArray([], unmarried), married) : __spreadArray(__spreadArray([], married), unmarried);
-        }
+        case SortType.Married:
+            return sortedStudents.sort(function (a, b) { return (order === 'asc'
+                ? Number(a[sortBy]) - Number(b[sortBy])
+                : Number(b[sortBy]) - Number(a[sortBy])); });
         case SortType.AverageGrade:
             return sortedStudents.sort(function (a, b) {
                 return order === 'asc'
