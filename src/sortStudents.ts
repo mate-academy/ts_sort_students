@@ -1,16 +1,70 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 0,
+  Surname = 1,
+  Age = 2,
+  Married = 3,
+  AverageGrade = 4,
 }
 
 // create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function calculateAverage(grades: number[]): number {
+  if (grades.length === 0) {
+    return 0;
+  }
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  const sum = grades.reduce((total, grade) => total + grade, 0);
+
+  return sum / grades.length;
+}
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const copiedStudents = [...students];
+  const callback = function getCallback(a: Student, b: Student): number {
+    switch (sortBy) {
+      case SortType.Name:
+        return a.name.localeCompare(b.name);
+
+      case SortType.Surname:
+        return a.surname.localeCompare(b.surname);
+
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
+
+      case SortType.AverageGrade: {
+        const avgGradeA = calculateAverage(a.grades);
+        const avgGradeB = calculateAverage(b.grades);
+
+        return order === 'asc'
+          ? avgGradeA - avgGradeB
+          : avgGradeB - avgGradeA;
+      }
+
+      case SortType.Married:
+        return order === 'asc'
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
+
+      default:
+        return 0;
+    }
+  };
+
+  return copiedStudents.sort(callback);
 }
