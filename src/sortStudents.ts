@@ -51,7 +51,7 @@ SortOrder): Student[] {
             - averageGrades(firstStudent[sortBy]);
 
       default:
-        throw new Error('');
+        throw new Error('Incorect value');
     }
   });
 
