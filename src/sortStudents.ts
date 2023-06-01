@@ -1,3 +1,7 @@
+function getAverageGrades(grades: number[]): number {
+  return grades
+    .reduce((total: number, grade: number) => total + grade) / grades.length;
+}
 
 export interface Student {
   name: string;
@@ -26,15 +30,11 @@ export function sortStudents(
   const sortedStudents = copyStudents.sort((student, nextStudent) => {
     switch (sortBy) {
       case SortType.AverageGrade: {
-        const studentAverageGrade = student[sortBy]
-          .reduce((total, mark) => total + mark) / student[sortBy].length;
-
-        const nextStudentAverageGrade = nextStudent[sortBy]
-          .reduce((total, mark) => total + mark) / nextStudent[sortBy].length;
-
         return order === 'asc'
-          ? studentAverageGrade - nextStudentAverageGrade
-          : nextStudentAverageGrade - studentAverageGrade;
+          ? getAverageGrades(student[sortBy])
+            - getAverageGrades(nextStudent[sortBy])
+          : getAverageGrades(nextStudent[sortBy])
+            - getAverageGrades(student[sortBy]);
       }
       case SortType.Name:
       case SortType.Surname:
