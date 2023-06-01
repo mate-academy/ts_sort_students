@@ -40,38 +40,26 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      sortedStudents = sortedStudents.sort(
-        (student1: Student, student2: Student) => {
-          return sortString(student1[SortType.Name], student2[SortType.Name]);
-        },
-      );
-      break;
     case SortType.Surname:
       sortedStudents = sortedStudents.sort(
         (student1: Student, student2: Student) => {
-          return sortString(
-            student1[SortType.Surname], student2[SortType.Surname],
-          );
+          return sortString(student1[sortBy], student2[sortBy]);
         },
       );
       break;
+
     case SortType.Age:
-      sortedStudents = sortedStudents.sort(
-        (student1: Student, student2: Student) => {
-          return sortNumber(student1[SortType.Age], student2[SortType.Age]);
-        },
-      );
-      break;
     case SortType.Married:
       sortedStudents = sortedStudents.sort(
         (student1: Student, student2: Student) => {
           return sortNumber(
-            Number(student1[SortType.Married]),
-            Number(student2[SortType.Married]),
+            Number(student1[sortBy]),
+            Number(student2[sortBy]),
           );
         },
       );
       break;
+
     case SortType.AverageGrade:
       sortedStudents
         = sortedStudents.sort((student1: Student, student2: Student) => {
