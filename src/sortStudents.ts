@@ -18,50 +18,36 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverage(numbers: number[]): number {
+  return numbers.reduce((acc, curr) => acc + curr, 0) / numbers.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: string,
 ): Student[] {
-  const SortedStudents = [...students];
+  return [...students].sort((a, b) => {
+    switch (sortBy) {
+      case 'name':
+      case 'surname':
+        return (order === 'asc')
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
-  function calculateAverage(numbers: number[]): number {
-    return numbers.reduce((acc, curr) => acc + curr, 0) / numbers.length;
-  }
+      case 'age':
+      case 'married':
+        return (order === 'asc')
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
-  switch (sortBy) {
-    case (SortType.Name):
-    case (SortType.Surname):
-      return SortedStudents.sort((firstStudent, secondStudent) => {
-        return order === 'asc'
-          ? firstStudent[sortBy].localeCompare(secondStudent[sortBy])
-          : secondStudent[sortBy].localeCompare(firstStudent[sortBy]);
-      });
-
-    case SortType.Age:
-      return SortedStudents.sort((a: Student, b: Student) => {
-        return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
-
-    case SortType.AverageGrade:
-      return SortedStudents.sort((a: Student, b: Student) => {
-        return order === 'asc'
+      case 'grades':
+        return (order === 'asc')
           ? calculateAverage(a[sortBy]) - calculateAverage(b[sortBy])
           : calculateAverage(b[sortBy]) - calculateAverage(a[sortBy]);
-      });
 
-    case SortType.Married: {
-      const married
-        = SortedStudents.filter((student: Student) => student[sortBy]);
-      const unmarried
-        = SortedStudents.filter((student: Student) => !student[sortBy]);
-
-      return order === 'asc' ? unmarried.concat(married)
-        : married.concat(unmarried);
+      default:
+        return 0;
     }
-    default:
-      return SortedStudents;
-  }
+  });
 }
