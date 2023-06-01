@@ -38,9 +38,6 @@ export function sortStudents(
         break;
 
       case SortType.Age:
-        result = student1.age - student2.age;
-        break;
-
       case SortType.Married:
         result = Number(student1[sortBy]) - Number(student2[sortBy]);
         break;

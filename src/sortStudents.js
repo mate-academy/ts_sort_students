@@ -32,8 +32,6 @@ function sortStudents(students, sortBy, order) {
                 result = student1[sortBy].localeCompare(student2[sortBy]);
                 break;
             case SortType.Age:
-                result = student1.age - student2.age;
-                break;
             case SortType.Married:
                 result = Number(student1[sortBy]) - Number(student2[sortBy]);
                 break;
