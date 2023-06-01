@@ -42,22 +42,14 @@ export function sortStudents(
           ? student[sortBy].localeCompare(nextStudent[sortBy])
           : nextStudent[sortBy].localeCompare(student[sortBy]);
 
-      case SortType.Age: {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
-          ? student[sortBy] - (nextStudent[sortBy])
-          : nextStudent[sortBy] - (student[sortBy]);
-      }
+          ? Number(student[sortBy]) - Number(nextStudent[sortBy])
+          : Number(nextStudent[sortBy]) - Number(student[sortBy]);
 
-      case SortType.Married: {
-        const studentDataBooleanToNum = student[sortBy] ? 1 : 0;
-        const nextStudentDataBooleanToNum = nextStudent[sortBy] ? 1 : 0;
-
-        return order === 'asc'
-          ? studentDataBooleanToNum - nextStudentDataBooleanToNum
-          : nextStudentDataBooleanToNum - studentDataBooleanToNum;
-      }
       default:
-        return undefined;
+        throw new Error('Error: unacceptable sort parameter provided.');
     }
   });
 
