@@ -17,11 +17,9 @@ export enum SortType {
 
 export type SortOrder = 'asc'|'desc';
 
-function getAverageGrades(student:Student):number {
-  const countOfGrades = student.grades.length;
-
-  return (student.grades
-    .reduce((sum:number, grade:number) => sum + grade) / countOfGrades);
+function getAverageGrades(grades:number[]):number {
+  return (grades
+    .reduce((sum:number, grade:number) => sum + grade) / grades.length);
 }
 
 export function sortStudents(
@@ -32,33 +30,41 @@ export function sortStudents(
   const sortedStudents = [...students];
 
   sortedStudents.sort((a: Student, b: Student) => {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      return order === 'asc'
-        ? a[sortBy].localeCompare(b[sortBy])
-        : b[sortBy].localeCompare(a[sortBy]);
+    switch (sortBy) {
+      case SortType.Name:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
+
+      case SortType.Married:
+        if (a.married === b.married) {
+          return 0;
+        }
+
+        if (order === 'asc') {
+          return a.married ? 1 : -1;
+        }
+
+        return a.married ? -1 : 1;
+
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? getAverageGrades(a.grades) - getAverageGrades(b.grades)
+          : getAverageGrades(b.grades) - getAverageGrades(a.grades);
+
+      default:
+        throw new Error('Invalid data');
     }
-
-    if (sortBy === SortType.Age) {
-      return order === 'asc'
-        ? a.age - b.age
-        : b.age - a.age;
-    }
-
-    if (sortBy === SortType.Married) {
-      if (a.married === b.married) {
-        return 0;
-      }
-
-      if (order === 'asc') {
-        return a.married ? 1 : -1;
-      }
-
-      return a.married ? -1 : 1;
-    }
-
-    return order === 'asc'
-      ? getAverageGrades(a) - getAverageGrades(b)
-      : getAverageGrades(b) - getAverageGrades(a);
   });
 
   return sortedStudents;
