@@ -1,6 +1,5 @@
 
 export interface Student {
-  [key: string]: string | number | boolean | number[],
   name: string,
   surname: string,
   age: number,
@@ -26,7 +25,7 @@ function calculateAverage(array: number[]):number {
 
 export function sortStudents(
   students: Student [],
-  sortBy: SortType,
+  sortBy: keyof Student,
   order: SortOrder,
 ): Student[] {
   return [...students]
@@ -35,28 +34,26 @@ export function sortStudents(
       const secondStudent = b[sortBy];
       const sortDirection = order === 'asc' ? 1 : -1;
 
-      if (typeof firstStudent === 'string'
-      && typeof secondStudent === 'string') {
-        return sortDirection * firstStudent.localeCompare(secondStudent);
+      switch (sortBy) {
+        case 'name':
+        case 'surname':
+          return sortDirection * String(firstStudent)
+            .localeCompare(String(secondStudent));
+
+        case 'age':
+          return sortDirection * (Number(firstStudent) - Number(secondStudent));
+        case 'married':
+          return sortDirection * (+firstStudent - +secondStudent);
+        case 'grades':
+
+          return sortDirection
+          * (calculateAverage(
+            firstStudent as number[],
+          ) - calculateAverage(
+            secondStudent as number[],
+          ));
+        default:
+          return 0;
       }
-
-      if (typeof firstStudent === 'number'
-      && typeof secondStudent === 'number') {
-        return sortDirection * (firstStudent - secondStudent);
-      }
-
-      if (typeof firstStudent === 'boolean'
-      && typeof secondStudent === 'boolean') {
-        return sortDirection * (+firstStudent - +secondStudent);
-      }
-
-      if (Array.isArray(firstStudent) && Array.isArray(secondStudent)) {
-        const averageFirst = calculateAverage(firstStudent);
-        const averageSecond = calculateAverage(secondStudent);
-
-        return sortDirection * (averageFirst - averageSecond);
-      }
-
-      return 1;
     });
 }
