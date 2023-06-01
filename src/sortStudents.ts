@@ -9,31 +9,14 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
-
-function getSearchKey(key: SortType): string {
-  switch (key) {
-    case SortType.Name:
-      return 'name';
-    case SortType.Surname:
-      return 'surname';
-    case SortType.Age:
-      return 'age';
-    case SortType.Married:
-      return 'married';
-    case SortType.AverageGrade:
-      return 'grades';
-    default:
-      return 'name';
-  }
-}
 
 function calculateAverage(array: number[]):number {
   const sum = array.reduce((acc:number, curr:number) => acc + curr, 0);
@@ -46,12 +29,10 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const searchKey:string = getSearchKey(sortBy);
-
   return [...students]
     .sort((a: Student, b: Student) => {
-      const firstStudent = a[searchKey];
-      const secondStudent = b[searchKey];
+      const firstStudent = a[sortBy];
+      const secondStudent = b[sortBy];
       const sortDirection = order === 'asc' ? 1 : -1;
 
       if (typeof firstStudent === 'string'
