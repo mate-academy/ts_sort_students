@@ -41,10 +41,10 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverageGrade(student1[sortBy])
-            - getAverageGrade(student2[sortBy])
-          : getAverageGrade(student2[sortBy]) 
-            - getAverageGrade(student1[sortBy]);
+          ? getAverageGrade(student1[sortBy]
+          - getAverageGrade(student2[sortBy])
+          : getAverageGrade(student2[sortBy])
+          - getAverageGrade(student1[sortBy]);
 
       default:
         throw new Error('Unknown sort type');
