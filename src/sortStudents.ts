@@ -1,3 +1,4 @@
+
 export interface Student {
   name: string,
   surname: string,
@@ -16,7 +17,7 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrade(grades: number[]): number {
+function getAverageGrades(grades: number[]): number {
   return grades.reduce((sum, grade) => sum + grade) / grades.length;
 }
 
@@ -41,8 +42,8 @@ export function sortStudents(
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverageGrade(stud1[sortBy] - getAverageGrade(stud2[sortBy])
-          : getAverageGrade(stud2[sortBy]) - getAverageGrade(stud1[sortBy]);
+          ? getAverageGrades(stud1[sortBy]) - getAverageGrades(stud2[sortBy])
+          : getAverageGrades(stud2[sortBy]) - getAverageGrades(stud1[sortBy]);
 
       default:
         throw new Error('Unknown sort type');
