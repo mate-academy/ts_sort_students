@@ -16,7 +16,9 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export type SortCallBack = (a: Student, b: Student) => number;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((acc, curr) => acc + curr, 0) / grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -29,11 +31,7 @@ export function sortStudents(
     return order === 'asc' ? num : -num;
   }
 
-  function averageGrade(grades: number[]): number {
-    return grades.reduce((acc, curr) => acc + curr, 0) / grades.length;
-  }
-
-  const sortingCallBack: SortCallBack = (a, b) => {
+  studentsCopy.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -44,14 +42,14 @@ export function sortStudents(
         return sortInOrder(Number(a[sortBy]) - Number(b[sortBy]));
 
       case SortType.AverageGrade:
-        return sortInOrder(averageGrade(a[sortBy]) - averageGrade(b[sortBy]));
+        return (
+          sortInOrder(getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy]))
+        );
 
       default:
-        throw new Error('Something wrong, I can feel it');
+        throw new Error('Can not sort Studens by non existing parameters');
     }
-  };
-
-  studentsCopy.sort(sortingCallBack);
+  });
 
   return studentsCopy;
 }
