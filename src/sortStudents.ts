@@ -17,22 +17,12 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrade(student: Student): number {
-  return student.grades.reduce(
-    (averageGrade: number, grade: number) => {
-      return grade + averageGrade;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce(
+    (gradesSum: number, grade: number) => {
+      return grade + gradesSum;
     },
-  ) / student.grades.length;
-}
-
-function getSortValue(
-  order: SortOrder,
-  currentValue: number,
-  nextValue: number,
-): number {
-  return order === 'asc'
-    ? currentValue - nextValue
-    : nextValue - currentValue;
+  ) / grades.length;
 }
 
 export function sortStudents(
@@ -40,7 +30,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = [...students].map((item) => ({ ...item }));
+  const studentsCopy: Student[] = [...students];
 
   switch (sortBy) {
     case SortType.Name:
@@ -57,22 +47,21 @@ export function sortStudents(
     case SortType.Married:
       return studentsCopy.sort(
         (currentStudent: Student, nextStudent: Student) => {
-          return getSortValue(
-            order,
-            +currentStudent[sortBy],
-            +nextStudent[sortBy],
-          );
+          return order === 'asc'
+            ? (+currentStudent[sortBy]) - (+nextStudent[sortBy])
+            : (+nextStudent[sortBy]) - (+currentStudent[sortBy]);
         },
       );
 
     case SortType.AverageGrade:
       return studentsCopy.sort(
         (currentStudent: Student, nextStudent: Student) => {
-          return getSortValue(
-            order,
-            getAverageGrade(currentStudent),
-            getAverageGrade(nextStudent),
-          );
+          return order === 'asc'
+            ? getAverageGrade(currentStudent.grades)
+              - getAverageGrade(nextStudent.grades)
+
+            : getAverageGrade(nextStudent.grades)
+              - getAverageGrade(currentStudent.grades);
         },
       );
 
