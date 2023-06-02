@@ -25,7 +25,7 @@ function calculateAverage(array: number[]):number {
 
 export function sortStudents(
   students: Student [],
-  sortBy: keyof Student,
+  sortBy: SortType,
   order: SortOrder,
 ): Student[] {
   return [...students]
