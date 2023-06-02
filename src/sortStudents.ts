@@ -24,7 +24,7 @@ export function sortStudents(
 ): Student[] {
   const studentsCopy = [...students];
 
-  function sortInOrder(n: number): number {
+  function sortByOrder(n: number): number {
     return order === 'asc' ? n : -n;
   }
 
@@ -34,40 +34,25 @@ export function sortStudents(
     return sum / grades.length;
   }
 
-  switch (sortBy) {
-    case SortType.Name:
-      studentsCopy.sort((a, b) => {
-        return sortInOrder(a.name.localeCompare(b.name));
-      });
-      break;
+  studentsCopy.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return sortByOrder(a[sortBy].localeCompare(b[sortBy]));
 
-    case SortType.Surname:
-      studentsCopy.sort((a, b) => {
-        return sortInOrder(a.surname.localeCompare(b.surname));
-      });
-      break;
+      case SortType.Age:
+      case SortType.Married:
+        return sortByOrder(Number(a[sortBy]) - Number(b[sortBy]));
 
-    case SortType.Age:
-      studentsCopy.sort((a, b) => {
-        return sortInOrder(Number(a.age) - Number(b.age));
-      });
-      break;
+      case SortType.AverageGrade:
+        return sortByOrder(averageGrades(a[sortBy]) - averageGrades(b[sortBy]));
 
-    case SortType.Married:
-      studentsCopy.sort((a, b) => {
-        return sortInOrder(Number(a.married) - Number(b.married));
-      });
-      break;
-
-    case SortType.AverageGrade:
-      studentsCopy.sort((a, b) => {
-        return sortInOrder(averageGrades(a.grades) - averageGrades(b.grades));
-      });
-      break;
-
-    default:
-      throw new Error('Huston, we have a problem!');
-  }
+      default:
+        throw new Error(
+          `Huston, we have a problem! Wrong value: ${sortBy}`,
+        );
+    }
+  });
 
   return studentsCopy;
 }
