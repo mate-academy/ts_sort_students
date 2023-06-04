@@ -11,7 +11,7 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'grades',
+  AverageGrade = 'AverageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -29,7 +29,7 @@ export function sortStudents(students: Student[],
   const studentsArr = [...students];
 
   studentsArr.sort((a: Student, b: Student): number => {
-    if (sortBy === 'grades') {
+    if (sortBy === SortType.AverageGrade) {
       if (order === 'desc') {
         return average(b) - average(a);
       }
@@ -37,7 +37,7 @@ export function sortStudents(students: Student[],
       return average(a) - average(b);
     }
 
-    if (sortBy === 'name' || sortBy === 'surname') {
+    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
       if (order === 'asc') {
         return a[sortBy].localeCompare(b[sortBy]);
       }
@@ -45,7 +45,7 @@ export function sortStudents(students: Student[],
       return b[sortBy].localeCompare(a[sortBy]);
     }
 
-    if (sortBy === 'age') {
+    if (sortBy === SortType.Age) {
       if (order === 'asc') {
         return a[sortBy] - b[sortBy];
       }
