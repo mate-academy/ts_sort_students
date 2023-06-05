@@ -4,7 +4,7 @@ export interface Student {
   surname: string,
   age: number,
   married: boolean,
-  grades: number []
+  grades: number[]
 }
 
 export enum SortType {
@@ -17,10 +17,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverage(array: number[]):number {
-  const sum = array.reduce((acc:number, curr:number) => acc + curr, 0);
+function calculateAverage(data: number[]):number {
+  const sum = data.reduce((acc:number, curr:number) => acc + curr, 0);
 
-  return (sum / array.length) || 0;
+  return (sum / data.length) || 0;
 }
 
 export function sortStudents(
@@ -30,27 +30,27 @@ export function sortStudents(
 ): Student[] {
   return [...students]
     .sort((a: Student, b: Student) => {
-      const firstStudent = a[sortBy];
-      const secondStudent = b[sortBy];
+      const aProperty = a[sortBy];
+      const bProperty = b[sortBy];
       const sortDirection = order === 'asc' ? 1 : -1;
 
       switch (sortBy) {
         case 'name':
         case 'surname':
-          return sortDirection * String(firstStudent)
-            .localeCompare(String(secondStudent));
+          return sortDirection * String(aProperty)
+            .localeCompare(String(bProperty));
 
         case 'age':
-          return sortDirection * (Number(firstStudent) - Number(secondStudent));
+          return sortDirection * (Number(aProperty) - Number(bProperty));
         case 'married':
-          return sortDirection * (+firstStudent - +secondStudent);
+          return sortDirection * (+aProperty - +bProperty);
         case 'grades':
 
           return sortDirection
           * (calculateAverage(
-            firstStudent as number[],
+            aProperty as number[],
           ) - calculateAverage(
-            secondStudent as number[],
+            bProperty as number[],
           ));
         default:
           return 0;
