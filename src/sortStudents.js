@@ -14,37 +14,32 @@ var SortType;
     SortType["Married"] = "married";
     SortType["AverageGrade"] = "grades";
 })(SortType = exports.SortType || (exports.SortType = {}));
+function calculateAverageGrade(grades) {
+    return grades.reduce(function (sum, grade) { return sum + grade; }, 0) / grades.length;
+}
 function sortStudents(students, sortBy, order) {
-    var sortedStudents = __spreadArray([], students);
-    function calculateAvarageGrade(numbers) {
-        return numbers.reduce(function (sum, grade) { return sum + grade; }, 0) / numbers.length;
-    }
-    switch (sortBy) {
-        case SortType.Name:
-        case SortType.Surname:
-            return sortedStudents.sort(function (a, b) {
+    return __spreadArray([], students).sort(function (studentA, studentB) {
+        switch (sortBy) {
+            case SortType.Name:
+            case SortType.Surname:
                 return order === 'asc'
-                    ? a[sortBy].localeCompare(b[sortBy])
-                    : b[sortBy].localeCompare(a[sortBy]);
-            });
-        case SortType.Age:
-            return sortedStudents.sort(function (a, b) {
+                    ? studentA[sortBy].localeCompare(studentB[sortBy])
+                    : studentA[sortBy].localeCompare(studentB[sortBy]);
+            case SortType.AverageGrade: {
+                var avgGradeA = calculateAverageGrade(studentA.grades);
+                var avgGradeB = calculateAverageGrade(studentB.grades);
                 return order === 'asc'
-                    ? a[sortBy] - b[sortBy]
-                    : b[sortBy] - a[sortBy];
-            });
-        case SortType.Married:
-            return sortedStudents.sort(function (a, b) { return (order === 'asc'
-                ? Number(a[sortBy]) - Number(b[sortBy])
-                : Number(b[sortBy]) - Number(a[sortBy])); });
-        case SortType.AverageGrade:
-            return sortedStudents.sort(function (a, b) {
+                    ? avgGradeA - avgGradeB
+                    : avgGradeB - avgGradeA;
+            }
+            case SortType.Age:
+            case SortType.Married:
                 return order === 'asc'
-                    ? calculateAvarageGrade(a[sortBy]) - calculateAvarageGrade(b[sortBy])
-                    : calculateAvarageGrade(b[sortBy]) - calculateAvarageGrade(a[sortBy]);
-            });
-        default:
-            return sortedStudents;
-    }
+                    ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+                    : Number(studentB[sortBy]) - Number(studentA[sortBy]);
+            default:
+                return 0;
+        }
+    });
 }
 exports.sortStudents = sortStudents;

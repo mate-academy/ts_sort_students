@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -17,48 +16,39 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverageGrade(grades: number[]): number {
+  return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents = [...students];
-
-  function calculateAvarageGrade(numbers: number[]): number {
-    return numbers.reduce((sum, grade) => sum + grade, 0) / numbers.length;
-  }
-
-  switch (sortBy) {
-    case SortType.Name:
-    case SortType.Surname:
-      return sortedStudents.sort((a, b) => {
+  return [...students].sort((studentA: Student, studentB: Student): number => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-      });
+          ? studentA[sortBy].localeCompare(studentB[sortBy])
+          : studentA[sortBy].localeCompare(studentB[sortBy]);
 
-    case SortType.Age:
-      return sortedStudents.sort((a, b) => {
+      case SortType.AverageGrade: {
+        const avgGradeA = calculateAverageGrade(studentA.grades);
+        const avgGradeB = calculateAverageGrade(studentB.grades);
+
         return order === 'asc'
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
-      });
+          ? avgGradeA - avgGradeB
+          : avgGradeB - avgGradeA;
+      }
 
-    case SortType.Married:
-      return sortedStudents.sort((a, b) => (
-        order === 'asc'
-          ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy])
-      ));
-
-    case SortType.AverageGrade:
-      return sortedStudents.sort((a: Student, b: Student) => {
+      case SortType.Age:
+      case SortType.Married:
         return order === 'asc'
-          ? calculateAvarageGrade(a[sortBy]) - calculateAvarageGrade(b[sortBy])
-          : calculateAvarageGrade(b[sortBy]) - calculateAvarageGrade(a[sortBy]);
-      });
-
-    default:
-      return sortedStudents;
-  }
+          ? Number(studentA[sortBy]) - Number(studentB[sortBy])
+          : Number(studentB[sortBy]) - Number(studentA[sortBy]);
+      default:
+        return 0;
+    }
+  });
 }
