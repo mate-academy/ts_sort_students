@@ -19,7 +19,7 @@ export type SortOrder = 'asc'|'desc';
 
 function getAverageGrades(grades:number[]):number {
   return (grades
-    .reduce((sum:number, grade:number) => sum + grade) / grades.length);
+    .reduce((sum, grade) => sum + grade) / grades.length);
 }
 
 export function sortStudents(
@@ -32,10 +32,6 @@ export function sortStudents(
   sortedStudents.sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
-
       case SortType.Surname:
         return order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
