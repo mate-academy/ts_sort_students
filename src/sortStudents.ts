@@ -19,7 +19,7 @@ export type SortOrder = 'asc'|'desc';
 
 function getAverageGrades(grades:number[]):number {
   return (grades
-    .reduce((sum, grade) => sum + grade) / grades.length);
+    .reduce((sum, grade:number) => sum + grade) / grades.length);
 }
 
 export function sortStudents(
@@ -29,37 +29,29 @@ export function sortStudents(
 ) :Student[] {
   const sortedStudents = [...students];
 
-  sortedStudents.sort((a: Student, b: Student) => {
+  sortedStudents.sort((student1: Student, student2: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
         return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+          ? student1[sortBy].localeCompare(student2[sortBy])
+          : student2[sortBy].localeCompare(student1[sortBy]);
 
       case SortType.Age:
-        return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
-
       case SortType.Married:
-        if (a.married === b.married) {
-          return 0;
-        }
-
-        if (order === 'asc') {
-          return a.married ? 1 : -1;
-        }
-
-        return a.married ? -1 : 1;
+        return order === 'asc'
+          ? +student1[sortBy] - +student2[sortBy]
+          : +student2[sortBy] - +student1[sortBy];
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? getAverageGrades(a.grades) - getAverageGrades(b.grades)
-          : getAverageGrades(b.grades) - getAverageGrades(a.grades);
+          ? getAverageGrades(student1.grades)
+            - getAverageGrades(student2.grades)
+          : getAverageGrades(student2.grades)
+            - getAverageGrades(student1.grades);
 
       default:
-        throw new Error('Invalid data');
+        throw new Error('There is no such property');
     }
   });
 
