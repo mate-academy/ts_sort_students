@@ -15,21 +15,23 @@ export enum SortType {
   AverageGrade = 'averagegrades',
 }
 
-export type SortOrder = 'asc'|'desc';
+export type SortOrder = 'asc' | 'desc';
 
-function getAverageGrades(grades:number[]):number {
+function getAverageGrades(grades: number[]): number {
   return (grades
-    .reduce((sum, grade:number) => sum + grade) / grades.length);
+    .reduce((sum, grade) => (
+      sum + grade
+    ), 0) / grades.length) || 0;
 }
 
 export function sortStudents(
   students: Student[],
-  sortBy:SortType,
-  order:SortOrder,
-) :Student[] {
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const sortedStudents = [...students];
 
-  sortedStudents.sort((student1: Student, student2: Student) => {
+  return sortedStudents.sort((student1: Student, student2: Student) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
@@ -54,6 +56,4 @@ export function sortStudents(
         throw new Error('There is no such property');
     }
   });
-
-  return sortedStudents;
 }
