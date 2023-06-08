@@ -17,41 +17,43 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAverage(data: number[]):number {
-  const sum = data.reduce((acc:number, curr:number) => acc + curr, 0);
+function calculateAverage(data: number[]): number {
+  const sum = data.reduce((acc: number, curr: number) => acc + curr, 0);
 
   return (sum / data.length) || 0;
 }
 
 export function sortStudents(
-  students: Student [],
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
   return [...students]
     .sort((a: Student, b: Student) => {
-      const aProperty = a[sortBy];
-      const bProperty = b[sortBy];
-      const sortDirection = order === 'asc' ? 1 : -1;
+      const sortDirection = order === 'asc'
+        ? 1
+        : -1;
 
       switch (sortBy) {
         case 'name':
         case 'surname':
-          return sortDirection * String(aProperty)
-            .localeCompare(String(bProperty));
+          return sortDirection * String(a[sortBy])
+            .localeCompare(String(b[sortBy]));
 
         case 'age':
-          return sortDirection * (Number(aProperty) - Number(bProperty));
-        case 'married':
-          return sortDirection * (+aProperty - +bProperty);
-        case 'grades':
+          return sortDirection * (Number(a[sortBy]) - Number(b[sortBy]));
 
-          return sortDirection
-          * (calculateAverage(
-            aProperty as number[],
-          ) - calculateAverage(
-            bProperty as number[],
-          ));
+        case 'married':
+          return sortDirection * (+a[sortBy] - +b[sortBy]);
+
+        case 'grades':
+          // eslint-disable-next-line no-case-declarations
+          const aAverageGrade = calculateAverage(a[sortBy] as number[]);
+          // eslint-disable-next-line no-case-declarations
+          const bAverageGrade = calculateAverage(b[sortBy] as number[]);
+
+          return sortDirection * (aAverageGrade - bAverageGrade);
+
         default:
           return 0;
       }
