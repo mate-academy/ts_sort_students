@@ -1,3 +1,4 @@
+
 export interface Student {
   name: string;
   surname: string;
@@ -22,8 +23,11 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const sortedStudents = JSON.parse(JSON.stringify(students));
-  let firstStudent: number | string | boolean;
-  let secondStudent: number | string | boolean;
+
+  type StudentValue = number | string | boolean;
+
+  let firstStudent: StudentValue;
+  let secondStudent: StudentValue;
 
   sortedStudents.sort((a: Student, b: Student) => {
     switch (sortBy) {
