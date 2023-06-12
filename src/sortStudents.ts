@@ -28,13 +28,14 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  // logic based on the SortType specified
-
+  // calculate the average grade from the grades array:
   function calculateAverageGrade(grades: number[]): number {
     const sum = grades.reduce((total, grade) => total + grade, 0);
+
     return sum / grades.length;
   }
 
+  // logic based on the SortType specified:
   const compareFunction = (a: Student, b: Student): number => {
     let aValue;
     let bValue;
@@ -75,13 +76,14 @@ export function sortStudents(
     return 0;
   };
 
-  // copy of the input array (using the spread operator to avoid modifying the original array):
+  // copy of the input array (using the spread operator
+  // to avoid modifying the original array):
   const sortedStudents = [...students];
+
   sortedStudents.sort(compareFunction);
+
   return sortedStudents;
 }
-
-// calculate the average grade from the grades array
 
 const students = [
   {
