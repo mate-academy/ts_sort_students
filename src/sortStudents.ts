@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'Name',
-  Surname = 'Surname',
-  Age = 'Age',
-  Married = 'Married',
-  AverageGrade = 'AverageGrade',
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -35,23 +35,11 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        aValue = a.name;
-        bValue = b.name;
-        break;
-
       case SortType.Surname:
-        aValue = a.surname;
-        bValue = b.surname;
-        break;
-
       case SortType.Age:
-        aValue = a.age;
-        bValue = b.age;
-        break;
-
       case SortType.Married:
-        aValue = a.married;
-        bValue = b.married;
+        aValue = a[sortBy];
+        bValue = b[sortBy];
         break;
 
       case SortType.AverageGrade:
