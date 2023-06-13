@@ -20,10 +20,11 @@ export type SortOrder = 'asc' | 'desc';
 
 // function for average
 
-function avGrad(grades: number[]): number {
-  const av = grades.reduce((sum, element) => sum + element, 0) / grades.length;
+function getAverageGrade(grades: number[]): number {
+  const averageGrade
+    = grades.reduce((sum, element) => sum + element, 0) / grades.length;
 
-  return av;
+  return averageGrade;
 }
 
 export function sortStudents(
@@ -31,28 +32,31 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const copiedArray = [...students];
+  const studentsCopy = [...students];
 
-  copiedArray.sort((a, b) => {
+  studentsCopy.sort((student1, student2) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return (order === 'asc' ? 1 : -1) * a[sortBy].localeCompare(b[sortBy]);
+        return (order === 'asc' ? 1 : -1)
+          * student1[sortBy].localeCompare(student2[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
-        return (order === 'asc' ? 1 : -1) * (+a[sortBy] - +b[sortBy]);
+        return (order === 'asc' ? 1 : -1)
+          * (+student1[sortBy] - +student2[sortBy]);
 
       case SortType.AverageGrade:
         return (
           (order === 'asc' ? 1 : -1)
-        * (avGrad(a.grades) - avGrad(b.grades))
+            * (getAverageGrade(student1.grades)
+            - getAverageGrade(student2.grades))
         );
 
       default:
-        throw new Error();
+        throw new Error('Unrecognised sort type!');
     }
   });
 
-  return copiedArray;
+  return studentsCopy;
 }
