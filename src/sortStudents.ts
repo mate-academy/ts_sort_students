@@ -3,7 +3,7 @@ export interface Student {
   name: string,
   surname: string,
   age: number,
-  married: true,
+  married: boolean,
   grades: number[],
 }
 
@@ -22,6 +22,12 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
+  const getAverageGrade = (student: Student): number => {
+    const sum = student.grades.reduce((total, grade) => total + grade, 0);
+
+    return sum / student.grades.length;
+  };
+
   const compare = (a: Student, b: Student): number => {
     let valueA: string | number | boolean;
     let valueB: string | number | boolean;
@@ -44,11 +50,8 @@ export function sortStudents(
         valueB = b.married;
         break;
       case SortType.AverageGrade:
-        valueA = a.grades.reduce((sum,
-          grade) => sum + grade, 0) / a.grades.length;
-
-        valueB = b.grades.reduce((sum,
-          grade) => sum + grade, 0) / b.grades.length;
+        valueA = getAverageGrade(a);
+        valueB = getAverageGrade(b);
         break;
       default:
         throw new Error(`Invalid SortType: ${sortBy}`);
