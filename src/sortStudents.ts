@@ -12,11 +12,16 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'Grades',
+  AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+function calcAverage(arr: number[]):number {
+  const calcNum:number = arr.reduce((sum:number, grade:number) => sum + grade);
+
+  return calcNum / arr.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -25,49 +30,28 @@ export function sortStudents(
 ):Student[] {
   const studentCopy: Student[] = JSON.parse(JSON.stringify(students));
 
-  if (sortBy === SortType.Surname || sortBy === SortType.Name) {
-    studentCopy.sort(
-      (person1, person2) => {
-        // if (order === 'asc') {
-        //   return person1[sortBy].localeCompare(person2[sortBy]);
-        // }
+  studentCopy.sort((person1: Student, person2: Student) => {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? person1[sortBy].localeCompare(person2[sortBy])
+          : person2[sortBy].localeCompare(person1[sortBy]);
 
-        return person1[sortBy].localeCompare(person2[sortBy]);
-      },
-    );
-  }
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? (Number(person1[sortBy])) - (Number(person2[sortBy]))
+          : (Number(person2[sortBy])) - (Number(person1[sortBy]));
 
-  if ((sortBy === SortType.Age) || (sortBy === SortType.Married)) {
-    studentCopy.sort((person1, person2) => {
-      if (order === 'desc') {
-        return (Number(person2[sortBy])) - (Number(person1[sortBy]));
-      }
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? (calcAverage(person1[sortBy])) - (calcAverage(person2[sortBy]))
+          : (calcAverage(person2[sortBy])) - (calcAverage(person1[sortBy]));
 
-      return (Number(person1[sortBy])) - (Number(person2[sortBy]));
-    });
-  }
-
-  if (sortBy === SortType.AverageGrade) {
-    studentCopy.sort((person1, person2) => {
-      const average1:number = person1.grades
-        .reduce((sum, grade) => sum + grade);
-
-      const average2:number = person2.grades
-        .reduce((sum, grade) => sum + grade);
-
-      if (order === 'desc') {
-        return (average2 / person2.grades.length)
-      - (average1 / person1.grades.length);
-      }
-
-      return (average1 / person1.grades.length)
-      - (average2 / person2.grades.length);
-    });
-  }
-
-  // if (order === 'desc') {
-  //   studentCopy.reverse();
-  // }
+      default: throw new Error();
+    }
+  });
 
   return studentCopy;
 }
