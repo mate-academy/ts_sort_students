@@ -12,14 +12,14 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'graduade',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageScore(students: Student): number {
   return students.grades.reduce(
-    (sum, gradue) => sum + gradue, 0,
+    (sum, grade) => sum + grade, 0,
   ) / students.grades.length;
 }
 
