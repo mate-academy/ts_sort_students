@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -31,43 +30,50 @@ export function sortStudents(
   const sortedStudents = [...students];
 
   sortedStudents.sort((a, b) => {
-    let aValue;
-    let bValue;
+    let aAverageGrade = getAverageGrade(a);
+    let bAverageGrade = getAverageGrade(b);
 
     switch (sortBy) {
       case SortType.Name:
-        aValue = a.name;
-        bValue = b.name;
-        break;
+        if (a.name === b.name) {
+          return students.indexOf(a) - students.indexOf(b);
+        }
+
+        return order === 'asc' ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+
       case SortType.Surname:
-        aValue = a.surname;
-        bValue = b.surname;
-        break;
+        if (a.surname === b.surname) {
+          return students.indexOf(a) - students.indexOf(b);
+        }
+
+        return order === 'asc' ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
+
       case SortType.Age:
-        aValue = a.age;
-        bValue = b.age;
-        break;
+        if (a.age === b.age) {
+          return students.indexOf(a) - students.indexOf(b);
+        }
+
+        return order === 'asc' ? a.age - b.age : b.age - a.age;
+
       case SortType.Married:
-        aValue = a.married;
-        bValue = b.married;
-        break;
+        return order === 'asc' ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
+
       case SortType.AverageGrade:
-        aValue = getAverageGrade(a);
-        bValue = getAverageGrade(b);
-        break;
+        aAverageGrade = getAverageGrade(a);
+        bAverageGrade = getAverageGrade(b);
+
+        if (aAverageGrade === bAverageGrade) {
+          return students.indexOf(a) - students.indexOf(b);
+        }
+
+        return order === 'asc' ? aAverageGrade - bAverageGrade
+          : bAverageGrade - aAverageGrade;
       default:
         throw new Error('Invalid SortType');
     }
-
-    if (aValue === bValue) {
-      return students.indexOf(a) - students.indexOf(b);
-    }
-
-    if (order === 'asc') {
-      return aValue < bValue ? -1 : 1;
-    }
-
-    return aValue > bValue ? -1 : 1;
   });
 
   return sortedStudents;
