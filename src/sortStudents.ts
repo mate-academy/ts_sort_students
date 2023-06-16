@@ -26,31 +26,29 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   // write your function
-  const newArr: Student[] = [...students];
+  const sortedArr: Student[] = [...students];
 
-  newArr
+  sortedArr
     .sort((studentOne: Student, studentTwo: Student): number => {
       switch (sortBy) {
         case SortType.Name:
           if (order === 'asc') {
-            return studentOne.name.toLowerCase() > studentTwo.name.toLowerCase()
+            return studentOne.name.localeCompare(studentTwo.name) >= 0
               ? 1
               : -1;
           }
 
-          return studentOne.name.toLowerCase() > studentTwo.name.toLowerCase()
+          return studentOne.name.localeCompare(studentTwo.name) >= 0
             ? -1
             : 1;
         case SortType.Surname:
           if (order === 'asc') {
-            return studentOne.surname.toLowerCase()
-            > studentTwo.surname.toLowerCase()
+            return studentOne.surname.localeCompare(studentTwo.surname) >= 0
               ? 1
               : -1;
           }
 
-          return studentOne.surname.toLowerCase()
-          > studentTwo.surname.toLowerCase()
+          return studentOne.surname.localeCompare(studentTwo.surname) >= 0
             ? -1
             : 1;
         case SortType.Age:
@@ -110,5 +108,5 @@ export function sortStudents(
       }
     });
 
-  return newArr;
+  return sortedArr;
 }
