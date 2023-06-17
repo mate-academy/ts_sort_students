@@ -23,6 +23,22 @@ function calculateAverageGrade(student: Student): number {
   return sum / student.grades.length;
 }
 
+function compareStrings(a: string, b: string, order: SortOrder): number {
+  if (order === 'asc') {
+    return a.localeCompare(b);
+  }
+
+  return b.localeCompare(a);
+}
+
+function compareNumbers(a: number, b: number, order: SortOrder): number {
+  if (order === 'asc') {
+    return a - b;
+  }
+
+  return b - a;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -33,19 +49,12 @@ export function sortStudents(
   newArray.sort((a: Student, b: Student) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
+        return compareStrings(a.name, b.name, order);
 
       case SortType.Surname:
-        return order === 'asc'
-          ? a.surname.localeCompare(b.surname)
-          : b.surname.localeCompare(a.surname);
-
+        return compareStrings(a.surname, b.surname, order);
       case SortType.Age:
-        return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
+        return compareNumbers(a.age, b.age, order);
 
       case SortType.Married:
         if (a.married === b.married) {
@@ -64,7 +73,6 @@ export function sortStudents(
           : calculateAverageGrade(b) - calculateAverageGrade(a);
 
       default:
-        // Handle unsupported SortType values
         return 0;
     }
   });
