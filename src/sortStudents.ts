@@ -1,3 +1,7 @@
+function getAvgGrade(grades: number[]): number {
+  return (grades
+    .reduce((sum, currentValue) => sum + currentValue, 0)) / grades.length;
+}
 
 export interface Student {
   name: string;
@@ -8,11 +12,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 // create SortOrder type
@@ -24,54 +28,26 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const copyStudents = [...students];
+  const isDesc = order === 'desc';
 
-  if (order === 'asc') {
-    switch (sortBy) {
-      case SortType.Name:
-        return copyStudents.sort((a, b) => a.name.localeCompare(b.name));
-      case SortType.Surname:
-        return copyStudents.sort((a, b) => a.surname.localeCompare(b.surname));
-      case SortType.Age:
-        return copyStudents.sort((a, b) => a.age - b.age);
-      case SortType.Married:
-        return copyStudents
-          .sort((a, b) => (a.married ? 1 : -1) - (b.married ? 1 : -1));
-      case SortType.AverageGrade:
-        return copyStudents
-          .sort((a, b) => (a.grades
-            .reduce((sum, currentGrade) => sum + currentGrade, 0)
-            / a.grades.length)
-          - (b.grades
-            .reduce((sum, currentGrade) => sum + currentGrade, 0)
-            / b.grades.length));
-      default:
-        break;
-    }
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return isDesc
+        ? copyStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]))
+        : copyStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+    case SortType.Age:
+    case SortType.Married:
+      return isDesc
+        ? copyStudents.sort((a, b) => +b[sortBy] - +a[sortBy])
+        : copyStudents.sort((a, b) => +a[sortBy] - +b[sortBy]);
+    case SortType.AverageGrade:
+      return isDesc
+        ? copyStudents
+          .sort((a, b) => getAvgGrade(b.grades) - getAvgGrade(a.grades))
+        : copyStudents
+          .sort((a, b) => getAvgGrade(a.grades) - getAvgGrade(b.grades));
+    default:
+      return copyStudents;
   }
-
-  if (order === 'desc') {
-    switch (sortBy) {
-      case SortType.Name:
-        return copyStudents.sort((a, b) => b.name.localeCompare(a.name));
-      case SortType.Surname:
-        return copyStudents.sort((a, b) => b.surname.localeCompare(a.surname));
-      case SortType.Age:
-        return copyStudents.sort((a, b) => b.age - a.age);
-      case SortType.Married:
-        return copyStudents
-          .sort((a, b) => (b.married ? 1 : -1) - (a.married ? 1 : -1));
-      case SortType.AverageGrade:
-        return copyStudents
-          .sort((a, b) => (b.grades
-            .reduce((sum, currentGrade) => sum + currentGrade, 0)
-            / b.grades.length)
-          - (a.grades
-            .reduce((sum, currentGrade) => sum + currentGrade, 0)
-            / a.grades.length));
-      default:
-        break;
-    }
-  }
-
-  return copyStudents;
 }
