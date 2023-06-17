@@ -1,6 +1,5 @@
 
 export interface Student {
-  // describe Student interface
   name: string;
   surname: string;
   age: number;
@@ -9,7 +8,6 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
   Name,
   Surname,
   Age,
@@ -17,7 +15,8 @@ export enum SortType {
   AverageGrade,
 }
 
-// create SortOrder type
+const ascending = 'asc';
+
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -25,14 +24,13 @@ export function sortStudents(
   sortBy:SortType,
   order: SortOrder,
 ): Student[] {
-  // write your function
   const sortedArr: Student[] = [...students];
 
   sortedArr
     .sort((studentOne: Student, studentTwo: Student): number => {
       switch (sortBy) {
         case SortType.Name:
-          if (order === 'asc') {
+          if (order === ascending) {
             return studentOne.name.localeCompare(studentTwo.name) >= 0
               ? 1
               : -1;
@@ -42,7 +40,7 @@ export function sortStudents(
             ? -1
             : 1;
         case SortType.Surname:
-          if (order === 'asc') {
+          if (order === ascending) {
             return studentOne.surname.localeCompare(studentTwo.surname) >= 0
               ? 1
               : -1;
@@ -52,7 +50,7 @@ export function sortStudents(
             ? -1
             : 1;
         case SortType.Age:
-          if (order === 'asc') {
+          if (order === ascending) {
             return studentOne.age > studentTwo.age
               ? 1
               : -1;
@@ -62,7 +60,7 @@ export function sortStudents(
             ? -1
             : 1;
         case SortType.AverageGrade:
-          if (order === 'asc') {
+          if (order === ascending) {
             if ((studentOne.grades
               .reduce((a:number, b:number): number => a + b, 0)
               / studentOne.grades.length) > (studentTwo.grades
@@ -94,7 +92,7 @@ export function sortStudents(
             ? -1
             : 1;
         case SortType.Married:
-          if (order === 'asc') {
+          if (order === ascending) {
             return studentOne.married > studentTwo.married
               ? 1
               : -1;
