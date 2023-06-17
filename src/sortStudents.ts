@@ -44,7 +44,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const newArray: Student[] = students.map((obj: Student) => ({ ...obj }));
+  const newArray: Student[] = [...students];
 
   newArray.sort((a: Student, b: Student) => {
     switch (sortBy) {
