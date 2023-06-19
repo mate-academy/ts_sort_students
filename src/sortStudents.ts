@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades'
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -20,25 +20,17 @@ export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? students
-          .sort((std1, std2) => std1.name.localeCompare(std2.name))
-        : students
-          .sort((std1, std2) => std2.name.localeCompare(std1.name));
     case SortType.Surname:
       return order === 'asc'
         ? students
-          .sort((std1, std2) => std1.surname.localeCompare(std2.surname))
+          .sort((std1, std2) => std1[sortBy].localeCompare(std2[sortBy]))
         : students
-          .sort((std1, std2) => std2.surname.localeCompare(std1.surname));
+          .sort((std1, std2) => std2[sortBy].localeCompare(std1[sortBy]));
     case SortType.Age:
-      return order === 'asc'
-        ? students.sort((std1, std2) => std1.age - std2.age)
-        : students.sort((std1, std2) => std2.age - std1.age);
     case SortType.Married:
       return order === 'asc'
-        ? students.sort((std1, std2) => +std1.married - +std2.married)
-        : students.sort((std1, std2) => +std2.married - +std1.married);
+        ? students.sort((std1, std2) => +std1[sortBy] - +std2[sortBy])
+        : students.sort((std1, std2) => +std2[sortBy] - +std1[sortBy]);
     case SortType.AverageGrade:
       return order === 'asc'
         ? students.sort((std1, std2) => {
@@ -46,8 +38,8 @@ export function sortStudents(students: Student[],
             - (std2.grades.reduce((a, b) => a + b) / std2.grades.length);
         })
         : students.sort((std1, std2) => {
-          return (std2.grades.reduce((a, b) => a + b) / std2.grades.length)
-            - (std1.grades.reduce((a, b) => a + b) / std1.grades.length);
+          return (std2[sortBy].reduce((a, b) => a + b) / std2[sortBy].length)
+            - (std1[sortBy].reduce((a, b) => a + b) / std1[sortBy].length);
         });
     default:
       return students;
