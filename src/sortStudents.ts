@@ -36,22 +36,22 @@ export function sortStudents(
   const resultArray = [...students];
 
   const average = (arr: number[]): number => {
-    return arr.reduce((p: number, c: number) => p + c, 0) / arr.length;
+    return arr.reduce((p, c) => p + c, 0) / arr.length;
   };
 
   switch (sortBy) {
-    case 'name':
+    case SortType.Name:
       if (order === 'desc') {
         resultArray.sort(
-          (a: Student, b: Student): number => b.name.localeCompare(a.name),
+          (a, b): number => b.name.localeCompare(a.name),
         );
       } else {
         resultArray.sort(
-          (a: Student, b: Student): number => a.name.localeCompare(b.name),
+          (a, b): number => a.name.localeCompare(b.name),
         );
       }
       break;
-    case 'surname':
+    case SortType.Surname:
       if (order === 'desc') {
         resultArray.sort(
           (a: Student, b: Student):
@@ -64,14 +64,14 @@ export function sortStudents(
         );
       }
       break;
-    case 'age':
+    case SortType.Age:
       if (order === 'desc') {
-        resultArray.sort((a: Student, b: Student): number => b.age - a.age);
+        resultArray.sort((a, b): number => b.age - a.age);
       } else {
-        resultArray.sort((a: Student, b: Student): number => a.age - b.age);
+        resultArray.sort((a, b): number => a.age - b.age);
       }
       break;
-    case 'married':
+    case SortType.Married:
       if (order === 'desc') {
         resultArray.sort(
           (a: Student, b: Student):
@@ -84,7 +84,7 @@ export function sortStudents(
         );
       }
       break;
-    case 'avgGrade':
+    case SortType.AverageGrade:
       if (order === 'desc') {
         resultArray.sort(
           (a: Student, b: Student)
@@ -98,6 +98,7 @@ export function sortStudents(
       }
       break;
     default:
+      throw new Error('no sort type provided');
   }
 
   return resultArray;
