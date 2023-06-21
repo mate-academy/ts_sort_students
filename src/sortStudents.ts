@@ -46,7 +46,7 @@ export function sortStudents(
       default:
         return order === 'asc'
           ? String(a[sortBy]).localeCompare(String(b[sortBy]))
-          : String(a[sortBy]).localeCompare(String(b[sortBy]));
+          : String(b[sortBy]).localeCompare(String(a[sortBy]));
     }
   });
 }
