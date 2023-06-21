@@ -22,40 +22,6 @@ function getAverageGrade(grades: number[]): number {
     / grades.length;
 }
 
-// export function sortStudents(
-//   students: Student[],
-//   sortBy: SortType,
-//   order: SortOrder,
-// ): Student[] {
-//   const copyStudents = [...students];
-
-//   copyStudents.sort((a, b): number => {
-//     switch (sortBy) {
-//       case SortType.Age:
-//       case SortType.Married:
-//         return (order === 'asc')
-//           ? +a[sortBy] - +b[sortBy]
-//           : +b[sortBy] - +a[sortBy];
-
-//       case SortType.Name:
-//       case SortType.Surname:
-//         return (order === 'asc')
-//           ? a[sortBy].localeCompare(b[sortBy])
-//           : b[sortBy].localeCompare(a[sortBy]);
-
-//       case SortType.AverageGrade:
-//         return (order === 'asc')
-//           ? getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
-//           : getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy]);
-
-//       default:
-//         break;
-//     }
-//   });
-
-//   return copyStudents;
-// }
-
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
