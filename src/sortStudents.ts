@@ -17,11 +17,10 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-function calculateAvarage(student: Student): number {
+function calculateAverage(student: Student): number {
   const sumGrades = student.grades.reduce((sum, grade) => sum + grade);
-  const avg = sumGrades / student.grades.length;
 
-  return avg;
+  return sumGrades / student.grades.length;
 }
 
 type SortStudentsType = string | boolean | number;
@@ -38,20 +37,14 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
+      case SortType.Age:
+      case SortType.Married:
         aVal = a[sortBy];
         bVal = b[sortBy];
         break;
-      case SortType.Age:
-        aVal = a.age;
-        bVal = b.age;
-        break;
-      case SortType.Married:
-        aVal = a.married;
-        bVal = b.married;
-        break;
       case SortType.AverageGrade:
-        aVal = calculateAvarage(a);
-        bVal = calculateAvarage(b);
+        aVal = calculateAverage(a);
+        bVal = calculateAverage(b);
         break;
       default:
         break;
