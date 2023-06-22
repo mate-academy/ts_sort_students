@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -30,31 +30,27 @@ export function sortStudents(
   return copy.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-
       case SortType.Surname:
         return order === 'asc'
-          ? a.surname.localeCompare(b.surname)
-          : b.surname.localeCompare(a.surname);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
         return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
 
       case SortType.Married:
         return order === 'asc'
-          ? +a.married - +b.married
-          : +b.married - +a.married;
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
       case SortType.AverageGrade:
         return order === 'asc'
-          ? (a.grades.reduce(callback, 0) / a.grades.length)
-            - (b.grades.reduce(callback, 0) / b.grades.length)
-          : (b.grades.reduce(callback, 0) / b.grades.length)
-            - (a.grades.reduce(callback, 0) / a.grades.length);
+          ? (a[sortBy].reduce(callback, 0) / a[sortBy].length)
+            - (b[sortBy].reduce(callback, 0) / b[sortBy].length)
+          : (b[sortBy].reduce(callback, 0) / b[sortBy].length)
+            - (a[sortBy].reduce(callback, 0) / a[sortBy].length);
 
       default:
         return 0;
