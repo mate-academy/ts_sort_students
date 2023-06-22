@@ -27,65 +27,37 @@ export function sortStudents(
     return acc + current;
   };
 
-  switch (sortBy) {
-    case SortType.Name:
-      if (order === 'asc') {
-        return copy.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-      }
+  return copy.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+        return order === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
 
-      return copy.sort((a, b) => {
-        return b.name.localeCompare(a.name);
-      });
+      case SortType.Surname:
+        return order === 'asc'
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
 
-    case SortType.Surname:
-      if (order === 'asc') {
-        return copy.sort((a, b) => {
-          return a.surname.localeCompare(b.surname);
-        });
-      }
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
 
-      return copy.sort((a, b) => {
-        return b.surname.localeCompare(a.surname);
-      });
+      case SortType.Married:
+        return order === 'asc'
+          ? +a.married - +b.married
+          : +b.married - +a.married;
 
-    case SortType.Age:
-      if (order === 'asc') {
-        return copy.sort((a, b) => {
-          return a.age - b.age;
-        });
-      }
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? (a.grades.reduce(callback, 0) / a.grades.length)
+            - (b.grades.reduce(callback, 0) / b.grades.length)
+          : (b.grades.reduce(callback, 0) / b.grades.length)
+            - (a.grades.reduce(callback, 0) / a.grades.length);
 
-      return copy.sort((a, b) => {
-        return b.age - a.age;
-      });
-
-    case SortType.Married:
-      if (order === 'asc') {
-        return copy.sort((a, b) => {
-          return a.married - b.married;
-        });
-      }
-
-      return copy.sort((a, b) => {
-        return b.married - a.married;
-      });
-
-    case SortType.AverageGrade:
-      if (order === 'asc') {
-        return copy.sort((a, b) => {
-          return (a.grades.reduce(callback, 0) / a.grades.length)
-          - (b.grades.reduce(callback, 0) / b.grades.length);
-        });
-      }
-
-      return copy.sort((a, b) => {
-        return (b.grades.reduce(callback, 0) / b.grades.length)
-        - (a.grades.reduce(callback, 0) / a.grades.length);
-      });
-
-    default:
-      return students;
-  }
+      default:
+        return 0;
+    }
+  });
 }
