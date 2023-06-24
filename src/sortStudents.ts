@@ -18,7 +18,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(students: Student): number {
-  const sum = students.grades.reduce((a, b) => a + b, 0)
+  const sum = students.grades.reduce((a, b) => a + b, 0);
   const result = sum / students.grades.length;
 
   return result;
@@ -34,8 +34,8 @@ export function sortStudents(
       case SortType.Name:
       case SortType.Surname:
         return order === 'asc'
-        ? a[sortBy].localeCompare(b[sortBy])
-        : b[sortBy].localeCompare(a[sortBy]);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
