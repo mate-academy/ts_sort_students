@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -27,7 +27,7 @@ export function sortStudents(
     return grades.reduce((acc, cur) => acc + cur, 0) / grades.length;
   }
 
-  clone.sort((a: Student, b: Student) => {
+  clone.sort((a: Student, b: Student): number => {
     const avgGradeA = calculateAverageGrade(a.grades);
     const avgGradeB = calculateAverageGrade(b.grades);
 
@@ -35,28 +35,20 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        comparison = a.name.localeCompare(b.name);
-        break;
       case SortType.Surname:
-        comparison = a.surname.localeCompare(b.surname);
+        comparison = a[sortBy].localeCompare(b[sortBy]);
         break;
       case SortType.Age:
         comparison = a.age - b.age;
         break;
       case SortType.Married:
-        if (a.married === b.married) {
-          comparison = 0;
-        } else if (a.married) {
-          comparison = 1;
-        } else {
-          comparison = -1;
-        }
+        comparison = +a[sortBy] - +b[sortBy];
         break;
       case SortType.AverageGrade:
         comparison = avgGradeA - avgGradeB;
         break;
       default:
-        return 0;
+        throw new Error('Unsupported sort type');
     }
 
     return order === 'asc' ? comparison : -comparison;
