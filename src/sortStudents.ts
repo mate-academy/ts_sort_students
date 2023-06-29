@@ -23,38 +23,40 @@ function getAverage(arr: number[]): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ) : Student[] {
-  const result = [...students];
+  const studentsCopy = [...students];
 
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return order === 'asc'
-        ? result
+        ? studentsCopy
           .sort((a: Student, b: Student) => a[sortBy].localeCompare(b[sortBy]))
-        : result
+        : studentsCopy
           .sort((a: Student, b: Student) => b[sortBy].localeCompare(a[sortBy]));
 
-    case 'age':
-    case 'married':
+    case SortType.Age:
+    case SortType.Married:
       return order === 'asc'
-        ? result
+        ? studentsCopy
           .sort((a: Student, b: Student) => +a[sortBy] - +b[sortBy])
-        : result
+        : studentsCopy
           .sort((a: Student, b: Student) => +b[sortBy] - +a[sortBy]);
 
-    case 'grades':
+    case SortType.AverageGrade:
       return order === 'asc'
-        ? result
+        ? studentsCopy
           .sort((a: Student, b: Student) => getAverage(a.grades)
           - getAverage(b.grades))
-        : result
+        : studentsCopy
           .sort((a: Student, b: Student) => getAverage(b.grades)
           - getAverage(a.grades));
     default:
       break;
   }
 
-  return result;
+  return studentsCopy;
 }
