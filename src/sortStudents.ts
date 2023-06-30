@@ -7,17 +7,17 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType,
-  order: SortOrder): Student[] {
+// eslint-disable-next-line max-len
+export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
   const sortedStudents = [...students];
 
   sortedStudents.sort((a, b) => {
@@ -26,44 +26,33 @@ export function sortStudents(students: Student[], sortBy: SortType,
 
     switch (sortBy) {
       case SortType.Name:
-        aValue = a.name;
-        bValue = b.name;
-        break;
       case SortType.Surname:
-        aValue = a.surname;
-        bValue = b.surname;
-        break;
+        aValue = a[sortBy] as string;
+        bValue = b[sortBy] as string;
+
+        // eslint-disable-next-line max-len
+        return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+
       case SortType.Age:
-        aValue = a.age;
-        bValue = b.age;
-        break;
       case SortType.Married:
-        aValue = a.married;
-        bValue = b.married;
-        break;
+        aValue = a[sortBy] as number;
+        bValue = b[sortBy] as number;
+
+        return order === 'asc' ? aValue - bValue : bValue - aValue;
+
       case SortType.AverageGrade:
-        // eslint-disable-next-line max-len, no-case-declarations
-        const avgGradeA = a.grades.reduce((sum, grade) => sum + grade, 0) / a.grades.length;
-        // eslint-disable-next-line max-len, no-case-declarations
-        const avgGradeB = b.grades.reduce((sum, grade) => sum + grade, 0) / b.grades.length;
 
-        aValue = avgGradeA;
-        bValue = avgGradeB;
-        break;
+        aValue = a.grades.reduce((sum, grade) => sum + grade, 0)
+           / a.grades.length;
+
+        bValue = b.grades.reduce((sum, grade) => sum + grade, 0)
+          / b.grades.length;
+
+        return order === 'asc' ? aValue - bValue : bValue - aValue;
+
       default:
-
         return 0;
     }
-
-    if (aValue < bValue) {
-      return order === 'asc' ? -1 : 1;
-    }
-
-    if (aValue > bValue) {
-      return order === 'asc' ? 1 : -1;
-    }
-
-    return 0;
   });
 
   return sortedStudents;
