@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grade'
 }
 
 // create SortOrder type
@@ -32,38 +32,22 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      studentsInAnyOrder.sort((prevStudent: Student,
-        nextStudent: Student): number => {
-        return (order === 'asc')
-          ? prevStudent.name.localeCompare(nextStudent.name)
-          : nextStudent.name.localeCompare(prevStudent.name);
-      });
-      break;
-
     case SortType.Surname:
-      studentsInAnyOrder.sort((prevStudent: Student,
-        nextStudent: Student): number => {
+      studentsInAnyOrder.sort((prevStudent,
+        nextStudent): number => {
         return (order === 'asc')
-          ? prevStudent.surname.localeCompare(nextStudent.surname)
-          : nextStudent.surname.localeCompare(prevStudent.surname);
+          ? prevStudent[sortBy].localeCompare(nextStudent[sortBy])
+          : nextStudent[sortBy].localeCompare(prevStudent[sortBy]);
       });
       break;
 
     case SortType.Age:
-      studentsInAnyOrder.sort((prevStudent: Student,
-        nextStudent: Student): number => {
-        return (order === 'asc')
-          ? prevStudent.age - nextStudent.age
-          : nextStudent.age - prevStudent.age;
-      });
-      break;
-
     case SortType.Married:
-      studentsInAnyOrder.sort((prevStudent: Student,
-        nextStudent: Student): number => {
+      studentsInAnyOrder.sort((prevStudent,
+        nextStudent): number => {
         return (order === 'asc')
-          ? +prevStudent.married - +nextStudent.married
-          : +nextStudent.married - +prevStudent.married;
+          ? +prevStudent[sortBy] - +nextStudent[sortBy]
+          : +nextStudent[sortBy] - +prevStudent[sortBy];
       });
       break;
 
