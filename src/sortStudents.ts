@@ -18,62 +18,64 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
-  const studentsInAnyOrder = students;
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const studentsInAnyOrder = [...students];
+
+  function getAvaregeGrade(student: Student): number {
+    return student.grades.reduce((total, grade) => total + grade, 0)
+    / student.grades.length;
+  }
 
   switch (sortBy) {
     case SortType.Name:
-      return studentsInAnyOrder.sort((prevStudent: Student,
+      studentsInAnyOrder.sort((prevStudent: Student,
         nextStudent: Student): number => {
         return (order === 'asc')
           ? prevStudent.name.localeCompare(nextStudent.name)
           : nextStudent.name.localeCompare(prevStudent.name);
       });
+      break;
 
     case SortType.Surname:
-      return studentsInAnyOrder.sort((prevStudent: Student,
+      studentsInAnyOrder.sort((prevStudent: Student,
         nextStudent: Student): number => {
         return (order === 'asc')
           ? prevStudent.surname.localeCompare(nextStudent.surname)
           : nextStudent.surname.localeCompare(prevStudent.surname);
       });
+      break;
 
     case SortType.Age:
-      return studentsInAnyOrder.sort((prevStudent: Student,
+      studentsInAnyOrder.sort((prevStudent: Student,
         nextStudent: Student): number => {
         return (order === 'asc')
           ? prevStudent.age - nextStudent.age
           : nextStudent.age - prevStudent.age;
       });
+      break;
 
     case SortType.Married:
-      return studentsInAnyOrder.sort((prevStudent: Student,
+      studentsInAnyOrder.sort((prevStudent: Student,
         nextStudent: Student): number => {
-        const prevStudentMarried = (prevStudent.married === true) ? 1 : 0;
-        const nextStudentMarried = (nextStudent.married === true) ? 1 : 0;
-
         return (order === 'asc')
-          ? prevStudentMarried - nextStudentMarried
-          : nextStudentMarried - prevStudentMarried;
+          ? +prevStudent.married - +nextStudent.married
+          : +nextStudent.married - +prevStudent.married;
       });
-
-    case SortType.AvaregeGrade:
-      return studentsInAnyOrder.sort((prevStudent: Student,
-        nextStudent: Student): number => {
-        const prevStudentAvaregeGrade = prevStudent.grades
-          .reduce((total, grade) => total + grade, 0)
-          / prevStudent.grades.length;
-        const nextStudentAvaregeGrade = nextStudent.grades
-          .reduce((total, grade) => total + grade, 0)
-          / nextStudent.grades.length;
-
-        return (order === 'asc')
-          ? prevStudentAvaregeGrade - nextStudentAvaregeGrade
-          : nextStudentAvaregeGrade - prevStudentAvaregeGrade;
-      });
+      break;
 
     default:
-      throw new Error();
+      studentsInAnyOrder.sort((prevStudent: Student,
+        nextStudent: Student): number => {
+        return (order === 'asc')
+          ? getAvaregeGrade(prevStudent) - getAvaregeGrade(nextStudent)
+          : getAvaregeGrade(nextStudent) - getAvaregeGrade(prevStudent);
+      });
+      break;
   }
+
+  return studentsInAnyOrder;
 }
