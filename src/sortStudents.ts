@@ -25,36 +25,33 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents: Student[] = [...students];
+  let sortedStuds: Student[] = [...students];
 
-  // eslint-disable-next-line default-case
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-      } else {
-        sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-      }
+      sortedStuds = (order === 'asc')
+        ? sortedStuds.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : sortedStuds.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+
       break;
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => +a[sortBy] - +b[sortBy]);
-      } else {
-        sortedStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
-      }
+      sortedStuds = (order === 'asc')
+        ? sortedStuds.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : sortedStuds.sort((a, b) => +b[sortBy] - +a[sortBy]);
       break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        sortedStudents.sort((a, b) => calcAvg(a[sortBy]) - calcAvg(b[sortBy]));
-      } else {
-        sortedStudents.sort((a, b) => calcAvg(b[sortBy]) - calcAvg(a[sortBy]));
-      }
+      sortedStuds = (order === 'asc')
+        ? sortedStuds.sort((a, b) => calcAvg(a[sortBy]) - calcAvg(b[sortBy]))
+        : sortedStuds.sort((a, b) => calcAvg(b[sortBy]) - calcAvg(a[sortBy]));
       break;
+
+    default:
+      throw new Error('Enter valid data');
   }
 
-  return sortedStudents;
+  return sortedStuds;
 }
