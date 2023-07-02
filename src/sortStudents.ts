@@ -16,8 +16,11 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-// eslint-disable-next-line max-len
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const sortedStudents = [...students];
 
   sortedStudents.sort((a, b) => {
@@ -27,26 +30,28 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        aValue = a[sortBy] as string;
-        bValue = b[sortBy] as string;
+        aValue = a[sortBy];
+        bValue = b[sortBy];
 
-        // eslint-disable-next-line max-len
-        return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+        return order === 'asc'
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
 
       case SortType.Age:
       case SortType.Married:
         aValue = a[sortBy] as number;
         bValue = b[sortBy] as number;
 
-        return order === 'asc' ? aValue - bValue : bValue - aValue;
+        return order === 'asc'
+          ? aValue - bValue
+          : bValue - aValue;
 
       case SortType.AverageGrade:
-
         aValue = a.grades.reduce((sum, grade) => sum + grade, 0)
-           / a.grades.length;
+        / a.grades.length;
 
         bValue = b.grades.reduce((sum, grade) => sum + grade, 0)
-          / b.grades.length;
+        / b.grades.length;
 
         return order === 'asc' ? aValue - bValue : bValue - aValue;
 
