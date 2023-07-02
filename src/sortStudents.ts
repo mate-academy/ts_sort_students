@@ -1,16 +1,79 @@
+import { accessSync } from "fs";
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name,
+  Surname,
+  Age,
+  Married,
+  AverageGrade,
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+function averageGrade(grades: number[]): number {
+  if (grades.length === 0) {
+    return 0;
+  }
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  const sum = grades.reduce((acc, grade) => acc + grade, 0);
+
+  return sum / grades.length;
+}
+
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  const compareFunction = (a: Student, b: Student): number => {
+    let aValue;
+    let bValue;
+
+    switch (sortBy) {
+      case SortType.Name:
+        aValue = a.name;
+        bValue = b.name;
+        break;
+      case SortType.Surname:
+        aValue = a.surname;
+        bValue = b.surname;
+        break;
+      case SortType.Age:
+        aValue = a.age;
+        bValue = b.age;
+        break;
+      case SortType.Married:
+        aValue = a.married;
+        bValue = b.married;
+        break;
+      case SortType.AverageGrade:
+        aValue = averageGrade(a.grades);
+        bValue = averageGrade(b.grades);
+        break;
+      default:
+        aValue = '';
+        bValue = '';
+        break;
+    }
+
+    if (aValue === bValue) {
+      return 0;
+    }
+
+    if (order === 'asc') {
+      return aValue < bValue ? -1 : 1;
+    }
+
+    return aValue < bValue ? 1 : -1;
+  };
+
+  return [...students].sort(compareFunction);
 }
