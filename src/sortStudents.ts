@@ -20,8 +20,11 @@ function getAverage(st: Student):number {
   return st.grades.reduce((acc, el) => acc + el, 0) / st.grades.length;
 }
 
-// eslint-disable-next-line max-len
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder):Student[] {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+):Student[] {
   return [...students].sort((a:Student, b:Student) => {
     switch (sortBy) {
       case SortType.Name:
@@ -32,14 +35,14 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
       case SortType.Age:
       case SortType.Married:
         return order === 'asc'
-          ? Number(a[sortBy]) - Number(b[sortBy])
-          : Number(b[sortBy]) - Number(a[sortBy]);
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
       case SortType.AverageGrade:
         return order === 'asc'
           ? getAverage(a) - getAverage(b)
           : getAverage(b) - getAverage(a);
       default:
-        return 0;
+        throw new Error('Invalid data');
     }
   });
 }
