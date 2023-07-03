@@ -42,8 +42,8 @@ export function sortStudents(
 
       case SortType.Married:
         return order === 'asc'
-          ? Number(a.married) - Number(b.married)
-          : Number(b.married) - Number(a.married);
+          ? +(a[sortBy]) - +(b[sortBy])
+          : +(b[sortBy]) - +(a[sortBy]);
       default:
         return order === 'asc'
           ? String(a[sortBy]).localeCompare(String(b[sortBy]))
