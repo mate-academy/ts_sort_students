@@ -51,8 +51,8 @@ export function sortStudents(
         .filter(student => student[sortBy] === false);
 
       return order === 'asc'
-        ? [...marriedStudents, ...notMarriedStudents]
-        : [...notMarriedStudents, ...marriedStudents];
+        ? [...notMarriedStudents, ...marriedStudents]
+        : [...marriedStudents, ...notMarriedStudents];
 
     case 'grades':
       return sortedStudents
