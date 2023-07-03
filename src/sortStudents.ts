@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -15,9 +14,7 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
-
 
 export function sortStudents(
   students: Student[],
@@ -37,22 +34,13 @@ export function sortStudents(
         });
 
     case 'age':
+    case 'married':
       return sortedStudents
         .sort((student1, student2) => {
           return order === 'asc'
-            ? student1[sortBy] - student2[sortBy]
-            : student2[sortBy] - student1[sortBy]
+            ? +student1[sortBy] - +student2[sortBy]
+            : +student2[sortBy] - +student1[sortBy]
         });
-
-    case 'married':
-      const marriedStudents = sortedStudents
-        .filter(student => student[sortBy] === true);
-      const notMarriedStudents = sortedStudents
-        .filter(student => student[sortBy] === false);
-
-      return order === 'asc'
-        ? [...notMarriedStudents, ...marriedStudents]
-        : [...marriedStudents, ...notMarriedStudents];
 
     case 'grades':
       return sortedStudents
