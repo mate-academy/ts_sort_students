@@ -1,5 +1,3 @@
-import { log } from 'console';
-
 export interface Student {
   name: string;
   surname: string;
@@ -25,8 +23,6 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
     if (sortBy === SortType.AverageGrade) {
       const avgA = a.grades.reduce((sum, val) => sum + val, 0) / a.grades.length;
       const avgB = b.grades.reduce((sum, val) => sum + val, 0) / b.grades.length;
-
-      console.log(a, avgA);
 
       return order === 'asc' ? avgA - avgB : avgB - avgA;
     }
