@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 
+// eslint-disable-next-line import/named
 import { sortStudents, SortType } from './sortStudents';
 
 const students = [
