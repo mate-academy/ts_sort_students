@@ -31,25 +31,26 @@ export function sortStudents(
         / b.grades.length;
 
       return order === 'asc' ? avgA - avgB : avgB - avgA;
-    }
+    };
+
     const [valA, valB] = [a[sortBy], b[sortBy]];
 
     if (typeof valA === 'number' && typeof valB === 'number') {
       return order === 'asc' ? valA - valB : valB - valA;
-    };
+    }
 
     if (typeof valA === 'string' && typeof valB === 'string') {
       return order === 'asc'
         ? valA.localeCompare(valB) : valB.localeCompare(valA);
-    };
+    }
 
-    if (typeof valA === 'boolean' && typeof valB === "boolean") {
+    if (typeof valA === 'boolean' && typeof valB === 'boolean') {
       return order === 'asc'
         ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
-    };
+    }
 
     return 0;
-  });
+  })
 
   return sorter;
 };
