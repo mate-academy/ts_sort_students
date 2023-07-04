@@ -25,17 +25,21 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortOrder: number = order === 'asc' ? 1 : -1;
-
   return [...students].sort((a, b) => {
     switch (sortBy) {
       case SortType.Age:
       case SortType.Married:
-        return sortOrder * (Number(a[sortBy]) - Number(b[sortBy]));
+        return order === 'asc'
+          ? (Number(a[sortBy]) - Number(b[sortBy]))
+          : (Number(b[sortBy]) - Number(a[sortBy]));
       case SortType.AverageGrade:
-        return sortOrder * (getAvg(a[sortBy]) - getAvg(b[sortBy]));
+        return order === 'asc'
+          ? (getAvg(a[sortBy]) - getAvg(b[sortBy]))
+          : (getAvg(b[sortBy]) - getAvg(a[sortBy]));
       default:
-        return sortOrder * (String(a[sortBy]).localeCompare(String(b[sortBy])));
+        return order === 'asc'
+          ? (String(a[sortBy]).localeCompare(String(b[sortBy])))
+          : (String(b[sortBy]).localeCompare(String(a[sortBy])));
     }
   });
 }
