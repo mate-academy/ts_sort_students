@@ -1,5 +1,3 @@
-import { accessSync } from "fs";
-
 export interface Student {
   name: string;
   surname: string;
