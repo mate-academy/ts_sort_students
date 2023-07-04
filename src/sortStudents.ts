@@ -24,8 +24,8 @@ export function sortStudents(
 ): Student[] | number {
   const allStudents = [...students];
 
-  function findAverage(array: number[]): number {
-    return array.reduce((sum, curr) => sum + curr) / array.length;
+  function findAverageGrade(grades: number[]): number {
+    return grades.reduce((sum, curr) => sum + curr) / grades.length;
   }
 
   switch (sortBy) {
@@ -42,12 +42,12 @@ export function sortStudents(
     case SortType.AverageGrade:
       return order === 'asc'
         ? allStudents.sort((a, b) => (
-          findAverage(a[sortBy])
-          - findAverage(b[sortBy])
+          findAverageGrade(a[sortBy])
+          - findAverageGrade(b[sortBy])
         ))
         : allStudents.sort((a, b) => (
-          findAverage(b[sortBy])
-          - findAverage(a[sortBy])
+          findAverageGrade(b[sortBy])
+          - findAverageGrade(a[sortBy])
         ));
     default:
       return 0;
