@@ -31,7 +31,7 @@ export function sortStudents(
         / b.grades.length;
 
       return order === 'asc' ? avgA - avgB : avgB - avgA;
-    };
+    }
 
     const [valA, valB] = [a[sortBy], b[sortBy]];
 
@@ -50,7 +50,7 @@ export function sortStudents(
     }
 
     return 0;
-  })
+  });
 
   return sorter;
-};
+}
