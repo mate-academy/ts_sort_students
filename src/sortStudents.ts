@@ -1,5 +1,3 @@
-// import { type } from 'os';
-
 export interface Student {
   name: string;
   surname: string;
@@ -16,28 +14,35 @@ export enum SortType {
   AverageGrade = 'averageGrade',
 }
 
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
   const sortedArray = [...students]
     .sort((student1, student2) => {
-      if (sortBy === 'averageGrade') {
-        const average1 = (student1.grades.reduce((sum, grade) => sum + grade, 0)
-        / student1.grades.length);
+      if (sortBy === SortType.AverageGrade) {
+        if (!student1.grades.length || !student2.grades.length) {
+          throw new Error('There are no grades!');
+        }
 
-        const average2 = (student2.grades.reduce((sum, grade) => sum + grade, 0)
-        / student2.grades.length);
+        const average1 = (student1.grades
+          .reduce((sum, grade) => sum + grade, 0) / student1.grades.length);
 
-        if (order === 'desc') {
+        const average2 = (student2.grades
+          .reduce((sum, grade) => sum + grade, 0) / student2.grades.length);
+
+        if (order === SortOrder.desc) {
           return average2 - average1;
         }
 
         return average1 - average2;
       }
 
-      if (order === 'desc') {
+      if (order === SortOrder.desc) {
         return student1[sortBy] > student2[sortBy] ? -1 : 1;
       }
 
