@@ -1,6 +1,5 @@
 
 export interface Student {
-  localeCompare(b: Student): number;
   name: string;
   surname: string;
   age: number;
