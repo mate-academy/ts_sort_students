@@ -33,9 +33,8 @@ export function sortStudents(
     preparedStudents.sort((student1, student2) => {
       switch (sortBy) {
         case SortType.Name:
-          return student1.name.localeCompare(student2.name);
         case SortType.Surname:
-          return student1.surname.localeCompare(student2.surname);
+          return student1[sortBy].localeCompare(student2[sortBy]);
         case SortType.Age:
           return student1.age - student2.age;
         case SortType.Married:
@@ -53,9 +52,8 @@ export function sortStudents(
     preparedStudents.sort((student1, student2) => {
       switch (sortBy) {
         case SortType.Name:
-          return student2.name.localeCompare(student1.name);
         case SortType.Surname:
-          return student2.surname.localeCompare(student1.surname);
+          return student2[sortBy].localeCompare(student1[sortBy]);
         case SortType.Age:
           return student2.age - student1.age;
         case SortType.Married:
