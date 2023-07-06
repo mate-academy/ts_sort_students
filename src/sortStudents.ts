@@ -1,16 +1,58 @@
 
 export interface Student {
-  // describe Student interface
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export function sortStudents(
+  students: Student[],
+  sortType: SortType,
+  sortOrder: SortOrder,
+): Student[] {
+  const sortedStudents = [...students];
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
+  sortedStudents.sort((a, b) => {
+    const aAverageGrade
+      = a.grades.reduce((acc, grade) => acc + grade) / a.grades.length;
+    const bAverageGrade
+      = b.grades.reduce((acc, grade) => acc + grade) / b.grades.length;
+
+    switch (sortType) {
+      case SortType.Name:
+      case SortType.Surname:
+
+        return sortOrder === 'asc'
+          ? a[sortType].localeCompare(b[sortType])
+          : b[sortType].localeCompare(a[sortType]);
+
+      case SortType.Age:
+      case SortType.Married:
+        return sortOrder === 'asc'
+          ? Number(a[sortType]) - Number(b[sortType])
+          : Number(b[sortType]) - Number(a[sortType]);
+
+      case SortType.AverageGrade:
+        return sortOrder === 'asc'
+          ? aAverageGrade - bAverageGrade
+          : bAverageGrade - aAverageGrade;
+
+      default:
+        return 0;
+    }
+  });
+
+  return sortedStudents;
 }
