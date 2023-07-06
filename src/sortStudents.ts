@@ -17,41 +17,43 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const studArr = [...students];
 
-  const sorter = studArr.sort((a: Student, b: Student) => {
-    if (sortBy === SortType.AverageGrade) {
-      const avgA = a.grades
-        .reduce((sum, val) => sum + val, 0)
-        / a.grades.length;
+  function calculateAverage(grades: number[]): number {
+    return grades
+      .reduce((sum, val) => sum + val, 0) / grades.length;
+  }
 
-      const avgB = b.grades
-        .reduce((sum, val) => sum + val, 0)
-        / b.grades.length;
+  function localeCompare(a: string, b: string): number {
+    return order === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+  }
 
-      return order === 'asc' ? avgA - avgB : avgB - avgA;
+  function numberOrderHelper(a: number, b: number): number {
+    return order === 'asc' ? a - b : b - a;
+  }
+
+  studArr.sort((a: Student, b: Student) => {
+    switch (sortBy) {
+      default:
+        return 0;
+      case SortType.Name:
+        return localeCompare(a.name, b.name);
+      case SortType.Surname:
+        return localeCompare(a.surname, b.surname);
+      case SortType.Age:
+        return numberOrderHelper(a.age, b.age);
+      case SortType.Married:
+        return numberOrderHelper(Number(a.married), Number(b.married));
+      case SortType.AverageGrade:
+        return numberOrderHelper(
+          calculateAverage(a.grades), calculateAverage(b.grades),
+        );
     }
-
-    const [valA, valB] = [a[sortBy], b[sortBy]];
-
-    if (typeof valA === 'number' && typeof valB === 'number') {
-      return order === 'asc' ? valA - valB : valB - valA;
-    }
-
-    if (typeof valA === 'string' && typeof valB === 'string') {
-      return order === 'asc'
-        ? valA.localeCompare(valB) : valB.localeCompare(valA);
-    }
-
-    if (typeof valA === 'boolean' && typeof valB === 'boolean') {
-      return order === 'asc'
-        ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
-    }
-
-    return 0;
   });
 
-  return sorter;
+  return studArr;
 }
