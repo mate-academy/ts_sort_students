@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -43,26 +43,18 @@ export function sortStudents(
   // eslint-disable-next-line default-case
   switch (sortBy) {
     case SortType.Name:
-      copyStudents.sort(
-        (prev: Student, cur: Student) => prev.name.localeCompare(cur.name),
-      );
-      break;
     case SortType.Surname:
       copyStudents.sort(
         (prev: Student, cur: Student) => {
-          return prev.surname.localeCompare(cur.surname);
+          return prev[sortBy].localeCompare(cur[sortBy]);
         },
       );
       break;
     case SortType.Age:
-      copyStudents.sort(
-        (prev: Student, cur: Student) => checkOrder(prev.age, cur.age, order),
-      );
-      break;
     case SortType.Married:
       copyStudents.sort(
         (prev: Student, cur: Student) => {
-          return checkOrder(+prev.married, +cur.married, order);
+          return checkOrder(+prev[sortBy], +cur[sortBy], order);
         },
       );
       break;
