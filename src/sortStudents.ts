@@ -29,33 +29,37 @@ export function sortStudents(
 ): Student[] {
   const copystudents = [...students];
 
-  if ((sortBy === 'name' || sortBy === 'surname') && order === 'asc') {
+  if ((sortBy === SortType.Name || sortBy === SortType.Surname)
+  && order === 'asc') {
     return copystudents.sort((a, b) => {
       return a[sortBy].localeCompare(b[sortBy]);
     });
   }
 
-  if ((sortBy === 'name' || sortBy === 'surname') && order === 'desc') {
+  if ((sortBy === SortType.Name || sortBy === SortType.Surname)
+  && order === 'desc') {
     return copystudents.sort((a, b) => {
       return b[sortBy].localeCompare(a[sortBy]);
     });
   }
 
-  if ((sortBy === 'age' || sortBy === 'married') && order === 'asc') {
-    return copystudents.sort((a, b) => (+a[sortBy]) - (+b[sortBy]));
+  if ((sortBy === SortType.Age || sortBy === SortType.Married)
+  && order === 'asc') {
+    return copystudents.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]));
   }
 
-  if ((sortBy === 'age' || sortBy === 'married') && order === 'desc') {
-    return copystudents.sort((a, b) => (+b[sortBy]) - (+a[sortBy]));
+  if ((sortBy === SortType.Age || sortBy === SortType.Married)
+  && order === 'desc') {
+    return copystudents.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
   }
 
-  if ((sortBy === 'grades') && order === 'desc') {
+  if ((sortBy === SortType.AverageGrade) && order === 'desc') {
     return copystudents.sort((a, b) => {
       return (average(b[sortBy])) - average(a[sortBy]);
     });
   }
 
-  if ((sortBy === 'grades') && order === 'asc') {
+  if ((sortBy === SortType.AverageGrade) && order === 'asc') {
     return copystudents.sort((a, b) => {
       return (average(a[sortBy])) - average(b[sortBy]);
     });
