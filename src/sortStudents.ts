@@ -28,30 +28,29 @@ export function sortStudents(
       .reduce((sum, val) => sum + val, 0) / grades.length;
   }
 
-  function localeCompare(a: string, b: string): number {
+  function sortStringOrder(a: string, b: string): number {
     return order === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
   }
 
-  function numberOrderHelper(a: number, b: number): number {
+  function sortNumberOrder(a: number, b: number): number {
     return order === 'asc' ? a - b : b - a;
   }
 
   studArr.sort((a: Student, b: Student) => {
     switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return sortStringOrder(a[sortBy], b[sortBy]);
+      case SortType.Age:
+        return sortNumberOrder(a[sortBy], b[sortBy]);
+      case SortType.Married:
+        return sortNumberOrder(Number(a[sortBy]), Number(b[sortBy]));
+      case SortType.AverageGrade:
+        return sortNumberOrder(
+          calculateAverage(a[sortBy]), calculateAverage(b[sortBy]),
+        );
       default:
         return 0;
-      case SortType.Name:
-        return localeCompare(a.name, b.name);
-      case SortType.Surname:
-        return localeCompare(a.surname, b.surname);
-      case SortType.Age:
-        return numberOrderHelper(a.age, b.age);
-      case SortType.Married:
-        return numberOrderHelper(Number(a.married), Number(b.married));
-      case SortType.AverageGrade:
-        return numberOrderHelper(
-          calculateAverage(a.grades), calculateAverage(b.grades),
-        );
     }
   });
 
