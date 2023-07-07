@@ -1,6 +1,3 @@
-/* eslint-disable no-debugger */
-/* eslint-disable no-console */
-/* eslint-disable max-len */
 
 export interface Student {
   name: string;
@@ -20,7 +17,8 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
+export function sortStudents(students: Student[],
+  sortBy: SortType, order: SortOrder): Student[] {
   let result: Student[] = [];
 
   function CompareFn(a: Student, b: Student): number {
@@ -69,13 +67,15 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
 
       case SortType.AverageGrade:
         if (order === 'asc') {
-          retValue = a.grades.reduce((sum, x): number => sum + x, 0) / a.grades.length
-           - b.grades.reduce((sum, x): number => sum + x, 0) / b.grades.length;
+          retValue = a.grades.reduce((sum, x): number => sum + x, 0)
+          / a.grades.length - b.grades.reduce((sum, x): number => sum + x, 0)
+          / b.grades.length;
         }
 
         if (order === 'desc') {
-          retValue = b.grades.reduce((sum, x): number => sum + x, 0) / b.grades.length
-           - a.grades.reduce((sum, x): number => sum + x, 0) / a.grades.length;
+          retValue = b.grades.reduce((sum, x): number => sum + x, 0)
+          / b.grades.length - a.grades.reduce((sum, x): number => sum + x, 0)
+          / a.grades.length;
         }
         break;
 
@@ -87,8 +87,6 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
   }
 
   result = [...students].sort(CompareFn);
-
-  debugger;
 
   return result;
 }
