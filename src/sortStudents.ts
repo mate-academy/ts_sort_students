@@ -18,78 +18,48 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(object: Student): number {
+  return object.grades.reduce((sum: number, x: number) => sum + x)
+  / object.grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
   const resultStudents: Student[] = [...students];
-  let averageA;
-  let averageB;
 
   resultStudents.sort((a: Student, b: Student): number => {
     switch (sortBy) {
       case SortType.AverageGrade:
-        averageA = a.grades.reduce((sum: number, x: number) => sum + x)
-          / a.grades.length;
-
-        averageB = b.grades.reduce((sum: number, x: number) => sum + x)
-          / b.grades.length;
-
-        if (order === 'asc') {
-          return averageA - averageB;
-        }
-
-        if (order === 'desc') {
-          return averageB - averageA;
-        }
-        break;
+        return (order === 'asc')
+          ? getAverage(a) - getAverage(b)
+          : getAverage(b) - getAverage(a);
 
       case SortType.Name:
-        if (order === 'asc') {
-          return a.name.localeCompare(b.name);
-        }
-
-        if (order === 'desc') {
-          return b.name.localeCompare(a.name);
-        }
-        break;
+        return (order === 'asc')
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
 
       case SortType.Surname:
-        if (order === 'asc') {
-          return a.surname.localeCompare(b.surname);
-        }
-
-        if (order === 'desc') {
-          return b.surname.localeCompare(a.surname);
-        }
-        break;
+        return (order === 'asc')
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
 
       case SortType.Age:
-        if (order === 'asc') {
-          return a.age - b.age;
-        }
-
-        if (order === 'desc') {
-          return b.age - a.age;
-        }
-        break;
+        return (order === 'asc')
+          ? a.age - b.age
+          : b.age - a.age;
 
       case SortType.Married:
-        if (order === 'asc') {
-          return Number(a.married) - Number(b.married);
-        }
-
-        if (order === 'desc') {
-          return Number(b.married) - Number(a.married);
-        }
-        break;
+        return (order === 'asc')
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
 
       default:
         return 0;
     }
-
-    return 1;
   });
 
   return resultStudents;
