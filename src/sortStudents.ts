@@ -35,7 +35,7 @@ export function sortStudents(
           return a[sortBy].localeCompare(b[sortBy]);
         }
 
-        return a[sortBy].localeCompare(b[sortBy]);
+        return b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
       case SortType.Married:
