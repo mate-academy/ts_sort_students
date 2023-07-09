@@ -20,7 +20,6 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
