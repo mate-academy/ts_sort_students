@@ -26,34 +26,20 @@ function getAverageGrade(grades: number[]): number {
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
+  const sortOrder = order === 'asc' ? 1 : -1;
+
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        return [...students].sort(
-          (a, b) => a[sortBy].localeCompare(b[sortBy]),
-        );
-      }
-
       return [...students].sort(
-        (a, b) => b[sortBy].localeCompare(a[sortBy]),
+        (a, b) => sortOrder * a[sortBy].localeCompare(b[sortBy]),
       );
 
     case SortType.Age:
-      if (order === 'asc') {
-        return [...students].sort((a, b) => a.age - b.age);
-      }
-
-      return [...students].sort((a, b) => b.age - a.age);
-
     case SortType.Married:
-      if (order === 'asc') {
-        return [...students].sort((a, b) => (
-          a.married ? 1 : -1) - (b.married ? 1 : -1));
-      }
 
-      return [...students].sort((a, b) => (
-        b.married ? 1 : -1) - (a.married ? 1 : -1));
+      return [...students].sort((a, b) => sortOrder * (+a[sortBy]
+        - +b[sortBy]));
 
     case SortType.AverageGrade:
       if (order === 'asc') {
