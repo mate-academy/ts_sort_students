@@ -26,26 +26,26 @@ export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
   const sortedStudents = [...students];
+  const exactOrder = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+      return sortedStudents.sort((a, b) => (
+        exactOrder * a[sortBy].localeCompare(b[sortBy])
+      ));
+
     case SortType.Age:
     case SortType.Married:
-      return order === 'asc'
-        ? sortedStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : sortedStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+      return sortedStudents.sort((a, b) => (
+        exactOrder * (+a[sortBy] - +b[sortBy])
+      ));
+
     case SortType.AverageGrade:
-      return order === 'asc'
-        ? sortedStudents.sort((a, b) => (
-          getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
-        ))
-        : sortedStudents.sort((a, b) => (
-          getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy])
-        ));
+      return sortedStudents.sort((a, b) => (
+        exactOrder * (getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy]))
+      ));
+
     default:
       return sortedStudents;
   }
