@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -30,41 +29,35 @@ export function sortStudents(
   }
 
   if (sortBy) {
-    switch (sortBy) {
-      case SortType.Name:
-      case SortType.Surname:
-        return order === 'asc'
-          ? sortedStudents
-            .sort((s1, s2) => s1[sortBy].localeCompare(s2[sortBy]))
+    sortedStudents.sort((s1, s2): number => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          if (order === 'asc') {
+            return s1[sortBy].localeCompare(s2[sortBy]);
+          }
 
-          : sortedStudents
-            .sort((s1, s2) => s2[sortBy].localeCompare(s1[sortBy]));
+          return s2[sortBy].localeCompare(s1[sortBy]);
 
-      case SortType.Age:
-        return order === 'asc'
-          ? sortedStudents.sort((s1, s2) => s1[sortBy] - (s2[sortBy]))
-          : sortedStudents.sort((s1, s2) => s2[sortBy] - (s1[sortBy]));
+        case SortType.Age:
+        case SortType.Married:
+          if (order === 'asc') {
+            return +s1[sortBy] - +s2[sortBy];
+          }
 
-      case SortType.Married:
-        return order === 'asc'
-          ? sortedStudents
-            .sort((s1, s2) => Number(s1[sortBy]) - Number((s2[sortBy])))
-          : sortedStudents
-            .sort((s1, s2) => Number(s2[sortBy]) - Number((s1[sortBy])));
+          return +s2[sortBy] - +s1[sortBy];
 
-      case SortType.AverageGrade:
-        return order === 'asc'
-          ? sortedStudents
-            .sort((s1, s2) => calcAvgGrades(s1[sortBy])
-                - calcAvgGrades(s2[sortBy]))
+        case SortType.AverageGrade:
+          if (order === 'asc') {
+            return calcAvgGrades(s1[sortBy]) - calcAvgGrades(s2[sortBy]);
+          }
 
-          : sortedStudents
-            .sort((s1, s2) => calcAvgGrades(s2[sortBy])
-                - calcAvgGrades(s1[sortBy]));
+          return calcAvgGrades(s2[sortBy]) - calcAvgGrades(s1[sortBy]);
 
-      default:
-        return sortedStudents;
-    }
+        default:
+          return 0;
+      }
+    });
   }
 
   return sortedStudents;
