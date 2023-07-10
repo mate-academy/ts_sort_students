@@ -39,20 +39,14 @@ export function sortStudents(
           return (+student1[sortBy] - +student2[sortBy]);
         }
 
-        if (order === 'desc') {
-          return (+student2[sortBy] - +student1[sortBy]);
-        }
-        break;
+        return (+student2[sortBy] - +student1[sortBy]);
       case SortType.Surname:
       case SortType.Name:
         if (order === 'asc') {
           return student1[sortBy].localeCompare(student2[sortBy]);
         }
 
-        if (order === 'desc') {
-          return student2[sortBy].localeCompare(student1[sortBy]);
-        }
-        break;
+        return student2[sortBy].localeCompare(student1[sortBy]);
       case SortType.AverageGrade:
         if (order === 'asc') {
           return calculateAvgGrade(student1) - calculateAvgGrade(student2);
@@ -60,8 +54,7 @@ export function sortStudents(
 
         return calculateAvgGrade(student2) - calculateAvgGrade(student1);
       default:
+        return 0;
     }
-
-    return 0;
   });
 }
