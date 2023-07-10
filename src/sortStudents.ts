@@ -31,9 +31,6 @@ export function sortStudents(
   const sortededStudents = [...students];
 
   switch (sortBy) {
-    default:
-      return sortededStudents;
-
     case SortType.Name:
     case SortType.Surname:
       sortededStudents.sort((a: Student, b: Student) => (
@@ -60,6 +57,10 @@ export function sortStudents(
           ? getAverageGrade(a) - getAverageGrade(b)
           : getAverageGrade(b) - getAverageGrade(a)
       ));
+      break;
+
+    default:
+      return sortededStudents;
   }
 
   return sortededStudents;
