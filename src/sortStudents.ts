@@ -30,32 +30,20 @@ export function sortStudents(
   }
 
   if (sortBy) {
+    const sortOrder: number = order === 'asc' ? 1 : -1;
+
     copyStudents.sort((stud1: Student, stud2: Student) => {
       switch (sortBy) {
         case SortType.Name:
-          return order !== 'desc'
-            ? stud1.name.localeCompare(stud2.name)
-            : stud2.name.localeCompare(stud1.name);
-
         case SortType.Surname:
-          return order !== 'desc'
-            ? stud1.surname.localeCompare(stud2.surname)
-            : stud2.surname.localeCompare(stud1.surname);
+          return sortOrder * stud1[sortBy].localeCompare(stud2[sortBy]);
 
         case SortType.Age:
-          return order !== 'desc'
-            ? stud1.age - stud2.age
-            : stud2.age - stud1.age;
-
         case SortType.Married:
-          return order !== 'desc'
-            ? Number(stud1.married) - Number(stud2.married)
-            : Number(stud2.married) - Number(stud1.married);
+          return sortOrder * (Number(stud1[sortBy]) - Number(stud2[sortBy]));
 
         case SortType.AverageGrade:
-          return order !== 'desc'
-            ? calcAvg(stud1) - calcAvg(stud2)
-            : calcAvg(stud2) - calcAvg(stud1);
+          return sortOrder * (calcAvg(stud1) - calcAvg(stud2));
 
         default:
           return 0;
