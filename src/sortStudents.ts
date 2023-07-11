@@ -35,13 +35,10 @@ export function sortStudents(
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
       case SortType.Age:
-        return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
       case SortType.Married:
         return order === 'asc'
-          ? Number(a.married) - Number(b.married)
-          : Number(b.married) - Number(a.married);
+          ? Number(a[sortBy]) - Number(b[sortBy])
+          : Number(b[sortBy]) - Number(a[sortBy]);
       case SortType.AverageGrade:
         return order === 'asc'
           ? getAverage(a.grades) - getAverage(b.grades)
