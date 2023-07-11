@@ -39,18 +39,12 @@ export function sortStudents(
         return firstStudent[sortBy].localeCompare(secondStudent[sortBy]);
 
       case SortType.Age:
-        if (order === 'desc') {
-          return secondStudent.age - firstStudent.age;
-        }
-
-        return firstStudent.age - secondStudent.age;
-
       case SortType.Married:
         if (order === 'desc') {
-          return Number(secondStudent.married) - Number(firstStudent.married);
+          return +secondStudent[sortBy] - +firstStudent[sortBy];
         }
 
-        return Number(firstStudent.married) - Number(secondStudent.married);
+        return +firstStudent[sortBy] - +secondStudent[sortBy];
 
       case SortType.AverageGrade:
         if (order === 'desc') {
