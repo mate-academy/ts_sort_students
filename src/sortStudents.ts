@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -32,16 +32,14 @@ export function sortStudents(
   copyStudents.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
-        return sortOrder * a.name.localeCompare(b.name);
       case SortType.Surname:
-        return sortOrder * a.surname.localeCompare(b.surname);
+        return sortOrder * a[sortBy].localeCompare(b[sortBy]);
       case SortType.Age:
-        return sortOrder * (a.age - b.age);
       case SortType.Married:
-        return sortOrder * (+a.married - +b.married);
+        return sortOrder * ((+a[sortBy]) - (+b[sortBy]));
       case SortType.AverageGrade:
-        // eslint-disable-next-line max-len
-        return sortOrder * (findAverageGrade(a.grades) - findAverageGrade(b.grades));
+        return sortOrder
+        * (findAverageGrade(a.grades) - findAverageGrade(b.grades));
       default:
         throw new Error('Invalid SortType');
     }
