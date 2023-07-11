@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string,
   surname: string,
@@ -19,15 +18,15 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
-  students:Student[],
-  sortBy:SortType,
-  order:SortOrder,
-):Student[] {
-  function getAVGage(ageArray:number[]): number {
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  function getAVGage(ageArray: number[]): number {
     return ageArray.reduce((acc, red) => acc + red) / ageArray.length;
   }
 
-  const sortOrder:number = order === 'asc' ? 1 : -1;
+  const sortOrder: number = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
     case 'name':
@@ -38,9 +37,6 @@ export function sortStudents(
       );
 
     case 'age':
-      return [...students].sort((firstStudent, secStudent) => sortOrder
-        * (firstStudent[sortBy] - secStudent[sortBy]));
-
     case 'married':
       return [...students].sort((firstStudent, secStudent) => sortOrder
         * (+firstStudent[sortBy] - +secStudent[sortBy]));
