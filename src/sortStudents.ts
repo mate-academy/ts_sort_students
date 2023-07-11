@@ -63,6 +63,6 @@ export function sortStudents(
         );
 
     default:
-      throw new Error('Something went wrong!');
+      throw new Error('Invalid sort type provided.');
   }
 }
