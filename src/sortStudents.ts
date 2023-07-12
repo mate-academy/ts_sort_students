@@ -43,8 +43,9 @@ export function sortStudents(
           : student2.age - student1.age;
 
       case SortType.Married:
-        return order === 'asc' ? +student1.married - (+student2.married)
-          : +student2.married - (+student1.married);
+        return order === 'asc'
+          ? Number(student1.married) - Number(student2.married)
+          : Number(student2.married) - Number(student1.married);
 
       case SortType.AverageGrade:
         averageGradeOfFirst = student1.grades
@@ -57,7 +58,9 @@ export function sortStudents(
           : averageGradeOfSecond - averageGradeOfFirst;
 
       default:
-        return 0;
+        throw Error(
+          `It's immpossible to sort by ${sortBy} (Type does not exist)`,
+        );
     }
   });
 
