@@ -17,7 +17,7 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 export function calcAverageGrade(grades: number[]): number {
-  return grades.reduce((grade, total) => grade + total) / grades.length;
+  return grades.reduce((total, grade) => total + grade) / grades.length;
 }
 
 export function sortStudents(
