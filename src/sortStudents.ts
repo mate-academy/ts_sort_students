@@ -61,10 +61,10 @@ export function sortStudents(
     case SortType.Married:
       return order === 'asc'
         ? [...students].sort((a: Student, b: Student) => {
-          return +a.married - +b.married;
+          return Number(a.married) - Number(b.married);
         })
         : [...students].sort((a: Student, b: Student) => {
-          return +b.married - +a.married;
+          return Number(b.married) - Number(a.married);
         });
 
     case SortType.AverageGrade:
