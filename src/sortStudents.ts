@@ -14,64 +14,42 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
+function calculateAverageGrade(grades: number[]): number {
+  return grades.reduce((prev, grade) => grade + prev) / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: string,
 ): Student[] {
   let sortedStudents: Student[] = [...students];
+  const sortOrder = order === 'asc' ? 1 : -1;
 
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      if (order === 'asc') {
-        sortedStudents = sortedStudents.sort(
-          (firstStudent, nextStudent) => firstStudent[sortBy]
-            .localeCompare(nextStudent[sortBy]),
-        );
-      } else {
-        sortedStudents = sortedStudents.sort(
-          (firstStudent, nextStudent) => nextStudent[sortBy]
-            .localeCompare(firstStudent[sortBy]),
-        );
-      }
+      sortedStudents = sortedStudents.sort(
+        (firstStudent, nextStudent) => sortOrder * firstStudent[sortBy]
+          .localeCompare(nextStudent[sortBy]),
+      );
       break;
 
     case SortType.Age:
     case SortType.Married:
-      if (order === 'asc') {
-        sortedStudents = sortedStudents.sort(
-          (firstStudent, nextStudent) => Number(firstStudent[sortBy])
-            - Number(nextStudent[sortBy]),
-        );
-      } else {
-        sortedStudents = sortedStudents.sort(
-          (firstStudent, nextStudent) => Number(nextStudent[sortBy])
-            - Number(firstStudent[sortBy]),
-        );
-      }
+      sortedStudents = sortedStudents.sort(
+        (firstStudent, nextStudent) => (Number(firstStudent[sortBy])
+          - Number(nextStudent[sortBy])) * sortOrder,
+      );
       break;
 
     case SortType.AverageGrade:
-      if (order === 'asc') {
-        sortedStudents = sortedStudents.sort(
-          (firstStudent, nextStudent) => (firstStudent.grades.reduce(
-            (prev, grade) => grade + prev,
-          ) / firstStudent.grades.length)
-          - (nextStudent.grades.reduce(
-            (prev, grade) => grade + prev,
-          ) / nextStudent.grades.length),
-        );
-      } else {
-        sortedStudents = sortedStudents.sort(
-          (firstStudent, nextStudent) => (nextStudent.grades.reduce(
-            (prev, grade) => grade + prev,
-          ) / nextStudent.grades.length)
-          - (firstStudent.grades.reduce(
-            (prev, grade) => grade + prev,
-          ) / firstStudent.grades.length),
-        );
-      }
+      sortedStudents = sortedStudents.sort(
+        (firstStudent, nextStudent) => (
+          calculateAverageGrade(firstStudent.grades)
+          - calculateAverageGrade(nextStudent.grades)
+        ) * sortOrder,
+      );
       break;
 
     default:
