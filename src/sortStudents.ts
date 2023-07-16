@@ -22,27 +22,40 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const sortedStudents = students.map((student) => {
-    let averageGrade = 0;
-
-    if (student.grades.length > 0) {
-      averageGrade = student.grades.reduce(
-        (acc, grade) => acc + grade, 0,
-      ) / student.grades.length;
-    }
-
-    return {
-      ...student, averageGrade,
-    };
-  });
+  const sortedStudents = [...students];
 
   sortedStudents.sort((a, b) => {
+    let aValue: number | boolean | string;
+    let bValue: number | boolean | string;
+
+    if (sortBy === SortType.AverageGrade) {
+      const average = (grades: number[]):number => grades
+        .reduce((acc, grade) => acc + grade, 0) / grades.length;
+
+      aValue = average(a.grades);
+      bValue = average(b.grades);
+    } else {
+      aValue = a[sortBy];
+      bValue = b[sortBy];
+    }
+
     let comparison = 0;
 
-    if (a[sortBy] < b[sortBy]) {
-      comparison = -1;
-    } else if (a[sortBy] > b[sortBy]) {
-      comparison = 1;
+    switch (typeof aValue) {
+      case 'string':
+        comparison = (aValue as string).localeCompare(bValue as string);
+        break;
+      case 'number':
+        comparison = (aValue as number) - (bValue as number);
+        break;
+      case 'boolean':
+        if (aValue === bValue) {
+          comparison = 0;
+        } else {
+          comparison = aValue ? 1 : -1;
+        }
+        break;
+      default:
     }
 
     return order === 'desc' ? comparison * -1 : comparison;
