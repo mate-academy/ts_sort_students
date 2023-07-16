@@ -34,23 +34,27 @@ export function sortStudents(
         ? 1
         : -1;
 
+      const aAverageGrade = sortBy === SortType.AverageGrade
+        ? calculateAverage(a[sortBy] as number[])
+        : 0;
+
+      const bAverageGrade = sortBy === SortType.AverageGrade
+        ? calculateAverage(b[sortBy] as number[])
+        : 0;
+
       switch (sortBy) {
-        case 'name':
-        case 'surname':
+        case SortType.Name:
+        case SortType.Surname:
           return sortDirection * String(a[sortBy])
             .localeCompare(String(b[sortBy]));
 
-        case 'age':
+        case SortType.Age:
           return sortDirection * (Number(a[sortBy]) - Number(b[sortBy]));
 
-        case 'married':
+        case SortType.Married:
           return sortDirection * (+a[sortBy] - +b[sortBy]);
 
-        case 'grades':
-          // eslint-disable-next-line no-case-declarations
-          const aAverageGrade = calculateAverage(a[sortBy] as number[]);
-          // eslint-disable-next-line no-case-declarations
-          const bAverageGrade = calculateAverage(b[sortBy] as number[]);
+        case SortType.AverageGrade:
 
           return sortDirection * (aAverageGrade - bAverageGrade);
 
