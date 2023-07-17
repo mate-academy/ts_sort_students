@@ -7,11 +7,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'average-grade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -21,7 +21,8 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy = students.map((user) => ({ ...user }));
+  const studentsCopy = [...students];
+  const modifier = order === 'asc' ? 1 : -1;
 
   function getAverageGrade(array: number[]): number {
     const average = array.reduce((sum, current) => sum + current, 0);
@@ -31,42 +32,19 @@ export function sortStudents(
 
   studentsCopy.sort((studentA: Student, studentB: Student) => {
     switch (sortBy) {
-      case SortType.Age:
-        if (order === 'asc') {
-          return studentA.age - studentB.age;
-        }
-
-        return studentB.age - studentA.age;
-
       case SortType.Name:
-        if (order === 'asc') {
-          studentB.name.localeCompare(studentA.name);
-        }
-
-        return studentA.name.localeCompare(studentB.name);
-
       case SortType.Surname:
-        if (order === 'asc') {
-          studentB.surname.localeCompare(studentA.surname);
-        }
+        return studentA[sortBy].localeCompare(studentB[sortBy]) * modifier;
 
-        return studentA.surname.localeCompare(studentB.surname);
-
+      case SortType.Age:
       case SortType.Married:
-        if (order === 'asc') {
-          return +studentA.married - +studentB.married;
-        }
-
-        return +studentB.married - +studentA.married;
+        return (
+          +studentA[sortBy] - +studentB[sortBy]
+        ) * modifier;
 
       case SortType.AverageGrade:
-        if (order === 'asc') {
-          return getAverageGrade(studentA.grades)
-            - getAverageGrade(studentB.grades);
-        }
-
-        return getAverageGrade(studentB.grades)
-          - getAverageGrade(studentA.grades);
+        return (getAverageGrade(studentA.grades)
+          - getAverageGrade(studentB.grades)) * modifier;
 
       default:
         return 0;
