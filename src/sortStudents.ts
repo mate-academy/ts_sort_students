@@ -15,7 +15,6 @@ export enum SortType {
   AverageGrade,
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -24,25 +23,26 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const studentsCopy = [...students];
+  const isAscending = order === 'asc';
 
   switch (sortBy) {
     case SortType.Name:
-      studentsCopy.sort((a, b) => (order === 'asc'
+      studentsCopy.sort((a, b) => (isAscending
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name)));
       break;
     case SortType.Surname:
-      studentsCopy.sort((a, b) => (order === 'asc'
+      studentsCopy.sort((a, b) => (isAscending
         ? a.surname.localeCompare(b.surname)
         : b.surname.localeCompare(a.surname)));
       break;
     case SortType.Age:
-      studentsCopy.sort((a, b) => (order === 'asc'
+      studentsCopy.sort((a, b) => (isAscending
         ? a.age - b.age
         : b.age - a.age));
       break;
     case SortType.Married:
-      studentsCopy.sort((a, b) => (order === 'asc'
+      studentsCopy.sort((a, b) => (isAscending
         ? Number(a.married) - Number(b.married)
         : Number(b.married) - Number(a.married)));
       break;
@@ -53,7 +53,7 @@ export function sortStudents(
         const averageGradeB
         = b.grades.reduce((sum, grade) => sum + grade) / b.grades.length;
 
-        return order === 'asc' ? averageGradeA - averageGradeB
+        return isAscending ? averageGradeA - averageGradeB
           : averageGradeB - averageGradeA;
       });
       break;
