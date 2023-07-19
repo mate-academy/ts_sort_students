@@ -17,21 +17,6 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-function averGrades(copyStudents: Student[], order: 'asc' | 'desc'): Student[] {
-  copyStudents.sort((a, b) => {
-    const bAverage = b.grades.reduce((x, y) => x + y, 0) / b.grades.length;
-    const aAverage = a.grades.reduce((x, y) => x + y, 0) / a.grades.length;
-
-    if (order === 'desc') {
-      return bAverage - aAverage;
-    }
-
-    return aAverage - bAverage;
-  });
-
-  return copyStudents;
-}
-
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -54,7 +39,12 @@ export function sortStudents(
       break;
 
     case SortType.AverageGrade:
-      averGrades(copyStudents, order);
+      copyStudents.sort((a, b) => {
+        const bAverage = b.grades.reduce((x, y) => x + y, 0) / b.grades.length;
+        const aAverage = a.grades.reduce((x, y) => x + y, 0) / a.grades.length;
+
+        return order === 'desc' ? bAverage - aAverage : aAverage - bAverage;
+      });
       break;
 
     default:
