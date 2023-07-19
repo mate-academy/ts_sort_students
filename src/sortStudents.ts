@@ -35,8 +35,8 @@ export function sortStudents(
     }
 
     case 'name':
-    /* falls through */
 
+    // eslint-disable-next-line no-fallthrough
     case 'surname': {
       const result: Student[] = studentsNew.sort((x, y) => {
         return (order === 'asc' ? x[sortBy].localeCompare(y[sortBy])
