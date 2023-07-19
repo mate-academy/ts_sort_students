@@ -48,12 +48,13 @@ export function sortStudents(
 
     case 'grades': {
       const result: Student[] = studentsNew.sort((x, y) => {
+        const sumA = x[sortBy].reduce((a, summ) => a + summ);
+        const sumB = y[sortBy].reduce((b, summ) => b + summ);
+
         return (
           order === 'asc'
-            ? (x[sortBy].reduce((a, summ) => a + summ)) / x[sortBy].length
-          - (y[sortBy].reduce((b, summ) => b + summ)) / y[sortBy].length
-            : (y[sortBy].reduce((b, summ) => b + summ)) / y[sortBy].length
-          - (x[sortBy].reduce((a, summ) => a + summ)) / x[sortBy].length
+            ? (sumA) / x[sortBy].length - (sumB) / y[sortBy].length
+            : (sumB) / y[sortBy].length - (sumA) / x[sortBy].length
         );
       });
 
