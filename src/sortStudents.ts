@@ -43,13 +43,15 @@ export function sortStudents(
     case SortType.Age:
       studentsCopy.sort((a, b) => (sortedOrder
         ? a.age - b.age
-        : b.age - a.age));
+        : b.age - a.age
+      ));
       break;
 
     case SortType.Married:
       studentsCopy.sort((a, b) => (sortedOrder
         ? Number(a.married) - Number(b.married)
-        : Number(b.married) - Number(a.married)));
+        : Number(b.married) - Number(a.married)
+      ));
       break;
 
     case SortType.AverageGrade:
