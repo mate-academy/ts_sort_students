@@ -33,46 +33,31 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return order === 'asc'
-        ? resultOfSortedStudents.sort((studentA, studentB) => studentA.name
-          .localeCompare(studentB.name))
-        : resultOfSortedStudents.sort((studentA, studentB) => studentB.name
-          .localeCompare(studentA.name));
-
     case SortType.Surname:
       return order === 'asc'
-        ? resultOfSortedStudents.sort((studentA, studentB) => studentA.surname
-          .localeCompare(studentB.surname))
-        : resultOfSortedStudents.sort((studentA, studentB) => studentB.surname
-          .localeCompare(studentA.surname));
+        ? resultOfSortedStudents.sort((studentA, studentB) => studentA[sortBy]
+          .localeCompare(studentB[sortBy]))
+        : resultOfSortedStudents.sort((studentA, studentB) => studentB[sortBy]
+          .localeCompare(studentA[sortBy]));
 
     case SortType.Age:
-      return order === 'asc'
-        ? resultOfSortedStudents.sort(
-          (studentA, studentB) => +studentA.age - +studentB.age,
-        )
-        : resultOfSortedStudents.sort(
-          (studentA, studentB) => +studentB.age - +studentA.age,
-        );
-
     case SortType.Married:
       return order === 'asc'
         ? resultOfSortedStudents.sort(
-          (studentA, studentB) => +studentA.married - +studentB.married,
+          (studentA, studentB) => +studentA[sortBy] - +studentB[sortBy],
         )
-
         : resultOfSortedStudents.sort(
-          (studentA, studentB) => +studentB.married - +studentA.married,
+          (studentA, studentB) => +studentB[sortBy] - +studentA[sortBy],
         );
 
     case SortType.AverageGrade:
       return order === 'asc'
         ? resultOfSortedStudents.sort((studentA, studentB) => averageGrades(
-          studentA.grades,
-        ) - averageGrades(studentB.grades))
+          studentA[sortBy],
+        ) - averageGrades(studentB[sortBy]))
         : resultOfSortedStudents.sort((studentA, studentB) => averageGrades(
-          studentB.grades,
-        ) - averageGrades(studentA.grades));
+          studentB[sortBy],
+        ) - averageGrades(studentA[sortBy]));
 
     default:
       return resultOfSortedStudents;
