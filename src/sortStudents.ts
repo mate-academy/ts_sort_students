@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -23,39 +22,35 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const compareFunction = (a: Student, b: Student): number => {
-    let result = 0;
-    let avgGradeA: number;
-    let avgGradeB: number;
+    const getValue = (student: Student): string | number => {
+      switch (sortBy) {
+        case SortType.Name:
+        case SortType.Surname:
+          return student[sortBy];
+        case SortType.Age:
+        case SortType.Married:
+          return student[sortBy] ? 1 : 0;
+        case SortType.AverageGrade:
+          return student.grades.reduce(
+            (sum, grade) => sum + grade, 0,
+          ) / student.grades.length;
+        default:
+          return 0;
+      }
+    };
 
-    switch (sortBy) {
-      case SortType.Name:
-        result = a.name.localeCompare(b.name);
-        break;
-      case SortType.Surname:
-        result = a.surname.localeCompare(b.surname);
-        break;
-      case SortType.Age:
-        result = order === 'asc' ? a.age - b.age : b.age - a.age;
-        break;
-      case SortType.Married:
-        result = order === 'asc'
-          ? +a.married - +b.married : +b.married - +a.married;
-        break;
-      case SortType.AverageGrade:
-        avgGradeA = a.grades.reduce((sum, grade) => sum
-        + grade, 0) / a.grades.length;
+    const valueA = getValue(a);
+    const valueB = getValue(b);
 
-        avgGradeB = b.grades.reduce((sum, grade) => sum
-        + grade, 0) / b.grades.length;
+    let result: number;
 
-        result = order === 'asc' ? avgGradeA
-        - avgGradeB : avgGradeB - avgGradeA;
-        break;
-      default:
-        break;
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
+      result = valueA - valueB;
+    } else {
+      result = String(valueA).localeCompare(String(valueB));
     }
 
-    return result;
+    return order === 'asc' ? result : -result;
   };
 
   return [...students].sort(compareFunction);
