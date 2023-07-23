@@ -48,7 +48,7 @@ export function sortStudents(
           : getAverageGrade(b.grades) - getAverageGrade(a.grades);
 
       default:
-        return sortedStudents;
+        return 0;
     }
   });
 
