@@ -32,46 +32,28 @@ export function sortStudents(
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      studentsSort.sort((studentOne: Student, studentTwo: Student) => {
-        if (order === 'asc') {
-          return studentOne[sortBy].localeCompare(studentTwo[sortBy]);
-        }
-
-        if (order === 'desc') {
-          return studentTwo[sortBy].localeCompare(studentOne[sortBy]);
-        }
-
-        return 0;
-      });
+      studentsSort
+        .sort((studentOne: Student, studentTwo: Student) => (
+          order === 'asc'
+            ? studentOne[sortBy].localeCompare(studentTwo[sortBy])
+            : studentTwo[sortBy].localeCompare(studentOne[sortBy])));
       break;
 
     case SortType.Age:
     case SortType.Married:
-      studentsSort.sort((studentOne: Student, studentTwo: Student): number => {
-        if (order === 'asc') {
-          return Number(studentOne[sortBy]) - Number(studentTwo[sortBy]);
-        }
-
-        if (order === 'desc') {
-          return Number(studentTwo[sortBy]) - Number(studentOne[sortBy]);
-        }
-
-        return 0;
-      });
+      studentsSort
+        .sort((studentOne: Student, studentTwo: Student): number => (
+          order === 'asc'
+            ? Number(studentOne[sortBy]) - Number(studentTwo[sortBy])
+            : Number(studentTwo[sortBy]) - Number(studentOne[sortBy])));
       break;
 
     case SortType.AverageGrade:
-      studentsSort.sort((studentOne: Student, studentTwo: Student): number => {
-        if (order === 'asc') {
-          return average(studentOne[sortBy]) - average(studentTwo[sortBy]);
-        }
-
-        if (order === 'desc') {
-          return average(studentTwo[sortBy]) - average(studentOne[sortBy]);
-        }
-
-        return 0;
-      });
+      studentsSort
+        .sort((studentOne: Student, studentTwo: Student): number => (
+          order === 'asc'
+            ? average(studentOne[sortBy]) - average(studentTwo[sortBy])
+            : average(studentTwo[sortBy]) - average(studentOne[sortBy])));
       break;
 
     default: break;
