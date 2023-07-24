@@ -20,6 +20,22 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function compareProperties(
+  property1:string,
+  property2:string,
+  orderOfSorting: number,
+): number {
+  if (property1.toLowerCase() > property2.toLowerCase()) {
+    return 1 * orderOfSorting;
+  }
+
+  if (property1.toLowerCase() < property2.toLowerCase()) {
+    return -1 * orderOfSorting;
+  }
+
+  return 0;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -41,26 +57,10 @@ export function sortStudents(
   ): number => {
     switch (sortBy) {
       case SortType.Name:
-        if (student1.name.toLowerCase() > student2.name.toLowerCase()) {
-          return 1 * orderNum;
-        }
-
-        if (student1.name.toLowerCase() < student2.name.toLowerCase()) {
-          return -1 * orderNum;
-        }
-
-        return 0;
+        return compareProperties(student1.name, student2.name, orderNum);
 
       case SortType.Surname:
-        if (student1.surname.toLowerCase() > student2.surname.toLowerCase()) {
-          return 1 * orderNum;
-        }
-
-        if (student1.surname.toLowerCase() < student2.surname.toLowerCase()) {
-          return -1 * orderNum;
-        }
-
-        return 0;
+        return compareProperties(student1.surname, student2.surname, orderNum);
 
       case SortType.Age:
         return orderNum * (student1.age - student2.age);
@@ -76,17 +76,8 @@ export function sortStudents(
 
         return 0;
 
-      case SortType.AverageGrade: {
-        if (student1.avgGrade > student2.avgGrade) {
-          return 1 * orderNum;
-        }
-
-        if (student1.avgGrade < student2.avgGrade) {
-          return -1 * orderNum;
-        }
-
-        return 0;
-      }
+      case SortType.AverageGrade:
+        return orderNum * (student1.avgGrade - student2.avgGrade);
       default:
         return 0;
     }
