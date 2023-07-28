@@ -18,36 +18,37 @@ export enum SortType {
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
-// eslint-disable-next-line
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder): Student[] {
-  const copy = [...students];
 
+export function sortStudents(students: Student[],
+  sortBy: SortType, order: SortOrder): Student[] {
+  const copy = [...students];
+  const asc = order === 'asc';
   const getAverageGrade = (grades: number[]): number => {
-  // eslint-disable-next-line
-    return grades.reduce((grade1, grade2) => grade1 + grade2, 0) / grades.length;
+    return grades
+      .reduce((grade1, grade2) => grade1 + grade2, 0) / grades.length;
   };
 
   switch (sortBy) {
     case SortType.Age:
-      copy.sort((a, b) => (order === 'asc' ? a.age - b.age : b.age - a.age));
+      copy.sort((a, b) => (asc ? a.age - b.age : b.age - a.age));
       break;
     case SortType.Name:
-      copy.sort((a, b) => (order === 'asc'
+      copy.sort((a, b) => (asc
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name)));
       break;
     case SortType.Surname:
-      copy.sort((a, b) => (order === 'asc'
+      copy.sort((a, b) => (asc
         ? a.surname.localeCompare(b.surname)
         : b.surname.localeCompare(a.surname)));
       break;
     case SortType.Married:
-      copy.sort((a, b) => (order === 'asc'
+      copy.sort((a, b) => (asc
         ? Number(a.married) - Number(b.married)
         : Number(b.married) - Number(a.married)));
       break;
     case SortType.AverageGrade:
-      copy.sort((a, b) => (order === 'asc'
+      copy.sort((a, b) => (asc
         ? getAverageGrade(a.grades) - getAverageGrade(b.grades)
         : getAverageGrade(b.grades) - getAverageGrade(a.grades)));
       break;
