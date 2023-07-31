@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 
 export interface Student {
   name: string
@@ -47,28 +48,17 @@ export function sortStudents(
           ? a[sortBy] - b[sortBy]
           : b[sortBy] - a[sortBy];
       case SortType.Married:
-        if (order === 'asc') {
-          if (b[sortBy] === a[sortBy]) {
-            return 0;
-          }
-
-          if (b[sortBy] && b[sortBy] !== a[sortBy]) {
-            return -1;
-          }
-
-          return 1;
-        }
-
-        if (a[sortBy] === b[sortBy]) {
-          return 0;
-        }
-
-        if (a[sortBy] && a[sortBy] !== b[sortBy]) {
-          return -1;
-        }
-
-        return 1;
-
+        return order === 'asc'
+          ? b[sortBy] === a[sortBy]
+            ? 0
+            : b[sortBy] && b[sortBy] !== a[sortBy]
+              ? -1
+              : 1
+          : a[sortBy] === b[sortBy]
+            ? 0
+            : a[sortBy] && a[sortBy] !== b[sortBy]
+              ? -1
+              : 1;
       case SortType.AverageGrade:
         return order === 'asc'
           ? averageGrade(a[sortBy]) - averageGrade(b[sortBy])
