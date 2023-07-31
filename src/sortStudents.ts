@@ -21,9 +21,6 @@ export type SortOrder = 'asc' | 'desc';
 function averageGrade(x: number[]): number {
   let gradeSum: number = 0;
 
-  // for (let i: number = 0; i < x.length; i++) {
-  //   gradeSum += x[i];
-  // }
   x.forEach((grade) => {
     gradeSum += grade;
 
@@ -39,55 +36,46 @@ export function sortStudents(
   const studentsCopy = [...students];
 
   studentsCopy.sort((a: Student, b: Student) => {
-    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-      if (order === 'asc') {
-        return a[sortBy].localeCompare(b[sortBy]);
-      }
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
+      case SortType.Age:
+        return order === 'asc'
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
+      case SortType.Married:
+        if (order === 'asc') {
+          if (b[sortBy] === a[sortBy]) {
+            return 0;
+          }
 
-      return b[sortBy].localeCompare(a[sortBy]);
-    }
+          if (b[sortBy] && b[sortBy] !== a[sortBy]) {
+            return -1;
+          }
 
-    if (sortBy === SortType.Age) {
-      if (order === 'asc') {
-        return a[sortBy] - b[sortBy];
-      }
+          return 1;
+        }
 
-      return b[sortBy] - a[sortBy];
-    }
-
-    if (sortBy === SortType.Married) {
-      if (order === 'asc') {
-        if (b[sortBy] === a[sortBy]) {
+        if (a[sortBy] === b[sortBy]) {
           return 0;
         }
 
-        if (b[sortBy] && b[sortBy] !== a[sortBy]) {
+        if (a[sortBy] && a[sortBy] !== b[sortBy]) {
           return -1;
         }
 
         return 1;
-      }
 
-      if (a[sortBy] === b[sortBy]) {
-        return 0;
-      }
-
-      if (a[sortBy] && a[sortBy] !== b[sortBy]) {
-        return -1;
-      }
-
-      return 1;
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? averageGrade(a[sortBy]) - averageGrade(b[sortBy])
+          : averageGrade(b[sortBy]) - averageGrade(a[sortBy]);
+      default:
+        return 1;
     }
-
-    if (sortBy === SortType.AverageGrade) {
-      if (order === 'asc') {
-        return averageGrade(a[sortBy]) - averageGrade(b[sortBy]);
-      }
-
-      return averageGrade(b[sortBy]) - averageGrade(a[sortBy]);
-    }
-
-    return 21;
   });
 
   return studentsCopy;
