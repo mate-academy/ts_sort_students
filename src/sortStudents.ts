@@ -21,63 +21,31 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studentsCopy: Student[] = [...students];
+  return [...students].sort((a, b) => {
+    if (sortBy === SortType.AverageGrade) {
+      const valueA = a.grades
+        .reduce((acc, grade) => acc + grade, 0) / a.grades.length;
+      const valueB = b.grades
+        .reduce((acc, grade) => acc + grade, 0) / b.grades.length;
 
-  if (sortBy === SortType.AverageGrade) {
-    return studentsCopy.sort((studentA: Student, studentB: Student) => {
-      const averageGradeA = studentA.grades
-        .reduce((acc, grade) => acc + grade, 0) / studentA.grades.length;
-      const averageGradeB = studentB.grades
-        .reduce((acc, grade) => acc + grade, 0) / studentB.grades.length;
-
-      if (order === 'asc') {
-        return averageGradeA - averageGradeB;
-      }
-
-      return averageGradeB - averageGradeA;
-    });
-  }
-
-  if (sortBy === SortType.Age) {
-    return studentsCopy.sort((studentA: Student, studentB: Student) => {
-      if (order === 'asc') {
-        return studentA[sortBy] - studentB[sortBy];
-      }
-
-      return studentB[sortBy] - studentA[sortBy];
-    });
-  }
-
-  if (sortBy === SortType.Married) {
-    return studentsCopy.sort((studentA: Student, studentB: Student) => {
-      let isStudentAMarried = 0;
-      let isStudentBMarried = 0;
-
-      if (studentA[sortBy] === true) {
-        isStudentAMarried = 1;
-      } else {
-        isStudentAMarried = -1;
-      }
-
-      if (studentB[sortBy] === true) {
-        isStudentBMarried = 1;
-      } else {
-        isStudentBMarried = -1;
-      }
-
-      if (order === 'asc') {
-        return isStudentAMarried - isStudentBMarried;
-      }
-
-      return isStudentBMarried - isStudentAMarried;
-    });
-  }
-
-  return studentsCopy.sort((studentA: Student, studentB: Student) => {
-    if (order === 'asc') {
-      return studentA[sortBy].localeCompare(studentB[sortBy]);
+      return order === 'asc' ? valueA - valueB : valueB - valueA;
     }
 
-    return studentB[sortBy].localeCompare(studentA[sortBy]);
+    if (sortBy === SortType.Married) {
+      const valueA = a.married ? 1 : -1;
+      const valueB = b.married ? 1 : -1;
+
+      return order === 'asc' ? valueA - valueB : valueB - valueA;
+    }
+
+    if (sortBy === SortType.Age) {
+      return order === 'asc' ? a.age - b.age : b.age - a.age;
+    }
+
+    if (order === 'asc') {
+      return a[sortBy].localeCompare(b[sortBy]);
+    }
+
+    return b[sortBy].localeCompare(a[sortBy]);
   });
 }
