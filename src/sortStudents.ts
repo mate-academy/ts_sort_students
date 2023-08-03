@@ -25,27 +25,23 @@ export function sortStudents(
     if (sortBy === SortType.AverageGrade) {
       const valueA = a.grades
         .reduce((acc, grade) => acc + grade, 0) / a.grades.length;
+
       const valueB = b.grades
         .reduce((acc, grade) => acc + grade, 0) / b.grades.length;
 
-      return order === 'asc' ? valueA - valueB : valueB - valueA;
+      return order === 'asc'
+        ? valueA - valueB
+        : valueB - valueA;
     }
 
-    if (sortBy === SortType.Married) {
-      const valueA = a.married ? 1 : -1;
-      const valueB = b.married ? 1 : -1;
-
-      return order === 'asc' ? valueA - valueB : valueB - valueA;
+    if (sortBy === SortType.Age || sortBy === SortType.Married) {
+      return order === 'asc'
+        ? +a[sortBy] - +b[sortBy]
+        : +b[sortBy] - +a[sortBy];
     }
 
-    if (sortBy === SortType.Age) {
-      return order === 'asc' ? a.age - b.age : b.age - a.age;
-    }
-
-    if (order === 'asc') {
-      return a[sortBy].localeCompare(b[sortBy]);
-    }
-
-    return b[sortBy].localeCompare(a[sortBy]);
+    return order === 'asc'
+      ? a[sortBy].localeCompare(b[sortBy])
+      : b[sortBy].localeCompare(a[sortBy]);
   });
 }
