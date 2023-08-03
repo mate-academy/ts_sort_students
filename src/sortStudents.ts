@@ -22,26 +22,29 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   return [...students].sort((a, b) => {
-    if (sortBy === SortType.AverageGrade) {
-      const valueA = a.grades
-        .reduce((acc, grade) => acc + grade, 0) / a.grades.length;
+    switch (sortBy) {
+      case SortType.AverageGrade: {
+        const valueA = a.grades
+          .reduce((acc, grade) => acc + grade, 0) / a.grades.length;
 
-      const valueB = b.grades
-        .reduce((acc, grade) => acc + grade, 0) / b.grades.length;
+        const valueB = b.grades
+          .reduce((acc, grade) => acc + grade, 0) / b.grades.length;
 
-      return order === 'asc'
-        ? valueA - valueB
-        : valueB - valueA;
+        return order === 'asc'
+          ? valueA - valueB
+          : valueB - valueA;
+      }
+
+      case SortType.Age:
+      case SortType.Married:
+        return order === 'asc'
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
+
+      default:
+        return order === 'asc'
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
     }
-
-    if (sortBy === SortType.Age || sortBy === SortType.Married) {
-      return order === 'asc'
-        ? +a[sortBy] - +b[sortBy]
-        : +b[sortBy] - +a[sortBy];
-    }
-
-    return order === 'asc'
-      ? a[sortBy].localeCompare(b[sortBy])
-      : b[sortBy].localeCompare(a[sortBy]);
   });
 }
