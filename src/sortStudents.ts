@@ -1,11 +1,10 @@
 
 export interface Student {
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
-  grades: number[],
-  average?: number,
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -13,46 +12,56 @@ export enum SortType {
   Surname = 'surname',
   Age = 'age',
   Married = 'married',
-  AverageGrade = 'average',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
-  const newArr = [...students];
+function getAverageGrades(grades: number[]): number {
+  return grades.reduce((a, b) => a + b, 0) / grades.length;
+}
 
-  function calculateAverage(grades: number[]): number {
-    const sum = grades.reduce((total, grade) => total + grade, 0);
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+):
 
-    return sum / grades.length;
+  Student[] {
+  const studentsCopy: Student[] = [...students];
+
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      studentsCopy.sort((prevStudent, currStudent) => {
+        return order === 'asc'
+          ? prevStudent[sortBy].localeCompare(currStudent[sortBy])
+          : currStudent[sortBy].localeCompare(prevStudent[sortBy]);
+      });
+      break;
+
+    case SortType.Age:
+    case SortType.Married:
+      studentsCopy.sort((prevStudent, currStudent) => {
+        return order === 'asc'
+          ? Number(prevStudent[sortBy]) - Number(currStudent[sortBy])
+          : Number(currStudent[sortBy]) - Number(prevStudent[sortBy]);
+      });
+      break;
+
+    case SortType.AverageGrade:
+      studentsCopy.sort((prevStudent, currStudent) => {
+        return order === 'asc'
+          ? getAverageGrades(prevStudent[sortBy])
+            - getAverageGrades(currStudent[sortBy])
+          : getAverageGrades(currStudent[sortBy])
+            - getAverageGrades(prevStudent[sortBy]);
+      });
+      break;
+
+    default:
+      throw new Error('Invalid sort type');
   }
 
-  if (order === 'asc') {
-    newArr.sort((a: Student, b: Student) => {
-      if (sortBy === SortType.AverageGrade) {
-        const avgGradeA = calculateAverage(a.grades);
-        const avgGradeB = calculateAverage(b.grades);
-
-        return avgGradeA.toString().localeCompare(avgGradeB.toString());
-      }
-
-      return a[sortBy].toString().localeCompare(b[sortBy].toString());
-    });
-  }
-
-  if (order === 'desc') {
-    newArr.sort((a: Student, b: Student) => {
-      if (sortBy === SortType.AverageGrade) {
-        const avgGradeA = calculateAverage(a.grades);
-        const avgGradeB = calculateAverage(b.grades);
-
-        return avgGradeB.toString().localeCompare(avgGradeA.toString());
-      }
-
-      return b[sortBy].toString().localeCompare(a[sortBy].toString());
-    });
-  }
-
-  return newArr;
+  return studentsCopy;
 }
