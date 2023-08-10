@@ -16,6 +16,16 @@ export enum SortType {
 }
 
 // create SortOrder type
+const averageGrades
+  = (arr: number[]): number => {
+    if (arr.length === 0) {
+      return 0;
+    }
+
+    return arr
+      .reduce((sum: number, grade: number) => sum + grade, 0) / arr.length;
+  };
+
 export type SortOrder = 'asc' | 'desc';
 
 export function sortStudents(
@@ -50,13 +60,9 @@ export function sortStudents(
       : studentsCopy.sort((a, b) => Number(b.married) - Number(a.married));
   }
 
-  const avrageGrades
-    = (arr: number[]): number => arr
-      .reduce((sum: number, grade: number) => sum + grade, 0) / arr.length;
-
   return ascOrDesc
     ? studentsCopy
-      .sort((a, b) => (avrageGrades(a.grades)) - (avrageGrades(b.grades)))
+      .sort((a, b) => (averageGrades(a.grades)) - (averageGrades(b.grades)))
     : studentsCopy
-      .sort((a, b) => (avrageGrades(b.grades)) - (avrageGrades(a.grades)));
+      .sort((a, b) => (averageGrades(b.grades)) - (averageGrades(a.grades)));
 }
