@@ -22,7 +22,7 @@ function getSortableValue(
 ): string | number | boolean {
   const gradesLength = student.grades.length;
 
-  if (gradesLength === 0 || gradesLength === null) {
+  if (!gradesLength) {
     throw new Error('Dividing by zero');
   }
 
@@ -56,12 +56,28 @@ export function sortStudents(
     const aValue = getSortableValue(a, sortBy);
     const bValue = getSortableValue(b, sortBy);
 
-    if (aValue < bValue) {
-      return order === 'asc' ? -1 : 1;
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return order === 'asc'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
     }
 
-    if (aValue > bValue) {
-      return order === 'asc' ? 1 : -1;
+    if (typeof aValue === 'number') {
+      const aValueNumber = aValue ? 1 : 0;
+      const bValueNumber = bValue ? 1 : 0;
+
+      return order === 'asc'
+        ? aValueNumber - bValueNumber
+        : bValueNumber - aValueNumber;
+    }
+
+    if (typeof aValue === 'boolean') {
+      const aValueNumber = aValue ? 1 : 0;
+      const bValueNumber = bValue ? 1 : 0;
+
+      return order === 'asc'
+        ? aValueNumber - bValueNumber
+        : bValueNumber - aValueNumber;
     }
 
     return 0;
