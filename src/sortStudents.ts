@@ -21,7 +21,7 @@ function getAvarageGrade(grades: number[]): number {
   return grades.reduce((acc, grade) => acc + grade) / grades.length;
 }
 
-export default function sortStudents(
+export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
