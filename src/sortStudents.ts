@@ -14,11 +14,13 @@ export enum SortType {
   AverageGrade = 'grades',
 }
 
-// create SortOrder type
-export type SortOrder = 'asc' | 'desc';
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 function getAvarageGrade(grades: number[]): number {
-  return grades.reduce((acc, grade) => acc + grade) / grades.length;
+  return grades.reduce((acc, grade) => acc + grade, 0) / grades.length;
 }
 
 export function sortStudents(
@@ -30,7 +32,7 @@ export function sortStudents(
     let firstToCompare: Student = student1;
     let secondToCompare: Student = student2;
 
-    if (order === 'desc') {
+    if (order === SortOrder.desc) {
       [firstToCompare, secondToCompare] = [secondToCompare, firstToCompare];
     }
 
