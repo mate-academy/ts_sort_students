@@ -25,35 +25,47 @@ export function countAverageGrade(student: Student): number {
 }
 
 export function sortStudents(
-  students: Student[], sortBy: SortType, order: SortOrder,
-): object[] {
-  const studentsCopy = [...students];
-
-  const sortingFunction = (a: Student, b: Student): number => {
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
+  return [...students].sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return a[sortBy].localeCompare(b[sortBy]);
+        return (
+          order === 'asc'
+            ? a[sortBy].localeCompare(b[sortBy])
+            : b[sortBy].localeCompare(a[sortBy])
+        );
 
       case SortType.Age:
-        return a.age - b.age;
+        return (
+          order === 'asc'
+            ? a.age - b.age
+            : b.age - a.age
+        );
 
       case SortType.Married:
         if (a.married === b.married) {
           return 0;
         }
 
-        return a.married ? 1 : -1;
+        if (order === 'asc') {
+          return a.married ? 1 : -1;
+        }
+
+        return b.married ? 1 : -1;
 
       case SortType.AverageGrade:
-        return countAverageGrade(a) - countAverageGrade(b);
+        return (
+          order === 'asc'
+            ? countAverageGrade(a) - countAverageGrade(b)
+            : countAverageGrade(b) - countAverageGrade(a)
+        );
 
       default:
         throw new Error('Invalid sortType');
     }
-  };
-
-  return studentsCopy.sort((a, b) => (
-    order === 'asc' ? sortingFunction(a, b) : sortingFunction(b, a)
-  ));
+  });
 }
