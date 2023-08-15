@@ -8,15 +8,21 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'Name',
-  Surname = 'Surname',
-  Age = 'Age',
-  Married = 'Married',
-  AverageGrade = 'AverageGrade'
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade'
 }
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+function avgGrade(student: Student): number {
+  return student.grades.reduce(
+    (prev: number, item: number) => prev + item, 0,
+  ) / student.grades.length;
+}
 
 export function sortStudents(
   students: Student[],
@@ -24,84 +30,43 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] | undefined {
   const studentsCopy = [...students];
+  const orderDirection = order === 'asc';
 
   switch (sortBy) {
-    case 'Name':
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      return studentsCopy.sort((a, b) => b.name.localeCompare(a.name));
-
-    case 'Surname':
-      if (order === 'asc') {
-        return studentsCopy.sort(
-          (a, b) => a.surname.localeCompare(b.surname),
+    case 'name':
+    case 'surname':
+      return orderDirection
+        ? studentsCopy.sort(
+          (a, b) => a[sortBy].localeCompare(b[sortBy]),
+        )
+        : studentsCopy.sort(
+          (a, b) => b[sortBy].localeCompare(a[sortBy]),
         );
-      }
 
-      return studentsCopy.sort(
-        (a, b) => b.surname.localeCompare(a.surname),
-      );
-
-    case 'Age':
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => a.age - b.age);
-      }
-
-      return studentsCopy.sort((a, b) => b.age - a.age);
-
-    case 'Married':
-      if (order === 'asc') {
-        return studentsCopy.sort(
-          (a, b) => Number(a.married) - Number(b.married),
+    case 'age':
+    case 'married':
+      return orderDirection
+        ? studentsCopy.sort(
+          (a, b) => Number(a[sortBy]) - Number(b[sortBy]),
+        )
+        : studentsCopy.sort(
+          (a, b) => Number(b[sortBy]) - Number(a[sortBy]),
         );
-      }
 
-      return studentsCopy.sort(
-        (a, b) => Number(b.married) - Number(a.married),
-      );
+    case 'averageGrade':
+      return orderDirection
+        ? studentsCopy.sort((a, b) => {
+          const aAvg = avgGrade(a);
+          const bAvg = avgGrade(b);
 
-    case 'AverageGrade':
-      if (order === 'asc') {
-        return studentsCopy.sort((a, b) => {
-          const aAvg = a.grades.reduce(
-            (prev: number, item: number) => prev + item, 0,
-          ) / a.grades.length;
-          const bAvg = b.grades.reduce(
-            (prev: number, item: number) => prev + item, 0,
-          ) / b.grades.length;
+          return aAvg - bAvg;
+        })
+        : studentsCopy.sort((a, b) => {
+          const aAvg = avgGrade(a);
+          const bAvg = avgGrade(b);
 
-          if (aAvg === bAvg) {
-            return 0;
-          }
-
-          if (aAvg > bAvg) {
-            return 1;
-          }
-
-          return -1;
+          return bAvg - aAvg;
         });
-      }
-
-      return studentsCopy.sort((a, b) => {
-        const aAvg = a.grades.reduce(
-          (prev: number, item: number) => prev + item, 0,
-        ) / a.grades.length;
-        const bAvg = b.grades.reduce(
-          (prev: number, item: number) => prev + item, 0,
-        ) / b.grades.length;
-
-        if (aAvg === bAvg) {
-          return 0;
-        }
-
-        if (aAvg > bAvg) {
-          return -1;
-        }
-
-        return 1;
-      });
 
     default:
       return undefined;
