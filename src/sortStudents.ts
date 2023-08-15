@@ -24,8 +24,8 @@ const getAverageGrade = (
 
 export function sortStudents(
   students: Student[],
-  sortBy: string,
-  order: string,
+  sortBy: SortType,
+  order: SortOrder,
 ): Student[] {
   const sortedStudents = [...students];
 
@@ -53,8 +53,8 @@ export function sortStudents(
       return sortedStudents.sort(
         (s1, s2) => (
           order === 'asc'
-            ? (+s1.married - (+s2.married))
-            : (+s2.married - (+s1.married))
+            ? Number(s1.married) - Number(s2.married)
+            : Number(s2.married) - Number(s1.married)
         ),
       );
 
@@ -66,6 +66,6 @@ export function sortStudents(
       ));
 
     default:
-      return sortedStudents;
+      throw new Error('Sort type is invalid');
   }
 }
