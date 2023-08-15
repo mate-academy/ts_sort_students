@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -32,13 +32,11 @@ export function sortStudents(
   const sortingFunction = (a: Student, b: Student): number => {
     switch (sortBy) {
       case SortType.Name:
-        return a.name.localeCompare(b.name);
+      case SortType.Surname:
+        return a[sortBy].localeCompare(b[sortBy]);
 
       case SortType.Age:
         return a.age - b.age;
-
-      case SortType.Surname:
-        return a.surname.localeCompare(b.surname);
 
       case SortType.Married:
         if (a.married === b.married) {
