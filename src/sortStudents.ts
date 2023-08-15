@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'average',
 }
 
 const AverageGrade
@@ -34,33 +34,27 @@ export function sortStudents(
   const studentsCopy = [...students];
   const orderType = order === 'asc';
 
-  if (sortBy === SortType.Name) {
-    return orderType
-      ? studentsCopy.sort((a, b) => a.name.localeCompare(b.name))
-      : studentsCopy.sort((a, b) => b.name.localeCompare(a.name));
-  }
+  switch (sortBy) {
+    case 'name':
+    case 'surname':
+      return orderType
+        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
 
-  if (sortBy === SortType.Surname) {
-    return orderType
-      ? studentsCopy.sort((a, b) => a.surname.localeCompare(b.surname))
-      : studentsCopy.sort((a, b) => b.surname.localeCompare(a.surname));
-  }
+    case 'age':
+    case 'married':
+      return orderType
+        ? studentsCopy.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+        : studentsCopy.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
 
-  if (sortBy === SortType.Age) {
-    return orderType
-      ? studentsCopy.sort((a, b) => a.age - b.age)
-      : studentsCopy.sort((a, b) => b.age - a.age);
-  }
+    case 'average':
+      return orderType
+        ? studentsCopy
+          .sort((a, b) => AverageGrade(a.grades) - AverageGrade(b.grades))
+        : studentsCopy
+          .sort((a, b) => AverageGrade(b.grades) - AverageGrade(a.grades));
 
-  if (sortBy === SortType.AverageGrade) {
-    return orderType
-      ? studentsCopy
-        .sort((a, b) => AverageGrade(a.grades) - AverageGrade(b.grades))
-      : studentsCopy
-        .sort((a, b) => AverageGrade(b.grades) - AverageGrade(a.grades));
+    default:
+      throw new Error('no such sort type');
   }
-
-  return orderType
-    ? studentsCopy.sort((a, b) => Number(a.married) - Number(b.married))
-    : studentsCopy.sort((a, b) => Number(b.married) - Number(a.married));
 }
