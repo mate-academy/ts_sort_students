@@ -25,52 +25,37 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+const getValueForSort = (student: Student, sortBy:
+SortType): string | number => {
+  switch (sortBy) {
+    case SortType.Name:
+      return student.name;
+    case SortType.Surname:
+      return student.surname;
+    case SortType.Age:
+      return student.age;
+    case SortType.AverageGrade:
+      return averageGrades(student.grades);
+    case SortType.Married:
+      return Number(student.married);
+    default:
+      return '';
+  }
+};
+
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   const copyOfStudent = [...students];
-  const orderType = order === 'asc';
+  const multiplier = order === 'asc' ? 1 : -1;
 
-  switch (sortBy) {
-    case SortType.Name:
-      if (orderType) {
-        return copyOfStudent.sort((a, b) => a.name.localeCompare(b.name));
-      }
+  return copyOfStudent.sort((a, b) => {
+    const aValue = getValueForSort(a, sortBy);
+    const bValue = getValueForSort(b, sortBy);
 
-      return copyOfStudent.sort((a, b) => b.name.localeCompare(a.name));
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return multiplier * aValue.localeCompare(bValue);
+    }
 
-    case SortType.Surname:
-      if (orderType) {
-        return copyOfStudent.sort((a, b) => a.surname.localeCompare(b.surname));
-      }
-
-      return copyOfStudent.sort((a, b) => b.surname.localeCompare(a.surname));
-
-    case SortType.Age:
-      if (orderType) {
-        return copyOfStudent.sort((a, b) => a.age - b.age);
-      }
-
-      return copyOfStudent.sort((a, b) => b.age - a.age);
-
-    case SortType.AverageGrade:
-      if (orderType) {
-        return copyOfStudent.sort((a, b) => averageGrades(a.grades)
-        - averageGrades(b.grades));
-      }
-
-      return copyOfStudent.sort((a, b) => averageGrades(b.grades)
-        - averageGrades(a.grades));
-
-    case SortType.Married:
-      if (orderType) {
-        return copyOfStudent.sort((a, b) => Number(a.married)
-          - Number(b.married));
-      }
-
-      return copyOfStudent.sort((a, b) => Number(b.married)
-        - Number(a.married));
-
-    default:
-      return students;
-  }
+    return multiplier * ((aValue as number) - (bValue as number));
+  });
 }
