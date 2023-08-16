@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 // create SortOrder type
@@ -21,38 +21,42 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(students: Student[],
   sortBy: SortType,
   order: SortOrder): Student[] {
-  const sortedStudents = [...students];
-
-  function getAvarageGrade(grades: number[]): number {
-    const sum = grades.reduce((a, b) => a + b, 0);
-
-    return sum / grades.length;
+  function calculateAverage(grades: number[]): number {
+    return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
   }
 
-  const sortingFunction = (a: Student, b: Student): number => {
+  return [...students].sort((a: Student, b: Student): number => {
     switch (sortBy) {
       case SortType.Name:
-        return a.name.localeCompare(b.name);
       case SortType.Surname:
-        return a.surname.localeCompare(b.surname);
+        return (
+          order === 'asc'
+            ? a[sortBy].localeCompare(b[sortBy])
+            : b[sortBy].localeCompare(a[sortBy])
+        );
+
       case SortType.Age:
-        return a.age - b.age;
-      case SortType.Married:
-        if (a.married === b.married) {
-          return 0;
-        }
+        return (
+          order === 'asc'
+            ? a.age - b.age
+            : b.age - a.age
+        );
 
-        return a.married ? 1 : -1;
-      case SortType.AverageGrade:
-        return getAvarageGrade(a.grades) - getAvarageGrade(b.grades);
-      default:
-        throw new Error('Invalid sortType');
+      case SortType.Married: {
+        return order === 'asc'
+          ? Number(a.married) - Number(b.married)
+          : Number(b.married) - Number(a.married);
+      }
+
+      case SortType.AverageGrade: {
+        return order === 'asc'
+          ? calculateAverage(a.grades) - calculateAverage(b.grades)
+          : calculateAverage(b.grades) - calculateAverage(a.grades);
+      }
+
+      default: {
+        throw new Error('Wrong type');
+      }
     }
-  };
-
-  sortedStudents.sort((a, b) => (order === 'asc'
-    ? sortingFunction(a, b)
-    : sortingFunction(b, a)));
-
-  return sortedStudents;
+  });
 }
