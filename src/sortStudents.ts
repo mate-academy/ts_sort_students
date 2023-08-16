@@ -63,7 +63,16 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students, sortBy, order): Student[] {
-  return students + sortBy + order;
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): void {
+  const something: Student[] = [...students];
+  const sortedData = sortStudents(students, sortBy, order);
+
+  something.slice();
   // this is just to make coomet :3
+
+  return sortedData;
 }
