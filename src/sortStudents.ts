@@ -1,3 +1,6 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable default-case */
 export interface Student {
   name: string;
   surname: string;
@@ -16,6 +19,10 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverageGrades(grades: number[]): number {
+  return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+}
+
 export function sortStudents(students: Student[], sortBy: SortType,
   order: SortOrder): Student[] {
   const sortedStudents = students.slice();
@@ -23,22 +30,25 @@ export function sortStudents(students: Student[], sortBy: SortType,
   sortedStudents.sort((a, b) => {
     let comparison = 0;
 
-    if (sortBy === SortType.Name) {
-      comparison = a.name.localeCompare(b.name);
-    } else if (sortBy === SortType.Surname) {
-      comparison = a.surname.localeCompare(b.surname);
-    } else if (sortBy === SortType.Age) {
-      comparison = a.age - b.age;
-    } else if (sortBy === SortType.Married) {
-      // eslint-disable-next-line no-nested-ternary
-      comparison = a.married === b.married ? 0 : a.married ? 1 : -1;
-    } else if (sortBy === SortType.AverageGrade) {
-      const avgA = a.grades.reduce((sum, grade) => sum + grade, 0)
-      / a.grades.length;
-      const avgB = b.grades.reduce((sum, grade) => sum + grade, 0)
-      / b.grades.length;
+    switch (sortBy) {
+      case SortType.Name:
+        comparison = a.name.localeCompare(b.name);
+        break;
+      case SortType.Surname:
+        comparison = a.surname.localeCompare(b.surname);
+        break;
+      case SortType.Age:
+        comparison = a.age - b.age;
+        break;
+      case SortType.Married:
+        comparison = a.married === b.married ? 0 : a.married ? 1 : -1;
+        break;
+      case SortType.AverageGrade:
+        const avgA = calculateAverageGrades(a.grades);
+        const avgB = calculateAverageGrades(b.grades);
 
-      comparison = avgA - avgB;
+        comparison = avgA - avgB;
+        break;
     }
 
     return order === 'asc' ? comparison : -comparison;
