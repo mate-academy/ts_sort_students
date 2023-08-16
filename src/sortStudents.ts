@@ -27,12 +27,13 @@ export function sortStudents(students: Student[],
   const sortedStudents = [...students];
 
   const sortingFunction = (a: Student, b: Student): number => {
-    const averageGradeA = a.grades.reduce(
-      (sum: number, grade: number) => sum + grade, 0,
-    ) / a.grades.length;
-    const averageGradeB = b.grades.reduce(
-      (sum: number, grade: number) => sum + grade, 0,
-    ) / b.grades.length;
+    const calculateAverageGrade = (student: Student): number => {
+      const gradesSum = student.grades.reduce(
+        (sum: number, grade: number) => sum + grade, 0,
+      );
+
+      return gradesSum / student.grades.length;
+    };
 
     switch (sortBy) {
       case SortType.Name:
@@ -48,15 +49,16 @@ export function sortStudents(students: Student[],
 
         return a.married ? 1 : -1;
       case SortType.AverageGrade:
-        return averageGradeA - averageGradeB;
+        return calculateAverageGrade(a) - calculateAverageGrade(b);
       default:
         throw new Error('Invalid sortType');
     }
   };
 
-  sortedStudents.sort((a, b) => (order === 'asc'
-    ? sortingFunction(a, b)
-    : sortingFunction(b, a)));
+  sortedStudents.sort((a, b) => ((order === 'asc'
+    ? 1
+    : -1
+  ) * sortingFunction(a, b)));
 
   return sortedStudents;
 }
