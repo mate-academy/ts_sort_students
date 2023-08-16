@@ -20,7 +20,6 @@ export function calculateAverageGrade(grades: number[]): number {
   return grades.reduce((a, b) => a + b, 0) / grades.length;
 }
 
-// Helper function to handle string comparisons
 function compareStrings(a: string, b: string, order: SortOrder): number {
   if (a === b) {
     return 0;
@@ -31,7 +30,6 @@ function compareStrings(a: string, b: string, order: SortOrder): number {
   return order === 'asc' ? result : -result;
 }
 
-// Helper function to handle number comparisons
 function compareNumbers(a: number, b: number, order: SortOrder): number {
   if (a === b) {
     return 0;
