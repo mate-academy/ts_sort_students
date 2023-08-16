@@ -32,6 +32,9 @@ export function sortStudents(
   const isAsc: boolean = order === 'asc';
 
   function compareFunction(a: Student, b: Student): number {
+    // const aMarried = Number(a.married);
+    // const bMarried = Number(b.married);
+
     switch (sortBy) {
       case SortType.Name:
         return isAsc
@@ -46,10 +49,14 @@ export function sortStudents(
       case SortType.Age:
         return isAsc ? a.age - b.age : b.age - a.age;
 
-      case SortType.Married:
+      case SortType.Married: {
+        const aMarried = Number(a.married);
+        const bMarried = Number(b.married);
+
         return isAsc
-          ? Number(a.married) - Number(b.married)
-          : Number(b.married) - Number(a.married);
+          ? aMarried - bMarried
+          : bMarried - aMarried;
+      }
 
       case SortType.AverageGrade:
         return isAsc
