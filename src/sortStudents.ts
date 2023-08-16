@@ -15,7 +15,7 @@ export enum SortType {
   AverageGrade = 'average',
 }
 
-const AverageGrade
+const averageGrade
   = (arr: number[]): number => {
     if (arr.length === 0) {
       return 0;
@@ -26,6 +26,25 @@ const AverageGrade
 
 export type SortOrder = 'asc' | 'desc';
 
+const calculateValue = (
+  student: Student,
+  sortBy: SortType,
+): string | number | boolean => {
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+    case SortType.Age:
+    case SortType.Married:
+      return student[sortBy];
+
+    case SortType.AverageGrade:
+      return averageGrade(student.grades);
+
+    default:
+      throw new Error('no such sort type');
+  }
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -34,27 +53,23 @@ export function sortStudents(
   const studentsCopy = [...students];
   const orderType = order === 'asc';
 
-  switch (sortBy) {
-    case 'name':
-    case 'surname':
-      return orderType
-        ? studentsCopy.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : studentsCopy.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+  const sortedStudents = studentsCopy.sort((a, b) => {
+    const aValue = calculateValue(a, sortBy);
+    const bValue = calculateValue(b, sortBy);
 
-    case 'age':
-    case 'married':
-      return orderType
-        ? studentsCopy.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
-        : studentsCopy.sort((a, b) => Number(b[sortBy]) - Number(a[sortBy]));
+    const aValueStr = typeof aValue === 'string' ? aValue : aValue.toString();
+    const bValueStr = typeof bValue === 'string' ? bValue : bValue.toString();
 
-    case 'average':
+    if (typeof aValue === 'string') {
       return orderType
-        ? studentsCopy
-          .sort((a, b) => AverageGrade(a.grades) - AverageGrade(b.grades))
-        : studentsCopy
-          .sort((a, b) => AverageGrade(b.grades) - AverageGrade(a.grades));
+        ? aValueStr.localeCompare(bValueStr)
+        : bValueStr.localeCompare(aValueStr);
+    }
 
-    default:
-      throw new Error('no such sort type');
-  }
+    return orderType
+      ? Number(aValue) - Number(bValue)
+      : Number(bValue) - Number(aValue);
+  });
+
+  return sortedStudents;
 }
