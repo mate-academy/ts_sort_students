@@ -44,7 +44,7 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const studentsCopy = [...students];
-  const orderDirection = order === 'asc';
+  const ascending = order === 'asc';
 
   return studentsCopy.sort((a, b) => {
     const studentValueA = getValue(a, sortBy);
@@ -52,13 +52,13 @@ export function sortStudents(
 
     if (typeof studentValueA === 'string'
     && typeof studentValueB === 'string') {
-      return orderDirection
+      return ascending
         ? studentValueA.localeCompare(studentValueB)
         : studentValueB.localeCompare(studentValueA);
     }
 
-    return orderDirection
-      ? ((studentValueA as number) - (studentValueB as number))
-      : ((studentValueB as number) - (studentValueA as number));
+    return ascending
+      ? (Number(studentValueA) - Number(studentValueB))
+      : (Number(studentValueB) - Number(studentValueA));
   });
 }
