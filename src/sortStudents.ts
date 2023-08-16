@@ -1,50 +1,3 @@
-// Sort students
-// Create a `sortStudents` function that takes 3
-// parameters and return a new array
-// with students sorted according to the given
-// params. The original array must not
-// change.
-
-// The parameters are:
-// - `students` an initial array of students
-// - `sortBy` a type of sort (see `SortType` enum)
-// - `order` a sort order that can be `asc` or `desc`
-
-// You also need to add correct types:
-// - Create `Student` interface matching the next data:
-//     ```
-//     {
-//       name: 'Jessica',
-//       surname: 'Buxton',
-//       age: 26,
-//       married: true,
-//       grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],
-//     }
-//     ```
-// - Create a `SortType` enum, having the next values:
-//     ```
-//     Name
-//     Surname
-//     Age
-//     Married
-//     AverageGrade
-//     ```
-//     Hint: `AverageGrade` is sorting by an average value in `grades` array.
-// - Create `SortOrder` type with only 2 values `'asc'` and `'desc'`
-//     Hint: If values are the same the students should go in the original order
-//     (no matter we use `asc` or `desc` order)
-
-// Examples:
-// ```js
-// // from the youngest to the oldest
-// const studentsByAge = sortStudents(students, SortType.Age, 'asc');
-// // Surnames from Z to A
-// const studentsBySurnameDesc
-// = sortStudents(students, SortType.Surname, 'desc');
-// // from the lowest Average grade to the highest
-// const studentsByGrade = sortStudents(students, SortType.AverageGrade, 'asc');
-// ```
-
 export interface Student {
   name: string,
   surname: string,
@@ -63,16 +16,63 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+export function calculateAverageGrade(grades: number[]): number {
+  return grades.reduce((a, b) => a + b, 0) / grades.length;
+}
+
+// Helper function to handle string comparisons
+function compareStrings(a: string, b: string, order: SortOrder): number {
+  if (a === b) {
+    return 0;
+  }
+
+  const result = a < b ? -1 : 1;
+
+  return order === 'asc' ? result : -result;
+}
+
+// Helper function to handle number comparisons
+function compareNumbers(a: number, b: number, order: SortOrder): number {
+  if (a === b) {
+    return 0;
+  }
+
+  const result = a < b ? -1 : 1;
+
+  return order === 'asc' ? result : -result;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): void {
-  const something: Student[] = [...students];
-  const sortedData = sortStudents(students, sortBy, order);
+): Student[] {
+  const studentsArrayCopy: Student[] = [...students];
 
-  something.slice();
-  // this is just to make coomet :3
+  return studentsArrayCopy.sort((a, b) => {
+    switch (sortBy) {
+      case SortType.Name:
+        return compareStrings(a.name, b.name, order);
 
-  return sortedData;
+      case SortType.Surname:
+        return compareStrings(a.surname, b.surname, order);
+
+      case SortType.Age:
+        return compareNumbers(a.age, b.age, order);
+
+      case SortType.Married:
+        return compareNumbers(Number(a.married), Number(b.married), order);
+
+      case SortType.AverageGrade: {
+        const averageGradeA = calculateAverageGrade(a.grades);
+        const averageGradeB = calculateAverageGrade(b.grades);
+        // linter was unhappy so I added a block
+
+        return compareNumbers(averageGradeA, averageGradeB, order);
+      }
+
+      default:
+        throw new Error(`Unsupported sort type: ${sortBy}`);
+    }
+  });
 }
