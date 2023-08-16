@@ -31,48 +31,37 @@ export function sortStudents(
   const studentsArr = [...students];
   const isAsc: boolean = order === 'asc';
 
-  switch (sortBy) {
-    case SortType.Name:
-      studentsArr.sort((a, b) => {
+  function compareFunction(a: Student, b: Student): number {
+    switch (sortBy) {
+      case SortType.Name:
         return isAsc
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name);
-      });
-      break;
 
-    case SortType.Surname:
-      studentsArr.sort((a, b) => {
+      case SortType.Surname:
         return isAsc
           ? a.surname.localeCompare(b.surname)
           : b.surname.localeCompare(a.surname);
-      });
-      break;
 
-    case SortType.Age:
-      studentsArr.sort((a, b) => {
+      case SortType.Age:
         return isAsc ? a.age - b.age : b.age - a.age;
-      });
-      break;
 
-    case SortType.Married:
-      studentsArr.sort((a, b) => {
+      case SortType.Married:
         return isAsc
           ? Number(a.married) - Number(b.married)
           : Number(b.married) - Number(a.married);
-      });
-      break;
 
-    case SortType.AverageGrade:
-      studentsArr.sort((a, b) => {
+      case SortType.AverageGrade:
         return isAsc
           ? getAvarageGrade(a.grades) - getAvarageGrade(b.grades)
           : getAvarageGrade(b.grades) - getAvarageGrade(a.grades);
-      });
-      break;
 
-    default:
-      break;
+      default:
+        throw new Error('Cannot sort by unrecognized parameters!');
+    }
   }
+
+  studentsArr.sort((a, b) => compareFunction(a, b));
 
   return studentsArr;
 }
