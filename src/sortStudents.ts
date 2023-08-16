@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 // create SortOrder type
@@ -49,16 +49,10 @@ export function sortStudents(
 
   switch (sortBy) {
     case SortType.Name:
-      return sortByType(copyOfStudents, 'name', order);
-
     case SortType.Age:
-      return sortByType(copyOfStudents, 'age', order);
-
     case SortType.Surname:
-      return sortByType(copyOfStudents, 'surname', order);
-
     case SortType.Married:
-      return sortByType(copyOfStudents, 'married', order);
+      return sortByType(copyOfStudents, sortBy, order);
 
     default:
       return (order === 'asc')
