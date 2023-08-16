@@ -35,26 +35,24 @@ export function sortStudents(
       const averageA = calculateAverage(a.grades);
       const averageB = calculateAverage(b.grades);
 
-      if (averageA > averageB) {
+      switch (true) {
+        case averageA > averageB:
+          return order === 'asc' ? 1 : -1;
+        case averageA < averageB:
+          return order === 'asc' ? -1 : 1;
+        default:
+          return 0;
+      }
+    }
+
+    switch (true) {
+      case a[sortBy] > b[sortBy]:
         return order === 'asc' ? 1 : -1;
-      }
-
-      if (averageA < averageB) {
+      case a[sortBy] < b[sortBy]:
         return order === 'asc' ? -1 : 1;
-      }
-
-      return 0;
+      default:
+        return 0;
     }
-
-    if (a[sortBy] > b[sortBy]) {
-      return order === 'asc' ? 1 : -1;
-    }
-
-    if (a[sortBy] < b[sortBy]) {
-      return order === 'asc' ? -1 : 1;
-    }
-
-    return 0;
   });
 
   return studentsCopy;
