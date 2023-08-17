@@ -16,30 +16,39 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverage(grades: number[]): number {
+  return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+}
+
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   return students.slice().sort((a, b) => {
     let aValue,
       bValue;
 
-    if (sortBy === SortType.Name) {
-      aValue = a.name;
-      bValue = b.name;
-    } else if (sortBy === SortType.Surname) {
-      aValue = a.surname;
-      bValue = b.surname;
-    } else if (sortBy === SortType.Age) {
-      aValue = a.age;
-      bValue = b.age;
-    } else if (sortBy === SortType.Married) {
-      aValue = a.married ? 1 : 0;
-      bValue = b.married ? 1 : 0;
-    } else if (sortBy === SortType.AverageGrade) {
-      aValue = a.grades.reduce((sum, grade) => sum + grade, 0)
-       / a.grades.length;
-
-      bValue = b.grades.reduce((sum, grade) => sum + grade, 0)
-       / b.grades.length;
+    switch (sortBy) {
+      case SortType.Name:
+        aValue = a.name;
+        bValue = b.name;
+        break;
+      case SortType.Surname:
+        aValue = a.surname;
+        bValue = b.surname;
+        break;
+      case SortType.Age:
+        aValue = a.age;
+        bValue = b.age;
+        break;
+      case SortType.Married:
+        aValue = a.married;
+        bValue = b.married;
+        break;
+      case SortType.AverageGrade:
+        aValue = calculateAverage(a.grades);
+        bValue = calculateAverage(b.grades);
+        break;
+      default:
+        throw new Error('Invalid SortType');
     }
 
     if (order === 'asc') {
