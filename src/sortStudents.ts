@@ -25,13 +25,13 @@ function avgGrade(student: Student): number {
 
 function getValue(student: Student, sortBy: SortType): string | number {
   switch (sortBy) {
-    case 'name':
-    case 'surname':
+    case SortType.Name:
+    case SortType.Surname:
       return student[sortBy];
-    case 'age':
-    case 'married':
+    case SortType.Age:
+    case SortType.Married:
       return Number(student[sortBy]);
-    case 'averageGrade':
+    case SortType.AverageGrade:
       return avgGrade(student);
     default:
       throw new Error('Provide sort type.');
