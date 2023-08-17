@@ -22,9 +22,9 @@ function calculateAverage(grades: number[]): number {
 
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
-  return students.slice().sort((a, b) => {
-    let aValue,
-      bValue;
+  return [...students].sort((a, b) => {
+    let aValue;
+    let bValue;
 
     switch (sortBy) {
       case SortType.Name:
