@@ -32,9 +32,6 @@ export function sortStudents(
   const isAsc: boolean = order === 'asc';
 
   function compareFunction(a: Student, b: Student): number {
-    // const aMarried = Number(a.married);
-    // const bMarried = Number(b.married);
-
     switch (sortBy) {
       case SortType.Name:
         return isAsc
