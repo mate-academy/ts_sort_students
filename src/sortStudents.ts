@@ -25,13 +25,13 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-const getValueForSort = (student: Student, sortBy:
-SortType): string | number => {
+const getValueForSort = (student: Student,
+  sortBy: SortType, comparedStudent: Student): number => {
   switch (sortBy) {
     case SortType.Name:
-      return student.name;
+      return student.name.localeCompare(comparedStudent.name);
     case SortType.Surname:
-      return student.surname;
+      return student.surname.localeCompare(comparedStudent.surname);
     case SortType.Age:
       return student.age;
     case SortType.AverageGrade:
@@ -39,7 +39,7 @@ SortType): string | number => {
     case SortType.Married:
       return Number(student.married);
     default:
-      return '';
+      return 0;
   }
 };
 
@@ -49,13 +49,12 @@ export function sortStudents(students: Student[],
   const multiplier = order === 'asc' ? 1 : -1;
 
   return copyOfStudent.sort((a, b) => {
-    const aValue = getValueForSort(a, sortBy);
-    const bValue = getValueForSort(b, sortBy);
+    const comparisonValue = getValueForSort(a, sortBy, b);
 
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      return multiplier * aValue.localeCompare(bValue);
+    if (sortBy === SortType.Name || sortBy === SortType.Surname) {
+      return multiplier * comparisonValue;
     }
 
-    return multiplier * ((aValue as number) - (bValue as number));
+    return multiplier * (comparisonValue - getValueForSort(b, sortBy, a));
   });
 }
