@@ -27,31 +27,31 @@ export function sortStudents(students: Student[],
     ) / grades.length;
   };
 
-  switch (sortBy) {
-    case SortType.Name:
-      return asc
-        ? copyOfStudents.sort((a, b) => a.name.localeCompare(b.name))
-        : copyOfStudents.sort((a, b) => b.name.localeCompare(a.name));
-    case SortType.Surname:
-      return asc
-        ? copyOfStudents.sort((a, b) => a.surname.localeCompare(b.surname))
-        : copyOfStudents.sort((a, b) => b.surname.localeCompare(a.surname));
-    case SortType.Age:
-      return asc
-        ? copyOfStudents.sort((a, b) => a.age - b.age)
-        : copyOfStudents.sort((a, b) => b.age - a.age);
-    case SortType.Married:
-      return asc
-        ? copyOfStudents.sort((a, b) => Number(a.married) - Number(b.married))
-        : copyOfStudents.sort((a, b) => Number(b.married) - Number(a.married));
-    case SortType.AverageGrade:
-      return asc
-        ? copyOfStudents.sort(
-          (a, b) => averageOfGrades(a.grades) - averageOfGrades(b.grades),
-        )
-        : copyOfStudents.sort(
-          (a, b) => averageOfGrades(b.grades) - averageOfGrades(a.grades),
-        );
-    default: return copyOfStudents;
-  }
+  copyOfStudents.sort((a, b) => {
+    let comparison = 0;
+
+    switch (sortBy) {
+      case SortType.Name:
+        comparison = a.name.localeCompare(b.name);
+        break;
+      case SortType.Surname:
+        comparison = a.surname.localeCompare(b.surname);
+        break;
+      case SortType.Age:
+        comparison = a.age - b.age;
+        break;
+      case SortType.Married:
+        comparison = Number(a.married) - Number(b.married);
+        break;
+      case SortType.AverageGrade:
+        comparison = averageOfGrades(a.grades) - averageOfGrades(b.grades);
+        break;
+      default:
+        break;
+    }
+
+    return asc ? comparison : -comparison;
+  });
+
+  return copyOfStudents;
 }
