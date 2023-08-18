@@ -1,4 +1,3 @@
-
 export interface Student {
   name: string;
   surname: string;
@@ -17,6 +16,15 @@ export enum SortType {
 
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
+
+function compareAverageGrades(a: Student, b: Student): number {
+  const averageA = a.grades.reduce((sum, grade) => sum + grade, 0)
+  / a.grades.length;
+  const averageB = b.grades.reduce((sum, grade) => sum + grade, 0)
+  / b.grades.length;
+
+  return averageA - averageB;
+}
 
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
@@ -40,17 +48,9 @@ export function sortStudents(students: Student[],
           comparison = -1;
         }
         break;
-
-      case SortType.AverageGrade: {
-        const averageA = a.grades.reduce((sum, grade) => sum + grade, 0)
-        / a.grades.length;
-        const averageB = b.grades.reduce((sum, grade) => sum + grade, 0)
-        / b.grades.length;
-
-        comparison = averageA - averageB;
-
+      case SortType.AverageGrade:
+        comparison = compareAverageGrades(a, b);
         break;
-      }
       default:
         throw new Error(`Invalid SortType: ${sortBy}`);
     }
