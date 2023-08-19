@@ -30,9 +30,12 @@ export function sortStudents(
   const compareStudents = (a: Student, b: Student): number => {
     switch (sortBy) {
       case SortType.Name:
+
         return a.name.localeCompare(b.name);
+
       case SortType.Surname:
         return a.surname.localeCompare(b.surname);
+
       case SortType.Age:
         return a.age - b.age;
 
