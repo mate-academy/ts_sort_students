@@ -20,67 +20,80 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+// reusable averageGrade
+
+function averageGrade(grades: number[]): number {
+  const sumOfGrades = grades.reduce((acc, g) => {
+    return acc + g;
+  });
+
+  const average = sumOfGrades / grades.length;
+
+  return average;
+}
+
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   // write your function
   const sortedStudents = [...students];
 
-  sortedStudents
-    .sort((studentA, studentB) => {
-      let valueA;
-      let valueB;
+  const compareFunction = (studentA: Student, studentB: Student): number => {
+    let valueA;
+    let valueB;
 
-      if (sortBy === SortType.Name) {
+    switch (sortBy) {
+      case SortType.Name:
         valueA = studentA.name;
         valueB = studentB.name;
-      } else if (sortBy === SortType.Surname) {
+        break;
+      case SortType.Surname:
         valueA = studentA.surname;
         valueB = studentB.surname;
-      } else if (sortBy === SortType.Age) {
+        break;
+      case SortType.Age:
         valueA = studentA.age;
         valueB = studentB.age;
-      } else if (sortBy === SortType.Married) {
+        break;
+      case SortType.Married:
         valueA = studentA.married;
         valueB = studentB.married;
-      } else if (sortBy === SortType.AverageGrade) {
-        const averageGradeA = studentA.grades
-          .reduce((sum, grade) => sum + grade, 0) / studentA.grades.length;
-        const averageGradeB = studentB.grades
-          .reduce((sum, grade) => sum + grade, 0) / studentB.grades.length;
+        break;
+
+      case SortType.AverageGrade: {
+        const averageGradeA = averageGrade(studentA.grades);
+        const averageGradeB = averageGrade(studentB.grades);
 
         valueA = averageGradeA;
         valueB = averageGradeB;
-      } else {
-        throw new Error('Invalid SortType');
+        break;
       }
+      default:
+        throw new Error('Invalid SortType');
+    }
+    // Porównywanie wartości dla sortowania
 
-      // Porównywanie wartości dla sortowania
+    if (typeof valueA === 'string' && typeof valueB === 'string') {
       if (order === 'asc') {
-        if (valueA < valueB) {
-          return -1;
-        }
-
-        if (valueA > valueB) {
-          return 1;
-        }
-
-        return 0;
+        return valueA.localeCompare(valueB);
       }
 
       if (order === 'desc') {
-        if (valueA > valueB) {
-          return -1;
-        }
-
-        if (valueA < valueB) {
-          return 1;
-        }
-
-        return 0;
+        return valueB.localeCompare(valueA);
+      }
+    } else {
+      if (order === 'asc') {
+        return valueA - valueB;
       }
 
-      return 0;
-    });
+      if (order === 'desc') {
+        return valueB - valueA;
+      }
+    }
 
-  return sortedStudents;
+    return 0;
+  };
+
+  return sortedStudents.sort((a, b) => {
+    return compareFunction(a, b);
+  });
 }
