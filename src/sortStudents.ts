@@ -37,29 +37,31 @@ export function sortStudents(
   const studentsCopy = [...students];
 
   function organizeStudents(a: Student, b: Student): number {
+    const sortOrder: boolean = order === 'asc';
+
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
+        return sortOrder
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name);
 
       case SortType.Surname:
-        return order === 'asc'
+        return sortOrder
           ? a.surname.localeCompare(b.surname)
           : b.surname.localeCompare(a.surname);
 
       case SortType.Age:
-        return order === 'asc'
+        return sortOrder
           ? a.age - b.age
           : b.age - a.age;
 
       case SortType.Married:
-        return order === 'asc'
+        return sortOrder
           ? (a.married ? -1 : 1) - (b.married ? -1 : 1)
           : (a.married ? -1 : 1) - (b.married ? -1 : 1);
 
       case SortType.AverageGrade:
-        return order === 'asc'
+        return sortOrder
           ? calcGrade(a.grades) - calcGrade(b.grades)
           : calcGrade(b.grades) - calcGrade(a.grades);
 
