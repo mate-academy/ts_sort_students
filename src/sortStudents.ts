@@ -34,35 +34,39 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder,
 ): Student[] {
-  const studCopy = [...students];
+  const studentsCopy = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-      return order === 'asc'
-        ? studCopy.sort((a, b) => a.name.localeCompare(b.name))
-        : studCopy.sort((a, b) => b.name.localeCompare(a.name));
+  function organizeStudents(a: Student, b: Student): number {
+    switch (sortBy) {
+      case SortType.Name:
+        return order === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
 
-    case SortType.Surname:
-      return order === 'asc'
-        ? studCopy.sort((a, b) => a.surname.localeCompare(b.surname))
-        : studCopy.sort((a, b) => b.surname.localeCompare(a.surname));
+      case SortType.Surname:
+        return order === 'asc'
+          ? a.surname.localeCompare(b.surname)
+          : b.surname.localeCompare(a.surname);
 
-    case SortType.Age:
-      return order === 'asc'
-        ? studCopy.sort((a, b) => a.age - b.age)
-        : studCopy.sort((a, b) => b.age - a.age);
+      case SortType.Age:
+        return order === 'asc'
+          ? a.age - b.age
+          : b.age - a.age;
 
-    case SortType.Married:
-      return order === 'asc'
-        ? studCopy.sort((a, b) => (a.married ? -1 : 1) - (b.married ? -1 : 1))
-        : studCopy.sort((a, b) => (a.married ? -1 : 1) - (b.married ? -1 : 1));
+      case SortType.Married:
+        return order === 'asc'
+          ? (a.married ? -1 : 1) - (b.married ? -1 : 1)
+          : (a.married ? -1 : 1) - (b.married ? -1 : 1);
 
-    case SortType.AverageGrade:
-      return order === 'asc'
-        ? studCopy.sort((a, b) => calcGrade(a.grades) - calcGrade(b.grades))
-        : studCopy.sort((a, b) => calcGrade(b.grades) - calcGrade(a.grades));
+      case SortType.AverageGrade:
+        return order === 'asc'
+          ? calcGrade(a.grades) - calcGrade(b.grades)
+          : calcGrade(b.grades) - calcGrade(a.grades);
 
-    default:
-      throw new Error('Nieprawidłowy typ sortowania');
+      default:
+        throw new Error('Nieprawidłowy typ sortowania');
+    }
   }
+
+  return studentsCopy.sort(organizeStudents);
 }
