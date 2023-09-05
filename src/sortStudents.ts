@@ -29,34 +29,45 @@ export function sortStudents(
   const result: Student[] = [...students];
 
   return result.sort((a: Student, b: Student) => {
-    if (sortBy === SortType.AverageGrade) {
-      if (getAverageGrades(a[sortBy]) > getAverageGrades(b[sortBy])) {
+    switch (sortBy) {
+      case SortType.Name:
+      case SortType.Surname:
         return order === 'desc'
-          ? -1
-          : 1;
+          ? a[sortBy].localeCompare(b[sortBy]) * -1
+          : a[sortBy].localeCompare(b[sortBy]);
+
+      case SortType.AverageGrade: {
+        if (getAverageGrades(a[sortBy]) > getAverageGrades(b[sortBy])) {
+          return order === 'desc'
+            ? -1
+            : 1;
+        }
+
+        if (getAverageGrades(a[sortBy]) < getAverageGrades(b[sortBy])) {
+          return order === 'desc'
+            ? 1
+            : -1;
+        }
+
+        return 0;
       }
+      case SortType.Age:
+      case SortType.Married:
+        if (a[sortBy] > b[sortBy]) {
+          return order === 'desc'
+            ? -1
+            : 1;
+        }
 
-      if (getAverageGrades(a[sortBy]) < getAverageGrades(b[sortBy])) {
-        return order === 'desc'
-          ? 1
-          : -1;
-      }
+        if (a[sortBy] < b[sortBy]) {
+          return order === 'desc'
+            ? 1
+            : -1;
+        }
 
-      return 0;
+        return 0;
+      default:
+        return 0;
     }
-
-    if (a[sortBy] > b[sortBy]) {
-      return order === 'desc'
-        ? -1
-        : 1;
-    }
-
-    if (a[sortBy] < b[sortBy]) {
-      return order === 'desc'
-        ? 1
-        : -1;
-    }
-
-    return 0;
   });
 }
