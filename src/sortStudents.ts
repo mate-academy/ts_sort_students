@@ -34,12 +34,15 @@ export function sortStudents(students: Student[], sortBy: SortType,
     case SortType.Surname:
       comparator = (a, b): number => a[sortBy].localeCompare(b[sortBy]);
       break;
+
     case SortType.Age:
       comparator = (a, b): number => a.age - b.age;
       break;
+
     case SortType.Married:
       comparator = (a, b): number => Number(a.married) - Number(b.married);
       break;
+
     case SortType.AverageGrade:
       comparator = (a, b): number => {
         return getAverageGrade(a.grades) - getAverageGrade(b.grades);
