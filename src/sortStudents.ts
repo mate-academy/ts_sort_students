@@ -38,17 +38,7 @@ export function sortStudents(students: Student[], sortBy: SortType,
       comparator = (a, b): number => a.age - b.age;
       break;
     case SortType.Married:
-      comparator = (a, b): number => {
-        if (a.married === b.married) {
-          return 0;
-        }
-
-        if (a.married) {
-          return 1;
-        }
-
-        return -1;
-      };
+      comparator = (a, b): number => Number(a.married) - Number(b.married);
       break;
     case SortType.AverageGrade:
       comparator = (a, b): number => {
@@ -56,7 +46,7 @@ export function sortStudents(students: Student[], sortBy: SortType,
       };
       break;
     default:
-      return [];
+      return sortedStudents;
   }
 
   sortedStudents.sort((a, b): number => {
