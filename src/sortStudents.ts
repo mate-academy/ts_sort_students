@@ -32,10 +32,8 @@ export function sortStudents(
         return a[sortBy].localeCompare(b[sortBy]);
 
       case SortType.Age:
-        return a[sortBy] - b[sortBy];
-
       case SortType.Married:
-        return a[sortBy] && !b[sortBy] ? -1 : 1;
+        return +a[sortBy] - +b[sortBy];
 
       case SortType.AverageGrade:
         return getAverageGrades(a[sortBy]) - getAverageGrades(b[sortBy]);
