@@ -4,58 +4,50 @@ export interface Student {
   surname: string,
   age: number,
   married: boolean,
-  grades: Array<number>,
+  grades: number[],
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'grades',
 }
 
 export type SortOrder = 'asc' | 'desc';
 
-export function calcAverageGrade(grades: Array<number>): number {
-  const sum = grades.reduce((total, grade) => total + grade, 0);
-
-  return sum / grades.length;
+function getAverageGrade(grades: number[]): number {
+  return grades.reduce((acc, value) => acc + value) / grades.length;
 }
 
 export function sortStudents(
-  students: Array<Student>,
+  students: Student[],
   sortBy: SortType,
   order: SortOrder,
-): Array<Student> {
-  const studentsCopy = [...students];
+): Student[] {
+  const sortedStudents = [...students];
 
-  return studentsCopy.sort((a: Student, b: Student): number => {
-    const direction = order === 'desc' ? -1 : 1;
-
-    switch (sortBy) {
-      case SortType.Name:
-        return a.name.localeCompare(b.name);
-      case SortType.Surname:
-        return a.surname.localeCompare(b.surname);
-      case SortType.Age:
-        return direction * (a.age - b.age);
-      case SortType.Married:
-        if (a.married === b.married) {
-          return 0;
-        }
-
-        return a.married ? direction * 1 : direction * -1;
-
-      case SortType.AverageGrade: {
-        const averageGradeA = calcAverageGrade(a.grades);
-        const averageGradeB = calcAverageGrade(b.grades);
-
-        return direction * (averageGradeA - averageGradeB);
-      }
-
-      default:
-        return 0;
-    }
-  });
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+        : sortedStudents.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
+    case SortType.Age:
+    case SortType.Married:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => +a[sortBy] - +b[sortBy])
+        : sortedStudents.sort((a, b) => +b[sortBy] - +a[sortBy]);
+    case SortType.AverageGrade:
+      return order === 'asc'
+        ? sortedStudents.sort((a, b) => (
+          getAverageGrade(a[sortBy]) - getAverageGrade(b[sortBy])
+        ))
+        : sortedStudents.sort((a, b) => (
+          getAverageGrade(b[sortBy]) - getAverageGrade(a[sortBy])
+        ));
+    default:
+      return sortedStudents;
+  }
 }
