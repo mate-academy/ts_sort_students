@@ -28,29 +28,28 @@ export function sortStudents(
       [a, b] = [b, a];
     }
 
-    const averageA = studentA.grades
+    const averageA = a.grades
       .reduce((acc, value): number => {
         return (acc + value);
-      }, 0) / (studentA.grades.length);
+      }, 0) / (a.grades.length);
 
-    const averageB = studentB.grades
+    const averageB = b.grades
       .reduce((acc, value): number => {
         return (acc + value);
-      }, 0) / (studentB.grades.length);
+      }, 0) / (b.grades.length);
 
     switch (sortBy) {
       case SortType.Name:
-        return studentA.name.localeCompare(studentB.name);
-
       case SortType.Surname:
-        return studentA.surname.localeCompare(studentB.surname);
+
+        return a[sortBy].localeCompare(b[sortBy]);
 
       case SortType.Age:
-        return studentA.age - studentB.age;
+        return a.age - b.age;
 
       case SortType.Married:
-        return studentA.married
-          .toString().localeCompare(studentB.married.toString());
+        return a.married
+          .toString().localeCompare(b.married.toString());
 
       case SortType.AverageGrade:
         return averageA - averageB;
