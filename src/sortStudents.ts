@@ -34,6 +34,7 @@ export function sortStudents(
       return sortedStudents.sort((a, b) => {
         const compareResult = a[sortBy].localeCompare(b[sortBy]);
         return order === 'asc' ? compareResult : -compareResult;
+        
       });
     case SortType.Age:
     case SortType.Married:
