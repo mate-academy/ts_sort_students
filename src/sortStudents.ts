@@ -28,7 +28,7 @@ export function sortStudents(students: Student[],
         return st1.surname.localeCompare(st2.surname);
 
       case SortType.Age:
-        return st2.age - st1.age;
+        return st1.age - st2.age;
 
       case SortType.Married:
         return st1.married
