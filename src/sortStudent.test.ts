@@ -7,6 +7,7 @@ const students = [
     name: 'Diana',
     surname: 'Dorsey',
     age: 24,
+    
     married: false,
     grades: [3, 3, 4, 5, 4, 3, 5, 5],
   },
