@@ -16,8 +16,8 @@ export enum SortType {
 
 }
 
-
 export type SortOrder = 'asc' | 'desc';
+
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder): Student[] {
   const sortedStudents: Student[] = JSON.parse(JSON.stringify(students));
@@ -72,5 +72,5 @@ export function sortStudents(students: Student[],
     return sortOrderFactor * sorter(a, b);
   });
 
-return sortedStudents;
+  return sortedStudents;
 }
