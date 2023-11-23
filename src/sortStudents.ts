@@ -20,56 +20,50 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
+function getAverage(student: Student): number {
+  const total = student.grades.reduce((acc, curr) => acc + curr);
+
+  return total / student.grades.length;
+}
+
 export function sortStudents(
   students: Array<Student>,
   sortBy: SortType,
   order: SortOrder,
 ): Array<Student> {
-  let sortingCallback;
+  const studentsCopy = [...students];
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    sortingCallback = (student1: Student, student2: Student): number => {
-      return order === 'asc'
-        ? student1[sortBy].localeCompare(student2[sortBy])
-        : student2[sortBy].localeCompare(student1[sortBy]);
-    };
+  switch (sortBy) {
+    case SortType.Name:
+    case SortType.Surname:
+      return studentsCopy
+        .sort((student1, student2) => {
+          return order === 'asc'
+            ? student1[sortBy].localeCompare(student2[sortBy])
+            : student2[sortBy].localeCompare(student1[sortBy]);
+        });
+
+    case SortType.Age:
+    case SortType.Married:
+      return studentsCopy
+        .sort((student1, student2) => {
+          return order === 'asc'
+            ? Number(student1[sortBy]) - Number(student2[sortBy])
+            : Number(student2[sortBy]) - Number(student1[sortBy]);
+        });
+
+    case SortType.AverageGrade:
+      return studentsCopy
+        .sort((student1, student2) => {
+          const average1: number = getAverage(student1);
+          const average2: number = getAverage(student2);
+
+          return order === 'asc'
+            ? average1 - average2
+            : average2 - average1;
+        });
+
+    default:
+      return studentsCopy;
   }
-
-  if (sortBy === SortType.Age) {
-    sortingCallback = (student1: Student, student2: Student): number => {
-      return order === 'asc'
-        ? student1[sortBy] - student2[sortBy]
-        : student2[sortBy] - student1[sortBy];
-    };
-  }
-
-  if (sortBy === SortType.Married) {
-    sortingCallback = (a: Student, b: Student): number => {
-      if (a[sortBy] === b[sortBy]) {
-        return 0;
-      }
-
-      if (order === 'asc') {
-        return a[sortBy] ? 1 : -1;
-      }
-
-      return a[sortBy] ? -1 : 1;
-    };
-  }
-
-  if (sortBy === SortType.AverageGrade) {
-    sortingCallback = (student1: Student, student2: Student): number => {
-      const average1: number = student1.grades
-        .reduce((total, curr) => total + curr, 0) / student1.grades.length;
-
-      const average2: number = student2.grades
-        .reduce((total, curr) => total + curr, 0) / student2.grades.length;
-
-      return order === 'asc'
-        ? average1 - average2
-        : average2 - average1;
-    };
-  }
-
-  return [...students].sort(sortingCallback);
 }
