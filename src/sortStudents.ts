@@ -29,37 +29,37 @@ export function Avg(student: Student): number {
 export function sortStudents(students: Student[],
   sortBy: SortType, order: SortOrder) :Student[] {
   // write your function
-  let newarray: number;
+  let compareResult: number;
 
   return students.slice().sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        newarray = order === 'asc'
+        compareResult = order === 'asc'
           ? a[sortBy].localeCompare(b[sortBy])
           : b[sortBy].localeCompare(a[sortBy]);
         break;
 
       case SortType.Age:
-        newarray = order === 'asc' ? a.age - b.age : b.age - a.age;
+        compareResult = order === 'asc' ? a.age - b.age : b.age - a.age;
         break;
 
       case SortType.Married:
-        newarray = order === 'asc'
+        compareResult = order === 'asc'
           ? Number(a.married) - Number(b.married)
           : Number(b.married) - Number(a.married);
         break;
 
       case SortType.AverageGrade:
-        newarray = order === 'asc'
+        compareResult = order === 'asc'
           ? Avg(a) - Avg(b)
           : Avg(b) - Avg(a);
         break;
 
       default:
-        newarray = 0;
+        compareResult = 0;
     }
 
-    return newarray;
+    return compareResult;
   });
 }
