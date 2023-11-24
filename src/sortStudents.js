@@ -12,75 +12,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sortStudents = exports.SortType = void 0;
 var SortType;
 (function (SortType) {
-    SortType[SortType["Name"] = 0] = "Name";
-    SortType[SortType["Surname"] = 1] = "Surname";
-    SortType[SortType["Age"] = 2] = "Age";
-    SortType[SortType["Married"] = 3] = "Married";
-    SortType[SortType["AverageGrade"] = 4] = "AverageGrade";
+    SortType["Name"] = "name";
+    SortType["Surname"] = "surname";
+    SortType["Age"] = "age";
+    SortType["Married"] = "married";
+    SortType["AverageGrade"] = "averageGrade";
 })(SortType || (exports.SortType = SortType = {}));
 function sortStudents(students, sortBy, order) {
-    var sortedStudents = __spreadArray([], students, true);
-    switch (sortBy) {
-        case SortType.Name:
-            sortedStudents
-                .sort(function (a, b) {
-                if (order === 'asc') {
-                    return a.name.localeCompare(b.name);
-                }
-                return b.name.localeCompare(a.name);
-            });
-            break;
-        case SortType.Surname:
-            sortedStudents
-                .sort(function (a, b) {
-                if (order === 'asc') {
-                    return a.surname.localeCompare(b.surname);
-                }
-                return b.surname.localeCompare(a.surname);
-            });
-            break;
-        case SortType.Age:
-            sortedStudents
-                .sort(function (a, b) {
-                if (order === 'asc') {
-                    return a.age - b.age;
-                }
-                return b.age - a.age;
-            });
-            break;
-        case SortType.Married:
-            sortedStudents
-                .sort(function (a, b) {
-                if (order === 'asc') {
-                    if (a.married < b.married) {
-                        return -1;
-                    }
-                    if (a.married > b.married) {
-                        return 1;
-                    }
-                    return 0;
-                }
-                if (a.married > b.married) {
-                    return -1;
-                }
-                if (a.married < b.married) {
-                    return 1;
-                }
-                return 0;
-            });
-            break;
-        case SortType.AverageGrade:
-            sortedStudents.sort(function (a, b) {
-                var avgA = a.grades
-                    .reduce(function (sum, grade) { return sum + grade; }, 0) / a.grades.length;
-                var avgB = b.grades
-                    .reduce(function (sum, grade) { return sum + grade; }, 0) / b.grades.length;
-                return order === 'asc' ? avgA - avgB : avgB - avgA;
-            });
-            break;
-        default:
-            return sortedStudents;
-    }
-    return sortedStudents;
+    var copiedStudent = __spreadArray([], students, true);
+    var callback = function (a, b) {
+        var aValue;
+        var bValue;
+        switch (sortBy) {
+            case SortType.Name:
+                aValue = a.name.toLowerCase();
+                bValue = b.name.toLowerCase();
+                break;
+            case SortType.Surname:
+                aValue = a.surname.toLowerCase();
+                bValue = b.surname.toLowerCase();
+                break;
+            case SortType.Age:
+                aValue = a.age;
+                bValue = b.age;
+                break;
+            case SortType.Married:
+                aValue = a.married ? 1 : 0;
+                bValue = b.married ? 1 : 0;
+                break;
+            case SortType.AverageGrade:
+                aValue = a.grades.reduce(function (acc, curr) { return acc + curr; }) / a.grades.length;
+                bValue = b.grades.reduce(function (acc, curr) { return acc + curr; }) / b.grades.length;
+                break;
+            default:
+                throw new Error('Wrong sortBy input');
+        }
+        if (order === 'asc') {
+            return aValue < bValue ? -1 : 1;
+        }
+        return bValue < aValue ? -1 : 1;
+    };
+    return copiedStudent.sort(callback);
 }
 exports.sortStudents = sortStudents;

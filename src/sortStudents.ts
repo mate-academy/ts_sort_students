@@ -20,82 +20,58 @@ export type SortOrder = 'asc' | 'desc';
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const sortedStudents = [...students];
+  const newStudents = [...students];
 
-  switch (sortBy) {
-    case SortType.Name:
-      sortedStudents
-        .sort((a: Student, b: Student) => {
-          if (order === 'asc') {
-            return a.name.localeCompare(b.name);
-          }
+  const avgGrade = (x) : number => {
+    return x.grades
+      .reduce((acc: number, curr: number) => acc + curr, 0) / x.grades.length;
+  };
 
-          return b.name.localeCompare(a.name);
-        });
-      break;
+  const compare = (a: Student, b: Student): number => {
+    let aStud: string | number;
+    let bStud: string | number;
 
-    case SortType.Surname:
-      sortedStudents
-        .sort((a: Student, b: Student) => {
-          if (order === 'asc') {
-            return a.surname.localeCompare(b.surname);
-          }
+    switch (sortBy) {
+      case SortType.Name:
+        aStud = a.name;
+        bStud = b.name;
+        break;
 
-          return b.surname.localeCompare(a.surname);
-        });
-      break;
+      case SortType.Surname:
+        aStud = a.surname;
+        bStud = b.surname;
+        break;
 
-    case SortType.Age:
-      sortedStudents
-        .sort((a: Student, b: Student) => {
-          if (order === 'asc') {
-            return a.age - b.age;
-          }
+      case SortType.Age:
+        aStud = a.age;
+        aStud = b.age;
+        break;
 
-          return b.age - a.age;
-        });
-      break;
+      case SortType.Married:
+        aStud = a.married ? 1 : 0;
+        aStud = b.married ? 1 : 0;
+        break;
 
-    case SortType.Married:
-      sortedStudents
-        .sort((a: Student, b: Student) => {
-          if (order === 'asc') {
-            if (a.married < b.married) {
-              return -1;
-            }
+      case SortType.AverageGrade:
+        aStud = avgGrade(a);
+        aStud = avgGrade(b);
+        break;
 
-            if (a.married > b.married) {
-              return 1;
-            }
+      default:
+        break;
+    }
 
-            return 0;
-          }
+    if (order === 'desc') {
+      aStud *= -1;
+      bStud *= -1;
+    }
 
-          if (a.married > b.married) {
-            return -1;
-          }
+    if (aStud < bStud) {
+      return 1;
+    }
 
-          if (a.married < b.married) {
-            return 1;
-          }
+    return -1;
+  };
 
-          return 0;
-        });
-      break;
-
-    case SortType.AverageGrade:
-      sortedStudents.sort((a: Student, b: Student) => {
-        const avgA = a.grades
-          .reduce((sum, grade) => sum + grade, 0) / a.grades.length;
-        const avgB = b.grades
-          .reduce((sum, grade) => sum + grade, 0) / b.grades.length;
-
-        return order === 'asc' ? avgA - avgB : avgB - avgA;
-      });
-      break;
-    default:
-      return sortedStudents;
-  }
-
-  return sortedStudents;
+  return newStudents.sort(compare);
 }
