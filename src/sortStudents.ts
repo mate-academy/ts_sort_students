@@ -31,27 +31,23 @@ export function sortStudents(
     switch (sortBy) {
       case SortType.Name:
         result = order === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
         break;
       case SortType.Surname:
         result = order === 'asc'
-          ? a.surname.localeCompare(b.surname)
-          : b.surname.localeCompare(a.surname);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
         break;
       case SortType.Age:
         result = order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
         break;
       case SortType.Married:
-        if (a.married && !b.married) {
-          result = order === 'asc' ? -1 : 1;
-        } else if (!a.married && b.married) {
-          result = order === 'asc' ? 1 : -1;
-        } else {
-          result = 0;
-        }
+        result = order === 'asc'
+          ? a[sortBy] - b[sortBy]
+          : b[sortBy] - a[sortBy];
         break;
       case SortType.AverageGrade:
         result = order === 'asc'
