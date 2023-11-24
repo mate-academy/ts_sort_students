@@ -18,11 +18,16 @@ var SortType;
     SortType[SortType["Married"] = 3] = "Married";
     SortType[SortType["AverageGrade"] = 4] = "AverageGrade";
 })(SortType || (exports.SortType = SortType = {}));
+function calcAvgGrade(grades) {
+    if (!grades.length) {
+        return 0;
+    }
+    var sum = grades.reduce(function (acc, curr) { return acc + curr; });
+    return sum / grades.length;
+}
 function sortStudents(students, sortBy, order) {
     var compareFunction = function (a, b) {
         var result = 0;
-        var avgGradeA = 0;
-        var avgGradeB = 0;
         switch (sortBy) {
             case SortType.Name:
                 result = a.name.localeCompare(b.name);
@@ -37,13 +42,11 @@ function sortStudents(students, sortBy, order) {
                 result = +a.married - +b.married;
                 break;
             case SortType.AverageGrade:
-                avgGradeA = a.grades.reduce(function (acc, curr) {
-                    return acc + curr;
-                }) / a.grades.length;
-                avgGradeB = b.grades.reduce(function (acc, curr) {
-                    return acc + curr;
-                }) / b.grades.length;
-                result = avgGradeA - avgGradeB;
+                {
+                    var avgGradeA = calcAvgGrade(a.grades);
+                    var avgGradeB = calcAvgGrade(b.grades);
+                    result = avgGradeA - avgGradeB;
+                }
                 break;
             default:
                 break;

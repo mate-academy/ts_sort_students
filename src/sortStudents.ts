@@ -17,6 +17,16 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calcAvgGrade(grades: number[]): number {
+  if (!grades.length) {
+    return 0;
+  }
+
+  const sum = grades.reduce((acc, curr) => acc + curr);
+
+  return sum / grades.length;
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -24,8 +34,6 @@ export function sortStudents(
 ): Student[] {
   const compareFunction = (a: Student, b: Student): number => {
     let result = 0;
-    let avgGradeA = 0;
-    let avgGradeB = 0;
 
     switch (sortBy) {
       case SortType.Name:
@@ -41,15 +49,12 @@ export function sortStudents(
         result = +a.married - +b.married;
         break;
       case SortType.AverageGrade:
-        avgGradeA = a.grades.reduce((acc, curr) => {
-          return acc + curr;
-        }) / a.grades.length;
+        {
+          const avgGradeA = calcAvgGrade(a.grades);
+          const avgGradeB = calcAvgGrade(b.grades);
 
-        avgGradeB = b.grades.reduce((acc, curr) => {
-          return acc + curr;
-        }) / b.grades.length;
-
-        result = avgGradeA - avgGradeB;
+          result = avgGradeA - avgGradeB;
+        }
         break;
       default:
         break;
