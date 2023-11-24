@@ -20,8 +20,7 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-// for use, in case of AverageGrade sorting
-export function Avg(student: Student): number {
+export function getAverageGrade(student: Student): number {
   return student.grades
     .reduce((sum, grade) => sum + grade, 0) / student.grades.length;
 }
@@ -52,8 +51,8 @@ export function sortStudents(students: Student[],
 
       case SortType.AverageGrade:
         compareResult = order === 'asc'
-          ? Avg(a) - Avg(b)
-          : Avg(b) - Avg(a);
+          ? getAverageGrade(a) - getAverageGrade(b)
+          : getAverageGrade(b) - getAverageGrade(a);
         break;
 
       default:
