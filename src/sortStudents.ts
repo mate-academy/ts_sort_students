@@ -38,14 +38,7 @@ export function sortStudents(
         result = a.age - b.age;
         break;
       case SortType.Married:
-        if (a.married === b.married) {
-          result = 0;
-        } else if (a.married) {
-          result = 1;
-        } else {
-          result = -1;
-        }
-
+        result = +a.married - +b.married;
         break;
       case SortType.AverageGrade:
         avgGradeA = a.grades.reduce((acc, curr) => {
