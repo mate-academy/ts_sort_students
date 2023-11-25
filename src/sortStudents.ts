@@ -28,26 +28,35 @@ export function sortStudents(
     return grades.reduce((acc, curr) => acc + curr, 0) / grades.length;
   }
 
+  function sortByOrder(
+    a:Student,
+    b:Student,
+    order2: SortOrder,
+    callback: ((a:Student, b:Student) => number),
+  ) :number {
+    const result:number = callback(a, b);
+
+    return order2 === 'asc' ? result : result * -1;
+  }
+
   switch (sortBy) {
     case SortType.Name:
     case SortType.Surname:
-      return order === 'asc'
-        ? copyArray.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
-        : copyArray.sort((a, b) => b[sortBy].localeCompare(a[sortBy]));
-
+      return copyArray
+        .sort((a, b) => sortByOrder(a, b, order, (x, y) => (
+          x[sortBy].localeCompare(y[sortBy])
+        )));
     case SortType.Age:
     case SortType.Married:
-      return order === 'asc'
-        ? copyArray.sort((a, b) => +a[sortBy] - +b[sortBy])
-        : copyArray.sort((a, b) => +b[sortBy] - +a[sortBy]);
-
+      return copyArray
+        .sort((a, b) => sortByOrder(a, b, order, (x, y) => (
+          +x[sortBy] - +y[sortBy]
+        )));
     case SortType.AverageGrade:
-      return copyArray.sort((a:Student, b:Student) => {
-        return order === 'asc'
-          ? calculateAverage(a[sortBy]) - calculateAverage(b[sortBy])
-          : calculateAverage(b[sortBy]) - calculateAverage(a[sortBy]);
-      });
-
+      return copyArray
+        .sort((a, b) => sortByOrder(a, b, order, (x, y) => (
+          calculateAverage(x[sortBy]) - calculateAverage(y[sortBy])
+        )));
     default:
       return copyArray;
   }
