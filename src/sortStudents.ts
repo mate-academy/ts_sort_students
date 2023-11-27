@@ -33,8 +33,6 @@ export function sortStudents(
   order: SortOrder,
 ): Student[] {
   const sortedStudents = [...students];
-  let avgGradeA: number,
-    avgGradeB: number;
 
   sortedStudents.sort((a, b) => {
     let comparison = 0;
@@ -51,9 +49,7 @@ export function sortStudents(
         comparison = Number(a.married) - Number(b.married);
         break;
       case SortType.AverageGrade:
-        avgGradeA = calculateAverage(a.grades);
-        avgGradeB = calculateAverage(b.grades);
-        comparison = avgGradeA - avgGradeB;
+        comparison = calculateAverage(a.grades) - calculateAverage(b.grades);
         break;
       default:
         break;
