@@ -8,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -28,34 +28,21 @@ export function sortStudents(students: Student[],
   sortedStudents.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-
       case SortType.Surname:
         return order === 'asc'
-          ? a.surname.localeCompare(b.surname)
-          : b.surname.localeCompare(a.surname);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
 
       case SortType.Age:
-        return order === 'asc'
-          ? a.age - b.age
-          : b.age - a.age;
-
       case SortType.Married:
         return order === 'asc'
-          ? Number(a.married) - Number(b.married)
-          : Number(b.married) - Number(a.married);
+          ? +a[sortBy] - +b[sortBy]
+          : +b[sortBy] - +a[sortBy];
 
       case SortType.AverageGrade:
-        // eslint-disable-next-line no-case-declarations
-        const avgGradeA = avgGrades(a);
-        // eslint-disable-next-line no-case-declarations
-        const avgGradeB = avgGrades(b);
-
         return order === 'asc'
-          ? avgGradeA - avgGradeB
-          : avgGradeB - avgGradeA;
+          ? avgGrades(a) - avgGrades(b)
+          : avgGrades(b) - avgGrades(a);
 
       default: return 0;
     }
