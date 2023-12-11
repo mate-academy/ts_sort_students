@@ -1,6 +1,5 @@
 
 export interface Student {
-  // describe Student interface
   name: string;
   surname: string;
   age: number;
@@ -9,15 +8,13 @@ export interface Student {
 }
 
 export enum SortType {
-  // describe SortType enum
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade,
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 export function calcAvgGrade(grades: number[]): number {
@@ -38,10 +35,8 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        comparison = a.name.localeCompare(b.name);
-        break;
       case SortType.Surname:
-        comparison = a.surname.localeCompare(b.surname);
+        comparison = a[sortBy].localeCompare(b[sortBy]);
         break;
       case SortType.Age:
         comparison = a.age - b.age;
@@ -54,9 +49,6 @@ export function sortStudents(
         }
         break;
       case SortType.AverageGrade:
-      //  const avgGradeA: number = calculateAverageGrade(a.grades);
-      //  const avgGradeB: number = calculateAverageGrade(b.grades);
-
         comparison = calcAvgGrade(a.grades) - calcAvgGrade(b.grades);
         break;
       default:
