@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 export interface Student {
   name: string
   surname: string,
@@ -7,11 +8,11 @@ export interface Student {
 }
 
 export enum SortType {
-  Name,
-  Surname,
-  Age,
-  Married,
-  AverageGrade
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade'
 }
 
 // create SortOrder type
@@ -31,30 +32,23 @@ export function sortStudents(
   sortedStudents.sort((a, b) => {
     switch (sortBy) {
       case SortType.Name:
-        return order === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
       case SortType.Surname:
         return order === 'asc'
-          ? a.surname.localeCompare(b.surname)
-          : b.surname.localeCompare(a.surname);
+          ? a[sortBy].localeCompare(b[sortBy])
+          : b[sortBy].localeCompare(a[sortBy]);
       case SortType.Age:
         return order === 'asc' ? a.age - b.age : b.age - a.age;
 
       case SortType.Married:
-        if (order === 'asc' && a.married !== b.married) {
-          return a.married ? 1 : -1;
-        }
+        const sortOrder = order === 'asc' ? 1 : -1;
 
-        if (order === 'desc' && a.married !== b.married) {
-          return a.married ? -1 : 1;
+        if (a.married !== b.married) {
+          return a.married ? sortOrder : -sortOrder;
         }
 
         return 0;
       case SortType.AverageGrade:
-        // eslint-disable-next-line no-case-declarations
         const averageA = calculateAverage(a.grades);
-        // eslint-disable-next-line no-case-declarations
         const averageB = calculateAverage(b.grades);
 
         return order === 'asc' ? averageA - averageB : averageB - averageA;
