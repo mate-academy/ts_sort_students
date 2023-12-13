@@ -17,37 +17,33 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
+function calculateAverage(grades: number[]): number {
+  return grades.reduce((acc, grade) => acc + grade, 0) / grades.length;
+}
+
 export function sortStudents(students: Student[], sortBy: SortType,
   order: SortOrder): Student[] {
   const sorted = [...students];
 
   const compare = (a: Student, b: Student): number => {
-    let aVar: string | number | boolean;
-    let bVar: string | number | boolean;
+    let aVar: string | number | boolean | number[];
+    let bVar: string | number | boolean | number[];
 
     switch (sortBy) {
       case SortType.Name:
-        aVar = a.name;
-        bVar = b.name;
-        break;
       case SortType.Surname:
-        aVar = a.surname;
-        bVar = b.surname;
-        break;
       case SortType.Age:
-        aVar = a.age;
-        bVar = b.age;
-        break;
       case SortType.Married:
-        aVar = a.married;
-        bVar = b.married;
-        break;
-      case SortType.AverageGrade:
-        aVar = a.grades
-          .reduce((acc, grade) => acc + grade, 0) / a.grades.length;
 
-        bVar = b.grades
-          .reduce((acc, grade) => acc + grade, 0) / b.grades.length;
+        aVar = a[sortBy as unknown as keyof Student];
+        bVar = b[sortBy as unknown as keyof Student];
+
+        break;
+
+      case SortType.AverageGrade:
+        aVar = calculateAverage(a.grades);
+
+        bVar = calculateAverage(b.grades);
         break;
       default: throw new Error('Wrong sort type');
     }
