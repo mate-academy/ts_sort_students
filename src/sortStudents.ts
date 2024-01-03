@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 export interface Student {
   name: string
   surname: string,
@@ -15,7 +14,6 @@ export enum SortType {
   AverageGrade = 'averageGrade'
 }
 
-// create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
 function calculateAverage(grades: number[]): number {
@@ -27,35 +25,27 @@ function calculateAverage(grades: number[]): number {
 export function sortStudents(
   students: Student[], sortBy: SortType, order: SortOrder,
 ): Student[] {
-  const sortedStudents = [...students];
+  const copyStudents = [...students];
 
-  sortedStudents.sort((a, b) => {
+  const sorting = (a: Student, b: Student): number => {
     switch (sortBy) {
       case SortType.Name:
       case SortType.Surname:
-        return order === 'asc'
-          ? a[sortBy].localeCompare(b[sortBy])
-          : b[sortBy].localeCompare(a[sortBy]);
+        return a[sortBy].localeCompare(b[sortBy]);
+
       case SortType.Age:
-        return order === 'asc' ? a.age - b.age : b.age - a.age;
-
       case SortType.Married:
-        const sortOrder = order === 'asc' ? 1 : -1;
+        return +a[sortBy] - +b[sortBy];
 
-        if (a.married !== b.married) {
-          return a.married ? sortOrder : -sortOrder;
-        }
-
-        return 0;
       case SortType.AverageGrade:
-        const averageA = calculateAverage(a.grades);
-        const averageB = calculateAverage(b.grades);
+        return calculateAverage(a.grades) - calculateAverage(b.grades);
 
-        return order === 'asc' ? averageA - averageB : averageB - averageA;
       default:
         return 0;
     }
-  });
+  };
 
-  return sortedStudents;
+  return order === 'asc'
+    ? copyStudents.sort((a: Student, b: Student) => sorting(a, b))
+    : copyStudents.sort((a: Student, b: Student) => sorting(b, a));
 }
