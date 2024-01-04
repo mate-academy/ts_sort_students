@@ -31,17 +31,12 @@ export function sortStudents(students: Student[],
       0) / student.grades.length;
   }
 
-  if (sortBy === 'grades') {
-    result = newStude.sort((a, b) => {
-      if (order === 'asc') {
-        return average(a) - average(b);
-      }
-
-      return average(b) - average(a);
-    });
+  if (sortBy === SortType.AverageGrade) {
+    return newStude.sort((a, b) => (order === 'asc'
+      ? average(a) - average(b) : average(b) - average(a)));
   }
 
-  if (sortBy === 'name' || sortBy === 'surname') {
+  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
     result = [...newStude].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
 
     if (order === 'desc') {
@@ -49,41 +44,36 @@ export function sortStudents(students: Student[],
     }
   }
 
-  if (sortBy === 'age') {
-    result = [...newStude].sort((a, b) => {
-      if (order === 'asc') {
-        return a[sortBy] - b[sortBy];
-      }
-
-      return b[sortBy] - a[sortBy];
-    });
+  if (sortBy === SortType.Age) {
+    return [...newStude].sort((a, b) => (order === 'asc'
+      ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy]));
   }
 
-  if (sortBy === 'married') {
+  if (sortBy === SortType.Married) {
     result = [...newStude].sort((a, b) => {
-      let boSort;
+      let married;
 
       if (order === 'asc') {
         if (a[sortBy] === b[sortBy]) {
-          boSort = 0;
+          married = 0;
         } else if (a[sortBy]) {
-          boSort = 1;
+          married = 1;
         } else {
-          boSort = -1;
+          married = -1;
         }
 
-        return boSort;
+        return married;
       }
 
       if (a[sortBy] === b[sortBy]) {
-        boSort = 0;
+        married = 0;
       } else if (b[sortBy]) {
-        boSort = 1;
+        married = 1;
       } else {
-        boSort = -1;
+        married = -1;
       }
 
-      return boSort;
+      return married;
     });
   }
 
