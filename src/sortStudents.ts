@@ -20,61 +20,59 @@ export enum SortType {
 // create SortOrder type
 export type SortOrder = 'asc' | 'desc';
 
-export function sortStudents(students: Student[],
-  sortBy: SortType, order: SortOrder): Student[] {
-  // write your function
-  const newStude = students.map((studier) => studier);
+export function sortStudents(students: Student[], sortBy: SortType,
+  order: SortOrder): Student[] {
   let result: Student[] = [];
 
   function average(student: Student): number {
-    return student.grades.reduce((acc: number, val: number) => (acc + val),
-      0) / student.grades.length;
+    return student.grades.reduce((acc: number, val: number) => (acc + val), 0)
+    / student.grades.length;
   }
 
-  if (sortBy === SortType.AverageGrade) {
-    return newStude.sort((a, b) => (order === 'asc'
-      ? average(a) - average(b) : average(b) - average(a)));
-  }
+  switch (sortBy) {
+    case SortType.AverageGrade:
+      return students.sort((a, b) => (order === 'asc' ? average(a)
+      - average(b) : average(b) - average(a)));
 
-  if (sortBy === SortType.Name || sortBy === SortType.Surname) {
-    result = [...newStude].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+    case SortType.Name:
+    case SortType.Surname:
+      result = [...students].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
 
-    if (order === 'desc') {
-      result = result.reverse();
-    }
-  }
+      if (order === 'desc') {
+        result = result.reverse();
+      }
+      break;
 
-  if (sortBy === SortType.Age) {
-    return [...newStude].sort((a, b) => (order === 'asc'
-      ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy]));
-  }
+    case SortType.Age:
+      return [...students].sort((a, b) => (order === 'asc' ? a[sortBy]
+      - b[sortBy] : b[sortBy] - a[sortBy]));
 
-  if (sortBy === SortType.Married) {
-    result = [...newStude].sort((a, b) => {
-      let married;
+    case SortType.Married:
+      result = [...students].sort((a, b) => {
+        let married;
 
-      if (order === 'asc') {
-        if (a[sortBy] === b[sortBy]) {
+        if (order === 'asc') {
+          if (a[sortBy] === b[sortBy]) {
+            married = 0;
+          } else if (a[sortBy]) {
+            married = 1;
+          } else {
+            married = -1;
+          }
+        } else if (a[sortBy] === b[sortBy]) {
           married = 0;
-        } else if (a[sortBy]) {
+        } else if (b[sortBy]) {
           married = 1;
         } else {
           married = -1;
         }
 
         return married;
-      }
+      });
+      break;
 
-      if (a[sortBy] === b[sortBy]) {
-        married = 0;
-      } else if (b[sortBy]) {
-        married = 1;
-      } else {
-        married = -1;
-      }
-
-      return married;
-    });
+    default:
+      return [...students];
   }
 
   return result;
