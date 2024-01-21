@@ -30,25 +30,9 @@ export function sortStudents(
         const valueA = a[SortType.Name];
         const valueB = b[SortType.Name];
 
-        if (order === 'asc') {
-          if (valueA < valueB) {
-            return -1;
-          }
+        const sortValue = valueA.localeCompare(valueB);
 
-          if (valueA > valueB) {
-            return 1;
-          }
-        } else {
-          if (valueA < valueB) {
-            return 1;
-          }
-
-          if (valueA > valueB) {
-            return -1;
-          }
-        }
-
-        return 0;
+        return order === 'asc' ? sortValue : -sortValue;
       });
       break;
     case SortType.Surname:
@@ -56,25 +40,9 @@ export function sortStudents(
         const valueA = a[SortType.Surname];
         const valueB = b[SortType.Surname];
 
-        if (order === 'asc') {
-          if (valueA < valueB) {
-            return -1;
-          }
+        const sortValue = valueA.localeCompare(valueB);
 
-          if (valueA > valueB) {
-            return 1;
-          }
-        } else {
-          if (valueA < valueB) {
-            return 1;
-          }
-
-          if (valueA > valueB) {
-            return -1;
-          }
-        }
-
-        return 0;
+        return order === 'asc' ? sortValue : -sortValue;
       });
       break;
     case SortType.Age:
@@ -82,37 +50,19 @@ export function sortStudents(
         const valueA = a[SortType.Age];
         const valueB = b[SortType.Age];
 
-        if (order === 'asc') {
-          return valueA - valueB;
-        }
+        const sortValue = valueA - valueB;
 
-        return valueB - valueA;
+        return order === 'asc' ? sortValue : -sortValue;
       });
       break;
     case SortType.Married:
       copyStudents.sort((a, b) => {
-        const valueA = a[SortType.Married];
-        const valueB = b[SortType.Married];
+        const valueA = a[SortType.Married] as unknown as number;
+        const valueB = b[SortType.Married] as unknown as number;
 
-        if (order === 'asc') {
-          if (valueA && !valueB) {
-            return 1;
-          }
+        const sortValue = valueA - valueB;
 
-          if (!valueA && valueB) {
-            return -1;
-          }
-        } else {
-          if (valueA && !valueB) {
-            return -1;
-          }
-
-          if (!valueA && valueB) {
-            return 1;
-          }
-        }
-
-        return 0;
+        return order === 'asc' ? sortValue : -sortValue;
       });
       break;
     case SortType.AverageGrade:
@@ -124,11 +74,9 @@ export function sortStudents(
           return accumulator + currentValue;
         }, 0) / b.grades.length;
 
-        if (order === 'asc') {
-          return valueA - valueB;
-        }
+        const sortValue = valueA - valueB;
 
-        return valueB - valueA;
+        return order === 'asc' ? sortValue : -sortValue;
       });
       break;
 
