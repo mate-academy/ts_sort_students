@@ -8,10 +8,10 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = 'Name',
-  Surname = 'Surname',
-  Age = 'Age',
-  Married = 'Married',
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
   AverageGrade = 'AverageGrade',
 }
 
@@ -33,20 +33,12 @@ export function sortStudents(students: Student[],
 
     switch (sortBy) {
       case SortType.Name:
-        comparison = a.name.localeCompare(b.name);
-        break;
       case SortType.Surname:
-        comparison = a.surname.localeCompare(b.surname);
+        comparison = a[sortBy].localeCompare(b[sortBy]);
         break;
       case SortType.Age:
-        comparison = a.age - b.age;
-        break;
       case SortType.Married:
-        if (a.married && !b.married) {
-          comparison = 1;
-        } else if (!a.married && b.married) {
-          comparison = -1;
-        }
+        comparison = +a[sortBy] - +b[sortBy];
         break;
       case SortType.AverageGrade:
         comparison = compareAverageGrades(a, b);
