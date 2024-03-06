@@ -37,11 +37,7 @@ export function sortStudents(
         comparison = a.age - b.age;
         break;
       case SortType.Married:
-        if (a.married === b.married) {
-          comparison = 0;
-        } else {
-          comparison = a.married ? 1 : -1;
-        }
+        comparison = a.married === b.married ? 0 : (a.married ? 1 : -1);
         break;
       case SortType.AverageGrade:
         // eslint-disable-next-line no-case-declarations
