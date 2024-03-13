@@ -1,0 +1,22 @@
+{
+    "sourceFile": "checklist.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1710341518591,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1710341525988,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n \n GOOD EXAMPLE:\n ```\n export enum Directions {\n-  Up = \"UP',\n+  Up = 'UP',\n   Down = 'DOWN',\n   Left = 'LEFT',\n   Right = 'RIGHT',\n }\n"
+                }
+            ],
+            "date": 1710341518591,
+            "name": "Commit-0",
+            "content": "1. [CODE STYLE] - If you have predetermined amount of options it is better to use ```switch/case``` structure instead\nof multiple ```if/else``` blocks\n2. [CODE STYLE] - Enum constant names usually start with capital letter. Values can have any case that's necessary.\n\nBAD EXAMPLE:\n```\nexport enum Directions {\n  up = 'UP',\n  down = 'DOWN',\n  left = 'LEFT',\n  right = 'RIGHT',\n}\n```\n\nGOOD EXAMPLE:\n```\nexport enum Directions {\n  Up = \"UP',\n  Down = 'DOWN',\n  Left = 'LEFT',\n  Right = 'RIGHT',\n}\n```\n\n3. [CODE STYLE] - DRY. Combine logic for sorting by fields with same data types.\n4. [CODE KNOWLEDGE] - Method `sort` mutates the array, so you don't need to reassign the result of the sorting.\n\nBAD EXAMPLE:\n```\nlet copiedStudents = [...students];\n\ncopiedStudents = copiedStudents.sort();\n```\n\n\nGOOD EXAMPLE:\n```\nconst copiedStudents = [...students];\n\ncopiedStudents.sort();\n```\n\n\n\n"
+        }
+    ]
+}
