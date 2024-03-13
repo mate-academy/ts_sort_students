@@ -1,0 +1,22 @@
+{
+    "sourceFile": "readme.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1710338779957,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1710338797264,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n     Married\n     AverageGrade\n     ```\n     Hint: `AverageGrade` is sorting by an average value in `grades` array.\n-<!-- - Create `SortOrder` type with only 2 values `'asc'` and `'desc'`  -->\n+- Create `SortOrder` type with only 2 values `'asc'` and `'desc'`\n     Hint: If values are the same the students should go in the original order\n     (no matter we use `asc` or `desc` order)\n \n Examples:\n"
+                }
+            ],
+            "date": 1710338779957,
+            "name": "Commit-0",
+            "content": "# Sort students\nCreate a `sortStudents` function that takes 3 parameters and return a new array\nwith students sorted according to the given params. The original array must not\nchange.\n\nThe parameters are:\n- `students` an initial array of students\n- `sortBy` a type of sort (see `SortType` enum)\n- `order` a sort order that can be `asc` or `desc`\n\nYou also need to add correct types:\n- Create `Student` interface matching the next data:\n    ```\n    {\n      name: 'Jessica',\n      surname: 'Buxton',\n      age: 26,\n      married: true,\n      grades: [5, 5, 4, 5, 4, 4, 4, 4, 5, 4, 5, 4],\n    }\n    ```\n- Create a `SortType` enum, having the next values:\n    ```\n    Name\n    Surname\n    Age\n    Married\n    AverageGrade\n    ```\n    Hint: `AverageGrade` is sorting by an average value in `grades` array.\n<!-- - Create `SortOrder` type with only 2 values `'asc'` and `'desc'`  -->\n    Hint: If values are the same the students should go in the original order\n    (no matter we use `asc` or `desc` order)\n\nExamples:\n```js\n// from the youngest to the oldest\nconst studentsByAge = sortStudents(students, SortType.Age, 'asc');\n\n// Surnames from Z to A\nconst studentsBySurnameDesc = sortStudents(students, SortType.Surname, 'desc');\n\n// from the lowest Average grade to the highest\nconst studentsByGrade = sortStudents(students, SortType.AverageGrade, 'asc');\n```\n"
+        }
+    ]
+}
