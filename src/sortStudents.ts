@@ -27,7 +27,7 @@ export function sortStudents(
   sortBy: SortType,
   order: SortOrder = 'asc',
 ): Student[] {
-  let sortedStudentArr = [...students];
+  const sortedStudentArr = [...students];
 
   sortedStudentArr.sort((
     firstStudent: Student, secondStudent: Student,
