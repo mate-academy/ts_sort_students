@@ -29,7 +29,7 @@ export function sortStudents(
 ): Student[] {
   let sortedStudentArr = [...students];
 
-  sortedStudentArr = sortedStudentArr.sort((
+  sortedStudentArr.sort((
     firstStudent: Student, secondStudent: Student,
   ) => {
     switch (sortBy) {
