@@ -17,46 +17,30 @@ export enum SortType {
 
 export type SortOrder = 'asc' | 'desc';
 
-
-export function sortStudents(students: Student[], sortBy: SortType, order: SortOrder) {
+export function sortStudents(
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] {
   const sortedStudents = [...students];
 
   sortedStudents.sort((a, b) => {
-    if (order === 'asc') {
-      switch (sortBy) {
-        case SortType.Name:
-          return a.name.localeCompare(b.name);
-        case SortType.Surname:
-          return a.surname.localeCompare(b.surname);
-        case SortType.Age:
-          return a.age - b.age;
-        case SortType.Married:
-          return (a.married ? 1 : 0) - (b.married ? 1 : 0);
-        case SortType.AverageGrade:
-          const aGrades = a.grades.reduce((acc, grade) => acc + grade, 0) / a.grades.length;
-          const bGrades = b.grades.reduce((acc, grade) => acc + grade, 0) / b.grades.length;
-          return aGrades - bGrades;
-      }
+    let compareResult = 0;
+
+    if (sortBy === SortType.AverageGrade) {
+      const averageGradeA = a.grades.reduce(
+        (acc, grade) => acc + grade, 0,
+      ) / a.grades.length;
+      const averageGradeB = b.grades.reduce(
+        (acc, grade) => acc + grade, 0,
+      ) / b.grades.length;
+
+      compareResult = averageGradeA - averageGradeB;
+    } else {
+      compareResult = a[sortBy] > b[sortBy] ? 1 : -1;
     }
 
-    if (order === 'desc') {
-      switch (sortBy) {
-        case SortType.Name:
-          return b.name.localeCompare(a.name);
-        case SortType.Surname:
-          return b.surname.localeCompare(a.surname);
-        case SortType.Age:
-          return b.age - a.age;
-        case SortType.Married:
-          return (b.married ? 1 : 0) - (a.married ? 1 : 0);
-        case SortType.AverageGrade:
-          const aGrades = a.grades.reduce((acc, grade) => acc + grade, 0) / a.grades.length;
-          const bGrades = b.grades.reduce((acc, grade) => acc + grade, 0) / b.grades.length;
-          return bGrades - aGrades;
-      }
-    }
-
-
+    return order === 'asc' ? compareResult : -compareResult;
   });
 
   return sortedStudents;
