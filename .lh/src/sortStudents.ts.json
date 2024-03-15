@@ -1,0 +1,202 @@
+{
+    "sourceFile": "src/sortStudents.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 46,
+            "patches": [
+                {
+                    "date": 1710337756994,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1710337771799,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,12 @@\n \n export interface Student {\n   // describe Student interface\n-  name: \n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades\n }\n \n export enum SortType {\n   // describe SortType enum\n"
+                },
+                {
+                    "date": 1710337778245,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n   name: string,\n   surname: string,\n   age: number,\n   married: boolean,\n-  grades\n+  grades: []\n }\n \n export enum SortType {\n   // describe SortType enum\n"
+                },
+                {
+                    "date": 1710337798017,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,13 +4,18 @@\n   name: string,\n   surname: string,\n   age: number,\n   married: boolean,\n-  grades: []\n+  grades: number[],\n }\n \n export enum SortType {\n   // describe SortType enum\n+  Name\n+  Surname\n+  Age\n+  Married\n+  AverageGrade\n }\n \n // create SortOrder type\n export type SortOrder;\n"
+                },
+                {
+                    "date": 1710337820348,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,17 +9,17 @@\n }\n \n export enum SortType {\n   // describe SortType enum\n-  Name\n-  Surname\n-  Age\n-  Married\n-  AverageGrade\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n }\n \n // create SortOrder type\n-export type SortOrder;\n+export type SortOrder = ;\n \n \n export function sortStudents(students, sortBy, order) {\n   // write your function\n"
+                },
+                {
+                    "date": 1710337825843,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n   AverageGrade,\n }\n \n // create SortOrder type\n-export type SortOrder = ;\n+export type SortOrder = 'asc' | 'desc';\n \n \n export function sortStudents(students, sortBy, order) {\n   // write your function\n"
+                },
+                {
+                    "date": 1710338378599,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,5 +22,6 @@\n \n \n export function sortStudents(students, sortBy, order) {\n   // write your function\n+  sortBy: sort\n }\n"
+                },
+                {
+                    "date": 1710338391920,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,6 +22,6 @@\n \n \n export function sortStudents(students, sortBy, order) {\n   // write your function\n-  sortBy: sort\n+  sortBy: SortType, order: sort\n }\n"
+                },
+                {
+                    "date": 1710338402756,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,27 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students, sortBy, order) {\n+  // write your function\n+  sortBy: SortType, order: sortOrder,\n+}\n"
+                },
+                {
+                    "date": 1710338418968,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,35 +20,8 @@\n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n \n-export function sortStudents(students, sortBy, order) {\n+export function sortStudents(students, sortBy, order: sortOrder) {\n   // write your function\n   sortBy: SortType, order: sortOrder,\n }\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students, sortBy, order) {\n-  // write your function\n-  sortBy: SortType, order: sort\n-}\n"
+                },
+                {
+                    "date": 1710338427523,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,8 +20,7 @@\n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n \n-export function sortStudents(students, sortBy, order: sortOrder) {\n+export function sortStudents(students, sortBy: SortType, order: sortOrder) {\n   // write your function\n-  sortBy: SortType, order: sortOrder,\n }\n"
+                },
+                {
+                    "date": 1710338433885,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,26 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students: , sortBy: SortType, order: SortOrder) {\n+  // write your function\n+}\n"
+                },
+                {
+                    "date": 1710338444122,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,33 +20,7 @@\n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n \n-export function sortStudents(students: , sortBy: SortType, order: SortOrder) {\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder) {\n   // write your function\n }\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students, sortBy: SortType, order: sortOrder) {\n-  // write your function\n-}\n"
+                },
+                {
+                    "date": 1710338454801,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,7 +20,7 @@\n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n \n-export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder) {\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n }\n"
+                },
+                {
+                    "date": 1710338468942,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,5 +22,6 @@\n \n \n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n+  const \n }\n"
+                },
+                {
+                    "date": 1710338476344,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,6 +22,6 @@\n \n \n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n-  const \n+  const sortedStudents = [...students]\n }\n"
+                },
+                {
+                    "date": 1710338483158,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,6 +22,8 @@\n \n \n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n-  const sortedStudents = [...students]\n+  const sortedStudents = [...students];\n+\n+  \n }\n"
+                },
+                {
+                    "date": 1710338493784,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,6 +24,6 @@\n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n   const sortedStudents = [...students];\n \n-  \n+  sortedStudents.sort((a, b) )\n }\n"
+                },
+                {
+                    "date": 1710338503190,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,32 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n+  // write your function\n+  const sortedStudents = [...students];\n+\n+  sortedStudents.sort((a, b) => {\n+    let aValue;\n+    let bValue;\n+  })\n+}\n"
+                },
+                {
+                    "date": 1710338524359,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,35 +27,8 @@\n \n   sortedStudents.sort((a, b) => {\n     let aValue;\n     let bValue;\n+\n+    switch (sortBy)\n   })\n }\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n-  // write your function\n-  const sortedStudents = [...students];\n-\n-  sortedStudents.sort((a, b) )\n-}\n"
+                },
+                {
+                    "date": 1710338573894,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,7 +28,9 @@\n   sortedStudents.sort((a, b) => {\n     let aValue;\n     let bValue;\n \n-    switch (sortBy)\n+    switch (sortBy) {\n+      case SortType.Name\n+    }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338579733,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,8 +29,9 @@\n     let aValue;\n     let bValue;\n \n     switch (sortBy) {\n-      case SortType.Name\n+      case SortType.Name:\n+        aValue = a.\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338586014,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,8 +30,8 @@\n     let bValue;\n \n     switch (sortBy) {\n       case SortType.Name:\n-        aValue = a.\n+        aValue = a.name.toLowerCase()\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338597745,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,8 +30,10 @@\n     let bValue;\n \n     switch (sortBy) {\n       case SortType.Name:\n-        aValue = a.name.toLowerCase()\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n+        break;\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338611400,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,7 +33,8 @@\n       case SortType.Name:\n         aValue = a.name.toLowerCase();\n         bValue = b.name.toLowerCase();\n         break;\n+      case SortType.Surname\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338620536,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,8 +33,10 @@\n       case SortType.Name:\n         aValue = a.name.toLowerCase();\n         bValue = b.name.toLowerCase();\n         break;\n-      case SortType.Surname\n+      case SortType.Surname:\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338632589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,44 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n+  // write your function\n+  const sortedStudents = [...students];\n+\n+  sortedStudents.sort((a, b) => {\n+    let aValue;\n+    let bValue;\n+\n+    switch (sortBy) {\n+      case SortType.Name:\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n+        break;\n+      case SortType.Surname:\n+        aValue = a.surname.toLowerCase();\n+        bValue = b.surname.toLowerCase();\n+        break;\n+      case SortType\n+    }\n+  })\n+}\n"
+                },
+                {
+                    "date": 1710338637811,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,45 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n+  // write your function\n+  const sortedStudents = [...students];\n+\n+  sortedStudents.sort((a, b) => {\n+    let aValue;\n+    let bValue;\n+\n+    switch (sortBy) {\n+      case SortType.Name:\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n+        break;\n+      case SortType.Surname:\n+        aValue = a.surname.toLowerCase();\n+        bValue = b.surname.toLowerCase();\n+        break;\n+      case SortType.Age:\n+        \n+    }\n+  })\n+}\n"
+                },
+                {
+                    "date": 1710338645268,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,45 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n+  // write your function\n+  const sortedStudents = [...students];\n+\n+  sortedStudents.sort((a, b) => {\n+    let aValue;\n+    let bValue;\n+\n+    switch (sortBy) {\n+      case SortType.Name:\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n+        break;\n+      case SortType.Surname:\n+        aValue = a.surname.toLowerCase();\n+        bValue = b.surname.toLowerCase();\n+        break;\n+      case SortType.Age:\n+        aValue: \n+    }\n+  })\n+}\n"
+                },
+                {
+                    "date": 1710338655824,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,46 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n+  // write your function\n+  const sortedStudents = [...students];\n+\n+  sortedStudents.sort((a, b) => {\n+    let aValue;\n+    let bValue;\n+\n+    switch (sortBy) {\n+      case SortType.Name:\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n+        break;\n+      case SortType.Surname:\n+        aValue = a.surname.toLowerCase();\n+        bValue = b.surname.toLowerCase();\n+        break;\n+      case SortType.Age:\n+        aValue = a.age;\n+        bValue = b.age;\n+    }\n+  })\n+}\n"
+                },
+                {
+                    "date": 1710338662581,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,183 +40,9 @@\n         break;\n       case SortType.Age:\n         aValue = a.age;\n         bValue = b.age;\n-    }\n-  })\n-}\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n-  // write your function\n-  const sortedStudents = [...students];\n-\n-  sortedStudents.sort((a, b) => {\n-    let aValue;\n-    let bValue;\n-\n-    switch (sortBy) {\n-      case SortType.Name:\n-        aValue = a.name.toLowerCase();\n-        bValue = b.name.toLowerCase();\n-        break;\n-      case SortType.Surname:\n-        aValue = a.surname.toLowerCase();\n-        bValue = b.surname.toLowerCase();\n-        break;\n-      case SortType.Age:\n-        aValue: \n-    }\n-  })\n-}\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n-  // write your function\n-  const sortedStudents = [...students];\n-\n-  sortedStudents.sort((a, b) => {\n-    let aValue;\n-    let bValue;\n-\n-    switch (sortBy) {\n-      case SortType.Name:\n-        aValue = a.name.toLowerCase();\n-        bValue = b.name.toLowerCase();\n-        break;\n-      case SortType.Surname:\n-        aValue = a.surname.toLowerCase();\n-        bValue = b.surname.toLowerCase();\n-        break;\n-      case SortType.Age:\n-        \n-    }\n-  })\n-}\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n-  // write your function\n-  const sortedStudents = [...students];\n-\n-  sortedStudents.sort((a, b) => {\n-    let aValue;\n-    let bValue;\n-\n-    switch (sortBy) {\n-      case SortType.Name:\n-        aValue = a.name.toLowerCase();\n-        bValue = b.name.toLowerCase();\n-        break;\n-      case SortType.Surname:\n-        aValue = a.surname.toLowerCase();\n-        bValue = b.surname.toLowerCase();\n-        break;\n+        break\n       case SortType\n     }\n   })\n }\n-\n-export interface Student {\n-  // describe Student interface\n-  name: string,\n-  surname: string,\n-  age: number,\n-  married: boolean,\n-  grades: number[],\n-}\n-\n-export enum SortType {\n-  // describe SortType enum\n-  Name,\n-  Surname,\n-  Age,\n-  Married,\n-  AverageGrade,\n-}\n-\n-// create SortOrder type\n-export type SortOrder = 'asc' | 'desc';\n-\n-\n-export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n-  // write your function\n-  const sortedStudents = [...students];\n-\n-  sortedStudents.sort((a, b) => {\n-    let aValue;\n-    let bValue;\n-\n-    switch (sortBy) {\n-      case SortType.Name:\n-        aValue = a.name.toLowerCase();\n-        bValue = b.name.toLowerCase();\n-        break;\n-      case SortType.Surname:\n-        aValue = a.name.toLowerCase();\n-        bValue = b.name.toLowerCase();\n-    }\n-  })\n-}\n"
+                },
+                {
+                    "date": 1710338673504,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,8 +41,9 @@\n       case SortType.Age:\n         aValue = a.age;\n         bValue = b.age;\n         break\n-      case SortType\n+      case SortType.Married:\n+        aValue = \n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338679304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,8 +42,8 @@\n         aValue = a.age;\n         bValue = b.age;\n         break\n       case SortType.Married:\n-        aValue = \n+        aValue = a.married;\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338688003,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,8 +42,9 @@\n         aValue = a.age;\n         bValue = b.age;\n         break\n       case SortType.Married:\n-        aValue = a.married;\n+        aValue = a.married ? 1 : 0;\n+        \n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338695659,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,8 +43,8 @@\n         bValue = b.age;\n         break\n       case SortType.Married:\n         aValue = a.married ? 1 : 0;\n-        \n-    }\n+        aValue = b.married ? 1 : 0;\n+      }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338705372,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,8 +43,10 @@\n         bValue = b.age;\n         break\n       case SortType.Married:\n         aValue = a.married ? 1 : 0;\n-        aValue = b.married ? 1 : 0;\n+        bValue = b.married ? 1 : 0;\n+        break;\n+      case SortType\n       }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338710866,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,8 +45,9 @@\n       case SortType.Married:\n         aValue = a.married ? 1 : 0;\n         bValue = b.married ? 1 : 0;\n         break;\n-      case SortType\n+      case SortType.AverageGrade:\n+        \n       }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338719185,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,21 +33,25 @@\n       case SortType.Name:\n         aValue = a.name.toLowerCase();\n         bValue = b.name.toLowerCase();\n         break;\n+\n       case SortType.Surname:\n         aValue = a.surname.toLowerCase();\n         bValue = b.surname.toLowerCase();\n         break;\n+\n       case SortType.Age:\n         aValue = a.age;\n         bValue = b.age;\n-        break\n+        break;\n+\n       case SortType.Married:\n         aValue = a.married ? 1 : 0;\n         bValue = b.married ? 1 : 0;\n         break;\n+        \n       case SortType.AverageGrade:\n-        \n+\n       }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338728021,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,10 +48,10 @@\n       case SortType.Married:\n         aValue = a.married ? 1 : 0;\n         bValue = b.married ? 1 : 0;\n         break;\n-        \n+\n       case SortType.AverageGrade:\n-\n+        aValue = \n       }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338748413,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,8 +50,8 @@\n         bValue = b.married ? 1 : 0;\n         break;\n \n       case SortType.AverageGrade:\n-        aValue = \n+        aValue = a.\n       }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338756172,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,8 +50,8 @@\n         bValue = b.married ? 1 : 0;\n         break;\n \n       case SortType.AverageGrade:\n-        aValue = a.\n+        aValue = a.grades\n       }\n   })\n }\n"
+                },
+                {
+                    "date": 1710338769448,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n \n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n-\n+function calculate\n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n   const sortedStudents = [...students];\n \n"
+                },
+                {
+                    "date": 1710338774784,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n \n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n-function calculate\n+function calculateAverageGrade\n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n   const sortedStudents = [...students];\n \n"
+                },
+                {
+                    "date": 1710338781330,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n \n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n-function calculateAverageGrade\n+function calculateAverageGrade(grades: number[])\n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n   const sortedStudents = [...students];\n \n"
+                },
+                {
+                    "date": 1710338787871,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,59 @@\n+\n+export interface Student {\n+  // describe Student interface\n+  name: string,\n+  surname: string,\n+  age: number,\n+  married: boolean,\n+  grades: number[],\n+}\n+\n+export enum SortType {\n+  // describe SortType enum\n+  Name,\n+  Surname,\n+  Age,\n+  Married,\n+  AverageGrade,\n+}\n+\n+// create SortOrder type\n+export type SortOrder = 'asc' | 'desc';\n+\n+function calculateAverageGrade(grades: number[]): number {\n+  return \n+}\n+export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n+  // write your function\n+  const sortedStudents = [...students];\n+\n+  sortedStudents.sort((a, b) => {\n+    let aValue;\n+    let bValue;\n+\n+    switch (sortBy) {\n+      case SortType.Name:\n+        aValue = a.name.toLowerCase();\n+        bValue = b.name.toLowerCase();\n+        break;\n+\n+      case SortType.Surname:\n+        aValue = a.surname.toLowerCase();\n+        bValue = b.surname.toLowerCase();\n+        break;\n+\n+      case SortType.Age:\n+        aValue = a.age;\n+        bValue = b.age;\n+        break;\n+\n+      case SortType.Married:\n+        aValue = a.married ? 1 : 0;\n+        bValue = b.married ? 1 : 0;\n+        break;\n+\n+      case SortType.AverageGrade:\n+        aValue = a.grades\n+      }\n+  })\n+}\n"
+                },
+                {
+                    "date": 1710338802486,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n // create SortOrder type\n export type SortOrder = 'asc' | 'desc';\n \n function calculateAverageGrade(grades: number[]): number {\n-  return grades\n+  const sum: number = 0;\n }\n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n   const sortedStudents = [...students];\n"
+                },
+                {
+                    "date": 1710338816969,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,12 @@\n export type SortOrder = 'asc' | 'desc';\n \n function calculateAverageGrade(grades: number[]): number {\n   const sum: number = 0;\n+\n+  for (let i = 0; i < grades.length; i++) {\n+    \n+  }\n }\n export function sortStudents(students: Array<Student>, sortBy: SortType, order: SortOrder): Array<Student> {\n   // write your function\n   const sortedStudents = [...students];\n"
+                }
+            ],
+            "date": 1710337756994,
+            "name": "Commit-0",
+            "content": "\nexport interface Student {\n  // describe Student interface\n  name: \n}\n\nexport enum SortType {\n  // describe SortType enum\n}\n\n// create SortOrder type\nexport type SortOrder;\n\n\nexport function sortStudents(students, sortBy, order) {\n  // write your function\n}\n"
+        }
+    ]
+}
