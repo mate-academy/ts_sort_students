@@ -65,7 +65,7 @@ export function sortStudents(
       break;
 
     default:
-      break;
+      return 0;
   }
 
   return copiedStudents;
