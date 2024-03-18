@@ -24,60 +24,37 @@ export function sortStudents(
   const sortedStudents = [...students];
 
   sortedStudents.sort((a, b) => {
-    if (sortBy === SortType.Name) {
-      if (order === 'asc') {
-        return a.name.localeCompare(b.name);
-      }
+    let avgA;
+    let avgB;
 
-      return b.name.localeCompare(a.name);
+    switch (sortBy) {
+      case SortType.Name:
+        return a.name.localeCompare(b.name) * (order === 'asc' ? 1 : -1);
+      case SortType.Surname:
+        return a.surname.localeCompare(b.surname) * (order === 'asc' ? 1 : -1);
+      case SortType.Age:
+        return (a.age - b.age) * (order === 'asc' ? 1 : -1);
+      case SortType.Married:
+        if (a.married && !b.married) {
+          return order === 'asc' ? 1 : -1;
+        }
+
+        if (!a.married && b.married) {
+          return order === 'asc' ? -1 : 1;
+        }
+
+        return 0;
+      case SortType.AverageGrade:
+        avgA = a.grades.reduce((sum, grade) => sum + grade, 0)
+        / a.grades.length;
+
+        avgB = b.grades.reduce((sum, grade) => sum + grade, 0)
+        / b.grades.length;
+
+        return (avgA - avgB) * (order === 'asc' ? 1 : -1);
+      default:
+        return a.name.localeCompare(b.name) * (order === 'asc' ? 1 : -1);
     }
-
-    if (sortBy === SortType.Surname) {
-      if (order === 'asc') {
-        return a.surname.localeCompare(b.surname);
-      }
-
-      return b.surname.localeCompare(a.surname);
-    }
-
-    if (sortBy === SortType.Age) {
-      if (order === 'asc') {
-        return a.age - b.age;
-      }
-
-      return b.age - a.age;
-    }
-
-    if (sortBy === SortType.Married) {
-      if (a.married && !b.married) {
-        return order === 'asc' ? 1 : -1;
-      }
-
-      if (!a.married && b.married) {
-        return order === 'asc' ? -1 : 1;
-      }
-
-      return 0;
-    }
-
-    if (sortBy === SortType.AverageGrade) {
-      const avgA = a.grades.reduce((sum, grade) => sum + grade, 0)
-      / a.grades.length;
-      const avgB = b.grades.reduce((sum, grade) => sum + grade, 0)
-      / b.grades.length;
-
-      if (order === 'asc') {
-        return avgA - avgB;
-      }
-
-      return avgB - avgA;
-    }
-
-    if (order === 'asc') {
-      return a.name.localeCompare(b.name);
-    }
-
-    return b.name.localeCompare(a.name);
   });
 
   return sortedStudents;
