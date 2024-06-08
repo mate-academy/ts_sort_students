@@ -1,16 +1,70 @@
+/* eslint-disable no-fallthrough */
 
 export interface Student {
-  // describe Student interface
+  name: string,
+  surname: string,
+  age: number,
+  married: boolean,
+  grades: number[],
 }
 
 export enum SortType {
-  // describe SortType enum
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
-// create SortOrder type
-export type SortOrder;
+export type SortOrder = 'asc' | 'desc';
 
+export const sortStudents = (
+  students: Student[],
+  sortBy: SortType,
+  order: SortOrder,
+): Student[] => {
+  const studentsCopy = [...students];
 
-export function sortStudents(students, sortBy, order) {
-  // write your function
-}
+  const sortDirection = order === 'asc' ? 1 : -1;
+
+  studentsCopy.sort((studentA, studentB) => {
+    let comparisonResult = 0;
+
+    switch (sortBy) {
+      case SortType.Name:
+
+      case SortType.Surname: {
+        comparisonResult = studentA[sortBy].localeCompare(studentB[sortBy]);
+        break;
+      }
+
+      case SortType.Age:
+
+      case SortType.Married: {
+        comparisonResult = Number(studentA[sortBy]) - Number(studentB[sortBy]);
+        break;
+      }
+
+      case SortType.AverageGrade: {
+        const averageGradeA = studentA.grades.reduce(
+          (accumulator, grade) => accumulator + grade, 0,
+        ) / studentA.grades.length;
+
+        const averageGradeB = studentB.grades.reduce(
+          (accumulator, grade) => accumulator + grade, 0,
+        ) / studentB.grades.length;
+
+        comparisonResult = averageGradeA - averageGradeB;
+        break;
+      }
+
+      default: {
+        throw new Error('Not supported sort type');
+      }
+    }
+
+    return sortDirection * comparisonResult;
+  });
+
+  return studentsCopy;
+};
