@@ -1,4 +1,5 @@
 {
+  "lib": ["ES2016", "DOM"],
   "extends": "@mate-academy/students-ts-config",
   "include": [
     "src"
