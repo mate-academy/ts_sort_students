@@ -44,10 +44,16 @@ export function sortStudents(
         valueA = a.married;
         valueB = b.married;
         break;
-      case SortType.AverageGrade:
-        valueA = a.grades.reduce((sum, g) => sum + g, 0) / a.grades.length;
-        valueB = b.grades.reduce((sum, g) => sum + g, 0) / b.grades.length;
+
+      case SortType.AverageGrade: {
+        const avg = (grades: number[]): number => (grades.length === 0
+          ? -Infinity
+          : grades.reduce((sum, g) => sum + g, 0) / grades.length);
+
+        valueA = avg(a.grades);
+        valueB = avg(b.grades);
         break;
+      }
       default:
         valueA = 0;
         valueB = 0;
