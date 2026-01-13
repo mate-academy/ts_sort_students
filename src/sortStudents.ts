@@ -27,6 +27,36 @@ function getAverageGrade(grades: number[]): number {
   return sum / grades.length;
 }
 
+function getSortValue(student: Student, sortBy: SortType): string | number {
+  switch (sortBy) {
+    case SortType.Name:
+      return student.name;
+
+    case SortType.Surname:
+      return student.surname;
+
+    case SortType.Age:
+      return student.age;
+
+    case SortType.Married:
+      return Number(student.married);
+
+    case SortType.AverageGrade:
+      return getAverageGrade(student.grades);
+
+    default:
+      return 0;
+  }
+}
+
+function compareValues(a: string | number, b: string | number): number {
+  if (typeof a === 'string' && typeof b === 'string') {
+    return a.localeCompare(b);
+  }
+
+  return Number(a) - Number(b);
+}
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -39,44 +69,17 @@ export function sortStudents(
       student,
       index,
     }))
-
     .sort((a, b) => {
-      const s1 = a.student;
-      const s2 = b.student;
+      const v1 = getSortValue(a.student, sortBy);
+      const v2 = getSortValue(b.student, sortBy);
 
-      let result = 0;
+      const result = compareValues(v1, v2);
 
-      switch (sortBy) {
-        case SortType.Name:
-          result = s1.name.localeCompare(s2.name);
-          break;
-
-        case SortType.Surname:
-          result = s1.surname.localeCompare(s2.surname);
-          break;
-
-        case SortType.Age:
-          result = s1.age - s2.age;
-          break;
-
-        case SortType.Married:
-          result = Number(s1.married) - Number(s2.married);
-          break;
-
-        case SortType.AverageGrade:
-          result = getAverageGrade(s1.grades) - getAverageGrade(s2.grades);
-          break;
-
-        default:
-          result = 0;
-      }
-
-      // If values differ, apply asc/desc direction
       if (result !== 0) {
         return result * direction;
       }
 
-      // If values are the same, keep the original order (stable sort)
+      // stable sort: remis = oryginalna kolejność niezależnie od asc/desc
       return a.index - b.index;
     })
     .map((item) => item.student);
