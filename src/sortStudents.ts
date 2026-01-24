@@ -22,6 +22,31 @@ const getAverageGrade = (grades: number[]): number => {
   }, 0) / grades.length;
 };
 
+const getSortValue = (
+  student: Student,
+  sortBy: SortType,
+): string | number => {
+  switch (sortBy) {
+    case SortType.Name:
+      return student.name;
+
+    case SortType.Surname:
+      return student.surname;
+
+    case SortType.Age:
+      return student.age;
+
+    case SortType.Married:
+      return Number(student.married);
+
+    case SortType.AverageGrade:
+      return getAverageGrade(student.grades);
+
+    default:
+      return 0;
+  }
+};
+
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
@@ -35,38 +60,21 @@ export function sortStudents(
       };
     })
     .sort((a, b) => {
+      const valueA = getSortValue(
+        a.student,
+        sortBy,
+      );
+      const valueB = getSortValue(
+        b.student,
+        sortBy,
+      );
+
       let result = 0;
 
-      switch (sortBy) {
-        case SortType.Name:
-          result = a.student.name.localeCompare(
-            b.student.name,
-          );
-          break;
-
-        case SortType.Surname:
-          result = a.student.surname.localeCompare(
-            b.student.surname,
-          );
-          break;
-
-        case SortType.Age:
-          result = a.student.age
-            - b.student.age;
-          break;
-
-        case SortType.Married:
-          result = Number(a.student.married)
-            - Number(b.student.married);
-          break;
-
-        case SortType.AverageGrade:
-          result = getAverageGrade(a.student.grades)
-            - getAverageGrade(b.student.grades);
-          break;
-
-        default:
-          result = 0;
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        result = valueA.localeCompare(valueB);
+      } else {
+        result = Number(valueA) - Number(valueB);
       }
 
       if (result === 0) {
