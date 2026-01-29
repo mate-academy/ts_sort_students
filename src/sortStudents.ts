@@ -1,10 +1,9 @@
-
 export interface Student {
-  name: string,
-  surname: string,
-  age: number,
-  married: boolean,
-  grades: number[],
+  name: string;
+  surname: string;
+  age: number;
+  married: boolean;
+  grades: number[];
 }
 
 export enum SortType {
@@ -18,56 +17,59 @@ export enum SortType {
 export type SortOrder = 'asc' | 'desc';
 
 function getAverageGrade(grades: number[]): number {
-  return grades.reduce((sum, g) => sum + g, 0) / grades.length;
+  return grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
 }
 
 export function sortStudents(
   students: Student[],
   sortBy: SortType,
   order: SortOrder,
-) : Student[] {
+): Student[] {
   const studentsCopy = [...students];
 
-  return studentsCopy.sort((a, b) => {
-    let valueA: string | number | boolean;
-    let valueB: string | number | boolean;
-
+  const getSortValue = (student: Student): string | number | boolean => {
     switch (sortBy) {
       case SortType.Name:
-        valueA = a.name;
-        valueB = b.name;
-        break;
+        return student.name;
+
       case SortType.Surname:
-        valueA = a.surname;
-        valueB = b.surname;
-        break;
+        return student.surname;
 
       case SortType.Age:
-        valueA = a.age;
-        valueB = b.age;
-        break;
+        return student.age;
 
       case SortType.Married:
-        valueA = a.married;
-        valueB = b.married;
-        break;
+        return student.married;
 
       case SortType.AverageGrade:
-        valueA = getAverageGrade(a.grades);
-        valueB = getAverageGrade(b.grades);
-        break;
+        return getAverageGrade(student.grades);
+
       default:
         return 0;
     }
+  };
+
+  return studentsCopy.sort((a, b) => {
+    const valueA = getSortValue(a);
+    const valueB = getSortValue(b);
 
     if (valueA === valueB) {
       return 0;
     }
 
     if (order === 'asc') {
-      return valueA > valueB ? 1 : -1;
+      if (valueA > valueB) {
+        return 1;
+      }
+
+      return -1;
     }
 
-    return valueA < valueB ? 1 : -1;
+    // order === 'desc'
+    if (valueA < valueB) {
+      return 1;
+    }
+
+    return -1;
   });
 }
