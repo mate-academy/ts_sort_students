@@ -26,34 +26,42 @@ export function sortStudents(
   studentsCopy.sort((a: Student, b: Student): number => {
     let comparison: number = 0;
 
-    if (sortBy === SortType.Name) {
-      comparison = a.name.localeCompare(b.name);
-    }
+    switch (sortBy) {
+      case SortType.Name:
+        comparison = a.name.localeCompare(b.name);
+        break;
 
-    if (sortBy === SortType.Surname) {
-      comparison = a.surname.localeCompare(b.surname);
-    }
+      case SortType.Surname:
+        comparison = a.surname.localeCompare(b.surname);
+        break;
 
-    if (sortBy === SortType.Age) {
-      comparison = a.age - b.age;
-    }
+      case SortType.Age:
+        comparison = a.age - b.age;
+        break;
 
-    if (sortBy === SortType.Married) {
-      comparison = Number(a.married) - Number(b.married);
-    }
+      case SortType.Married:
+        comparison = Number(a.married) - Number(b.married);
+        break;
 
-    if (sortBy === SortType.AverageGrade) {
-      const averageA: number = a.grades.reduce(
-        (sum: number, grade: number): number => sum + grade,
-        0,
-      ) / a.grades.length;
+      case SortType.AverageGrade: {
+        const averageA: number
+          = a.grades.reduce(
+            (sum: number, grade: number): number => sum + grade,
+            0,
+          ) / a.grades.length;
 
-      const averageB: number = b.grades.reduce(
-        (sum: number, grade: number): number => sum + grade,
-        0,
-      ) / b.grades.length;
+        const averageB: number
+          = b.grades.reduce(
+            (sum: number, grade: number): number => sum + grade,
+            0,
+          ) / b.grades.length;
 
-      comparison = averageA - averageB;
+        comparison = averageA - averageB;
+        break;
+      }
+
+      default:
+        break;
     }
 
     return order === 'asc' ? comparison : -comparison;
