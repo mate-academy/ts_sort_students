@@ -7,14 +7,14 @@ export interface Student {
 }
 
 export enum SortType {
-  Name = "name",
-  Surname = "surname",
-  Age = "age",
-  Married = "married",
-  AverageGrade = "averageGrade",
+  Name = 'name',
+  Surname = 'surname',
+  Age = 'age',
+  Married = 'married',
+  AverageGrade = 'averageGrade',
 }
 
-export type SortOrder = "asc" | "desc";
+export type SortOrder = 'asc' | 'desc';
 
 type SortValue = string | number;
 
@@ -59,7 +59,7 @@ export function sortStudents(
 
     const comparison = firstValue > secondValue ? 1 : -1;
 
-    return order === "asc" ? comparison : -comparison;
+    return order === 'asc' ? comparison : -comparison;
   });
 
   return copiedStudents;
