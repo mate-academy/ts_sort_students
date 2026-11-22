@@ -36,20 +36,22 @@ export function sortStudents(
 
     switch (sortBy) {
       case SortType.Name:
-        aValue = a.name;
-        bValue = b.name;
-        break;
       case SortType.Surname:
-        aValue = a.surname;
-        bValue = b.surname;
+        if (sortBy === SortType.Name) {
+          aValue = a.name;
+          bValue = b.name;
+        } else {
+          aValue = a.surname;
+          bValue = b.surname;
+        }
         break;
       case SortType.Age:
         aValue = a.age;
         bValue = b.age;
         break;
       case SortType.Married:
-        aValue = a.married ? 1 : 0;
-        bValue = b.married ? 1 : 0;
+        aValue = Number(a.married);
+        bValue = Number(b.married);
         break;
       case SortType.AverageGrade:
         aValue = getAverage(a.grades);
