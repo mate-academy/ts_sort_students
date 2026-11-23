@@ -26,15 +26,21 @@ export function sortStudents(
   result.sort((studentA, studentB) => {
     let comparison = 0;
 
-    // eslint-disable-next-line default-case
     switch (sortBy) {
       case SortType.Name:
-        comparison = studentA.name.localeCompare(studentB.name);
-        break;
 
-      case SortType.Surname:
-        comparison = studentA.surname.localeCompare(studentB.surname);
+      // eslint-disable-next-line no-fallthrough
+      case SortType.Surname: {
+        const field = sortBy === SortType.Name
+          ? 'name'
+          : 'surname';
+
+        comparison = studentA[field].localeCompare(
+          studentB[field],
+        );
+
         break;
+      }
 
       case SortType.Age:
         comparison = studentA.age - studentB.age;
@@ -57,6 +63,9 @@ export function sortStudents(
         comparison = averageA - averageB;
         break;
       }
+
+      default:
+        break;
     }
 
     return order === 'asc' ? comparison : -comparison;
